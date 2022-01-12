@@ -1,0 +1,106 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Windows McStas -->
+<!--X-From: Andrew Garrett <agarrett@ccbsf0.kek.jp> -->
+<!--X-Date: Thu, 12 Nov 1998 11:46:40 +0900 -->
+<!--X-Message-Id: 01J48MF7LNWU8WWAUI@risoe.dk -->
+<!--X-ContentType: text/plain -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Windows McStas</title>
+<link rev="made" href="mailto:agarrett@ccbsf0.kek.jp">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00008.html">Date Prev</A>][<A HREF="msg00011.html">Date Next</A>]
+<a href="index.html#00010">[Chronological]</a>
+<a href="threads.html#00010">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Windows McStas</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>Windows McStas</strong></LI>
+<LI><strong>From</strong>: <strong>Andrew Garrett &lt;<A HREF="mailto:agarrett@ccbsf0.kek.jp">agarrett@ccbsf0.kek.jp</A>&gt;</strong></LI>
+<LI>Date: Thu, 12 Nov 1998 11:46:40 +0900</LI>
+<LI>Content-return: allowed</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Kristian,
+
+  Thanks for the mail, and the link to the executable.  I couldn't get
+the executable you supplied to run - well, it ran, but it couldn't find
+the components...  But, with the hint you provided about compiling in 32
+bit mode, I did get it to work.  I'm guessing that the version you
+provided was still using forward slashes to separate directories, but
+maybe not...  Anyway, I've got a working version.
+
+  Now, problem 2.  The output code from McStas has a problem, at least
+when compiling under DOS/Windows.  It's a 1-line problem, but it does
+need to be fixed.
+
+  The output code calls mcparseoptions from mcstas_main.  In
+mcparseoptions, the first command is to allocate memory of 'mcnumipar *
+size...'  I'm not too sure how mcnumipar is set, but when I ran this, it
+was set to 0.  This is a problem, because the very next line checks to
+see if the memory was allocated, and ends the program if it was not.
+And, in DOS/Windows, memory allocation returns NULL if set to a size of
+0.
+
+  The simple fix is to change that line to say 'if (paramsetarray ==
+NULL &amp;&amp; mcnumipar != 0)'  Then everything works fine.  I'm just not sure
+where that's written from in the original MCStas.
+
+  Thanks again for your help,
+
+  Drew Garrett
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00008.html">Re: MCStas</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00011.html">Re: Windows McStas</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00010"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00010"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

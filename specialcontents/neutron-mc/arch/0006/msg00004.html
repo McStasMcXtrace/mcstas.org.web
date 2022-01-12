@@ -1,0 +1,136 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: vitess codes -->
+<!--X-From: Kristian Nielsen <kristian.nielsen@risoe.dk> -->
+<!--X-Date: 13 Jun 2000 13:14:31 +0200 -->
+<!--X-Message-Id:  -->
+<!--X-ContentType: multipart/mixed -->
+<!--X-Reference-Id: 39324324.8B374A67@hmi.de -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: vitess codes</title>
+<link rev="made" href="mailto:kristian.nielsen@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00003.html">Date Prev</A>][<A HREF="msg00000.html">Date Next</A>]
+<a href="index.html#00004">[Chronological]</a>
+<a href="threads.html#00004">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: vitess codes</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:zsigmond@hmi.de">zsigmond@hmi.de</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: vitess codes</strong></LI>
+<LI><strong>From</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: 13 Jun 2000 13:14:31 +0200</LI>
+<LI>In-reply-to: &lt;39324324.8B374A67@hmi.de&gt; (message from Geza Zsigmond on Mon, 29May 2000 12:15:01 +0200)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+&gt; Date: Mon, 29 May 2000 12:15:01 +0200
+&gt; From: Geza Zsigmond &lt;zsigmond@hmi.de&gt;
+
+Thanks for the source code to the VITESS inelastic sample module. I have
+now had the chance to take a thorough look at it. It was very useful to
+see the details of how VITESS modules are implemented in order to assess
+the possibility of sharing module code.
+
+I have made good progress in terms of translating a McStas component
+into a VITESS module. This seems to be feasible, and an automatic
+translation should be fairly easy to do. The only thing that cannot be
+automatic is to invent short option names (-a, -k, -x, etc.) to replace
+the long names used by McStas; alternatively, the translated components
+could use long option names (-height=x, -radius=x, etc.) if that will
+work with the VITESS concept. Also, some specialized McStas components
+communicate with each other, and this seems difficult to do in VITESS
+where modules run in seperate programs.
+
+I wonder if you and the other VITESS developers are interesting in
+pursuing this further (the automatic translation of McStas components
+into VITESS)? If so, I could work further on this, if not I will spend
+my time in some other way...
+
+For the other direction, translating VITESS modules into McStas
+components, this should also be feasible. However, there seems to be no
+way to do automatic translation since there is no formalized standard
+for writing VITESS modules. The underlying concepts of the two programs
+are sufficiently simular that manual rewriting seems to be not too
+difficult, though the heavy use of global variables in VITESS modules
+could make it difficult to use code from several VITESS modules in the
+same program. There is also the problem that each time a VITESS module
+is updated, the manual translation into a McStas component would have to
+be repeated.
+
+Just for information, I have included the code I produced so far to
+translate a McStas component into a VITESS module. It consists of a
+small instrument definition, two modules to convert between VITESS and
+McStas unit conversions, and a file with some general VITESS/McStas
+library code.
+
+Let me know what you think of this, and whether you consider it worth it
+to work further along these lines.
+
+ - Kristian.
+
+--
+Kristian Nielsen        kristian.nielsen@risoe.dk
+Risø National Laboratory
+Condensed Matter Physics and Chemistry Department
+Tel. +45 4677 5515   Fax +45 4677 4790
+Encryption PGP key <A HREF="http://neutron.risoe.dk/kn.txt">http://neutron.risoe.dk/kn.txt</A>
+
+</PRE>
+<P><A HREF="bin00001.bin"> V_sample-vitess.instr</A></P>
+<P><A HREF="bin00002.bin"> Vitess_input.comp</A></P>
+<P><A HREF="bin00003.bin"> Vitess_output.comp</A></P>
+<P><A HREF="bin00004.bin"> vitess-lib.c</A></P>
+<P><A HREF="bin00005.bin"> vitess-lib.h</A></P>
+<PRE>
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00003.html">Re: Properties of collimators</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00000.html">postdoc vacancy</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00004"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00004"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

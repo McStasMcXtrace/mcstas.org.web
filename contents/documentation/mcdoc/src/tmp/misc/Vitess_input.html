@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD>
+<TITLE>Vitess_input</TITLE>
+<LINK REV="made" HREF="mailto:kristian.nielsen@risoe.dk">
+</HEAD>
+
+<BODY>
+
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<H1>The <CODE>Vitess_input</CODE> component</H1>
+
+Read neutron state parameters from VITESS neutron file.
+
+
+<H2><A NAME=id></A>Identification</H2>
+
+<UL>
+  <LI> <B>Author:</B> Kristian Nielsen</B>
+  <LI> <B>Origin:</B> McStas 1.5.0</B>
+  <LI> <B>Date:</B> June 6, 2000</B>
+  <LI> <B>Version:</B> 1.4 </B>
+  <LI> <B>Modification history:</B> <UL>
+    <LI>  E. Farhi, Sep 28th, 2001: added spin
+  </UL>
+</UL>
+<H2><A NAME=desc></A>Description</H2>
+
+<PRE>
+Source-like component reading neutron state parameters from a
+VITESS neutron file. Used to interface McStas components or
+simulations into VITESS.
+
+Example: Vitess_input(input="MySource.vit", bufsize = 10000, repeat_count = 2)
+
+</PRE>
+
+<H2><A NAME=ipar></A>Input parameters</H2>
+Parameters in <B>boldface</B> are required;
+the others are optional.
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD>input</TD>
+     <TD>string</TD>
+     <TD>Filename of neutron file to read. Default is
+standard input </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>bufsize</TD>
+     <TD>records</TD>
+     <TD>Size of neutron input buffer </TD>
+<TD ALIGN=RIGHT>10000</TD> </TR>
+<TR> <TD>repeat_count</TD>
+     <TD>1</TD>
+     <TD>Number of times to repeat each neutron read </TD>
+<TD ALIGN=RIGHT>1</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=opar></A>Output parameters</H2>
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD><B>file</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>buf</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>size</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pos</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>rep</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>finished</B></TD>
+     <TD>int</TD>
+     <TD>Set to 1 when the last neutron has been read </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=links></A>Links</H2>
+
+<UL>
+  <LI> <A HREF="Vitess_input.comp">Source code</A> for <CODE>Vitess_input.comp</CODE>.
+</UL>
+<HR>
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<ADDRESS>
+Generated automatically by McDoc, Kristian Nielsen
+&lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt; /
+Jul 22 2002
+</ADDRESS>
+</BODY></HTML>

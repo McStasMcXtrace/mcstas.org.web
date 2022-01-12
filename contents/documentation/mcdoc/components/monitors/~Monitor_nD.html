@@ -1,0 +1,262 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD>
+<TITLE>Monitor_nD</TITLE>
+<LINK REV="made" HREF="mailto:kristian.nielsen@risoe.dk">
+</HEAD>
+
+<BODY>
+
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<H1>The <CODE>Monitor_nD</CODE> component</H1>
+
+This component is a general Monitor that can output 0/1/2D signals 
+(Intensity vs. [something] and vs. [something] ...)
+
+
+<H2><A NAME=id></A>Identification</H2>
+
+<UL>
+  <LI> <B>Author:</B> <a href="mailto:farhi@ill.fr">Emmanuel Farhi</a></B>
+  <LI> <B>Origin:</B> <a href="http://www.ill.fr">ILL (France)</a></B>
+  <LI> <B>Date:</B> 14th Febrary 2000.</B>
+  <LI> <B>Version:</B> 0.13.2</B>
+  <LI> <B>Modification history:</B> <UL>
+    <LI>  EF, 29th Feb 2000 : added more options, monitor shape, theta, phi
+    <LI>  EF, 10th Mar 2000 : use struct
+  </UL>
+</UL>
+<H2><A NAME=desc></A>Description</H2>
+
+<PRE>
+This component is a general Monitor that can output 0/1/2D signals 
+It can produce many 1D signals (one for any variable specified in 
+option list), or a single 2D output (two variables related).
+Also, an additional 'list' of neutrons can be produced.
+By default, monitor is square (in x/y plane). disk is also possible
+The 'cylinder' option will change that for banana shaped detector
+The 'sphere' option simulates spherical detector.
+
+
+<b>Possible options are</b>
+Variables to record:
+    kx ky kz k wavevector (Angs-1)
+    vx vy vz v            (m/s)
+    x y z radius          (m)      Distance
+    t time                (s)      Time of Flight
+    energy omega          (meV)
+    lambda wavelength     (Angs)
+    p intensity flux      (n/s) or (n/cm^2/s)
+    ncounts               (1)
+    sx sy sz              (1)      Spin
+    vdiv                  (deg)    vertical divergence
+    hdiv divergence       (deg)    horizontal divergence
+    angle                 (deg)    divergence from <z> direction
+    theta longitude       (deg)    longitude (x/z)
+    phi   lattitude       (deg)    lattitude (y/z)
+
+<b>Other options are:</b>
+    auto {limits}             automatically set detector limits
+    all  {limits or bins}     to set all limits or bins values
+    bins=[bins=20]            Number of bins in the detector along dimension
+    borders                   to also count off-limits neutrons
+                              (X < min or X > max)
+    cylinder                  to get a cylindrical monitor (e.g. banana)
+                              (radius along x, height along y).
+    disk                      disk flat xy monitor
+                              radius is max abs value of xmin xmax ymin ymax
+    file=string               Detector image file name
+                              default is component name, plus variable ext.
+    square                    square flat xy monitor
+    limits=[min max]          Lower/Upper limits for axes
+                              (see below for the variable unit)
+    list=[counts=1000] or all for a long file of neutron characteristics
+                              with [counts] events
+    multiple                  for 1D monitors into multiple independant files
+    no or not                 revert next option
+    outgoing                  monitor outgoing beam in non flat (sph/cyl) det
+                              (default is incoming beam)
+    per cm2                   intensity will be per cm^2
+    slit or absorb            absorb neutrons that are out detector
+    sphrere                   to get a spherical monitor (e.g. a 4PI)
+                              radius is max abs value of xmin xmax ymin ymax
+    unactivate                to unactivate detector (0D detector)
+    verbose                   to display additional informations
+
+<b>EXAMPLES:</b>
+ Monitor_nD(
+  xmin = -0.1, xmax = 0.1,
+  ymin = -0.1, ymax = 0.1,
+  options = "intensity per cm2 angle,limits=[-5 5] bins=10,with
+             borders, file = mon1");
+                          will monitor neutron angle from [z] axis, between -5
+                       and 5 degrees, in 10 bins, into "mon1.A" output 1D file
+  options = "sphere theta phi outgoing"   for a sphere PSD detector (out beam)
+  options = "angle radius auto limits"   is a 2D monitor with automatic limits
+  options = "list kx ky kz energy" records each neutron contribution in 1 file
+  options = "multiple kx ky kz energy and list all neutrons" 
+         makes 4 output 1D files and produces a complete list for all neutrons
+
+</PRE>
+
+<H2><A NAME=ipar></A>Input parameters</H2>
+Parameters in <B>boldface</B> are required;
+the others are optional.
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD><B>xmin</B></TD>
+     <TD>m</TD>
+     <TD>Lower x bound of opening
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>xmax</B></TD>
+     <TD>m</TD>
+     <TD>Upper x bound of opening
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ymin</B></TD>
+     <TD>m</TD>
+     <TD>Lower y bound of opening
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ymax</B></TD>
+     <TD>m</TD>
+     <TD>Upper y bound of opening
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>options</B></TD>
+     <TD>str</TD>
+     <TD>String that specify the configuration of the monitor</br>
+The general syntax is "[x] options..." (see <b>Descr.</b>)
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=opar></A>Output parameters</H2>
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD><B>Nsum</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>psum</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2sum</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Mon2D_N</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Mon2D_p</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Mon2D_p2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>area</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Coord_Type</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Flag_With_Borders</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Flag_Verbose</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Flag_per_cm2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Coord_Label</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Coord_Var</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Monitor_Label</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Flag_List</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Flag_Multiple</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Coord_Number</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Coord_Bin</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Coord_Min</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Coord_Max</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Buffer_Block</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Mon_File</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Mon2D_Buffer</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Flag_Absorb</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Neutron_Counter</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Buffer_Counter</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Buffer_Size</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Flag_Shape</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Sphere_Radius</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Cylinder_Height</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Flag_Auto_Limits</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=links></A>Links</H2>
+
+<UL>
+  <LI> <A HREF="Monitor_nD.comp">Source code</A> for <CODE>Monitor_nD.comp</CODE>.
+  <LI> <a href="http://www.ill.fr/tas/mcstas/">McStas at ILL</a>
+
+</UL>
+<HR>
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<ADDRESS>
+Generated automatically by McDoc, Kristian Nielsen
+&lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt; /
+Jan 22 2001
+</ADDRESS>
+</BODY></HTML>

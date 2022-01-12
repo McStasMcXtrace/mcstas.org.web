@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD>
+<TITLE>Chopper</TITLE>
+<LINK REV="made" HREF="mailto:kristian.nielsen@risoe.dk">
+</HEAD>
+
+<BODY>
+
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<H1>The <CODE>Chopper</CODE> component</H1>
+
+Disk chopper.
+
+
+<H2><A NAME=id></A>Identification</H2>
+
+<UL>
+  <LI> <B>Author:</B> Philipp Bernhardt</B>
+  <LI> <B>Origin:</B> McStas 1.5</B>
+  <LI> <B>Date:</B> Januar 22 1999</B>
+  <LI> <B>Version:</B> 1.4 </B>
+</UL>
+<H2><A NAME=desc></A>Description</H2>
+
+<PRE>
+Models a disc chopper with n identical slits, which are symmetrically disposed
+on the disc.
+If the chopper is the 1st chopper of the instrument, it sets t time with phase
+
+Example: Chopper(R=0.2, w=0.05, f=2500.0, n=3, pha=0, IsFirst=1) First chopper
+         Chopper(R=0.2, w=0.05, f=2500.0, n=3, pha=0, IsFirst=0)
+
+Example values: w=0.05 R=0.5 f=2500 n=3 pha=0
+
+</PRE>
+
+<H2><A NAME=ipar></A>Input parameters</H2>
+Parameters in <B>boldface</B> are required;
+the others are optional.
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD><B>R</B></TD>
+     <TD>m</TD>
+     <TD>Radius of the disc
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD>w</TD>
+     <TD>m</TD>
+     <TD>Width of the slits at the bottom side
+</TD>
+<TD ALIGN=RIGHT>0.05</TD> </TR>
+<TR> <TD>f</TD>
+     <TD>rad/s</TD>
+     <TD>angular frequency of the Chopper 
+(algebraic sign defines the direction of rotation)
+</TD>
+<TD ALIGN=RIGHT>2500.0</TD> </TR>
+<TR> <TD>n</TD>
+     <TD>1</TD>
+     <TD>Number of slits
+</TD>
+<TD ALIGN=RIGHT>3</TD> </TR>
+<TR> <TD>pha</TD>
+     <TD>s</TD>
+     <TD>Phase
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>IsFirst</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=opar></A>Output parameters</H2>
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD><B>Tg</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>To</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD>IsFirst</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=links></A>Links</H2>
+
+<UL>
+  <LI> <A HREF="Chopper.comp">Source code</A> for <CODE>Chopper.comp</CODE>.
+</UL>
+<HR>
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<ADDRESS>
+Generated automatically by McDoc, Kristian Nielsen
+&lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt; /
+Jul 22 2002
+</ADDRESS>
+</BODY></HTML>

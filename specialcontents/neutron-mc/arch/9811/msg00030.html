@@ -1,0 +1,130 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: absolute flux and M2 -->
+<!--X-From: artus@obiwan.kri.physik.uni&#45;muenchen.de -->
+<!--X-Date: Mon, 23 Nov 1998 16:43:18 +0100 (CET) -->
+<!--X-Message-Id: 13913.25909.624018.921402@obiwan.kri.physik.uni&#45;muenchen.de -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 13913.20880.414524.792607@obiwan.kri.physik.uni&#45;muenchen.de -->
+<!--X-Reference-Id: 01J4IL9LQECY8WXFW3@risoe.dk -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: absolute flux and M2</title>
+<link rev="made" href="mailto:artus@obiwan.kri.physik.uni-muenchen.de">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00037.html">Date Prev</A>][<A HREF="msg00031.html">Date Next</A>]
+<a href="index.html#00030">[Chronological]</a>
+<a href="threads.html#00030">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: absolute flux and M2</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:neutron-mc@risoe.dk">neutron-mc@risoe.dk</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: absolute flux and M2</strong></LI>
+<LI><strong>From</strong>: <strong><A HREF="mailto:artus@obiwan.kri.physik.uni-muenchen.de">artus@obiwan.kri.physik.uni-muenchen.de</A></strong></LI>
+<LI>Date: Mon, 23 Nov 1998 16:43:18 +0100 (CET)</LI>
+<LI>In-reply-to: &lt;<A HREF="msg00029.html">01J4IL9LQECY8WXFW3@risoe.dk</A>&gt;</LI>
+<LI>References: &lt;<A HREF="msg00038.html">13913.20880.414524.792607@obiwan.kri.physik.uni-muenchen.de</A>&gt;&lt;<A HREF="msg00029.html">01J4IL9LQECY8WXFW3@risoe.dk</A>&gt;</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Hello Kristian,
+
+ &gt; This looks fine, but I think I understand your confusion. A common
+ &gt; mistake (at least I made it many times while working on McStas) is to
+ &gt; think of the weights as probabilities, ie. numbers smaller than
+ &gt; one. Weights are NOT probabilities and they may well be greater than
+ &gt; one. For example, for the Source_flux example above, N=384 and I=127625,
+ &gt; so the average neutron weight is a bit more than 300.
+ &gt; 
+ &gt; In fact, we can see that between the two sets of numbers, I increses by
+ &gt; a factor of about 10**8, while M2 increses with a factor of about
+ &gt; 10**16 = (10**8)**2. This fits well since M2 is the sum of the squares
+ &gt; of the weights (I = sum(p_i) and M2 = sum(p_i**2)). You still get a good
+ &gt; estimate of the statistical error from the square root of M2.
+ &gt; 
+ &gt; Does that clarify matters for you?
+
+Yes, thanks. My error was to ignore that sigma**2 is calculated. I somehow
+supressed that ...
+
+ &gt; When you say 'transform using solid angle', I am not quite sure what you
+ &gt; mean; the Source_flux component itself makes a correction for the solid
+ &gt; angle in which neutrons are emitted ... ?
+ &gt; 
+
+The solid angle in my example 
+
+COMPONENT source = Source_flux(
+        radius = 0.050,
+        dist = 2.000,
+        xw = 0.040, yh = 0.075,
+        E0 = 81.804,    
+        dE = 1.636,     
+        flux = 3.63E+12)
+
+is 2.387E-4. 0.04 * 0.075 are exactly width an height of my guide. If
+according to my example I(flux)=3.66E+6 and I(flat)=0.0496 then
+
+I(flux) = I(flat) * flux * solid angle / 4 / pi
+
+(The numbers don't fit exactly because I didn't use the same seed for
+the two calculations.)
+
+Georg
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<UL><LI><STRONG>References</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00038" HREF="msg00038.html">absolute flux and M2</A></STRONG>
+<UL><LI><EM>From:</EM> artus@obiwan.kri.physik.uni-muenchen.de</LI></UL></LI>
+<LI><STRONG><A NAME="00029" HREF="msg00029.html">Re: absolute flux and M2</A></STRONG>
+<UL><LI><EM>From:</EM> Kristian Nielsen &lt;kristian.nielsen@risoe.dk&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00037.html">Re: McStas</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00031.html">Re: First tries using McStas</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00030"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00030"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

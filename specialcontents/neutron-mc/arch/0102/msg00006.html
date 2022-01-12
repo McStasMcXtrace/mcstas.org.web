@@ -1,0 +1,195 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: Maximun number of neutron in a single run -->
+<!--X-From: Per&#45;Olof =?iso&#45;8859&#45;1?Q?=C5strand?= <per&#45;olof.aastrand@risoe.dk> -->
+<!--X-Date: Fri, 09 Feb 2001 12:09:00 +0100 -->
+<!--X-Message-Id: 3A83CFCC.C4406D22@risoe.dk -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: Pine.OSF.3.95.1010209091638.11846A&#45;100000@eva.e13.physik.tu&#45;muenchen.de -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: Maximun number of neutron in a single run</title>
+<link rev="made" href="mailto:per-olof.aastrand@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00005.html">Date Prev</A>][<A HREF="msg00007.html">Date Next</A>]
+<a href="index.html#00006">[Chronological]</a>
+<a href="threads.html#00006">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: Maximun number of neutron in a single run</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>neutron-mc &lt;<A HREF="mailto:neutron-mc@risoe.dk">neutron-mc@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: Maximun number of neutron in a single run</strong></LI>
+<LI><strong>From</strong>: <strong>Per-Olof &Aring;strand &lt;<A HREF="mailto:per-olof.aastrand@risoe.dk">per-olof.aastrand@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: Fri, 09 Feb 2001 12:09:00 +0100</LI>
+<LI>References: &lt;<A HREF="msg00005.html">Pine.OSF.3.95.1010209091638.11846A-100000@eva.e13.physik.tu-muenchen.de</A>&gt;</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Hi,
+
+The problem pointed out by Ulrich will probably be quite serious for a lot of
+users within a near future because of the rapid development of computer power,
+and it is also a problem that is hard to find an easy work-around for the user. I
+guess the obvious solution would be to divide the simulation into macro steps
+(e.g. 10-100) where each macro step consists of a number micro steps (e.g
+1e6-1e9). It would then also be fairly easy to include the possibility to carry
+out a block-analysis of the simulation.
+
+For the second problem with MAX_ELEMENTS, it is a never-ending problem to find a
+number that is exceedingly large for all possible applications. I will find out
+if there is a way to avoid using MAX_ELEMENTS or at least I will include a proper
+warning message where it is specified where it can be modified.
+
+I will include both points on the list of "Known problems" on the web-page.
+
+Best regards,
+
+Per-Olof Åstrand
+
+
+--
+Per-Olof Åstrand
+Dept. of Chemistry, University of Copenhagen
+and Materials Research Department, Risø National Laboratory
+per-olof.aastrand@theory.ki.ku.dk or per-olof.aastrand@risoe.dk
+<A HREF="http://www.ki.ku.dk">http://www.ki.ku.dk</A> and <A HREF="http://www.risoe.dk">http://www.risoe.dk</A>
+
+
+Stephan Roth wrote:
+
+&gt; Hi,
+&gt;
+&gt; you have to change in
+&gt; list.c the following line to:
+&gt; #define MAX_ELEMENTS 2000
+&gt;
+&gt; and compile mcstas again. I had the same problem and solved it this way.
+&gt;
+&gt; Best regards
+&gt; Stephan
+&gt; --------------------------------
+&gt; Stephan V. Roth
+&gt; Technische Universitaet Muenchen
+&gt; Physik Department Lehrstuhl E13
+&gt; 85747 Garching
+&gt; Tel.: +49 (0)89-289-12883
+&gt; Fax : +49 (0)89-289-12473
+&gt; eMail: sroth@ph.tum.de
+&gt; --------------------------------
+&gt;
+&gt; On Fri, 9 Feb 2001, Judith Preston wrote:
+&gt;
+&gt; &gt; Hi,
+&gt; &gt;
+&gt; &gt; A related issue that I discovered the other day is that the maximum number
+&gt; &gt; of lines allowed in a component is 1000 lines. I know it is not often that
+&gt; &gt; people need all this, but it does happen!!
+&gt; &gt;
+&gt; &gt; Cheers
+&gt; &gt;
+&gt; &gt; Judith
+&gt; &gt;
+&gt; &gt; ----- Original Message -----
+&gt; &gt; From: "Ulrich C. Wildgruber MPI fuer Metallforschung Stuttgart"
+&gt; &gt; &lt;wildgrub@dxray.mpi-stuttgart.mpg.de&gt;
+&gt; &gt; To: &lt;neutron-mc@risoe.dk&gt;
+&gt; &gt; Sent: Friday, February 09, 2001 8:46 AM
+&gt; &gt; Subject: Maximun number of neutron in a single run
+&gt; &gt;
+&gt; &gt;
+&gt; &gt; &gt; Hi all,
+&gt; &gt; &gt;
+&gt; &gt; &gt; One new - but minor - issue came up here in Garching today. The maximum
+&gt; &gt; &gt; number of neutrons which can be processed in a single run is probably
+&gt; &gt; &gt; limited (I didn't try it out though for obvious reasons :-) to something
+&gt; &gt; &gt; like 2**31-1. Now I am getting to a point where I might need more...
+&gt; &gt; &gt;
+&gt; &gt; &gt; I suggest to introduce an additional counter which allows to process more
+&gt; &gt; &gt; neutrons than the number 'intmax'.
+&gt; &gt; &gt;
+&gt; &gt; &gt; Please let me know if there is already a simple solution to this problem
+&gt; &gt; &gt; (I like to avoid having to merge the output of several seperate runs
+&gt; &gt; &gt; manually)
+&gt; &gt; &gt;
+&gt; &gt; &gt; Regards
+&gt; &gt; &gt;
+&gt; &gt; &gt; Uli
+&gt; &gt; &gt;
+&gt; &gt; &gt; --
+&gt; &gt; &gt; Ulrich WILDGRUBER
+&gt; &gt; &gt; wildgrub@dxray.mpi-stuttgart.mpg.de
+&gt; &gt; &gt; wwwmf.mpi-stuttgart.mpg.de/abteilungen/dosch/dosch.html
+&gt; &gt; &gt; --------------------------------------------------------------------------
+&gt; &gt; ---
+&gt; &gt; &gt; Max-Planck-Institut für Metallforschung | Technische Universität München
+&gt; &gt; &gt; Heisenbergstr. 1         | ZBE Neue Forschungs-Neutronenquelle
+&gt; &gt; &gt; | Instrumentierung
+&gt; &gt; &gt; D-70569 Stuttgart | D-85747 Garching/München
+&gt; &gt; &gt; Tel.: (+49)-711-689-1900 | Tel.: (+49)-89-289-14681
+&gt; &gt; &gt; Fax.: (+49)-711-689-1902 | Fax.: (+49)-89-289-14666
+&gt; &gt; &gt;
+&gt; &gt;
+&gt; &gt;
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<UL><LI><STRONG>Follow-Ups</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00007" HREF="msg00007.html">running simulations stepwise</A></STRONG>
+<UL><LI><EM>From:</EM> Peter Link &lt;plink@ph.tum.de&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<UL><LI><STRONG>References</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00005" HREF="msg00005.html">Re: Maximun number of neutron in a single run</A></STRONG>
+<UL><LI><EM>From:</EM> Stephan Roth &lt;Stephan_Roth@Physik.TU-Muenchen.DE&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00005.html">Re: Maximun number of neutron in a single run</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00007.html">running simulations stepwise</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00006"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00006"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

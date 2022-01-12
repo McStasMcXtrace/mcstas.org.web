@@ -1,0 +1,99 @@
+
+<h3>                                                                                                          December 8th, 2009: Running the development version of McStas
+</h3>
+<p>For the daring, the McStas development code is available for installation through our SVN repository. Please consult <a href="/svn">this page</a> for further instructions.
+<hr WIDTH="100%">
+<h3>                                                                                                          December 8th, 2009: McStas 1.12a on Ubuntu 9.10
+</h3>
+<p>People running Ubuntu versions prior to 9.10 and McStas installed from the mcstas-1.12a.deb debian package are adviced NOT TO UPGRADE Ubuntu, as PGPLOT/Fortran related package dependencies can not easily be resolved.
+<p>If you upgrade anyway or install from scratch on Ubuntu 9.10, the easiest way of getting McStas 1.12a working is:
+<ol>
+<li>Install certain Ubuntu packages by
+<ul>
+  <li>apt-get install gcc gfortran pdl pgplot5 libpgplot-perl perl-tk make
+  <li>(optionally also mpich2 libmpich2-dev)
+</ul>
+<li>Run sudo dpkg-reconfigure dash,  say "no" to installing dash as /bin/sh
+<li>Get the mcstas-1.12a-src.tar.gz package via <a href="/downloads/mcstas-1.12a-src.tar.gz">this link</a>
+<li>Unpack, build and install by
+<ul>
+  <li>tar xzf mcstas-1.12a-src.tar.gz
+  <li>cd mcstas-1.12a
+  <li>./configure
+  <li>make
+  <li>sudo make install
+</ul>
+</ol>
+<p>Alternatively, wait 1-2 months and McStas 2.0 should be ready.
+<hr WIDTH="100%">
+<h3>                                                                                                          September 24th, 2009: McStas 1.12a on Mac OS X 10.6 Snow Leopard
+</h3>
+<p>Unfortunately, a couple of work-arounds are needed to install McStas on the new version of Mac OS. When following the instructions in README.TXT on the dmg image:
+<ul>
+  <li>Use <a href="http://tmp.mcstas.org/Tk-804.028_501.tar.gz">http://tmp.mcstas.org/Tk-804.028_501.tar.gz</a> instead of the Tk package on the dmg
+  <li>After unpacking mcstas-1.12a-src.tar.gz, replace MacInstall.command in the resulting folder by <a target=_blank href="http://tmp.mcstas.org/MacInstall.command">this one</a>
+</ul>
+<hr WIDTH="100%">
+<h3>
+August 29th, 2009: PSI official McStas partner
+</h3>
+<p>We are happy to announce that <a href="http://psi.ch" target=_blank>PSI</a> is now an official McStas partner site, and that Uwe Filges has joined the developer team. The McStas team has been working closely together with Uwe for several years, e.g. in the <a href="http://mcnsi.risoe.dk" target=_blank>MCNSI</a> network.
+<hr WIDTH="100%">
+<h3>
+August 21st, 2009: Code repository changes.
+</h3>
+<p>As we want to share code with our "sister project" in X-ray scattering, <a href="http://www.mcxtrace.org">McXtrace</a>, a new common infrastructure is beeing built up. In the future, the McStas and McXtrace code repository, bug tracking etc. will be hosted under the <a href="http://www.mccode.org">McCode</a> domain. Consequently, some links and website features can be expected broken - and fixed - in the near future.
+<hr WIDTH="100%">
+<h3>
+May 18th, 2009: McStas related slides / posters from ICNS
+</h3>
+<p>We have gathered talk and poster material from <a href="http://www.mrs.org/icns2009">ICNS 2009</a> in a <a href="/workshop/icns2009">special conference page</a>. Work by the McStas team and close connections have been added.
+<p>If you feel like contributing your own talk/poster, please send a pdf to <a href="mailto:pkwi@risoe.dtu.dk">Peter Willendrup</a>
+<p>We would also like thank those of the ICNS attendees that were in our <a href="/icns2009">workshop</a> or came by our posters for interesting discussions. 
+<hr WIDTH="100%">
+<h3>
+April 14th, 2009: Positions open in McXtrace project
+</h3>
+<p>As you may have read earlier, the danish McStas partners and ESRF started the parallel <a href="http://www.mcxtrace.org" target=_blank>McXtrace</a> X-ray simulation project on january 1st. One position at Ris&oslash; DTU has been filled already, but we are seeking more people for the project.
+<p>Please consult the <a href="http://www.mcxtrace.org" target=_blank>McXtrace project page</a> and the <a href="http://www.nbi.ku.dk/job_nyt/post_doc_and_phd_students/" target=_blank>list of vacancies</a> at University of Copenhagen.
+<hr WIDTH="100%">
+<h3>
+April 8th, 2009: McStas 1.12a + Ubuntu 8.10 Live-DVD
+</h3>
+<p>An updated version of our "boot'n'run" Ubuntu dvd with preinstalled McStas 1.12 has been uploaded - grab it from the <a href="/ubuntu">dedicated download page</a>.
+<hr WIDTH="100%">
+<h3>
+April 8th, 2009: Minor bug in McStas 1.12a (not to be updated)
+</h3>
+<p>It seems that one of the example instruments (prisma2.instr) can not be compiled with McStas 1.12 and the newest version of gcc, 4.3.2. Using the older, stable gcc 3.4 works just fine.
+<hr WIDTH="100%">
+<h3>
+April 2nd/3rd, 2009: McStas 1.12a released
+</h3>
+<p>The long awaited update release, McStas 1.12a is finally available, grab it from the <a href="/download">download page</a>.
+<p>The changes since last stable release (1.12) are available <a href="/download/src/CHANGES">here</a>.
+<p>McStas 1.12a is essentially a bugfix release, and the last release in the 1.x series. McStas 2.0 will be released late 2009 / early 2010 and will introduce new features that will likely break ceartain backward compatibility, hence we move from the 1.x series.
+<hr WIDTH="100%">
+<h3>
+April 1st, 2009: McStas satellite event during ICNS 2009
+</h3>
+<p>The McStas <a href="/about/contacts">team</a> are happy to announce that a McStas event has been arranged in connection with <a href="http://www.mrs.org/icns2009" target=blank_>ICNS 2009</a> in Knoxville, TN.
+<p>The event will take place
+<p><b>May 3rd 2009, 9:00 AM - 12 NOON, room 300 c/d, Knoxville convention centre.</b>
+<p> - possibly a supplementary hands-on session for new users will take place during the afternoon.
+<p>For more information and registration for the event, see the <a href="/icns2009">event</a> page.
+<hr WIDTH="100%">
+<h3>
+February 21st, 2009: Other news
+</h3>
+<p>As you have probably noticed, the update release McStas 1.12a has been delayed quite a bit... Don't worry, it is still coming. Estimated release date is in early april - where we will also inform you about what to expect in the next release, McStas 2.0.
+<hr WIDTH="100%">
+<h3>
+February 21st, 2009: Parallel X-ray effort: McXtrace
+</h3>
+<p>Since january 1st, the Danish part of the <a href="http://www.mcstas.org/about/contacts">McStas team</A> is involved in a similar X-ray simulation effort - <a href="http://www.mcxtrace.org">McXtrace</a>. The first public speaches on this new effort will take place at <a href="http://www.esrf.eu/events/conferences/SMEXOS">SMEXOS</a> at the <a href="http://www.esrf.eu">ESRF</a> Feburary 24th-25th.
+<p>The two softwares will be independent, but to a large extent based on the same technology. We are also planning to have common developer workshops and as much interaction as possible to enable synergy and exchange of ideas.
+<hr WIDTH="100%">
+<p><b>Previous news items: </b><a href="/news/2008.html">2008</a>, </b><a href="/news/2007.html">2007</a>, <a href="/news/2006.html">2006</a>, </b><a href="/news/2005.html">2005</a>, <a href="/news/2004.html">2004</a>, <a href="/news/2003.html">2003</a>,<a href="/news/2002.html">2002</a>, </b><a href="/news/2001.html">2001</a>, <a href="/news/2000.html">2000</a>, <a href="/news/1999.html">1999</a>,
+<a href="/news/1998.html">1998</a>.
+

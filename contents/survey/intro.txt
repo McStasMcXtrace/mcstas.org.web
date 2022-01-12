@@ -1,0 +1,28 @@
+McStas survey 2002
+
+To make shure that the McStas project is relaunched with success, we
+have decided to do a little survey among the McStas users, to enshure
+that the opinions within the commmunity are reflected in the oncoming 
+versions of the software.
+
+For example, many users have indicated that the current setup of the
+mcstas tools (e.g. mcrun, mcplot, etc.) is becoming very complicated
+to install on some platforms. This will be dealt with in the next
+release, on basis of the result of this survey.
+
+Also, we would very much like to know what versions of McStas that the
+user base is using and on which platforms the software runs.
+
+The survey should only take a few minutes to complete, and is
+available at http://mcstas.risoe.dk/survey . If you wish to enter
+your data anonymously, this is possible.
+
+We hope that you will find few minutes needed to complete the survey,
+and thus help us in making McStas a better software.
+
+
+Best Regards
+
+Peter Willendrup
+Kim Lefmann
+Emmanuel Farhi

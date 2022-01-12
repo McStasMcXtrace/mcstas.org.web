@@ -1,0 +1,16 @@
+<h1>McStas and choice of compilers</h1>
+As <a href="/">McStas</a> is to a large extent focused on operating systems that run on <a href="http://www.intel.com">Intel</a> processors (to a large extent, <a href="http://www.amd.com">AMD</a> processors can be considered Intel compatible), including Linux, Microsoft Windows and Mac OS X. For this range of operating systems, we propose either:
+
+<p><strong>A)</strong> <a href="http://gcc.gnu.org">gcc</a> which is a very portable, ISO-C compatible c compiler. Gcc is open source software and available for most platforms. For Linux it is usually part of your distribution, for Windows the McStas distribution package includes a version of gcc (in the Dev-CPP sub-package), and for Mac OS X gcc is part of the Xcode tools package available on the installation medium.<br>
+<p><strong>B)</strong> <a href="http://www.intel.com/cd/software/products/asmo-na/eng/compilers/284132.htm">icc</a> or the Intel c compiler is available for Linux, Mac OS and Windows systems and is a commercial software product. Generally, simulations run with the Intel compiler are <strong>a factor of 2 faster</strong> than the identical simulation run using gcc. To use icc with McStas on Linux or Mac OS X, set the environment variables 
+<ul>
+<li><pre>MCSTAS_CC=icc</pre>
+<li><pre>MCSTAS_CFLAGS="-g -O2 -wd177,266,1011,181"</pre>
+</ul>
+<p>On Unix (and Mac OS X) systems, to use icc with MPI installations, either
+<ul>
+  <li> In case your mpicc is a shell script, <strong>edit</strong> this shell script and set the CC variable to "icc"
+  <li> In case your mpicc is a binary, create an alias (or a shell script), e.g. impicc = icc -lmpi
+</ul>
+<p>On Windows, the Intel c compiler is 'icl', not 'icc' and has a dependency for Microsoft Visual C++. If you have both these softwares available, running McStas with the Intel compiler should be possible (currently untested by the McStas developer team).
+

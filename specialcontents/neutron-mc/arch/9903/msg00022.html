@@ -1,0 +1,486 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: Error in Calculation of absolute Flux (Source_flux) ??? -->
+<!--X-From: Ralph Gilles <Ralph_Gilles@Physik.TU&#45;Muenchen.DE> -->
+<!--X-Date: Wed, 24 Mar 1999 17:33:25 +0100 -->
+<!--X-Message-Id: 36F913D5.3EE656E2@ph.tum.de -->
+<!--X-ContentType: multipart/mixed -->
+<!--X-Reference-Id: 01J7128DFQD68X83C1@risoe.dk -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: Error in Calculation of absolute Flux (Source_flux) ???</title>
+<link rev="made" href="mailto:Ralph_Gilles@Physik.TU-Muenchen.DE">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00033.html">Date Prev</A>][<A HREF="msg00023.html">Date Next</A>]
+<a href="index.html#00022">[Chronological]</a>
+<a href="threads.html#00022">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: Error in Calculation of absolute Flux (Source_flux) ???</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: Error in Calculation of absolute Flux (Source_flux) ???</strong></LI>
+<LI><strong>From</strong>: <strong>Ralph Gilles &lt;<A HREF="mailto:Ralph_Gilles@Physik.TU-Muenchen.DE">Ralph_Gilles@Physik.TU-Muenchen.DE</A>&gt;</strong></LI>
+<LI>Date: Wed, 24 Mar 1999 17:33:25 +0100</LI>
+<LI>References: &lt;01J7128DFQD68X83C1@risoe.dk&gt;</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+
+
+Hello Kristian,
+
+thanks for your last answer. I try to implement the sample POWDER1 for a
+structure powder diffractometer.
+
+Up to the sample everything is o.k. At the detector I received only a few
+neutrons less than 10. I checked the detector and the soller in front of
+detector with a monochromator slab as sample. Both (detector and soller) are
+o.k. I am sure only the sample makes the problem. I increased the struture
+factor but  I am still far away of around 10 the power of six as I expected.
+I took the (300) reflex at 68.422 ° in 2 Theta for 1.5469 A-1.
+
+I put the input file as an attachment (100fms.txt) and marked with !!!! the
+part of the sample close to the end. In this part I put a few short questions
+concerning the sample.
+
+Do you find an error in this input file ? I am close to the finish of the
+simulations and looking forward to your answer.
+
+greetings , Ralph
+--
+!!! New Address!!!
+Dr. Ralph Gilles
+Forschungsreaktor München II
+Reaktorstation
+D-85747 Garching
+phone.: 049-(0)89-289-14665
+fax.: 049-(0)89-289-14666
+e-mail: rgilles@ph.tum.de
+
+
+</PRE>
+<PRE>
+DEFINE INSTRUMENT SPODI()
+
+TRACE
+
+COMPONENT a1 = Arm()
+  AT (0,0,0) ABSOLUTE
+
+COMPONENT source = Source_flux(
+	radius = 0.050,
+	dist = 2.000,
+	xw = 0.025, yh = 0.100,
+	E0 = 34.186,	/* = 1.5469A*/
+	dE = 0.342,	/* =1.5392A - 1.5546A */
+	flux = 2.103e+13)
+  AT (0,0,0) RELATIVE a1
+
+COMPONENT part1 = Guide2(
+	w1 = 0.025,
+	h1 = 0.100,
+	w2 = 0.025,
+	h2 = 0.100,
+	l = 2.100,
+	R0 = 1.0,
+	Qc = 0.0214,
+	alpha = 5.617,
+	mh = 3,
+	mv = 2,
+	W = 0.0033)
+  AT (0,0,2) RELATIVE a1
+
+COMPONENT part2 = Guide2(
+	w1 = 0.025,
+	h1 = 0.100,
+	w2 = 0.025,
+	h2 = 0.150,
+	l = 12.400,
+	R0 = 1.0,
+	Qc = 0.0214,
+	alpha = 5.617,
+	mh = 3,
+	mv = 2,
+	W = 0.0033)
+  AT (0,0,4.1) RELATIVE a1
+/*
+COMPONENT mon1 = Monitor_flux(
+	xmin = -0.0125,
+	xmax = 0.0125,
+	ymin = -0.075,
+	ymax = 0.075,
+	lmin = 1.5392,
+	lmax = 1.5546)
+  AT (0,0,16.97) RELATIVE a1
+
+COMPONENT psdvm1 = PSD_monitor(
+	xmin = -0.0400,
+	xmax = 0.0400,
+	ymin = -0.15,
+	ymax = 0.15,
+	nx = 8,
+	ny = 30,
+	filename = "psdvm1.out")
+  AT (0,0,16.97) RELATIVE a1
+
+COMPONENT divvm1 = Divergence_monitor(
+	xmin = -0.0400,
+	xmax = 0.0400,
+	ymin = -0.15,
+	ymax = 0.15,
+	nh = 10,
+	nv = 20,
+	h_maxdiv = 0.50,
+	v_maxdiv = 1.00,
+	filename = "divvm1.out")
+  AT (0,0,17.0) RELATIVE a1
+*/
+COMPONENT armtheta = Arm ()
+	AT (0,0,17.0) RELATIVE a1
+	ROTATED (0,77.5,0) RELATIVE a1
+
+COMPONENT armttheta = Arm ()
+	AT (0,0,17.0) RELATIVE a1
+	ROTATED (0,155,0) RELATIVE a1
+	
+COMPONENT mono1 = Monochromator(
+	ymin = -0.006,
+	ymax = 0.006,
+	zmin = -0.025,
+	zmax = 0.025,
+	mosaich = 20,
+	mosaicv = 10,
+	r0 = 0.5,
+	Q = 7.9313)
+AT (0,0,0) RELATIVE armtheta
+
+COMPONENT mono2 = Monochromator(
+	ymin = -0.006,
+	ymax = 0.006,
+	zmin = -0.025,
+	zmax = 0.025,
+	mosaich = 20,
+	mosaicv = 10,
+	r0 = 0.5,
+	Q = 7.9313)
+AT (0,0.013,0) RELATIVE armtheta ROTATED (0,0,-0.088) RELATIVE armtheta
+
+COMPONENT mono3 = Monochromator(
+	ymin = -0.006,
+	ymax = 0.006,
+	zmin = -0.025,
+	zmax = 0.025,
+	mosaich = 20,
+	mosaicv = 10,
+	r0 = 0.5,
+	Q = 7.9313)
+AT (0,-0.013,0) RELATIVE armtheta ROTATED (0,0,0.088) RELATIVE armtheta
+
+COMPONENT mono4 = Monochromator(
+	ymin = -0.006,
+	ymax = 0.006,
+	zmin = -0.025,
+	zmax = 0.025,
+	mosaich = 20,
+	mosaicv = 10,
+	r0 = 0.5,
+	Q = 7.9313)
+AT (0,0.026,0) RELATIVE armtheta ROTATED (0,0,-0.188) RELATIVE armtheta
+
+COMPONENT mono5 = Monochromator(
+	ymin = -0.006,
+	ymax = 0.006,
+	zmin = -0.025,
+	zmax = 0.025,
+	mosaich = 20,
+	mosaicv = 10,
+	r0 = 0.5,
+	Q = 7.9313)
+AT (0,-0.026,0) RELATIVE armtheta ROTATED (0,0,0.188) RELATIVE armtheta
+
+COMPONENT mono6 = Monochromator(
+	ymin = -0.006,
+	ymax = 0.006,
+	zmin = -0.025,
+	zmax = 0.025,
+	mosaich = 20,
+	mosaicv = 10,
+	r0 = 0.5,
+	Q = 7.9313)
+AT (0,0.039,0) RELATIVE armtheta ROTATED (0,0,-0.251) RELATIVE armtheta
+
+COMPONENT mono7 = Monochromator(
+	ymin = -0.006,
+	ymax = 0.006,
+	zmin = -0.025,
+	zmax = 0.025,
+	mosaich = 20,
+	mosaicv = 10,
+	r0 = 0.5,
+	Q = 7.9313)
+At (0,-0.039,0) RELATIVE armtheta ROTATED (0,0,0.251) RELATIVE armtheta
+
+COMPONENT mono8 = Monochromator(
+	ymin = -0.006,
+	ymax = 0.006,
+	zmin = -0.025,
+	zmax = 0.025,
+	mosaich = 20,
+	mosaicv = 10,
+	r0 = 0.5,
+	Q = 7.9313)
+At (0,0.052,0) RELATIVE armtheta ROTATED (0,0,-0.340) RELATIVE armtheta
+
+COMPONENT mono9 = Monochromator(
+	ymin = -0.006,
+	ymax = 0.006,
+	zmin = -0.025,
+	zmax = 0.025,
+	mosaich = 20,
+	mosaicv = 10,
+	r0 = 0.5,
+	Q = 7.9313)
+At (0,-0.052,0) RELATIVE armtheta ROTATED (0,0,0.340) RELATIVE armtheta
+
+COMPONENT mono10 = Monochromator(
+	ymin = -0.006,
+	ymax = 0.006,
+	zmin = -0.025,
+	zmax = 0.025,
+	mosaich = 20,
+	mosaicv = 10,
+	r0 = 0.5,
+	Q = 7.9313)
+At (0,0.065,0) RELATIVE armtheta ROTATED (0,0,-0.470) RELATIVE armtheta
+
+COMPONENT mono11 = Monochromator(
+	ymin = -0.006,
+	ymax = 0.006,
+	zmin = -0.025,
+	zmax = 0.025,
+	mosaich = 20,
+	mosaicv = 10,
+	r0 = 0.5,
+	Q = 7.9313)
+At (0,-0.065,0) RELATIVE armtheta ROTATED (0,0,0.470) RELATIVE armtheta
+
+COMPONENT mono12 = Monochromator(
+	ymin = -0.006,
+	ymax = 0.006,
+	zmin = -0.025,
+	zmax = 0.025,
+	mosaich = 20,
+	mosaicv = 10,
+	r0 = 0.5,
+	Q = 7.9313)
+At (0,0.078,0) RELATIVE armtheta ROTATED (0,0,-0.548) RELATIVE armtheta
+
+COMPONENT mono13 = Monochromator(
+	ymin = -0.006,
+	ymax = 0.006,
+	zmin = -0.025,
+	zmax = 0.025,
+	mosaich = 20,
+	mosaicv = 10,
+	r0 = 0.5,
+	Q = 7.9313)
+At (0,-0.078,0) RELATIVE armtheta ROTATED (0,0,0.548) RELATIVE armtheta
+
+COMPONENT part3 = Guide2(
+	w1 = 0.025,
+	h1 = 0.152,
+	w2 = 0.025,
+	h2 = 0.050,
+	l = 4.000,
+	R0 = 1.0,
+	Qc = 0.0214,
+	alpha = 5.617,
+	mh = 3,
+	mv = 2,
+	W = 0.0033)
+AT (0,0,0.5) RELATIVE armttheta
+
+COMPONENT soller1 = Soller(
+	xmin = -0.0125,
+	xmax = 0.0125,
+	ymin = -0.025,
+	ymax = 0.025,
+	len = 0.30,
+	divergence = 20)
+AT (0,0,4.5) RELATIVE armttheta
+
+COMPONENT mon2 = Monitor_flux(
+	xmin = -0.0125,
+	xmax = 0.0125,
+	ymin = -0.025,
+	ymax = 0.025,
+	lmin = 1.5392,
+	lmax = 1.5546)
+AT (0,0,4.97) RELATIVE armttheta
+
+COMPONENT psdvm2 = PSD_monitor(
+	xmin = -0.0400,
+	xmax = 0.0400,
+	ymin = -0.15,
+	ymax = 0.15,
+	nx = 8,
+	ny = 30,
+	filename = "psdvm2.out")
+  AT (0,0,4.97) RELATIVE armttheta
+
+COMPONENT psdvm3 = PSD_monitor(
+	xmin = -0.0125,
+	xmax = 0.0125,
+	ymin = -0.025,
+	ymax = 0.025,
+	nx = 5,
+	ny = 10,
+	filename = "psdvm3.out")
+  AT (0,0,4.97) RELATIVE armttheta
+
+COMPONENT psdvm4 = PSD_monitor(
+	xmin = -0.0125,
+	xmax = 0.0125,
+	ymin = -0.025,
+	ymax = 0.025,
+	nx = 25,
+	ny = 50,
+	filename = "psdvm4.out")
+  AT (0,0,4.97) RELATIVE armttheta
+
+COMPONENT divnms2 = Divergence_monitor(
+	xmin = -0.0125,
+	xmax = 0.0125,
+	ymin = -0.025,
+	ymax = 0.025,
+	nh = 30,
+	nv = 60,
+	h_maxdiv = 0.5,
+	v_maxdiv = 1.0,
+	filename = "divnms2.out")
+  AT (0,0,4.97) RELATIVE armttheta
+
+COMPONENT energ1 = E_monitor(
+	xmin = -0.0125,
+	xmax = 0.0125,
+	ymin = -0.025,
+	ymax = 0.025,
+	Emin = 33.848,
+	Emax = 34.529,
+	nchan = 100,
+	filename = "energ1.out")
+  AT (0,0,4.97) RELATIVE armttheta
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# up to here everything is o.k. I received intensity of 107 #
+
+COMPONENT powder1 = Powder1(
+	d_phi0 = 4,	# which angle is this exactly ? #
+	radius = 0.0125,
+	h = 0.05,
+	pack = 1,
+	Vc = 85.0054,
+	sigma_a = 0.463, 
+# for 2200 m/s ? is mentioned in your example of TAS1. I assume velocity of selector. So no big change should be for wavelength of 1.54 A-1 ? #
+	q = 4.5713,
+# q = 4pi sin (() / ( of bragg reflection #
+	j = 6,
+	F2 = 10000,
+	DW = 1,
+	target_x = 0,
+# I do not understand the meaning of these 3 parameters for target? #
+	target_y = 0,
+	target_z = 1000)
+AT (0,0,5.0) Relative armttheta
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/*
+COMPONENT mono100 = Monochromator(
+	ymin = -0.025,
+	ymax = 0.025,
+	zmin = -0.025,
+	zmax = 0.025,
+	mosaich = 20,
+	mosaicv = 10,
+	r0 = 1.0,
+	Q = 4.5713)
+AT (0,0,5.0) RELATIVE armttheta ROTATED (0,-34.244,0) RELATIVE armttheta
+*/
+Component braggttheta = Arm ()
+	AT (0,0,5.0) RELATIVE armttheta
+	ROTATED (0,-68.488,0) RELATIVE armttheta
+
+Component soller2 = Soller(
+	xmin = -0.025,
+	xmax = 0.025,
+	ymin = -0.025,
+	ymax = 0.025,
+	len = 0.30,
+	divergence = 10)
+AT (0,0,0.6) RELATIVE braggttheta
+
+COMPONENT psdp5 = PSD_monitor(
+	xmin = -0.125,
+	xmax = 0.125,
+	ymin = -0.125,
+	ymax = 0.125,
+	nx = 25,
+	ny = 50,
+	filename = "psdp5.out")
+  AT (0,0,0.91) RELATIVE braggttheta
+
+END
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<UL><LI><STRONG>Follow-Ups</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00023" HREF="msg00023.html">Re: Error in Calculation of absolute Flux (Source_flux) ???</A></STRONG>
+<UL><LI><EM>From:</EM> Kristian Nielsen &lt;kristian.nielsen@risoe.dk&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00033.html">Thanks!</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00023.html">Re: Error in Calculation of absolute Flux (Source_flux) ???</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00022"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00022"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

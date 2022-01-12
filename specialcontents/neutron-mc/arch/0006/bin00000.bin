@@ -1,0 +1,81 @@
+DEFINE INSTRUMENT collim(col,thick,Theta)
+DECLARE
+%{
+  double mono_Q = 4.923;     /* Cu (220) reflection */
+  double coll_len = 0.40;    /* Length of collimator */
+  double coll_width = 0.050; /* Width of collimator */
+  double num_walls,Two_theta;
+%}
+INITIALIZE
+%{
+  double n;
+  n = (coll_width + thick)/(coll_len*tan(col*MIN2RAD) + thick);
+  num_walls = floor(0.5 + n);    /* Round to nearest integer */
+  Two_theta = 2*Theta;
+  printf("Number of collimator blades: %g\n", num_walls);
+  printf("Actual collimation: %g minutes\n",
+     RAD2MIN*atan((coll_width - (num_walls - 1)*thick)/num_walls/coll_len));
+%}
+TRACE
+
+COMPONENT a1 = Arm()
+  AT (0,0,0) ABSOLUTE
+
+COMPONENT source = Source_adapt(
+    xmin = -0.050, xmax = 0.050, ymin = -0.065, ymax = 0.065,
+    dist = 6.690, xw = 0.040, yh = 0.100, E0 = 50, dE = 25,
+    flux = 1e9, N_E = 50, N_xpos = 1, N_xdiv = 1, alpha = 0.1,
+    beta = 0.1, filename = "source-debug.dat")
+  AT (0, 0, 0) RELATIVE a1
+
+COMPONENT slit1 = Slit(
+    xmin = -0.035, xmax = 0.035, ymin = -0.050, ymax = 0.050)
+  AT (0, 0, 1.780) RELATIVE a1
+
+COMPONENT collimator = Channeled_guide(
+    w1 = coll_width, h1 = 0.090, w2 = coll_width, h2 = 0.090, d = thick,
+    k = num_walls, l = coll_len, R0 = 0, Qcx = 0.02, Qcy = 0.02,
+    alphax = 1, alphay = 1, mx = 0, my = 0, W = 0.001)
+  AT (0, 0, 4.300) RELATIVE a1
+
+COMPONENT mono_monitor = E_monitor(
+    xmin = -0.020, xmax = 0.020, ymin = -0.050, ymax = 0.050,
+    Emin = 25, Emax = 75, nchan = 100,
+    filename = "mono_monitor.dat")
+  AT (0, 0, 6.500) RELATIVE a1
+
+COMPONENT a2 = Arm()
+  AT (0, 0, 6.690) RELATIVE a1
+  ROTATED (0,Two_theta,0) RELATIVE a1
+
+COMPONENT monochromator = Mosaic_anisotropic(
+    zmin = -0.020, zmax = 0.020, ymin = -0.050, ymax = 0.050,
+    mosaich = 12, mosaicv = 12, r0 = 0.9, Q = mono_Q)
+  AT (0, 0, 0) RELATIVE a2
+  ROTATED (0, Theta, 0) RELATIVE a1
+
+COMPONENT slit2 = Slit(
+    xmin = -0.025, xmax = 0.025, ymin = -0.025, ymax = 0.025)
+  AT (0, 0, 1.3) RELATIVE a2
+
+COMPONENT monitor = E_monitor(
+    xmin = -0.030, xmax = 0.030, ymin = -0.030, ymax = 0.030,
+    Emin = 25, Emax = 75, nchan = 100, filename = "monitor.dat")
+  AT (0, 0, 0.00001) RELATIVE slit2
+
+COMPONENT ac = Adapt_check(
+    source_comp = source)
+  AT (0, 0, 0) RELATIVE monitor
+
+COMPONENT sample_mon = E_monitor(
+    xmin = -0.005, xmax = 0.005, ymin = -0.005, ymax = 0.005,
+    Emin = 25, Emax = 75, nchan = 100,
+    filename = "sample_mon.dat")
+  AT (0, 0, 0.500) RELATIVE slit2
+
+FINALLY
+%{
+%}
+END
+
+

@@ -1,0 +1,168 @@
+<h3>
+Nov 28th: Monitor_nD: avoid using <i>"per cm2"</i> and <i>"per steradian"</i> options
+</h3>
+<p>
+A minor bug that affects Monitor_nD has been found recently. It results in spikes appearing randomly in the monitored distributions. To temporarily avoid it, do not use the <i>options="... per cm2 ..."</i> and <i>"... per steradian ..."</i> component arguments. To obtain the flux per cm2 or steradian, divide manually the result by the monitor area or the effective solid angle.
+<hr>
+<h3>
+Nov 9th, 2011: Installation with MPI on Linux/Ubuntu 11.10
+</h3>
+<p>
+It has been reported that the mpich2 parallel processing library should be avoided under Ubuntu 11.10 ('mpd' clashes with an other executable). Please install instead <a href="www.open-mpi.org/">openmpi</a> with e.g.:<br>
+<pre>
+  # sudo apt-get install openmpi-bin libopenmpi-dev
+</pre>
+or from Synaptic/Ubuntu Software Center. <br>
+In case Mcstas was installed before openmpi, you will need to re-configure it with e.g.: <br>
+<pre>
+  # cd /usr/local/lib/mcstas/tools/perl
+  # sudo chmod a+x mcstas_reconfigure
+  # sudo ./mcstas_reconfigure
+</pre>
+or change your <code>$HOME/.mcstas/mccode_config.perl</code>, or re-install it (which should not affect your instrument definitions).
+<hr>
+<h3>
+Oct 31st, 2011: LEGO (c) neutron scattering instruments controlled with McStas
+</h3>
+<p>We have set-up <a href="http://www.lego.com/">LEGO</a> models of a <b>TAS</b> and <b>crystal TOF</b> instrument, 
+using the <a href="http://mindstorms.lego.com/">NXT</a> technology. 
+This is a robotic model (it moves) to be used for teaching/training and in exhibitions. 
+When a McStas simulation is launched on the PC, the model positions itself with the corresponding geometry.
+<br>
+The methodology to build and control the models is detailed at
+<b><center>
+<a href="http://www.ill.eu/?id=11830">ILL/Computing for Science/Virtual instruments/LEGO</a>
+</center></b>
+were you will learn:
+<ul>
+<li>the LEGO parts required, and how to order them</li>
+<li>the building of the LEGO models</li>
+<li>the Ubuntu computer to be configured (using <b>t2n</b> and <b>nbc</b>)</li>
+<li>the control programs to load in the NXT</li>
+<li>the McStas components to use in order to communicate with the LEGO model.</li>
+</ul>
+<hr>
+<h3>
+July 26th, 2011: McStas 1.12c on Mac OS X Lion - new DMG added to
+download section.
+</h3>
+<p>A new DMG for Mac OS X 10.7 Lion has been put together and can be
+found in the <a href="/download">download</a> section. 
+<p>Note that to enable multi-core / parallel simulations, you need to
+compile <a
+href="http://www.open-mpi.org/software/ompi/v1.4/">openmpi</a>
+yourself before installing McStas, since it is not provided by Apple
+on Lion. Alternatively you can perhaps get it via <a
+href="http://www.macports">MacPorts</a>.
+<p>The DMG should also work on Snow Leopard - but all software on the DMG
+  must be reinstalled if McStas was previously installed.
+<hr>
+<h3>
+July 24th, 2011: McStas 1.12c on Mac OS X Lion - hold your horses!
+</h3>
+<p>The newly released Mac OS X 10.7 Lion includes a lot of nice
+upgrades from Apple - including some that break the tool-layer and
+mpi support for McStas:
+<p>
+<table border="1" width="60%">
+  <tr><td><strong>Symptom</strong></td><td><strong>Cause</strong></td></tr>
+  <tr><td>mpi compile fails</td>
+  <td>The system-provided mpi is not detected by the McStas configure
+    script</td></tr>
+  <tr><td>mcgui does not start</td>
+  <td>mcgui requires perl::Tk, and the version we ship with McStas
+      1.12c explicitly requires perl 5.8, which has been removed from
+      Lion</td></tr>
+  <tr><td>mcplot does not plot</td>
+  <td>For plotting, we rely on the SciKarl port of pgplot, perl::PDL
+    and perl::PGPLOT. The SciKarl perl modules are built for perl 5.8
+    which has been removed from Lion</td></tr>
+</table>
+<p>In conclusion: If you want to keep a functional McStas install,
+please do not upgrade to Lion yet!
+<hr>
+<h3>
+June 15th, 2011: Teaching- and talk material from the NIDS school
+</h3>
+<p>The <a href="/">McStas</a> and <a
+href="http://www.helmholtz-berlin.de/forschung/grossgeraete/neutronenstreuung/projekte/vitess/index_de.html">Vitess</a>
+teams are currently in <a href="http://www.lillavik.se/">Lilla Vik</a>
+for the <a href="http://ess-scandinavia.eu/nids">NIDS</a> school.
+<p>The material for the Monte-Carlo part the school is available <a href="http://www.essworkshop.org/index.php/second-week-material">here</a>
+<hr width="100%">
+<h3 style="text-align: left;">June 11th, 2011: <span style="font-style: italic;">iFit, </span>a new Matlab tool to run, scan and optimize McStas simulations</h3>
+<div style="text-align: left;">The new <a href="http://ifit.mccode.org">iFit</a>
+tool is currently being developed. Among its general data analysis
+features (load, do math, save, plot, ...), it may import McStas data
+sets, perform simulations, including scans (even multidimensional), and
+optimize simulation parameters (maximize or minimize a criteria which
+can be defined by the user).<br>
+iFit can also be used for basically any data analysis and reduction. It supports a very <a href="http://ifit.mccode.org/iFiles.html">large data format list </a>(including <span style="font-style: italic;">any</span> text based file), works with any dimensionality data, and provides powerful <a href="http://ifit.mccode.org/iOptim.html">optimization</a> and <a href="http://ifit.mccode.org/Fit.html">fitting</a> methods.<br>
+<br>
+You can learn more and get the iFit package at &lt;<a href="http://ifit.mccode.org">ifit.mccode.org</a>&gt; (requires Matlab to be installed). The <a href="http://ifit.mccode.org/McStas.html">iFit/McStas</a> help page is also available.<br>
+</div>
+<br>
+</center>
+<hr width="100%">
+<h3>
+June 3rd, 2011: McStas 1.12c re-released!
+</h3>
+<p>Unfortunately, the McStas 1.12c release from May 24th contained a
+series of bugs, primarily in source components, related to a
+type-change of the neutron counter.
+</p><p>We have decided that since only a limited number of people have
+downloaded the release, we will simply re-release McStas 1.12c with the
+above bugs fixed.
+</p><p>If you already downloaded and installed the packages released on
+May 24th, please re-download and reinstall the fresh 1.12c packages from our <a href="/download">download</a> page.
+
+</p><p>A complete liste of changes is available in the <a href="/download/src/CHANGES">CHANGES</a> document.
+
+</p><p>Sorry for the inconvenience and best regards from the McStas team.
+
+</p><hr width="100%">
+<h3>
+May 24th, 2011: McStas 1.12c released!
+</h3>
+<p>A reasonably serious bug in our rectangular focusing routine was
+identified by several McStas users and has now been corrected. We felt
+that this warranted an update of the stable McStas release, meaning a
+new 1.12c release.
+</p><p>The 1.12c release is available now from our <a href="/download">download</a> page.
+
+</p><p>A complete liste of changes is available in the <a href="/download/src/CHANGES">CHANGES</a> document.
+
+</p><p>For those of you looking forward to the 2.0 release, all
+required new functionality has been implemented, but documentation is
+still lacking. The 2.0 release will become officially available once
+the documentation has been updated, hopefully fall 2011.
+</p><hr width="100%">
+<h3>
+Tips and tricks for running McStas on Windows systems
+</h3>
+<p>Recently, a new McStas user has (rightfully) pointed out that some
+<i>annoyances</i> when running McStas on Windows have not been
+properly documentd. The list below is a first attempt to remedy that
+fact.
+</p><p>
+</p><ul>
+  <li>Ideally, your user should be a local admin of Windows.
+  </li><li>On
+windows, to run a simulation, the "run" button in mcgui needs to be
+clicked twice - once for compilation and second for actually running. </li><li>The resulting "perl" windows should be closed - put an "enter"
+  character in them and they will close once finished. (Otherwise they
+  will drain resources from your machine). The same strategy should be
+  applied when visualizing data, either using the "3d/trace" mode or
+  when pressing 'plot'.
+  </li><li>It can cause problems to run mcgui from directories containing
+  spaces, e.g. c:\Documents and Settings\User. Our suggestion is to
+  instead create a work dir e.g. c:\McStasWork for your work. Simply
+  save your instrumentfile there and re-open using mcgui.
+</li></ul>
+<p>The hope is that a new set of tools will be available in the McStas
+2.x series of releases - but likely there will be at least a McStas
+1.12c before this.
+</p><hr width="100%">
+<p><b>Previous news items: </b><a href="/news/2010.html">2010</a>, <a href="/news/2009.html">2009</a>, <a href="/news/2008.html">2008</a>, <a href="/news/2007.html">2007</a>, <a href="/news/2006.html">2006</a>, <a href="/news/2005.html">2005</a>, <a href="/news/2004.html">2004</a>, <a href="/news/2003.html">2003</a>,<a href="/news/2002.html">2002</a>, <a href="/news/2001.html">2001</a>, <a href="/news/2000.html">2000</a>, <a href="/news/1999.html">1999</a>,
+<a href="/news/1998.html">1998</a>.
+

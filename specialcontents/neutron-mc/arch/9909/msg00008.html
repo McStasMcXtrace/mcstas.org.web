@@ -1,0 +1,138 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: McStas -->
+<!--X-From: Kristian Nielsen <kristian.nielsen@risoe.dk> -->
+<!--X-Date: 7 Sep 1999 15:45:40 +0200 -->
+<!--X-Message-Id:  -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 37D3C088.41C6@ill.fr -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: McStas</title>
+<link rev="made" href="mailto:kristian.nielsen@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00044.html">Date Prev</A>][<A HREF="msg00001.html">Date Next</A>]
+<a href="index.html#00008">[Chronological]</a>
+<a href="threads.html#00008">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: McStas</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:horn@ill.fr">horn@ill.fr</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: McStas</strong></LI>
+<LI><strong>From</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: 7 Sep 1999 15:45:40 +0200</LI>
+<LI>In-reply-to: &lt;<A HREF="msg00007.html">37D3C088.41C6@ill.fr</A>&gt; (horn@ill.fr)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+&gt; Date: Mon, 06 Sep 1999 15:24:24 +0200
+&gt; From: "Pay H. Schulze Horn" &lt;horn@ill.fr&gt;
+
+&gt; After a more a week now here is the Component, which gives the
+&gt; Divergence in relation to the energy
+&gt; out. Change it for distribution like you want.
+
+Ok, thanks, I will put it on the web page and probably later in the
+distribution.
+
+&gt; The other monitor, which gives out everything, has small syntax-error
+&gt; which i cant't find.
+
+Hm, if you want you can send it to me and I will have a look at it.
+
+&gt; Are there any know problems with the ROTATED-command?
+
+&gt; I had this output:
+&gt; Phi:4.19437 theta0:-60
+
+&gt; Why do i have a value of 4.19 degree as an divergence ?
+&gt; 
+&gt; Why not 2.1 ?
+&gt; 
+&gt; Why is it nearly the double value i was awaiting ?
+
+&gt; COMPONENT a2=Arm()
+&gt; 	AT (0,0,1) RELATIVE a1
+&gt; 	ROTATED (2.1,60,0) RELATIVE a1
+
+I think you are being confused by the double rotation here. What happens
+is that the axes of a2 are obtained from the axes of a1 as follows:
+First rotate 2,1 degrees around the X axis of a1. Then rotate 60 degrees
+around the _new_ Y axis. Note that order is important here; rotation in
+the opposite order (first around Y, then around X) would be different.
+
+You should not expect a value for phi of 2.1. For example, if the second
+rotation is set to 90 degrees, phi will also be 90 degrees (the neutron
+beam is then perpendicular to the Z axis of a2). At a rotation of 180
+degrees, phi would be 180 - 2.1.
+
+Clearly what you meant was to set up the coordinate system of a2 such
+that the Z axis pointed in the direction (tan 60, tan 2.1, 1) in the
+coordinate system of a1 (but where would X and Y then point?). I am not
+sure that there is an easy way to do that in McStas currently, but I
+will think about it when I start adding other ways to specify rotations.
+The current way is somewhat stupid anyway, since it is almost never
+useful to specify multiple rotations (because the outcome is really hard
+to understand).
+
+I hope this helps, otherwise just ask again.
+
+ - Kristian.
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<UL><LI><STRONG>References</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00007" HREF="msg00007.html">McStas</A></STRONG>
+<UL><LI><EM>From:</EM> "Pay H. Schulze Horn" &lt;horn@ill.fr&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00044.html">McStas: forgotten attachment</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00001.html">Re: PGPLOT - no success under LinuxPPC</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00008"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00008"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

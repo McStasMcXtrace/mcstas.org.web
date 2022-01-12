@@ -1,0 +1,572 @@
+<h2>December 20th, 2020: Experimental Docker image with McStas 3.0 and
+NVIDIA HPC SDK</h2>
+<p>Dear all,
+<p>Fitting McStas and the NVIDIA HPC SDK in a live-dvd has proven very
+challenging.
+<p>Instead, an experimental docker solution has been made available at
+<a
+href="https://github.com/McStasMcXtrace/McCode/tree/mcstas-3.0/Docker/mcstas/3.0-fat-with-nvhpc">https://github.com/McStasMcXtrace/McCode/tree/mcstas-3.0/Docker/mcstas/3.0-fat-with-nvhpc</a>
+<p>Minimal usage instructions are available at <a
+href="https://github.com/McStasMcXtrace/McCode/blob/mcstas-3.0/Docker/README.md">https://github.com/McStasMcXtrace/McCode/blob/mcstas-3.0/Docker/README.md</a>
+<p>More detailed instructions will arrive in 2021.
+<hr>
+<h2>December 17th, 2020: Ubuntu 20.4 live-dvd with 2.7 and 3.0 releases.</h2>
+<p>Dear all,
+<p>At <a
+href="http://livedvds.mcstas.org">http://livedvds.mcstas.org</a> a
+Ubuntu 20.04 live system, pre-loaded with McStas 2.7 and 3.0 has been
+uploaded.
+<p>Here are some tips:
+<ul>
+<li>The live-system user is "mcstas" with password "mcstas".
+<li>You may use it to try either release, either from the live image or
+by choosing the "install" option at the boot-loader.
+<li>Both of the new McStas relases have been installed, the system
+default is McStas 3.0.
+<li>If you run this command:
+<pre>cp /etc/skel/Desktop/McStas* Desktop</pre>
+two desktop-launchers for the two versions will appear on your desktop.
+<li>You may change the system-default McStas to 2.7 by running the
+following commands in a terminal:
+<pre>
+sudo -i
+mcstas-2.7-environment
+postinst set_mccode_default
+</pre>
+</ul>
+<p>An alternative version including McStas 3.0 only, and loaded with
+the NVIDIA HPC-SDK is in preparation.
+<hr>
+<h2>December 15th, 2020: McStas 3.0 release!</h2>
+<p>Dear all,
+<p>McStas, v. 3.0, our next-generation code
+generator and support for NVIDIA GPU's via OpenACC has been built and
+is ready for download!
+<p>Download and installation instructions are available via our <a
+href="https://github.com/McStasMcXtrace/McCode/tree/master/INSTALL-McStas">GitHub
+download pages</a>.
+<p>Selected highligts from the release are listed below. The full list
+of changes is also available at <a
+href="http://mcstas.org/CHANGES_McStas">http://mcstas.org/CHANGES_McStas</a>.
+<p><strong>Thanks:</strong
+<ul>
+  <li>Thanks to all members of the joint McStas-McXtrace team, you guys ROCK!
+  <li>A special thanks to Jakob Garde who has continued to contribute
+  (unpaid!) to the 3.0 efforts even after leaving DTU.
+  <li>Thanks to Guido Juckeland (HZDR,DE) and Sebastian Alfthan
+  (CSC,FI) who were behind the GPU Hackathons we participated in
+  <li>Thanks to our NVIDIA mentors Vishal Metha, Christian Hundt and
+  Alexey Romanenko
+</ul>
+
+<p><strong>Main new features and changes:</strong>
+<ol>
+  <li><strong>New code-generation scheme</strong> based on functions instead of #defines, which brings
+  <ul>
+    <li>Much improved compilation-times, the code is better suited for modern compilers
+    <li>In most cases a speed-up of order 20%
+    <li>The neutron _particle is now represented by a struct
+    <li>The component types and instances are also represented by structs
+    <li>In the generic TRACE function of a given component type, the _comp var is
+     short-hand for "whatever the component instance is"
+    <li>New instrument section of USERVARS %{ double example_flag; %} which enriches
+    the _particle struct
+    <li>In component DECLARE blocks, assignments can no longer be done and all declarations
+    must be listed independently, i.e double a; is OK, double a,b; is not. Variables in
+    this scope are automatically so-called "OUTPUT PARAMETERS" (we may deprecate that
+    keyword completely for the official McStas 3.0 release)
+    <li>Components no longer support DEFINITION PARAMETERS, instead the SETTING PARAMETERS
+     must be used, which now includes a vector and string type supplementing the (default)
+     double/MCNUM and int types.
+    <li>Further, the new cogen implements support for Nvidia GPU's,
+    for details see point 2 below.
+  </ul>
+  <li><strong>Support for OpenACC acceleration on NVIDIA GPU's</strong> on Linux systems
+  <ul>
+    <li>#pragma driven, inserted by the code-generation, but also implemented in libs and comps
+    <li>Speedups measured using top-notch NVIDIA V100 datacenter cards are in the range of 10-600 with
+    respect to a single-core of a modern CPU, see the figure in the below link. It was generated for
+    an "ideally" parallel instrument.
+    <li>Platform support / compiler configuration:
+    <ul>
+      <li>Required compiler for GPU/OpenACC: NVIDIA HPC SDK 20.x or newer. Community edition works fine
+      <li>Required GPU hardware: NVIDIA Tesla card + configured driver
+      <li>Windows: At this point UNSUPPORTED for GPU/OpenACC since NVIDIA does not yet ship a package for
+       this platform. Support should come with WSL 2.0 or via native support from NVIDIA.
+      <li>macOS: At this point UNSUPPORTED for OpenACC since NVIDIA does not ship a package for
+       this platform.
+      <li>Linux: Full acceleration support with GPU, and with
+      CPU/multicore.
+    </ul>
+    <li>Install the compiler and put it on your system PATH. Install and configure Nvidia drivers for your card.
+    <li>We hope that GCC will offer better support for OpenACC in the near future.
+    <li>Tool support
+    <ul>
+      <li>On Linux and macOS mcrun is preconfigured so that mcrun -c --openacc compiles with:
+      <li>Linux: nvc -ta:tesla,managed,deepcopy -DOPENACC
+      <li>Linux: You may configure for use on CPU/multicore via: nvc -ta:multicore -DOPENACC
+      <li>The --funnel option can be used to launch the FUNNEL
+      simulation flow, see description below.
+      <li>For both of the above, adding -Minfo:accel will output verbose information on parallelisation
+      <li>In mcgui, the mcrun --openacc configuration can be selected via the preferences
+      <li>Both mcgui and mcrun allow combining --openacc and --mpi if
+      you have multiple GPU's available. The n'th mpi process will
+      attempt to use the k'th GPU, where k = #available GPU's % #MPI
+      nodes.
+    </ul>
+  </ul>
+  <li><strong>Special McStas 3.0 grammar for mixed CPU/GPU mode:</strong>
+  <ul>
+    <li>A "FUNNEL" mode has been added, which allows
+    <ul>
+      <li>Mixed GPU/CPU mode, were sections of the instrument are executed on each device type, with
+       copying of neutron-bunches back and forth.
+    <li>When this instrument grammar is specified, it signifies that the component should be executed
+       on CPU rather than GPU.
+        CPU SPLIT 10 COMPONENT Sample = Something()
+      <li>Sections before and after that are not marked CPU will be executed on GPU.
+      <li>If a component includes the NOACC token in the component header, the CPU-mode is forced
+       through the compilation, as it signifies that the component does NOT support GPU. This is
+      for the time being the case for Union_master. (Support is
+      expected to come with McStas 3.1)
+    </ul>
+  </ul>
+  <li><strong>Interoperability with McStas 2.7</strong>
+  <ul>
+    <li>Support for MCPL event interchange has been added through MCPL_input and MCPL_output components,
+     that work both on CPU and GPU for McStas 3.0. Note however that targeting GPU, MCPL_input reads
+     ALL particle events durin INITIALIZE and MCPL_output writes ALL particle events during SAVE,
+     whereas when using CPU in 3.0 or 2.7, reads and writes happen
+    during the TRACE flow.
+  </ul>
+  <li><strong>Known limitations</strong>
+  <ul>
+    <li>The Union subsystem works on CPU only for now, but can be used in the mixed GPU/CPU funnnel
+     mode as mentioned above. Union_master is a NOACC component.
+    <li>The same solution is applied in use of the NCrystal_sample and will eventually come for Sample_nxs.
+    <li>Not all features of all components correspond to those from McStas 2.7, but all essential components
+    have beenfully ported from the 2.7 tree to the 3.0 tree. Hence, some parts distributed with McStas 2.7
+     will either not exist in the 3.0 release or may not function, due to either:
+    (1) very specialised features (2) maintainability issues or (3) use ofcomplex algorithms.
+    <li>Generally, most components/instruments are now ported to our OpenACC based GPU-technology, but you
+     likely may find combinations of use that slipped through our not fully exhaustive test-suite. Missing
+    support may come in the form of either
+    <ul>
+      <li>Code that does not compile
+      <li>Instruments that segfaults during execution
+      <li>Instruments or components that produce obscure results
+    </ul>
+    <li>At the time of release, the <a href="http://new-nightly.mccode.org/">nightly tests</a>
+    show that
+    <ul>
+      <li>McStas 3.0 ships with 211 instruments that succesfully compiles
+      <li>These instruments use 147 of our components
+    </ul>
+    <li>We don't ship an updated set of manuals for McStas 3.0, but essential documentation is available
+    on the <a href="https://github.com/McStasMcXtrace/McCode/wiki">McCode GitHub wiki</a>
+  </ul>
+</ol>
+We hope you will enjoy this new release!!!
+<p><img src="/logo-left.png" height="88"><img src="/news/NVLogo_2D.jpg" height="88"><img src="/news/OpenACC-logo.png" height="88">
+<hr>
+<h2>December 12th, 2020: Scheduled downtime for McStas webserver on
+December 14th</h2>
+<p>The McStas webserver will be down during Monday December 14th as it is being
+migrated to a new server.
+<hr>
+<h2>December 12th, 2020: Getting ready for McStas 3.0</h2>
+<p>We are closing in on the McStas 3.0 release, with support for
+NVIDIA GPU's using the nvc compiler and OpenACC.
+<p>To give you an idea of what to expect, here is a small demo video
+where an 1e9 run of ILL_IN5 is executed on 8 x NVIDIA GeForce 1080 and
+8 x Intel(R) Xeon(R) CPU E5-2687W:
+<p><a
+href="http://media.mcstas.org/Demoing%20McStas%203.0%20CPU%20and%20GPU%20on%208%20x%20NVIDIA%20GeForce%201080%20.mov">Demo
+video (4:22 min, hosted at media.mcstas.org) </a>
+<p><a
+href="http://media.mcstas.org/Demoing%20McStas%203.0%20CPU%20and%20GPU%20on%208%20x%20NVIDIA%20GeForce%201080%20.mov"><img
+src="/pics/GPU_Screenshot_1.png" height=400><img
+src="/pics/GPU_Screenshot_2.png" height=400></a>
+<hr>
+<h2>December 4th, 2020: NCrystal-package available on CentOS</h2>
+<p>Dear all,
+<p>The mcstas repo has been updated with an NCrystal-package which was
+missing in the CentOS package set from last Friday. To install it, please run:
+<p><pre>yum install mcstas-ncrystal-2.7</pre>
+<p>As a bonus, the RPM package contains the newly released NCrystal 2.2.1 relase.
+<hr>
+<h2>November 27th, 2020: McStas 2.7 release!</h2>
+<p>Dear all,
+<p>A new release of McStas, v. 2.7 has been built and is ready for download!
+<p>Download and installation instructions are available via our <a href="https://github.com/McStasMcXtrace/McCode/tree/master/INSTALL-McStas">GitHub download pages</a>.
+<p>Selected highligts from the release are listed below. The full list
+of changes is also available at <a
+href="http://mcstas.org/CHANGES_McStas">http://mcstas.org/CHANGES_McStas</a>.
+
+<p>(A small PS: Our build for CentOS will lack NCrystal for the time
+being, there are some issues compiling. Talks have been initiated
+with the NCrystal authors and the missing RPM is expected during next week.)
+
+<p><strong>Changes in McStas v.2.7, November 27th, 2020</strong>
+
+<ul>
+  <li> McStas 2.7 is the 10th release in the 2.x series, provides
+  minor incremental improvements and fixes various minor issues with McStas 2.6.1
+  <li>Thanks to all contributors of components, instruments etc.! This is what Open Source
+  and McStas is all about!
+  <li>Installation:
+  <ul>
+    <li>Our install docs are now available on the <a href="https://github.com/McStasMcXtrace/McCode/tree/master/INSTALL-McStas ">McCode GitHub pages</a>
+  </ul>
+  
+  <li>Fixes of issues from last release:
+  <ul>
+    <li> - A number of minor issues from 2.6.1 were addressed, see the
+    <a href="https://github.com/McStasMcXtrace/McCode/issues?q=label%3A%22McStas+2.6.1%22+label%3A%22ready+for+release+on+master%22+is%3Aclosed">relevant GitHub issues</a> for details.
+  </ul>
+  <li>Tools:
+  <ul>
+    <li>On macOS (from 11.0 Big Sur onwards), mcgui will assume light/dark mode with the system settings.
+    (The change came from using the system python3 with our
+    app/miniconda-distributed Qt libs etc.)
+    <li>We now no longer officially support the perl/PGPLOT backend, these may or may not work on your system.
+  </ul>
+  <li>Platforms:
+  <ul>
+    <li>Nothing really new to report here. We still support 64bit Windows 10, all recent 64bit macOS including 11.0 Big Sur,
+    Debian-based and RPM-based distros. (RPMs are built on/for
+    CentOS, you may get varying milage elsewhere.)
+  </ul>
+  <li>Libraries:
+  <ul>
+    <li>Updated version 2.1.1 NCrystal library from T. Kittelmann (ESS) and X.X. Cai (CSNS), distributed with McStas on Unix
+    platforms only. To use it, carry out the below steps:
+    <ul>
+      <li><pre>mcstas:~/NCryst$ mcstas-2.7-environment</pre>
+      <li><pre>mcstas:~/NCryst$ source $MCSTAS/ncrystal/setup.sh</pre>
+      <li><pre>mcstas:~/NCryst$ ncrystal_preparemcstasdir</pre>
+      <li><pre>mcstas:~/NCryst$ cp $MCSTAS/examples/NCrystal_example_mcstas.instr .</pre>
+      <li><pre>mcstas:~/NCryst$ mcrun -c NCrystal_example_mcstas.instr</pre>
+    </ul>
+    <li>MCPL library from the same authors now included at v. 1.3.2.
+  </ul>
+  <li>Components:
+  <ul>
+    <li>Updated Union library from Mads Bertelsen, ESS DMSC.
+    <li>Cyl_monitor.comp, enriched with angular limits and dynamic allocation.
+    <li>Event_monitor_simple.comp, a simple ascii event-list monitor,
+    good for debugging purposes
+  </ul>
+  <li>Instruments:
+  <ul>
+    <li>New "unit test" instruments for basic functionalities and key components:
+    <ul>
+      <li>Random numbers and focusing
+      <ul>
+	<li>Test_RNG_rand01.instr
+	<li>Test_RNG_randnorm.instr
+	<li>Test_RNG_randpm1.instr
+	<li>Test_RNG_randtriangle.instr
+	<li>Test_RNG_randvec_target_circle.instr
+	<li>Test_RNG_randvec_target_rect.instr
+	<li>Test_RNG_randvec_target_rect_angular.instr
+      </ul>
+      <li>Monitors
+      <ul>
+	<li>
+      </ul>Test_Monitor_nD.instr
+      <li>Sample components
+      <ul>
+	<li>Test_Incoherent.instr
+	<li>Test_PowderN.instr
+	<li>Test_PowderN_concentric.instr
+	<li>Test_SX.instr
+	<li>Test_Sqw.instr
+      </ul>
+    </ul>
+    <li>Various new instruments used for comparison with the forthcoming McStas 3.0
+    ILL_D2B_noenv.instr, ILL_H22_D1A_noenv.instr, ILL_H22_D1B_noenv.instr,
+    <li>Name change, TasResoTest.instr is now called Test_TasReso.instr
+    <li>Instruments providing earlier models of ESS moderators have been retired, i.e. are not in the
+    release anymore: ESS_2001_bispectral.instr, ESS_2015_test.instr, ESS_Brilliance_2001.instr, ESS_Brilliance_2013.instr,
+    ESS_Brilliance_2014.instr, ESS_Brilliance_2015.instr,
+    ESS_Brilliance_TDR.instr
+  </ul>
+</ul>
+<p>We hope you will enjoy this new release!!! <strong>(And keep an eye out for 3.0, it is almost also there...)</strong>
+
+<hr>
+<h2>October 2nd, 2020: McStas presentation from the 2020 OpenACC
+summit now online</h2>
+<p>Dear all,
+<p>The McStas presentation from the OpenACC summit is now online on <a
+href="https://www.youtube.com/watch?v=HDU-WRJUZXs&feature=youtu.be">YouTube.</a>
+<p>OpenACC (see https://www.openacc.org) is a high-level,
+compiler-driven approach to GPU-acceleration, and in the video McStas
+team tech-lead Peter Willendrup gives an overview about neutron
+scattering, McStas and how the team is porting the code to Nvidia
+GPU's.
+<p>Have a look at <a href="https://www.youtube.com/watch?v=HDU-WRJUZXs&feature=youtu.be">https://www.youtube.com/watch?v=HDU-WRJUZXs&feature=youtu.be</a>
+<hr>
+<h2>September 10th, 2020: Multi-GPU support in McStas 3 code tree</h2>
+<p>For Linux systems with multiple Nvidia GPU's the McStas team now
+has a solution, based on MPI and OpenACC. The images below show 8 NVIDIA GeForce
+1080 running BNL_H8 in parallel and profiling-output in NVIDIA Nsight
+Systems:
+<p>
+<a href="/pics/8x1080.png"><img height=500 src="/pics/8x1080.png" alt="8 gpus shown running using nvidia-smi"></a><a href="/pics/MultiGPU-Profiling.png"><img height=500 src="/pics/MultiGPU-Profiling.png" alt="8-gpu profiling output"></a>
+<p>The plan is to release either another beta or the first "real"
+McStas 3.0 before the end of 2020.
+<hr>
+<h2>August 24th, 2020: macOS 11.0 Big Sur beta, hold your horses...</h2>
+<p>The McStas team has tested the current 2.6.1 release on the beta,
+and lots of stuff is broken on Big Sur...
+<p>We are aware that getting the freshest or forthcoming version of macOS can be
+tempting, but please wait for an updated McStas release if you aim to do any work with McStas... :-) 
+<hr>
+<h2>May 26th, 2020: Experimental McStas 2.6.1 and McXtrace 1.5 dockers</h2>
+<p>The combined McStas and McXtrace team have started experimenting
+with using Docker's for deployment. The advantage is simplified
+installation and a uniform look and feel / functionality across
+platforms.
+
+<p>If you feel like giving our experimental docker solutions a spin, have a look at
+<a href="https://github.com/McStasMcXtrace/McCode/blob/master/Docker/README.md">https://github.com/McStasMcXtrace/McCode/blob/master/Docker/README.md</a>
+<hr>
+<h2>May 4th, 2020: McStas 2.6.1 released</h2>
+<p>Dear all,
+<p>A new minor-release of McStas, v. 2.6.1 has been built and is ready for download!
+<p>Download and installation instructions are available via our <a href="https://github.com/McStasMcXtrace/McCode/tree/master/INSTALL-McStas">GitHub download pages</a>.
+<p>The release adresses a few bugs found in the 2.6 release, see the related issue list at <a
+href="https://github.com/McStasMcXtrace/McCode/issues?q=is%3Aissue++label%3A%22McStas+2.6%22+">GitHub</a>,
+but is in terms of features and functionality almost identical to 2.6.
+<p>Best<br>
+Peter Willendrup
+<hr>
+<h2>April 28th, 2020: McStas 2.6 on Ubuntu 20.04</h2>
+<p>Dear all,
+<p>I have tried out the McStas 2.6 release on the <a href="https://releases.ubuntu.com/20.04/">fresh Ubuntu 20.04
+release</A>, and my findings are these:
+<ul>
+  <li>Generally, the release works as expected - all of the python
+  tools seem to function well.
+  <li>For the legacy perl tools we have the issue that the OS-provided
+  PDL no longer comes with a PGPLOT plotting-bridge, which affects
+  mcplot.pl and mcgui.pl:
+  <pre>
+mcstas@mcstas-virtual-machine:~$ mcgui.pl 
+Can't locate PDL/Graphics/PGPLOT.pm in @INC (you may need to install the PDL::Graphics::PGPLOT module)
+(@INC contains: /usr/share/mcstas/2.6/tools/Perl/perl/modules /usr/share/mcstas/2.6/tools/Perl/perl /etc/perl
+/usr/local/lib/x86_64-linux-gnu/perl/5.30.0 /usr/local/share/perl/5.30.0 /usr/lib/x86_64-linux-gnu/perl5/5.30
+/usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl/5.30 /usr/share/perl/5.30 /usr/local/lib/site_perl
+/usr/lib/x86_64-linux-gnu/perl-base) at /usr/share/mcstas/2.6/tools/Perl/perl/mcplotlib.pl line 23, <DATA> line 207.
+BEGIN failed--compilation aborted at /usr/share/mcstas/2.6/tools/Perl/perl/mcplotlib.pl line 23, <DATA> line 207.
+Compilation failed in require at /usr/bin/mcgui.pl line 2181, <DATA> line 207.
+  </pre>
+  <li>Of course the recommendation is to simply move to the Python
+  tools, but if you insist to stay with perl, please do a local
+  CPAN-based PDL installation like this:
+  <pre>
+sudo cpan install PDL
+  </pre>
+  <li>Since a few releases, the default PGPLOT implementation on Ubuntu changed to Giza.
+  Giza seems to now be getting better, see the <a href="/news/2018.html">April
+  30th 2018</a> hint if you want the legacy PGPLOT instead.
+</ul>
+A new minor release 2.6.1 is on the way, implementing a few bugfixes,
+see our <a href="https://github.com/McStasMcXtrace/McCode/issues?q=is%3Aissue+label%3A%22McStas+2.6%22+">GitHub issue tracker</a> for more information.
+<p>Best regards,<br>Peter Willendrup
+<hr>
+<h2>February 27th, 2020: McStas 3.0beta bugfixes etc</h2>
+<ul>
+  <li>As we move along with the development on the mcstas-3.0 branch, you may find patched
+  versions of components in the Updates folder found next to the
+  distribution binaries at <a
+  href="http://download.mcstas.org/mcstas-3.0beta/">http://download.mcstas.org/mcstas-3.0beta/</a>.
+  <li>A first bug with fix: Unfortunately, a buggy <a
+  href="https://github.com/McStasMcXtrace/McCode/commit/86dc24423083dc980ad09c82d74866d9d826d34d">last-minute
+  change</a> to the PowderN component before mcstas-3.0beta was built introduced an
+  error which makes it produce 0 scattered intensity. Please find
+  an improved version in <a
+  href="http://download.mcstas.org/mcstas-3.0beta/Updates">the
+  above-mentioned Updates folder</a>. Further bugfixes to this
+  component are expected since the component
+  produces scattering but has certain edge-case issues on GPU, especially at high ncount rates.
+  <li>At any time, know bugs will be listed as issues on GitHub <a
+  href="https://github.com/McStasMcXtrace/McCode/issues?q=is%3Aissue+is%3Aopen+label%3Amcstas-3.0beta">marked
+  with the label of "mcstas-3.0beta"</a>
+  <li>Please do submit issues to GitHub as you find them: This will
+  help in the process toward a stable, official 3.0 release!
+</ul>
+<hr>
+<h2>February 25th, 2020: McStas 3.0beta technology preview available!</h2>
+<p>Dear all,
+<p>A technology preview for the forthcoming McStas 3.x series is now
+available for testing!
+
+<p>Main highlights of the release are:
+<ul>
+  <li>New code-generation scheme based on functions instead of #defines
+  <li>Much improved compilation-times, the code is better suited for modern compilers
+  <li>In most cases a speed-up of order 20% on CPU
+  <li>Limited, experimental support for OpenACC acceleration on NVIDIA GPU's
+  <li>Speedups measured using top-notch NVIDIA V100 datacenter cards are in the range of 10-600 with respect to a single-core CPU
+  <li>In essence, you will need a Linux machine with an NVIDIA card and
+  the PGI compiler to make use of the GPU-support
+</ul>
+<p>For more details and instructions, please refer to <a
+href="https://github.com/McStasMcXtrace/McCode/wiki/McStas-3.0beta-technology-preview-release-notes">this
+document on our Wiki</a>
+<p>Thanks to:
+<ul>
+  <li>Thanks to all members of the <a href="https://github.com/McStasMcXtrace/McCode/wiki/McStas-McXtrace-team">joint McStas-McXtrace team</a>, you guys ROCK!
+  <li>Thanks to Guido Juckeland (HZDR,DE) and Sebastian Alfthan (CSC,FI) who were behind the GPU Hackathons we participated in
+  <li>Thanks to our NVIDIA mentors Vishal Metha, Christian Hundt and Alexey Romanenko
+</ul>
+<p><img src="/logo-left.png" height="88"><img src="/news/NVLogo_2D.jpg" height="88"><img src="/news/OpenACC-logo.png" height="88">
+<hr>
+<h2>January 24th, 2020: McStas 2.6 release!</h2>
+<p>Dear all,
+<p>A new release of McStas, v. 2.6 has been built and is ready for download!
+<p>Download and installation instructions are available via our <a href="https://github.com/McStasMcXtrace/McCode/tree/master/INSTALL-McStas">GitHub download pages</a>.
+<p>Selected highligts from the release are listed below. The full list
+of changes is also available at <a
+href="http://mcstas.org/CHANGES_McStas">http://mcstas.org/CHANGES_McStas</a>.
+
+<p><strong>Changes in McStas v.2.6, January 24th, 2020</strong>
+
+<ul>
+  <li>McStas 2.6 is the eight release in the 2.x series and fixes various issues with McStas 2.5, plus 
+  new developments.
+  <li>Thanks to all contributors of components, instruments etc.! This is what Open Source
+  and McStas is all about!
+  <li>Installation:
+  <ul>
+    <li>Our install docs are now available on the <a href="https://github.com/McStasMcXtrace/McCode/tree/master/INSTALL-McStas ">McCode GitHub pages</a>
+  </ul>
+ 
+  <li>Fixes of issues from last release:
+  <ul>
+    <li>A number of issues from 2.5 were corrected, see the <a href="https://github.com/McStasMcXtrace/McCode/issues?&q=is%3Aissue+is%3Aclosed+label%3A%22McStas+2.5%22+">relevant GitHub issues</a> for details.
+  </ul>  
+  <li>Plus lots of work in general, see the <a href="https://github.com/McStasMcXtrace/McCode/issues?page=1&q=is%3Aissue+is%3Aclosed++project%3AMcStasMcXtrace%2FMcCode%2F5&">relevant GitHub issues</a>
+  <li>Tools
+  <ul>
+    <li>Contribution from Tobias Weber ILL: Python-version of mcresplot.
+  </ul>
+ 
+  <li>Libraries:
+  <ul>
+    <li>Updated version 1.0.0 NCrystal library from T. Kittelmann (ESS) and X.X. Cai (CSNS), distributed with McStas on Unix
+    platforms only. See the CHANGES document for full detail.
+    <li>MCPL library from the same authors now included at v. 1.3.0. See the CHANGES document for full detail.
+    <li>Updated version of the NXS lib from Mirko Boin HZB.
+  </ul>
+
+  <li>Components:
+  <ul>
+    <li>Updated Union library from Mads Bertelsen, ESS DMSC including
+    <ul>
+      <li>New geometries, mesh (for stl file input in Union setups) and cone (e.g. relevant for describing anvils
+      in pressure cells.
+      <li>New AF_HB_1D_process for modelling 1D antiferromagnetic
+      Heisenberg chains and PhononSimple_process for modelling
+      single-branchg acoustic phonons ala Phonon_simple
+    </ul>
+    <li>New SINE2020-developed Union physics processes from Victor Laliena, Uni Zaragoza: Texture_process.comp
+    and IncoherentPhonon_process.comp. See <a href="https://doi.org/10.3233/JNR-190117">DOI:10.3233/JNR-190117</a>.
+    <li>Shieldinglogger-components from Rodion Kolevatov, IFE for
+    estimating gamma-production in guides:
+    <ul>
+      <li>Contributions Dose_calculator and Shielding_calculator
+      <li>Patched versions of optics-components: Elliptic_guide_gravity_shieldinglogger, Guide_channeled_shieldinglogger,
+     Guide_curved_shieldinglogger, Guide_gravity_shieldinglogger, Guide_shieldinglogger
+      <li>Components patched / derived from the "scatterlogger"
+  framework to model Ni and Ti layers seperately:
+  Shielding_log_iterator_Ni_new, Shielding_log_iterator_Ti_new,
+  Shielding_log_iterator_stop, Shielding_log_iterator_total,
+      Shielding_logger.comp, Shielding_logger_stop.comp.
+      <li>See <a
+  href="https://doi.org/10.3233/JNR-190123">DOI:10.3233/JNR-190123</a>,
+  <a
+  href="https://doi.org/10.1016/j.nima.2018.12.069">DOI:10.1016/j.nima.2018.12.069</a>
+  and <a href="https://doi.org/10.3233/JNR-180088">DOI:10.3233/JNR-180088</a>.
+      <li>Please note that the included Shielding- and Dose- calculators will only give sensible for guides with
+     borosilicate glass substrate. If the substrate is, e.g. copper, the dose rates from neutrons transmitted 
+     through the coating and captured in the substrate will overshoot the coating contribution significantly, 
+     so that shielding has to be enforced by few tens of centimeters of concrete. 
+    </ul>
+    <li>Guide_anyshape_r additions from Peter Link MLZ. Allows
+  describing geometry in OFF format with reflectivity "per" face. Test
+  instrument is Test_guides which has been updated to include this
+    modified component.
+    <li>Vertical_Bender from Andrew Jackson ESS and Richard Heenan STFC. Allows modelling a multi-channel bender
+    that curves vertically down.
+    <li>SANS_spheres2 by Peter Willendrup, derived from Henrich Frilinghaus' SANS_benchmark2. More realistic cross-section
+    calculations than from e.g. Sans_spheres. templateSANS2.instr is the related test instrument.
+    <li>Updated version of Sample_nxs from Mirko Boin HZB.
+    <li>Single_magnetic_crystal.comp is an experimental magnetic csingle crystal model. Its operational model is based 
+    on that of Single_crystal.comp but supports SF and NSF magnetic scattering. The present model only supports
+    the SF-NSF paradigm along a given reference vector.  
+    <li>PSD_monitor_4PI_spin.comp is a version of PSD_monitor_4PI but with separate SF- and NSF-channels
+  </ul>
+  <li>Instruments:
+  <ul>
+    <li>Union_test_texture.instr demonstrates use of Texture_process.comp by Victor Laliena. To be used with datafile
+   "coef_Four_L2.txt" found in the installation data-folder. This datafile contains texture information on Zr alloys
+    derived <a
+  href="https://doi.org/10.1016/j.jnucmat.2018.08.003">from DOI:10.1016/j.jnucmat.2018.08.003</a>.
+    <li>Union_IncoherentPhonon_test.instr demonstrates use of IncoherentPhonon_process.comp by Victor Laliena. To be used
+   with datafile "dos_meV.txt" found in the installation data-folder.
+    <li>Union_test_mesh.instr demonstrates use of mesh geometry in Union
+    <li>ESS_BIFROST_shielding.instr and PSI_Focus_shielding.instr, demonstration of Shielding_logger concept from
+   Rodion Kolevatov
+    <li>TasResoTest, triple-axis resolution test instrument from Tobias Weber ILL. Can be used with his new tool
+   development mcresplot.py.
+    <li>Tools_ONION, instrument to investigate q-resolution via
+  Mantid, by Thomas Huegle, ORNL. See also <a
+  href="https://doi.org/10.1016/j.nima.2019.162711">DOI:10.1016/j.nima.2019.162711</a> and the related python
+  code available at our new <a
+  href="https://github.com/McStasMcXtrace/McCode-contribution-support-docs/tree/master/McStas/2.6_Onion_tool_T_Huegle">"snippet"
+  repository</a> that should eventually replace <a
+  href="/download/share">the old "share" part of this webpage</a>.
+    <li>templateSANS_MCPL, behaves like the normal templateSANS but dumps all events in an MCPL file.
+    <li>MCPL-oriented tool-instruments by Peter Willendrup. See the CHANGES document for full detail.
+    <li>SINE2020-developed McStas_Isotropic_Sqw, McStas_PowderN, McStas_Single_crystal by Erik Knudsen. They have
+    MCPL input/output and are intended for easy use of McStas samples within SIMRES.
+    <li>Test_guides has been modified to include Guide_anyshape_r from Peter Link MLZ.
+    <li>templateSANS2 serves as test instrument for SANS_spheres2.
+    <li>Test_single_magnetic_crystal.instr is a skeleton Laue camera
+    which exemplfies use of Single_magnetic_crystal.comp
+  </ul>
+
+  <li>Datafiles:
+  <ul>
+    <li>Klaus Lieutenant from FZJ/Vitess has collected reflectitivy-data from SwissNeutronics, Mirrotron and S-DH, analysed
+    these and fitted the "classical" McStas mirror-reflectivity profile to these. The resulting data have been placed
+    in the data directory under the filenames of
+    <ul>
+      <li>SwissNeutronics_mirors_2020.txt
+      <li>Mirrotron_mirors_2020.txt
+      <li>S-DH_mirors_2020.txt.
+    </ul>
+    <li>The files are not to be used directly with reflecting components, but can instead be used as lookup-tables for
+   relevant parameters in each case. I.e. for a mirror of nominal m-value m_nom, use m_real, R_0, W and alpha from the
+    relevant table.
+  </ul>
+</ul> - Most other new datafiles are directly related to component- or instrument-additions and have been mentioned above.
+
+<p>We hope you will enjoy this new release!!!
+<hr>
+<p><b>Previous news items: </b><a href="/news/2019.html">2019</a>, <a href="/news/2018.html">2018</a>, <a
+href="/news/2017.html">2017</a>, <a href="/news/2016.html">2016</a>,
+<a href="/news/2015.html">2015</a>, <a
+href="/news/2014.html">2014</a>, <a href="/news/2013.html">2013</a>,
+<a href="/news/2012.html">2012</a>, <a
+href="/news/2011.html">2011</a>, </b><a
+href="/news/2010.html">2010</a>, <a href="/news/2009.html">2009</a>,
+<a href="/news/2008.html">2008</a>, <a
+href="/news/2007.html">2007</a>, <a href="/news/2006.html">2006</a>,
+<a href="/news/2005.html">2005</a>, <a
+href="/news/2004.html">2004</a>, <a href="/news/2003.html">2003</a>, <a href="/news/2002.html">2002</a>, <a href="/news/2001.html">2001</a>, <a href="/news/2000.html">2000</a>, <a href="/news/1999.html">1999</a>,
+<a href="/news/1998.html">1998</a>.

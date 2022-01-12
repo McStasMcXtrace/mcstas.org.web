@@ -1,0 +1,33 @@
+<pre>McStas Parameter Study Tool
+---------------------------
+
+Written by Deon Marais (deon.marais@necsa.co.za)
+Copyright 2015 The South African Nuclear Energy Corporation (Necsa) SOC Limited
+
+Description
+-----------
+McStasPS is a tool to facilitate the sequential stepping of instrument parameters. If it is specified to step more than one parameter, all possible combinations are automatically determined.
+
+Prerequisites
+-------------
+McStasPS was written in Python 2.7 and imports the PyQt4 library. It was only tested on Windows 7, but it *should* work with Linux distributions as well.
+Only MPI execution using the perl exe script (mcrun.pl) is currently supported.
+
+Execution
+---------
+Compile your instrument file for use with MPI as usual.
+ 
+When running the McStasPS.py script file, a very simple window with a single "Open" button appears.
+When the user selects an instrument file (*.instr), a skeleton parameter study base file (*.parst) will be created from the instrument file and placed in the same directory as the instrument file.
+
+The *.parst file contains a list of "variable instrument parameters" as well normal McStas "runtime parameters". The user should edit these to correspond with the McStas installation and instrument simulation. For each instrument parameter, at least a "Start" value is required. By adding "End" and "Number of steps" values, an equispaced grid for the parameter will be prepared. A sequence of values can also be supplied instead of using the equispaced grid. If it is specified to step more than one parameter, all possible combinations will be calculated. If the "Output_dir" is not specified, one based on the instrument name and execution start time will be created.
+
+When opening the *.parst file with McStasPS, a file (*.cmds) containing a list of all the McStas execution commands will be created and placed in the "Output_dir", together with the instrument file and instrument executable. The commands will be run sequentially. A *.log file is created which indicates the start and end times for each execution and provides a summary linking the individual output directories with the stepped parameters.
+
+A *.cmds file can also be opened with McStasPS should it be nessesary to rerun the commands or if (for instance) all executions did not finish for some reason.
+
+The progress bar needs some improvement as it will only cancel the execution after the step is finished. A work-around to cancel execution immediately, is to press Ctrl-C in the console.
+
+It is left to the user to combine the results of all the steps (if needed), which will each be in its own directory in the "Output_dir".
+</pre>
+

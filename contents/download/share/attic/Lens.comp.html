@@ -1,0 +1,193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD>
+<TITLE>McStas: Lens Component</TITLE>
+<LINK REV="made" HREF="mailto:peter.willendrup@risoe.dk">
+</HEAD>
+
+<BODY>
+
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<H1>The <CODE>Lens</CODE> Component</H1>
+
+Refractive lens with absorption, incoherent scattering and surface imperfection.
+
+
+<H2><A NAME=id></A>Identification</H2>
+
+<UL>
+  <LI> <B>Author:</B> C. Monzat/E. Farhi/S. Desert/G. Euzen</B>
+  <LI> <B>Origin:</B> ILL/LLB</B>
+  <LI> <B>Date:</B> 2009</B>
+  <LI> <B>Version:</B> $Revision 1.0$</B> - differs from 1.12b version only by corrected typo in author name
+</UL>
+<H2><A NAME=desc></A>Description</H2>
+
+<PRE>
+Refractive Lens with absorption, incoherent scattering and surface imperfection. 
+Geometry may be:
+  spherical (use r1 and r2 to specify radius of curvature), 
+  planar (use phiy1 and phiy2 to specify rotation angle of plane w.r.t beam) 
+  or parabolic (use focus1 and focus2 as optical focal length). 
+The lens cross-section is seen as a 2*radius disk from the beam Z axis.
+Usually, you should stack more than one of these to get a significant effect 
+on the neutron beam, so-called 'compound refractive lens'.
+The focal length for N lenses with focal 'f' is f/N.
+
+Common material: 
+  MgF2: density=3.148,weight=62.3018,sigma_coh=11.74,sigma_inc=0.0816,sigma_abs=0.0822
+  diamond: density=3.52,weight=12.01,sigma_coh=5.551,sigma_inc=0.001,sigma_abs=0.0035
+  Quartz/silica:density=2.53,weight=60.08,sigma_coh=10.625,sigma_inc=0.0056,sigma_abs=0.1714
+  perfluoropolymer
+
+Example: Lens(r1=0.025,r2=0.025, thickness=0.001,radius=0.0150)
+
+%BUGS
+parabolic shape is not fully validated yet, but should do still...
+
+</PRE>
+
+<H2><A NAME=ipar></A>Input parameters</H2>
+Parameters in <B>boldface</B> are required;
+the others are optional.
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD>r1</TD>
+     <TD>m</TD>
+     <TD>radius of the first circle describing the lens.
+r>0 means concave face, r<0 means convex, r=0 means plane
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>r2</TD>
+     <TD>m</TD>
+     <TD>radius of the second circle describing the lens
+r>0 means concave face, r<0 means convex, r=0 means plane
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>focus1</TD>
+     <TD>m</TD>
+     <TD>focal of the first parabola describing the lens
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>focus2</TD>
+     <TD>m</TD>
+     <TD>focal of the second parabola describing the lens
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>phiy1</TD>
+     <TD>deg</TD>
+     <TD>angle of plane1 (r1=0) around y vertical axis
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>phiy2</TD>
+     <TD>deg</TD>
+     <TD>angle of plane2 (r2=0) around y vertical axis
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>thickness</TD>
+     <TD>m</TD>
+     <TD>thickness of the lens between its two  surfaces
+</TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>radius</TD>
+     <TD>m</TD>
+     <TD>radius of the lens section, e.g. beam size
+</TD>
+<TD ALIGN=RIGHT>0.015</TD> </TR>
+<TR> <TD>sigma_coh</TD>
+     <TD>barn</TD>
+     <TD>coherent cross section
+</TD>
+<TD ALIGN=RIGHT>11.74</TD> </TR>
+<TR> <TD>sigma_inc</TD>
+     <TD>barn</TD>
+     <TD>incoherent cross section
+</TD>
+<TD ALIGN=RIGHT>0.0816</TD> </TR>
+<TR> <TD>sigma_abs</TD>
+     <TD>barn</TD>
+     <TD>thermal absorption cross section
+</TD>
+<TD ALIGN=RIGHT>0.0822</TD> </TR>
+<TR> <TD>density</TD>
+     <TD>g/cm3</TD>
+     <TD>density of the material for the lens
+</TD>
+<TD ALIGN=RIGHT>3.148</TD> </TR>
+<TR> <TD>weight</TD>
+     <TD>g/mol</TD>
+     <TD>molar mass of the material
+</TD>
+<TD ALIGN=RIGHT>62.3018</TD> </TR>
+<TR> <TD>p_interact</TD>
+     <TD>1</TD>
+     <TD>MC Probability for scattering the ray; otherwise transmit
+</TD>
+<TD ALIGN=RIGHT>0.1</TD> </TR>
+<TR> <TD>focus_aw</TD>
+     <TD>deg</TD>
+     <TD>vertical angle to forward focus after scattering
+</TD>
+<TD ALIGN=RIGHT>10</TD> </TR>
+<TR> <TD>focus_ah</TD>
+     <TD>deg</TD>
+     <TD>horizontal angle to forward focus after scattering
+</TD>
+<TD ALIGN=RIGHT>10</TD> </TR>
+<TR> <TD>RMS</TD>
+     <TD>Angs</TD>
+     <TD>root mean square roughness of the surface
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=opar></A>Output parameters</H2>
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD><B>rho</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bc</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>my_s</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>my_a_v</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mean_n</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>events</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=links></A>Links</H2>
+
+<UL>
+  <LI> <A HREF="Lens.comp">Source code</A> for <CODE>Lens.comp</CODE>.
+</UL>
+<HR>
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<ADDRESS>
+Generated automatically by McDoc, Peter Willendrup
+&lt;<A HREF="mailto:peter.willendrup@risoe.dk">peter.willendrup@risoe.dk</A>&gt; /
+Tue Aug 10 11:45:54 2010</ADDRESS>
+</BODY></HTML>

@@ -1,0 +1,209 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: McStas installation and questions -->
+<!--X-From: Kristian Nielsen <kristian.nielsen@risoe.dk> -->
+<!--X-Date: 22 Jan 1999 12:19:53 +0100 -->
+<!--X-Message-Id:  -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 199901191625.QAA18936@elvira2.ill.fr -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: McStas installation and questions</title>
+<link rev="made" href="mailto:kristian.nielsen@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00006.html">Date Prev</A>][<A HREF="msg00007.html">Date Next</A>]
+<a href="index.html#00008">[Chronological]</a>
+<a href="threads.html#00008">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: McStas installation and questions</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:farhi@ill.fr">farhi@ill.fr</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: McStas installation and questions</strong></LI>
+<LI><strong>From</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: 22 Jan 1999 12:19:53 +0100</LI>
+<LI>CC: <A HREF="mailto:farhi@elvira2.ill.fr">farhi@elvira2.ill.fr</A></LI>
+<LI>In-reply-to: &lt;<A HREF="msg00010.html">199901191625.QAA18936@elvira2.ill.fr</A>&gt; (message from emmanuelfarhi on Tue, 19 Jan 1999 16:25:47 +0000 (GMT))</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+&gt; As I already mentioned in a previous mail, I'm deseperatly trying to install 
+&gt; McStas program on my account. I'm not root on our machines, and it doesn't seems 
+&gt; to be so easy as written in the manual !
+
+Sorry that I took so long to answer, but thinks have been a bit hectic
+this week due to major restructuring of the department.
+
+If security regulations etc. permits you to, you could supply me with an
+account on the machines and I could log in myself and investigate
+(assuming this is not impossible because of firewalls). Otherwise we
+will have to use e-mail debugging; I will try to answer subsequent
+emails quickly.
+
+&gt; 1a- First, I tryied to install the program on HP two HP stations. The first one 
+&gt; is a 
+&gt; hp9000s800 bi-processor machine. In that case, an error appears in 
+&gt; pre-processing when compiling ('make', after 'configure 
+&gt; --prefix=/home/tas/farhi'), as reported in the previous mail :
+
+Using the prefix in this way to avoid needing root privileges should be fine.
+
+&gt;         gcc -I. -I. -c -O2 -DMC_SYS_DIR='"'/home/tas/farhi/lib/mcstas'"' 
+&gt; -DCC_HAS_PROTOS=1  -DDEBUG=0 instrument.tab.c
+&gt; as: "/var/tmp/cca11970.s", line 2786: error 1052: Directive name not recognized 
+&gt; - PARAM
+
+Now this is a strange error, since it happens in the assembler! I am
+really tempted to suggest a problem with the installation of the gcc
+compiler on this machine. Is it possible to compile other C programs
+with gcc on the HP? Perhaps there might be a problem if the gcc compiler
+is using the HP assembler?
+
+Anyway, you could try setting the environment variable CC before running
+configure, one of these commands should work depending on your shell:
+
+    setenv CC cc
+    CC=cc ; export CC
+
+This will only work if you bought the optional ANSI C compiler for the HP.
+
+&gt;         gcc -I. -I. -c -O2 -DMC_SYS_DIR='"'/home/tas/farhi/lib/mcstas'"' 
+&gt; -DCC_HAS_PROTOS=1  -DDEBUG=0 instrument.tab.c
+&gt; In file included from 
+&gt; /usr/local/lib/gcc-lib/hppa1.1-hp-hpux9.03/2.6.3/include/stdlib.h:231,
+&gt;                  from mcstas.h:59,
+&gt;                  from instrument.y:70:
+&gt; /usr/include/pwd.h:29: parse error before `int32_t'
+
+This is also a bit strange since it happens in the system include
+files. Again, I tend to suspect a problem with the compiler
+installation.But try to add the following line at the top of the file
+"mcstas.h":
+
+#include &lt;sys/types.h&gt;
+
+I have a hunch that might just work. If it does, tell me and I will try
+to find a portable way to fix this problem. You might also try the CC
+trick on this machine.
+
+&gt; 2- After those two uneffective trials, I turned to a SGI machine iris4d. 
+&gt; Compiling is nearly ok : configure+make, with warnings as follows :
+
+Compilation seems to run fine.
+
+&gt; cannot load /opt/imake/bin/install (bu24):No such file or directory
+
+This is suspicious, since it is trying to run /opt/imake/bin/install
+which is the path returned by the configure run on the HP! The problem
+is that "./configure" builds a cache file the first time it is run, and
+subsequent runs do not actually configure but just read previous results
+from the cache. Maybe you used the same network-mounted directory for
+the HP and SGI compilations, or perhaps copied the directory from the HP
+to the SGI instead of using a freshly unpacked distribution? In this
+case try again on the SGI either from a newly unpacked distribution, or
+delete the cache file:
+
+    rm config.cache
+
+before "./configure" and "make install".
+
+Anyway, it is not too difficult to do the install manually. While in the
+main mcstas directory, execute the commands
+
+  cp mcstas gscan mcdisplay /home/tas/farhi/bin/
+  cp lib/* /home/tas/farhi/lib/mcstas/
+  chmod +x /home/tas/farhi/bin/mcstas
+  chmod +rx /home/tas/farhi/bin/gscan
+  chmod +rx /home/tas/farhi/bin/mcdisplay
+  chmod +r /home/tas/farhi/lib/mcstas/*
+
+Replace /home/tas/farhi with the relevant directory if necessary.
+
+&gt; beeing root or needing some 'hieroglyphic' commands ? Are there some already 
+&gt; compiled versions for HP or SGI ?
+
+If the above does not work I have HP binaries that I could send you, and
+I can produce SGI binaries as well. But hopefully I can fix McStas so
+that later versions compile out of the box on your machines also.
+
+&gt; Ian Anderson is now discussing your coming in Marsh, but I'd like to play with 
+&gt; your toy before. I'd like also to indicate than a deeply improved version of 
+
+Yes I think we should get McStas up and running at the ILL as much as
+possible before the visit so that we can utilize the time in the best
+possible way.
+
+&gt; MFit/Mview is now available on ILL/TAS group Web page (which becomes an official 
+&gt; archive site for those Matlab stuff: <A HREF="http://www.ill.fr/tas">http://www.ill.fr/tas</A>).
+&gt; 
+&gt; I now began to think about a graphic user interface between MFit/Mview and 
+&gt; McStas (if I can ever make this latter work !), that would enable to build 
+&gt; instruments easely, to pre-process mcstas, and compile gcc Monte Carlo program, 
+&gt; simulate scans and finally display results, all mouse-driven, if
+&gt; possible.
+
+This sounds very exiting! I hope that you get started on this project,
+and I will do my best to support with guidance, extensions to McStas,
+etc.
+
+I hope the above helps, please write back and tell me how it worked, and
+I will promise a speedy reply.
+
+ - Kristian.
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<UL><LI><STRONG>References</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00010" HREF="msg00010.html">McStas installation and questions</A></STRONG>
+<UL><LI><EM>From:</EM> emmanuel farhi &lt;farhi@ill.fr&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00006.html">Error in Calculation of absolute Flux (Source_flux) ???</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00007.html">Re: Error in Calculation of absolute Flux (Source_flux) ???</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00008"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00008"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

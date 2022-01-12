@@ -1,0 +1,223 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.48)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>TASCOM-McStas interface @ rita2.psi.ch</TITLE>
+<META NAME="description" CONTENT="TASCOM-McStas interface @ rita2.psi.ch">
+<META NAME="keywords" CONTENT="mcstas@rita2">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="mcstas@rita2.css">
+
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<IMG WIDTH="81" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next_inactive" SRC="nx_grp_g.png"> 
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up_g.png"> 
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev_g.png">   
+<BR>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+<H1 ALIGN="CENTER">TASCOM-McStas interface @ rita2.psi.ch</H1>
+<P ALIGN="CENTER"><STRONG>Peter Willendrup,
+<BR>
+peter.willendrup@risoe.dk</STRONG></P>
+
+<H1><A NAME="SECTION00010000000000000000">
+Introduction</A>
+</H1>
+An interface between TASCOM and McStas has been set up at the RITA-2
+spectrometer at PSI. 
+<BR> 
+<BR>
+The principal setup is that described in the
+document 
+<A NAME="tex2html1"
+  HREF="http://mcstas.risoe.dk/documentation/other/tascom-mcstas.ps"><I>The TASCOM interface to McStas on the RITA-1
+    spectrometer</I></A>
+by Kristian  
+Nielsen. This document describes features special to the RITA-2 setup, when run with the RITA2res.instr instrument definition described below. Differences between the two setups are
+
+<UL>
+<LI>In the above document, the mcstas simulation is run on a remote
+    machine. Of several reasons, this is not a possible solution with the
+    current setup of RIS&#216; machines at PSI. Hence, the Mcstas and
+    Mcstas.conf files of /usr/users/tascomp/rita2m/tas have been
+    modified accordingly.
+</LI>
+<LI>A special tascom macro has been added to TASCOM, in
+    
+<BR>/usr/user/tasfiles/command/sys/rescalc.tas. The function has
+    two input parameters
+
+<UL>
+<LI>RES_DE defining the min/max energies <!-- MATH
+ $E_{min}=E_i-RES\_DE$
+ -->
+<IMG
+ WIDTH="166" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$E_{min}=E_i-RES\_DE$">
+        and <!-- MATH
+ $E_{max}=E_i+RES\_DE$
+ -->
+<IMG
+ WIDTH="167" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$E_{max}=E_i+RES\_DE$"> around the incident energy <IMG
+ WIDTH="21" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$E_i$">. 
+</LI>
+<LI>MCNCNT indicating the number of neutron histories to
+        simulate.
+</LI>
+<LI>All other parameters of the virtual instrument are taken
+        directly from their TASCOM values.
+</LI>
+</UL>
+</LI>
+<LI>The instrument file used by rescalc.tas is 
+<BR>    /usr/users/tascom/mcstas/instruments/RITA2res.instr.
+<BR>
+If you wish
+    to simulate another instrument, add that file to the same
+    directory. Be aware that you should set the following variables
+    correctly before running any scans
+
+<UL>
+<LI>The right MCINST variable in TASCOM, e.g. 'MyInst.instr'
+</LI>
+<LI>The right parameter list to transfer to McStas using the TASCOM
+    command amcstas. Of some reason, this must be done before
+    performing each scan.
+</LI>
+</UL>
+</LI>
+<LI>McStas and related support applications (perl5, perl-Tk, PDL,
+    pgplot and pgperl) have been installed at the machines
+    rita2.psi.ch and risoe01.psi.ch. The mcstas subdirectory of the
+    rita2 tascom account has been mounted (read-only) via nfs to
+    /home/rita2/mcstas on risoe01. In the AFS mcmorrow account on this
+    machine, a link 'rita2' to /home/rita2 has been created for easy
+    access. This means that output data from the simulations can be
+    easily accessed from risoe01.
+  
+</LI>
+</UL>
+<H1><A NAME="SECTION00020000000000000000">
+Tips &amp; Pitfalls</A>
+</H1>
+A few things are not presently working 100%, these are
+
+<UL>
+<LI>The DATA_DIR variable of TASCOM has to be set to an existing
+    directory, e.g. 'mydata'. Otherwise, TASCOM can not read data from
+    McStas. The problem is then that McStas
+    correctly puts its data in mcstas/data/mydata, but TASCOM puts the
+    data in mcstas/mydata. Per Skaarup has been contacted regarding
+    this problem, and we will work together to find a solution. The
+    solution until then is to create e.g. mcstas/mydata, and live with
+    the fact that TASCOM puts the data there.
+</LI>
+<LI>The list of parameters to transfer to McStas is somehow cleared
+    between scans. The cause of this is not presently known. The
+    solution is to set the list using 'amcstas' in tascom before each
+    scan.
+</LI>
+<LI>Another related problem is that if McStas is started without the
+  correct set of parameters, the mcstas binary asks for these
+  parameters when starting. Since the tascom window is not functioning
+  as a tty for mcstas, this will hang the TASCOM/McStas
+  interface. Sending ctrl+c to TASCOM terminates the pipe McStas, but
+  the McStas instrument still runs. The solution is to send the
+  virtual instrument process a KILL signal, e.g. 
+<BR>
+<BR>
+kill -KILL pid,
+<BR>
+<BR>
+where the pid can be found e.g. using ps -u tascom.
+</LI>
+<LI>The output directory for the resolution function output
+    (res.dat) has been hardcoded to /usr/users/tascom/mcstas. The
+    reason for this is that the file is otherwise placed in the
+    directory where TASCOM was started.
+</LI>
+<LI>The resolution function output can be visualised via the
+    'mcresplot' program on rita2 as well as risoe01. The graphical
+    output on rita2 (perl 5.6) looks slightly corrupt, I am currently 
+    looking for a solution to that problem. The data displays fine at
+    risoe01 (perl 5.005).
+</LI>
+<LI>To make mcplotlib.pl and mcresplot run on rita2, the scripts
+    needed slight adjustments. For this reason, McStas should not be
+    reinstalled on the machine without backing up these files.
+</LI>
+<LI>It turns out that the TASCOM/McStas interface in its present
+    form is not too general. The parameters returned to TASCOM by
+    McStas are fixed to MON, I and AUX. This means that if other
+    values are affected by the scan beeing run, these are not updated
+    in TASCOM!! I will have to think for a while to find out how to
+    solve this problem.
+</LI>
+<LI>PSD data output by McStas is currently not beeing read correctly
+    by TASCOM. This might have something to do with the above
+    mentioned problem of different data directories.
+</LI>
+<LI>McStas status output is written to mcstas/mcstas.log in the
+    tascom account on rita2. Use this to monitor simulation progress.
+</LI>
+</UL>
+<H1><A NAME="SECTION00030000000000000000">
+More work</A>
+</H1>
+The goal is to solve the above problems, as well as write a proper
+manual for the setup. The RITA2res instrument definition also needs
+slightly more work. Once this is done, the manual will be placed at
+the <A NAME="tex2html2"
+  HREF="http://rita2.psi.ch">rita2 homepage</A>
+
+<H1><A NAME="SECTION00040000000000000000">
+About this document ...</A>
+</H1>
+ <STRONG>TASCOM-McStas interface @ rita2.psi.ch</STRONG><P>
+This document was generated using the
+<A HREF="http://www-texdev.mpce.mq.edu.au/l2h/docs/manual/"><STRONG>LaTeX</STRONG>2<tt>HTML</tt></A> translator Version 2K.1beta (1.48)
+<P>
+Copyright &#169; 1993, 1994, 1995, 1996,
+<A HREF="http://cbl.leeds.ac.uk/nikos/personal.html">Nikos Drakos</A>, 
+Computer Based Learning Unit, University of Leeds.
+<BR>
+Copyright &#169; 1997, 1998, 1999,
+<A HREF="http://www.maths.mq.edu.au/~ross/">Ross Moore</A>, 
+Mathematics Department, Macquarie University, Sydney.
+<P>
+The command line arguments were: <BR>
+ <STRONG>latex2html</STRONG> <TT>-local_icons -split 0 mcstas@rita2.tex</TT>
+<P>
+The translation was initiated by Peter Willendrup on 2002-10-19<HR>
+<!--Navigation Panel-->
+<IMG WIDTH="81" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next_inactive" SRC="nx_grp_g.png"> 
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up_g.png"> 
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev_g.png">   
+<BR>
+<!--End of Navigation Panel-->
+<ADDRESS>
+Peter Willendrup
+2002-10-19
+</ADDRESS>
+</BODY>
+</HTML>

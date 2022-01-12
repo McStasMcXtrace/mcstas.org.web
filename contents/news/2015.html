@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"></head><body>
+<h3>
+December 18th, 2015: Seasons greetings + a new ESS moderator comp released
+</h3>
+<p>We had hoped to have McStas 2.3 ready for release this year, but
+time turned out too short and we simply did not make it. Hopes are that the next release will be
+ready during January 2016 - very few things are missing.
+<p>In the meantime we do have a small christmas present for the
+ESS-oriented McStas users ready:<br>The ESS butterfly moderator is
+finally available in the <a href="/download/share/ESS_moderator_December_2015.tgz">download share</a> - including support for both
+the 3cm and 6cm height butterfly. The release also includes a small <a
+href="/download/share/Reproducing_ESS_butterfly_brillances_with_McStas.pdf">guidance
+document in PDF format</a>.
+<p>All the best, Merry X-mas and a Happy New Year from
+<br>the McStas team
+<hr>
+<h3>
+September 15th, 2015: Missing manual PDF's uploaded.
+</h3>
+A user has pointed out that no links to manual PDF's were shown on the
+<a href="/documentation/manual">manual</a> page, this problem has been
+fixed as of today. The manuals indicate that they correspond to
+version 2.1, september 2014... That version and date are typos - but also an indication that no
+fundamental changes were made to the manual between 2.1 and 2.2a.
+<hr>
+<h3>
+June 10th, 2015: McStas-2.2a supplemental ZIP archives for Mac OS X.
+</h3>
+<p>At least one user has experienced problems installing on OS X Yosemite from the tgz
+archive available <a
+href="http://download.mcstas.org/mcstas-2.2a/mac">here</a>.
+<p>The problem was investigated and was caused by corruption during
+automatic 'double click' unarchiving of the tgz file. The solution was to unarchive using a 
+tar command in the terminal:
+<pre>tar xzf McStas-2.2a-10.10_Yosemite.tgz</pre>
+<p>If you experience this type of problem, either untar manually as
+shown above or try the ZIP version
+of the relevant archive - available <a
+href="http://download.mcstas.org/mcstas-2.2a/mac/ZIPfiles/">here</a>
+. Content wise these archives are exactly the same as the tgz version.
+<hr>
+<h3>
+June 1st, 2015: Updated Ubuntu live-dvd with McStas available.
+</h3>
+<p>An <a href="http://ubuntu.mcstas.org/Ubuntu_14_04_McStas_2_2a_iFit_Mantid_x64.iso">updated iso image</a> based on Ubuntu 14.04 and including McStas
+2.2a, 2.1, 2.0 and 1.12c has been uploaded to <a
+href="http://ubuntu.mcstas.org">our Ubuntu dvd archive</a>. The iso
+also included the latest release of <a
+href="http://ifit.mccode.org">iFit</a> and <a href="http://www.mantidproject.org">Mantid</a>.
+<hr>
+<h3>
+May 29th, 2015: Fresh built McStas 2.2a released
+</h3>
+<p>Dear all,
+
+<p>The bug reported earlier today related to the initialization of our
+random number generator was in fact not as severe as first
+anticipated:
+
+<p>Using a seed of 0 - which is the default in McStas and means using
+the clock as random number seed, instead implicitly indeed set the
+seed to 0 always. This meant
+that to generate two simulations with statistically different output, one would have
+had to set the seed explicitly to two different values in the two cases.
+
+<p>In any case, the bug has now been fixed in the newly
+released McStas 2.2a, which is available for all platforms at <a
+href="http://downloads.mcstas.org/mcstas-2.2a">http://downloads.mcstas.org/mcstas-2.2a</a>.
+
+<p>It further seems we have an issue with our "umbrella"-metapackage
+(called <b>mcstas-suite</b>) for both Debian and RPM systems. The
+solution is to explicitly install the <b>mcstas-suite-perl</b>
+and/or <b>mcstas-suite-python</b> packages.
+
+<p>Best regards,
+
+<p>Peter Willendrup<hr>
+<h3>
+May 29th, 2015: Random number generator bug in McStas 2.2.
+</h3>
+<p>Dear all,
+
+
+<p>We have unfortunately discovered a serious bug in random number generation in the newly released McStas 2.2.
+
+<p>A patched replacement-release will be released either today or early next week. Sorry for the inconvenience this may have caused you.
+
+
+<p>Best regards,
+
+<p>Peter Willendrup
+<hr>
+<h3>
+May 27th, 2015: McStas 2.2 released!
+</h3>
+<p>Here it is: McStas 2.2 is released and ready for download via
+<a href="http://downloads.mcstas.org/mcstas-2.2">http://downloads.mcstas.org/mcstas-2.2</a>
+<p>Selected, important highligts from the release are:
+<ul>
+  <li><b>General:</b>
+  <ul>
+    <li>The new component/instrument keyword DEPENDENCY allows to automatically require / compile instruments
+    with external libraries.
+    <li>The Mantid-IDF generation through our Perl mcdisplay tool has been optimized.
+    <li>Bugfix: The use of WHEN with EXTEND code only considered the
+    first statement (report by M. Appel)
+    </ul>
+    <li><b>Infrastructure:</b>
+    <ul>
+      <li>McStas (and its X-ray counterpart McXtrace) are now on GitHub, see
+      <a href="https://github.com/McStasMcXtrace/McCode">https://github.com/McStasMcXtrace/McCode<a>
+      <li>We will continually provide various bits of "missing information" on the related Wiki at
+      <a href="https://github.com/McStasMcXtrace/McCode">https://github.com/McStasMcXtrace/McCode/wiki</a>
+    </ul>
+    <li><b>Components:</b>
+    <ul>
+      <li>A new model for the ESS butterfly moderator - see documentation for the ESS_moderator.comp. Developed by
+      Peter Willendrup in close collaboration with Troels Schoenfeldt
+      DTU Nutech/ESS.<br><b>** A separate document with recommended
+      settings for this component will be released later, also a
+      version backported to McStas 1.12c. **</b>
+      <li>The Isotropic_Sqw component was broken in McStas 2.1. The
+      expected behaviour has been restored. Users of this component
+      should upgrade to McStas 2.2 asap. Sorry for the inconvenience.
+    </ul>
+    <li><b>Instruments:</b>
+    <ul>
+      <li>ILL_IN13 backscattering instrument contributed by Emmanuel
+      Farhi
+      <li>ILL_IN4 tof instrument contributed by Emmanuel Farhi
+    </ul>
+    <li><b>Datafiles:</b>
+    <ul>
+      <li>Improved water Sqw data files contributed by Emmanuel Farhi (- see also JNST 52 (2015) 844 )
+      <li>Added CaF2 crystal, improved Al2O3 sapphire transmission
+    </ul>
+    <li><b>Tools:</b>
+    <ul>
+      <li>McStas 2.2 is the first release to include a first version of our new mcgui-py tool, based on Python, 
+      QT and Scintilla. We think it is a very nice start at this
+      long-awaited replacement of mcgui (Perl) and want
+      you to try it out even though a few edges may still be rough
+      here and there. For installation instructions, see the README's included with the installation packages.
+      <li>McStas 2.2 further includes a simple mcplot plotter for Unix platforms (Linux, OS X) based solely on 
+   shell-script + Matlab/iFit/Octave, no need for Perl or Python with this plotter, called mcplot-matlab
+    </ul>
+  </ul>
+  Greetings from the McStas team - hope you will enjoy this new
+  release! :-) - Full list of changes is available in the <a href="/CHANGES_McStas">CHANGELOG</a>
+  <hr>
+  <h3>
+February 19th, 2015: Bugfixed-release of the ESS_moderator.comp
+</h3>
+<p>Jan Saroun from NPI in Czech Republic (and author of
+RESTRAX/SIMRES) has spotted an unfortunate error in the
+ESS_moderator.comp component, relating to the 2014 "pancake" case.
+<p>The bug is a missing distance-factor in a solid-angle computation
+and will lead to a too high brilliance emitted from the source.
+<p>Unfortunately was never spotted in our tests since these happen with an
+instrument where this distance is set to 1 m... (and 1 x 1 = 1... )
+<p>The updated source packge for use with McStas 1.12c and 2.x is
+available for download at <a
+href="http://mcstas.org/download/share/ESS_moderator_February_2015.tgz">http://mcstas.org/download/share/ESS_moderator_February_2015.tgz</a>. A
+set of "release notes" is available at <a href="http://mcstas.org/download/share/ESS_moderator_February_2015.tgz.html">http://mcstas.org/download/share/ESS_moderator_February_2015.tgz.html</a>.
+<p>Sorry for any inconvenience this may cause.
+<hr>
+<h3>
+February 10th, 2015: Supplemental documentation for ESS moderators in McStas
+</h3>
+<p>A number of McStas users have expressed that the documentation for the
+ESS_moderator component distributed with McStas is not completely
+clear. To remedy this, Ken Andersen and I have (with the help of data
+from Troels Schönfeldt) produced a supplemental <a href="downloads/share/Reproducing_ESS_TDR_and_pancake_brillances_with_McStas.pdf">PDF document</a> that will hopefully help.
+
+<p>Please note that at this point, only TDR-like and pancake moderators
+are described in McStas. An updated set of moderator descriptions will
+be released with McStas 2.2 during the spring of 2015.
+
+<hr>
+<p><b>Previous news items: </b><a href="/news/2014.html">2014</a>, <a href="/news/2013.html">2013</a>, <a href="/news/2012.html">2012</a>, </b><a href="/news/2011.html">2011</a>, </b><a href="/news/2010.html">2010</a>, <a href="/news/2009.html">2009</a>, <a href="/news/2008.html">2008</a>, <a href="/news/2007.html">2007</a>, <a href="/news/2006.html">2006</a>, <a href="/news/2005.html">2005</a>, <a href="/news/2004.html">2004</a>, <a href="/news/2003.html">2003</a>,<a href="/news/2002.html">2002</a>, <a href="/news/2001.html">2001</a>, <a href="/news/2000.html">2000</a>, <a href="/news/1999.html">1999</a>,
+<a href="/news/1998.html">1998</a>.
+
+</p></body></html>

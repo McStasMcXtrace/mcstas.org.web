@@ -1,0 +1,118 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: Some questions concerning a vanadium scan -->
+<!--X-From: Kristian Nielsen <kristian.nielsen@risoe.dk> -->
+<!--X-Date: 14 Jul 1999 13:14:51 +0200 -->
+<!--X-Message-Id:  -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 378C5816.BA3B2BE7@fz&#45;juelich.de -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: Some questions concerning a vanadium scan</title>
+<link rev="made" href="mailto:kristian.nielsen@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00001.html">Date Prev</A>][<A HREF="msg00006.html">Date Next</A>]
+<a href="index.html#00002">[Chronological]</a>
+<a href="threads.html#00002">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: Some questions concerning a vanadium scan</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:o.kirstein@fz-juelich.de">o.kirstein@fz-juelich.de</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: Some questions concerning a vanadium scan</strong></LI>
+<LI><strong>From</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: 14 Jul 1999 13:14:51 +0200</LI>
+<LI>In-reply-to: &lt;378C5816.BA3B2BE7@fz-juelich.de&gt; (o.kirstein@fz-juelich.de)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+&gt; Date: Wed, 14 Jul 1999 11:27:50 +0200
+&gt; From: "Dr. Oliver Kirstein" &lt;o.kirstein@fz-juelich.de&gt;
+
+&gt; I hope that you can help me with the following effect: I tried to make a
+
+&gt; The effect is the following: If I don't use the 'Detector System 2' I
+&gt; get distributions which are shown in mcstas2.ps whereas the use of
+&gt; 'Detector System 2' gives the results shown in mcstas1.ps. 
+&gt; It makes me wonder because both detector parts don't use the same arm
+&gt; definition.
+
+&gt; Do you know what happens?
+
+Yes, I think I can explain the behaviour.
+
+Without the second detector group, the third detector group receives the
+full blast of the directly scattered beam from the vanadium sample, and
+this completely hides the faint signal from the scattering off the
+monochromator.
+
+With the second detector group, all neutrons scattered away from this
+second group (ie. the direct scattering onto the third group) is
+absorbed. This is a special "feature" of the monitor components in
+McStas that neutrons that move in the wrong direction are silently
+absorbed. Thus in this case only the scattering off the monochromator is
+observed.
+
+I think you will want to put in some shielding (just a simple slit
+perhaps) on arm2. You will also want to focus the scattering off the
+sample on the monochromator to get reasonable statistics. And you should
+eliminate the overlap between detectors Analyser_Div and Analyser_Energy.
+
+The silent absorbtion of backwards-moving neutrons is really a problem,
+and I will find some solution for it in the next McStas release.
+
+Hope this helps (otherwise ask again),
+
+ - Kristian.
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00001.html">Re: Vanadium Sample</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00006.html">mcstas</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00002"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00002"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

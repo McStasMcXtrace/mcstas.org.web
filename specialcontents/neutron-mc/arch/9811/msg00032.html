@@ -1,0 +1,110 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Fermi Chopper -->
+<!--X-From: Andrew Garrett <agarrett@ccbsf0.kek.jp> -->
+<!--X-Date: Thu, 26 Nov 1998 15:16:47 +0900 -->
+<!--X-Message-Id: 365CF24F.150AE6DA@ccbsf0.kek.jp -->
+<!--X-ContentType: multipart/mixed -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Fermi Chopper</title>
+<link rev="made" href="mailto:agarrett@ccbsf0.kek.jp">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00039.html">Date Prev</A>][<A HREF="msg00033.html">Date Next</A>]
+<a href="index.html#00032">[Chronological]</a>
+<a href="threads.html#00032">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Fermi Chopper</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>Monte Carlo Mailing List &lt;<A HREF="mailto:neutron-mc@risoe.dk">neutron-mc@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>Fermi Chopper</strong></LI>
+<LI><strong>From</strong>: <strong>Andrew Garrett &lt;<A HREF="mailto:agarrett@ccbsf0.kek.jp">agarrett@ccbsf0.kek.jp</A>&gt;</strong></LI>
+<LI>Date: Thu, 26 Nov 1998 15:16:47 +0900</LI>
+<LI>Content-return: allowed</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+
+  The following is a routine to simulate a fermi chopper.  The math is
+set up to work in the accelerated frame of reference in which the
+chopper is at rest.  By working in this frame, the computer can quickly
+reject a large fraction of the incoming neutrons.  Only those neutrons
+that have a reasonable likelihood of passing through the chopper take up
+processing time.
+
+  If a neutron deviates by less that 1 slit width in its passage through
+the chopper, its probability is adjusted according to its actual
+deviation.  This allows for a greater number of neutrons to pass through
+the chopper than absorbing those that hit a blade.
+
+  The blades separating the slits are currently held to be infinitely
+thin and perfectly absorbing.
+
+  I have tested this routine for choppers whose curvature is optimized
+for 50, 100, 200, and 400 meV, and have compared the resolution to
+calculated values taken mostly from Adv. Colloid Interface Sci, 71-72
+(1997) 209-232.  Transmission values were obtained from an unpublished
+calculation, with calculated values comparing favorably at energies
+below the optimized energies, but reduced at higher energies.  Our
+current belief is that the theoretical values are incorrect, due to an
+inappropriate small angle approximation, and that the values obtained
+from this routine are better.
+
+  I would appreciate hearing about any other test results obtained from
+this routine.
+
+  Thank you,
+
+  Andrew Garrett
+
+
+</PRE>
+<P><A HREF="bin00000.bin"> Curve_Fe.cmp</A></P>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00039.html">The first one to unsubscribe ?</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00033.html">Re: The first one to unsubscribe ?</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00032"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00032"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

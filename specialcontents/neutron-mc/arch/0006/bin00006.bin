@@ -1,0 +1,56 @@
+DEFINE INSTRUMENT V_sample()
+DECLARE
+%{
+/* Component parameters. */
+double radius_i, radius_o, h, pack, focus_r, target_x, target_y, target_z;
+double pos_x, pos_y, pos_z;
+double *pptr[] =
+  {
+    &radius_i, &radius_o, &h, &pack,
+    &focus_r, &target_x, &target_y, &target_z,
+    &pos_x, &pos_y, &pos_z,
+    0
+  };
+char pchr[] =
+  {
+    'i', 'o', 'h', 'p', 'r', 'a', 'b', 'c', 'x', 'y', 'z', 0
+  };
+
+#include "vitess-lib.h"
+
+/* Pointer to check whether all neutrons have been read. */
+int *check_finished;
+
+/* Our main() function. */
+int main(int argc, char *argv[])
+{
+  vitess_main(argc, argv, &check_finished, pptr, pchr);
+  exit(0);
+}
+%}
+INITIALIZE
+%{
+  /* This double-indirection is necessary here since MC_GETPAR is not
+     available in the DECLARE section. */
+  check_finished = &MC_GETPAR(vitess_in, finished);
+%}
+TRACE
+
+COMPONENT vitess_in = Vitess_input(
+    input = vitess_infile, repeat_count = vitess_repcnt,
+    bufsize = vitess_bufsize)
+  AT (0, 0, 0) ABSOLUTE
+
+COMPONENT comp = V_sample(
+    radius_i = radius_i, radius_o = radius_o, h = h, pack = pack,
+    focus_r = focus_r, target_x = target_x, target_y = target_y,
+    target_z = target_z)
+  AT (pos_x, pos_y, pos_z) ABSOLUTE
+  ROTATED (0, 90, 90) ABSOLUTE
+
+COMPONENT vitess_out = Vitess_output(
+    outname = vitess_outfile, bufsize = vitess_bufsize,
+    progress = vitess_tracepoints)
+  AT (0, 0, 0) ABSOLUTE
+
+END

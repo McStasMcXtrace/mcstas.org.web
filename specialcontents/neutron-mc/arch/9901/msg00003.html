@@ -1,0 +1,261 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Bender -->
+<!--X-From: Philipp Bernhardt <snphbern@jerry.rommel.stw.uni&#45;erlangen.de> -->
+<!--X-Date: Wed, 20 Jan 1999 15:57:26 +0100 (CET) -->
+<!--X-Message-Id: Pine.LNX.3.96.990120154618.19567A&#45;200000@jerry.rommel.stw.uni&#45;erlangen.de -->
+<!--X-ContentType: multipart/mixed -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Bender</title>
+<link rev="made" href="mailto:snphbern@jerry.rommel.stw.uni-erlangen.de">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00010.html">Date Prev</A>][<A HREF="msg00004.html">Date Next</A>]
+<a href="index.html#00003">[Chronological]</a>
+<a href="threads.html#00003">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Bender</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:neutron-mc@risoe.dk">neutron-mc@risoe.dk</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Bender</strong></LI>
+<LI><strong>From</strong>: <strong>Philipp Bernhardt &lt;<A HREF="mailto:snphbern@jerry.rommel.stw.uni-erlangen.de">snphbern@jerry.rommel.stw.uni-erlangen.de</A>&gt;</strong></LI>
+<LI>Date: Wed, 20 Jan 1999 15:57:26 +0100 (CET)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Hello,
+
+The following routine is simulating a curved neutron guide (bender). It is bent to the negative
+X axis. It behaves like a parallel guide in the Y axis. To get a better transmission coefficient, you can 
+split the bender into channels. These channels are separated by partitions with the thickness of d.
+
+Because the angle of reflection doesn't change, the routine 
+calculates the reflection coefficent for the concave and, if necessary, for the convex wall only onces, 
+together
+with the number of reflections.
+Nevertheless the exact position, the time, and the divergence is calculated at the end of the bender, so
+there aren't any approximations. 
+ 
+I have compared the results with analytic results in the case of an ideal reflection and with the 
+programme haupt and found that they fit well. 
+  
+I would appreciate hearing about any comments or other test results obtained from
+this routine.
+ 
+Thank you
+Philipp Bernhardt
+
+Universität Erlangen/Nürnberg
+Lehrstuhl für Kristallographie und Strukturphysik
+D-91054 Erlangen
+E-mail: philipp.bernhardt@krist.uni-erlangen.de
+
+</PRE>
+<PRE>
+/**********************************************************************************************
+*
+* Component: Bender
+*
+* Written by: Philipp Bernhardt, Januar 10 1999
+*
+* Models a curved neutron guide. The entrance lies in the X-Y plane, 
+* centered on the Z axis. The neutrons will also leave the bender in the X-Y plane at 
+* the z-value r*Win, so you do not have to calculate the real exit coordinates and you do not
+* need a new arm. The bender is bent to the negative X axis; it behaves like a 
+* parallel guide in the Y axis.
+* There is no warning, if the parameters are wrong, so please make sure that
+* - w,h,r,d,Win,k are positive numbers 
+* - k*d is smaller than the width w
+* - Win is big enough to prevent, that a neutron can pass the bender without a reflection
+* otherwise you will get wrong results  
+*
+* INPUT PARAMETERS:
+*
+* w:       (m)    Width at the bender entry and exit
+* h:       (m)    Height at the bender entry and exit
+* r:       (m)    Radius of the bender
+* d:       (m)    Thickness of the partition, which separates the channels
+* Win:     (rad)  Angle of the deflection of the whole bender (r*Win is the length of the bender)
+* k:       (AA)   Number of channels 
+* R0a,Qca,alphaa,ma,Wa:  Parameters, which are describing the mirror at concave side of the bender
+* R0i,Qci,alphai,mi,Wi:  Parameters, which are describing the mirror at convex side of the bender
+* R0s,Qcs,alphas,ms,Ws:  Parameters, which are describing the mirror at the top and bottom side 
+*                        of the bender 
+*
+* Example values: w=0.05 h=0.12 r=250 d=0.001 Win=0.04 k=3 ma=3 mi=2 ms=2
+************************************************************************************************/
+ 
+DEFINE COMPONENT Bender
+DEFINITION PARAMETERS (w,h,r,d,Win,k,R0a,Qca,alphaa,ma,Wa,R0i,Qci,alphai,mi,Wi,R0s,Qcs,alphas,ms,Ws)
+SETTING PARAMETERS ()
+OUTPUT PARAMETERS ()
+STATE PARAMETERS (x, y, z, vx, vy, vz, t, s1, s2, p)
+DECLARE
+ %{
+        double bk; 
+ %}
+
+INITIALIZE
+ %{
+	bk=(w+d)/k;                            /* width of one channel + thickness d of partition */
+ %}
+
+TRACE
+ %{
+	double erszei,aktwin,aktzei,zykzei,zykwin,ab,dab,dru,einwin,Q,arg,ref,innref,aeuref,aeuwin,innwin,R,T,Ta;
+	PROP_Z0;
+
+        if ((fabs(x)&gt;w/2) || (fabs(y)&gt;h/2))    /* neutron is missing the bender */
+	   ABSORB;
+
+        dru=floor((w/2-x)/bk)*bk-w/2;          
+        ab=-dru-x;                             /* distance between neutron and the concave side of neutron */ 
+        R=r-dru;                               /* radius of the channel for the current neutron */ 
+        if (ab&gt;bk-d)                           /* neutron is hitting the partition */ 
+           ABSORB; 
+
+ /* reflections in the XZ-plane */
+	einwin=atan(vx/vz);                    /* divergence of the current neutron at the entrance */	
+        dab=R-cos(einwin)*(R-ab);              /* maximal distance between neutron and concave side */
+        aeuwin=acos((R-dab)/R);                /* angle of reflection at the concave side */ 
+        zykwin=2*aeuwin;                        
+        T=2*sqrt(R*R-(R-dab)*(R-dab))/sqrt(vx*vx+vz*vz);  /* time period between two reflections at */ 
+                                                          /* the concave side */
+        innref=1.0;
+        Q=2*V2K*sqrt(vx*vx+vz*vz)*sin(aeuwin); 
+        if (Q&lt;=Qca) 
+           aeuref=R0a;
+        else {
+           arg=(Q-ma*Qca)/Wa;
+           if (arg&lt;10) 
+              aeuref=.5*R0a*(1-tanh(arg))*(1-alphaa*(Q-Qca));   /* reflectivity at the concave side */ 
+           else
+              ABSORB; }  
+
+        if (dab&gt;bk-d) {                               /* there are also zick-zack-reflections */          
+           innwin=acos(R*cos(aeuwin)/(R-bk+d));       /* angle of reflection at the convex side */ 
+           Q=2*V2K*sqrt(vx*vx+vz*vz)*sin(innwin);
+           if (Q&lt;=Qci) 
+              innref=R0i;
+           else {
+              arg=(Q-mi*Qci)/Wi;
+              if (arg&lt;10) 
+                 innref=.5*R0i*(1-tanh(arg))*(1-alphai*(Q-Qci));     /* reflectivity at the convex side */
+              else
+                 ABSORB; }
+           zykwin=2*(aeuwin-innwin); 
+           T=2*sqrt(R*R+(R-bk+d)*(R-bk+d)-2*R*(R-bk+d)*cos(zykwin/2))/sqrt(vx*vx+vz*vz); }
+        if (einwin&lt;0) {                                               
+           aktwin=Win-zykwin+aeuwin+einwin;
+           p*=aeuref*innref; 
+           Ta=sqrt((R-ab)*(R-ab)+(R-bk+d)*(R-bk+d)-2*(R-ab)*(R-bk+d)*cos(Win-aktwin-zykwin/2))/sqrt(vx*vx+vz*vz)+T/2; }
+        else {
+           aktwin=Win-aeuwin+einwin;
+           p*=aeuref; 
+           Ta=sqrt((R-ab)*(R-ab)+R*R-2*(R-ab)*R*cos(Win-aktwin))/sqrt(vx*vx+vz*vz); }
+        while (aktwin&gt;zykwin) {
+           p*=aeuref*innref;
+           aktwin-=zykwin; 
+           Ta+=T; }
+        if (aktwin&gt;zykwin/2) {
+           p*=innref;
+           ab=(R*cos(aeuwin-zykwin+aktwin)-R+dab)/cos(aeuwin-zykwin+aktwin);
+           Ta+=sqrt((R-ab)*(R-ab)+(R-bk+d)*(R-bk+d)-2*(R-ab)*(R-bk+d)*cos(aktwin-zykwin/2))/sqrt(vx*vx+vz*vz)+T/2;
+           vx=sin(aeuwin-zykwin+aktwin)*sqrt(vx*vx+vz*vz);
+           vz=vx/tan(aeuwin-zykwin+aktwin); }   
+        else {
+           ab=(R*cos(aeuwin-aktwin)-R+dab)/cos(aeuwin-aktwin);
+           Ta+=sqrt((R-ab)*(R-ab)+R*R-2*(R-ab)*R*cos(aktwin))/sqrt(vx*vx+vz*vz);
+           vx=-sin(aeuwin-aktwin)*sqrt(vx*vx+vz*vz);
+           vz=-vx/tan(aeuwin-aktwin); }
+        x=-ab-dru;
+        z=r*Win;
+        t+=Ta;
+
+ /* reflections at top an bottom (Y axis) */ 
+        if (vy!=0.0) {
+           zykzei=h/fabs(vy);                           /* time period between two reflections */ 
+           Q=2*V2K*fabs(vy);
+           if (Q&lt;=Qcs) 
+              ref=R0s;
+           else {
+              arg=(Q-ms*Qcs)/Ws;
+              if (arg&lt;10) 
+                 ref=.5*R0s*(1-tanh(arg))*(1-alphas*(Q-Qcs));        /* reflectivity at top and bottom */    
+              else 
+                 ABSORB; }
+           erszei=(vy/fabs(vy)*h/2-y)/vy;                /* time till neutron hit the top or bottom side 
+                                                            for the first time */  
+           if (erszei&lt;Ta) {
+              p*=ref;
+              vy*=-1;
+              aktzei=Ta-erszei;
+              while (aktzei&gt;zykzei) {
+                 p*=ref;
+                 aktzei-=zykzei;
+                 vy*=-1; }
+              y=-vy/fabs(vy)*h/2+aktzei*vy; }
+           else 
+              y+=Ta*vy; }
+%}
+
+FINALLY
+ %{
+ %}
+
+END
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<UL><LI><STRONG>Follow-Ups</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00005" HREF="msg00005.html">Re: Bender</A></STRONG>
+<UL><LI><EM>From:</EM> Kristian Nielsen &lt;kristian.nielsen@risoe.dk&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00010.html">McStas installation and questions</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00004.html">Re: order of moving and rotating</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00003"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00003"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

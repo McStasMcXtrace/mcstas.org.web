@@ -1,0 +1,118 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: commandline arguments in mcstas -->
+<!--X-From: Thomas C Hansen <hansen@ill.fr> -->
+<!--X-Date: Mon, 06 Mar 2000 10:54:48 +0100 -->
+<!--X-Message-Id: 38C38066.4435370B@ill.fr -->
+<!--X-ContentType: text/plain -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>commandline arguments in mcstas</title>
+<link rev="made" href="mailto:hansen@ill.fr">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00010.html">Date Prev</A>][<A HREF="msg00014.html">Date Next</A>]
+<a href="index.html#00029">[Chronological]</a>
+<a href="threads.html#00029">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>commandline arguments in mcstas</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>commandline arguments in mcstas</strong></LI>
+<LI><strong>From</strong>: <strong>Thomas C Hansen &lt;<A HREF="mailto:hansen@ill.fr">hansen@ill.fr</A>&gt;</strong></LI>
+<LI>Date: Mon, 06 Mar 2000 10:54:48 +0100</LI>
+<LI>Cc: Emmanuel Farhi &lt;<A HREF="mailto:farhi@ill.fr">farhi@ill.fr</A>&gt;</LI>
+<LI>Organization: Institut Max von Laue-Paul Langevin, Grenoble</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Dear Kristian,
+
+In a future version of McStas, could you imagine some additional funcitonality
+in the commandline arguments of mcstas simulations? E.g. for a huge number of
+parameters, in the actual version the commandline becomes too long, so the only
+way is to give all parameters manually, or by a commandline like
+'./mysimulation.out -n 1e6 &lt; input.arguments'. That workaround is fine, as long
+as I do not want to use gscan which won't work by no means, if there are too
+many parameters. I could imagine a commandline like './mysimulation.out -n 1e6
+-p input.arguments Lmin=1.2 Lmax=1.4', which means, all input parameters are
+taken from a file input.arguments, except the parameters Lmin and Lmax, which
+are overwritten by the values given in the commandline. This procedure would
+permit the use of a slightly modified version of gscan (taking account of the
+option '-p' or '--param' of the mcstas generated simulation). The file
+input.arguments might contain as many 'param=value', separated by linefeed,
+blank or comma in any order. If any 'param=value' is missing in the file
+input.arguments, as well as in the commandline itself, the up to now used
+convention may be used, which is asking interactively the user for some input.
+(That's in fact another, new, suggestion, as in the actual version the
+simulation stops if some parameters are given, others not. Why not asking
+interactively these missing parameters instead?)
+
+These are just suggestions, in order to ripe some new ideas, don't take it as a
+strong demand right now!
+
+Best Regards,
+
+Thomas
+
+
+--
+Dr. Thomas C HANSEN, Instrument Scientist D20, Diffraction Group
+Institut Max von Laue-Paul Langevin, BP 156, 38042 Grenoble Cédex 9, France
+ILL4-1st floor room 100, Phone +33(0)476207044, Fax +33(0)476207648
+<A HREF="mailto:hansen@ill.fr">mailto:hansen@ill.fr</A>, <A HREF="http://www.ill.fr/YellowBook/D20">http://www.ill.fr/YellowBook/D20</A>
+Private: 13, allée des étangs, 38240 Meylan, France, +33(0)476180553
+
+
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00010.html">Re: IN6 monochromator</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00014.html">Re: mcdoc ok</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00029"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00029"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

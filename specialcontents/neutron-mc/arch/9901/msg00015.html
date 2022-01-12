@@ -1,0 +1,149 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: McStas installation and questions -->
+<!--X-From: Kristian Nielsen <kristian.nielsen@risoe.dk> -->
+<!--X-Date: 25 Jan 1999 10:27:32 +0100 -->
+<!--X-Message-Id:  -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: l03110706b2ce45e9f3ae@[193.48.250.148] -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: McStas installation and questions</title>
+<link rev="made" href="mailto:kristian.nielsen@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00017.html">Date Prev</A>][<A HREF="msg00016.html">Date Next</A>]
+<a href="index.html#00015">[Chronological]</a>
+<a href="threads.html#00015">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: McStas installation and questions</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:farhi@ill.fr">farhi@ill.fr</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: McStas installation and questions</strong></LI>
+<LI><strong>From</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: 25 Jan 1999 10:27:32 +0100</LI>
+<LI>In-reply-to: &lt;<A HREF="msg00014.html">l03110706b2ce45e9f3ae@[193.48.250.148]</A>&gt; (farhi@ill.fr)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Hi Emmanuel,
+
+&gt; Hello Kristian,
+&gt; 
+&gt; At last, I could compile McStas on mica (SGI machine). parsing instrument (mcstas) and compiling is ok. running simulations by hand seems ok (instrument asks for config parameters).
+
+Good! Did you find out what the problem was (so that I could improve the
+installation or clarify in the manual)? Did you give up on the HPs?
+
+&gt; # mica~farhi 104% perl gscan.pl 21 ./linup-1 sim/linup_1_50.sim -39,-35 -73 0 1e5
+&gt; Invalid parameter specification '-39,-35' at gscan.pl line 35.
+
+Ouch! This is using the old syntax from a very old version of McStas,
+before the first release. Where did you find that example, I will erase
+it immediately! Hm I guess you found it on the web page, parts of that
+badly needs an update.
+
+The correct new syntax would be something like
+
+    perl gscan 21 1e5 ./linup-1 sim/linup_1_50.sim PHM=-39,-35 TTM=-73 C1=0
+
+&gt; Then I try something else :
+&gt; 
+&gt; # gscan 1 21 ./linup-1 sim/linup_1_50.sim -39,-35 -73 0 1e5
+&gt; Warning: translation table syntax error: Unknown keysym name: ClearLine
+&gt; Warning: ... found while parsing '&lt;Key&gt;ClearLine:      delete-to-end-of-line()'
+&gt; Warning: Cannot convert string "-*-screen-medium-r-normal--15-*-*-*-*-*-iso8859-1" to type FontStruct
+&gt; dgl error (protocol): remote machine not DGL capable - macfarhi.ill.fr:0.0
+&gt; dgl error (default init): default dglopen(macfarhi.ill.fr:0.0,4) returned -13
+
+This is just plain wierd ... I think DGL is SGIs own extension to the X
+Window System (for 3D graphics I guess), I cannot think of any way in
+which the gscan program would cause this. Maybe you hit a bad key on the
+keyboard ("ClearLine" ...) by mistake :-)
+
+&gt; OK, it's ok. I'm now running tas1-examples batch ... suspens !
+
+Great!
+
+&gt; The McStas computation on mica is going on, slowly. ok.
+
+Good, do not hesitate to ask again if you need help, or want to tell
+about your results.
+
+&gt; Arnaud heiss is coming to Risoe, on TAS6 with Des Mc Morrow. I've
+
+Thanks for the tip; Des has promised to introduce me to Arnaud.
+
+&gt; talked about TAS1 with him. It could be great to compare McStas
+&gt; results with our 'home' program ResTrax (which is perhaps faster, by
+&gt; really more specific for TAS instruments, and doesn't enable to
+&gt; describe anything as McStas). For this, we need a 'mecanical'
+&gt; description of TAS1 instrument (distances, components, etc) Of course
+&gt; it's in the lineup-1 file for instance, but a drawing is perhaps
+&gt; better (with the exact significance of parameter used). I guess you
+&gt; had to do so when writting lineup files for TAS1...
+
+Yes, I am sure we can find something suitable. I actually started
+something similar, but in the opposite direction, for the RESCAL program
+with Alan Tennant before Christmas. It is a McStas simulation for a
+RESCAL-type generic instrument that simulates an instrument defined by
+RESCAL instrument definition parameters.
+
+ - Kristian.
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<UL><LI><STRONG>References</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00014" HREF="msg00014.html">Re: McStas installation and questions</A></STRONG>
+<UL><LI><EM>From:</EM> "Emmanuel Farhi (71 83)" &lt;farhi@ill.fr&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00017.html">McStas and W32</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00016.html">Re: Bender</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00015"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00015"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

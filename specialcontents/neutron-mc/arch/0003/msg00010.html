@@ -1,0 +1,139 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: IN6 monochromator -->
+<!--X-From: Kristian Nielsen <kristian.nielsen@risoe.dk> -->
+<!--X-Date: 6 Mar 2000 10:29:36 +0100 -->
+<!--X-Message-Id:  -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 38BFC575.8C4A5C97@ill.fr -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: IN6 monochromator</title>
+<link rev="made" href="mailto:kristian.nielsen@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00011.html">Date Prev</A>][<A HREF="msg00029.html">Date Next</A>]
+<a href="index.html#00010">[Chronological]</a>
+<a href="threads.html#00010">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: IN6 monochromator</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:poehlman@ill.fr">poehlman@ill.fr</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: IN6 monochromator</strong></LI>
+<LI><strong>From</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: 6 Mar 2000 10:29:36 +0100</LI>
+<LI>CC: <A HREF="mailto:schober@ill.fr">schober@ill.fr</A></LI>
+<LI>In-reply-to: &lt;<A HREF="msg00009.html">38BFC575.8C4A5C97@ill.fr</A>&gt; (message from Markus Poehlmann on Fri,03 Mar 2000 15:00:21 +0100)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+I think you have actually three possibilities:
+
+1. If your real monochromators are build each from 7 flat pieces,
+consider using 3 x 7 instances of Mosaic_anisotropic in the
+simulation. See the TAS1 example in the McStas manual for how to build a
+simulation for a composit monochromator.
+
+2. To extend Mon2_foc to do an MC choice should be straightforward. I
+have not studied Peter Link's code in detail, but I think the relevant
+sequence is
+
+      tmp3 = (theta-theta0)/(MIN2RAD*mosaich);
+      if(tmp3 &gt; DIV_CUTOFF)
+      {
+        x = old_x; y = old_y; z = old_z; t = old_t;
+      }
+      else
+      {
+        p *= r0*exp(-tmp3*tmp3*4*log(2)); /* Use mosaics */
+
+Here the weight is adjusted with the reflectivity
+R=r0*exp(-tmp3*tmp3*4*log(2)). To instead do an MC choice, something
+like the following should be used
+
+      tmp3 = (theta-theta0)/(MIN2RAD*mosaich);
+      if(tmp3 &gt; DIV_CUTOFF || rand01() &gt; r0*exp(-tmp3*tmp3*4*log(2)))
+      {  /* No scattering */
+        x = old_x; y = old_y; z = old_z; t = old_t;
+      }
+      else
+      { /* Scatter, no weight adjustment here! */
+
+I have not tested this, but the main point is to replace the weight
+adjustment by the MC choice
+
+    rand01() &gt; r0*exp(-tmp3*tmp3*4*log(2))
+
+3. To extend Mosaic_anisotropic to use a curved surface would also be
+feasible, the only problem should be the need to understand the code of
+both components. Only the geometry calculations should change, ie. the
+computation of the intersection between the neutron flight path and the
+monochromator surface, and the calculation of the surface normal.
+
+Hope this helps,
+
+ - Kristian.
+
+--
+Kristian Nielsen        kristian.nielsen@risoe.dk
+Risø National Laboratory
+Condensed Matter Physics and Chemistry Department
+Tel. +45 4677 5515   Fax +45 4677 4790
+Encryption PGP key <A HREF="http://neutron.risoe.dk/kn.txt">http://neutron.risoe.dk/kn.txt</A>
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<UL><LI><STRONG>References</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00009" HREF="msg00009.html">Re: IN6 monochromator</A></STRONG>
+<UL><LI><EM>From:</EM> Markus Poehlmann &lt;poehlman@ill.fr&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00011.html">Re: IN6 simulation</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00029.html">commandline arguments in mcstas</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00010"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00010"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

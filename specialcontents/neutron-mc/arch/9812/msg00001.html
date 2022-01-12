@@ -1,0 +1,130 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: First tries using McStas -->
+<!--X-From: Kristian Nielsen <kristian.nielsen@risoe.dk> -->
+<!--X-Date: 1 Dec 1998 11:16:25 +0100 -->
+<!--X-Message-Id:  -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 13908.3056.33799.267080@obiwan.kri.physik.uni&#45;muenchen.de -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: First tries using McStas</title>
+<link rev="made" href="mailto:kristian.nielsen@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[Date Prev][<A HREF="msg00003.html">Date Next</A>]
+<a href="index.html#00001">[Chronological]</a>
+<a href="threads.html#00001">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: First tries using McStas</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:artus@obiwan.kri.physik.uni-muenchen.de">artus@obiwan.kri.physik.uni-muenchen.de</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: First tries using McStas</strong></LI>
+<LI><strong>From</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: 1 Dec 1998 11:16:25 +0100</LI>
+<LI>CC: <A HREF="mailto:kim.lefmann@risoe.dk">kim.lefmann@risoe.dk</A></LI>
+<LI>In-reply-to: &lt;13908.3056.33799.267080@obiwan.kri.physik.uni-muenchen.de&gt;       (artus@obiwan.kri.physik.uni-muenchen.de)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+&gt; Did I tell you about the difference in the angular profiles between
+&gt; beamline and McStas at the end of the tapered guide? Beamline gives me 
+&gt; a rather regular profile, while McStas calculates some extra maxima at
+&gt; about 11 minutes of arc (looks like Batman). The difference is not
+&gt; extreme but large enough to again think about the guide. I should send
+&gt; you the files if you want to have a look at them.
+
+Ok, I finally got around to take a look at this (sorry for taking so
+long). I think what you are seeing is an effect of the gab you have
+between guide section 2 and 3:
+
+    COMPONENT part2 = Guide2(
+            w2 = 0.036522,
+            l = 1.220,
+            ...
+      AT (0,0,2.782) RELATIVE a1 
+
+    COMPONENT part3 = Guide2(
+            w1 = 0.038644,
+            l = 9.500,
+            ...
+      AT (0,0,4.202) RELATIVE a1 
+
+There is a 20 cm long and about 2 mm wide gab between the two sections
+in the horizontal direction. From the divergence detector, this gab is
+seen at an angle of about 0.12 degrees, and that is precisely the
+location of the two minima on the horizontal beam profile ...
+
+To investigate this, I tried to run a modified version of your
+simulation where the gab is closed:
+
+    COMPONENT part2 = Guide2(
+	    w2 = 0.036522,
+	    l = 1.220,
+      AT (0,0,2.782) RELATIVE a1 
+    COMPONENT part3 = Guide2(
+	    w1 = 0.036522,
+	    l = 9.700,
+      AT (0,0,4.003) RELATIVE a1 
+
+With the gab closed, the horizontal profile is smooth. So it appears
+safe to conclude that the gab is the cause of the strange minima.
+
+If you look closely, you can see a similar effect in the vertical
+direction, though it is much less pronounced (probably because of the
+larger m value and perhaps the larger guide dimensions in this direction).
+
+The question is then why you 'beamline' program does not show this
+effect? I assume that this program also has the gab between the guide
+sections?
+
+ - Kristian.
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00003.html">Re: First tries using McStas</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00001"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00001"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

@@ -1,0 +1,98 @@
+<html><head>
+<title>2T scan on 1mm slit</title>
+<LINK REV="made" HREF="mailto:kristian.nielsen@risoe.dk">
+</head>
+
+<body>
+
+<h1>2T scan on 1mm slit</h1>
+
+<h2>Measurements</h2>
+
+Now the monitor is put in the proper position just after collimator C1, and
+the rest of the measurements are done using the single detector in the
+analysator house. The 10.5x40.5 slit is kept on the sample position, but an
+1x40mm is placed 30mm behind, and atenuators are placed before the
+detector. The instrument is run in 2-axis mode with no analysator. 2T is
+scanned from -1.2 to 1 for 5 sec/point. Data file
+<a href="linup013.dat"><TT>linup013.dat</TT></a>.
+
+<P ALIGN=CENTER><IMG SRC="fit013.gif"></P>
+<PRE>
+  Amplitude     1.2513e+05    3.9318e+03
+  Centre       -3.0967e-01    9.7474e-03
+  Width         3.6144e-01    9.6441e-03
+  Background    1.9231e+03    9.0375e+02
+
+* Chi Squared 642.5405
+</PRE>
+
+
+
+<h2>Simulations</h2>
+
+The 1mm slit could not be adjusted precisely, so we simulate slit sizes of
+0.75mm, 1mm, and 1.25mm.
+Instrument definition <a href="linup-3.instr"><TT>linup-3.instr</TT></a>.
+
+<P>
+This is the result <a href="linup_6_m.sim"><TT>linup_6_m.sim</TT></a> of
+simulation with 5e6 neutrons on 0.75mm slit:
+
+<P ALIGN=CENTER><IMG SRC="fit_6_m.gif"></P>
+<PRE>
+  Amplitude     9.2965e-02    2.4094e-03
+  Centre       -7.9373e-02    6.5442e-03
+  Width         3.4118e-01    5.5655e-03
+  Background   -7.7537e-04    3.3417e-04
+
+* Chi Squared 72.7182
+</PRE>
+
+<P>
+This is the result <a href="linup_6_0.sim"><TT>linup_6_0.sim</TT></a> of
+simulation with 5e6 neutrons on 1mm slit:
+
+<P ALIGN=CENTER><IMG SRC="fit_6_0.gif"></P>
+<PRE>
+  Amplitude     9.2756e-02    2.4560e-03
+  Centre       -7.9388e-02    6.7187e-03
+  Width         3.4129e-01    5.7245e-03
+  Background   -7.8760e-04    3.4379e-04
+
+* Chi Squared 75.9689
+</PRE>
+
+<P>
+This is the result <a href="linup_6_p.sim"><TT>linup_6_p.sim</TT></a> of
+simulation with 5e6 neutrons on 1.25mm slit:
+
+<P ALIGN=CENTER><IMG SRC="fit_6_p.gif"></P>
+<PRE>
+  Amplitude     9.2577e-02    2.4323e-03
+  Centre       -8.0689e-02    6.6481e-03
+  Width         3.4157e-01    5.6603e-03
+  Background   -7.7901e-04    3.4032e-04
+
+* Chi Squared 74.6170
+</PRE>
+
+<h2>Comparison</h2>
+
+<P>
+The measured and simulated widths are in good agreement, though the fits are
+not very good. This is a comparison of measured and simulated (with 1mm slit) data:
+
+<P ALIGN=CENTER><IMG SRC="cmp_6_0.gif"></P>
+
+
+
+
+<hr><address>
+Kristian Nielsen
+&lt;<a href="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</a>&gt; /
+<!-- hhmts start -->
+Jul 17, 1998.
+<!-- hhmts end -->
+</address>
+</body></html>

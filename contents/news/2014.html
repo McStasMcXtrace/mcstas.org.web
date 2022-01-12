@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"></head><body>
+
+<h3>
+October 22nd, 2014: Mac OS X Yosemite and McStas: Installation bundle
+put together
+</h3>
+<p>A tested download bundle for Mac OS X 10.10 Yosemite has been uploaded to
+
+<p><a href="http://downloads.mcstas.org/mcstas-2.1/mac/">http://downloads.mcstas.org/mcstas-2.1/mac/</a>
+
+<p>The enclosed McStas has a limited set of differences/bugfixes wrt. the official McStas 2.1 released in september, but should generally behave the same.
+
+<p>A few details are pointed out in the README.TXT of the tar.gz archive, please make sure to read that before installation.
+<hr>
+<h3>
+October 18th, 2014: Mac OS X Yosemite and McStas: Hold your horses!
+</h3>
+<p>Upgrading to Mac OS X Yosemite 10.10 removes Perl 5.12, which the
+Perl tools in McStas 2.1 distributed for Maverics rely on...
+<p>In conclusion: If you need a fully functional McStas, please do not
+upgrade to Yosemite just yet... :-)
+<hr>
+<h3>
+September 12th, 2014: McStas 2.1 finally released!!
+</h3>
+<p>Sorry for the wait - but here it is: McStas 2.1 is released and
+ready for download via <a
+href="http://downloads.mcstas.org/mcstas-2.1">http://downloads.mcstas.org/mcstas-2.1</a>
+<p>Selected, important highligts from the release are:
+<ul>
+  <li>McStas 2.1 is the second release in the 2.x series and fixes various issues with McStas 2.0,
+  plus provide important new developments.
+  <li>IMPORTANT: Please ensure to use our "migration scripts" for McStas 2.0 and 1.12c if you want
+  these to co-exist with 2.1. Also, please read the platform-specific notes!
+  <li>General:
+  <ul>
+    <li>Via NeXus libraries and a new --format=Mantid setting for the mcdisplay tool, we are now
+    able to generate NeXus/HDF files that can be read and treated by Mantid! Mcdisplay generates
+    a Mantid IDF description for embedding in the NeXus file, including the usual McStas instrument
+    geometry. Please read the specific guide for this method, documented in the McStas manual, Chapter 6.
+    <li>Use of STATE_PARAMETERS and POLARIZATION parameters is no longer supported!
+    If you have home-grown components using these, you will get this type of error with 
+    McStas 2.1:
+    <pre>
+      Translating instrument definition 'BNL_H8.instr' into C ...
+      mcstas -t -o BNL_H8.c BNL_H8.instr
+      Compiling simulation BNL_H8.instr
+      Arm.comp is using STATE PARAMETERS
+      	       mcstas-2.1 does NOT support this keyword. Please remove line 36
+      mcstas-2.1: 1 Errors encountered during parse of BNL_H8.instr.
+      ** Error exit **
+   </pre>
+    <li>As the error message suggests, this can be fixed by simply removing/commenting out
+    the STATE and POLARISATION parameter lines in the top of the component, i.e.:
+    <pre>
+    /* STATE PARAMETERS (x,y,z,vx,vy,vz,t,s1,s2,p) */
+    /* POLARISATION PARAMETERS (sx,sy,sz) */
+   </pre>
+   <li>In case of "negative time" propagation we no longer ABSORB these neutrons but rather restore
+    the incoming neutron state, leaving it untouched for the following components. This avoids
+    various types of shadowing effects, e.g. when placing parallel monitors that are not in a 
+    GROUP. This is furhter in preparation for the forthcoming ASSEMBLY keyword which will work
+    roughly like an "iterative group" that loops on the ASSEMBLY of components until no furhter
+    scattering is achieved, but always scatters first on the component which is closest (in time)
+    to the neutron.
+    <li>"Scatter logging": With this release we provide this special ensemble of instrument examples
+    <ul>
+      <li>Test_Scatter_log_losses.instr
+      <li>Test_Scatter_log_mvalues.instr
+      <li>Test_Scatter_log_ssw_mcnp.instr
+      that together with the (misc cathegory) components
+      <li>Scatter_log_iterator.comp
+      <li>Scatter_log_iterator_stop.comp
+      <li>Scatter_logger.comp
+      <li>Scatter_logger_stop.comp
+    </ul>
+   <li>provide a powerful post-processing mechanism, mainly for guide systems - that for instance
+    can be used to study the non-propagated, i.e. absorbed neutron flux along the guide. For
+    more information, a paper by Esben Klinkby et. al. will be available in one of the next 
+    issues of Journal of Physics: Conference Series, proceedings of the NOP&D 2013 meeting in
+    Ismaning. Slides from Esbens talk are available here:
+    <a href="http://orbit.dtu.dk/files/57025387/prod11375088187360.NO_P_v8.pdf">http://orbit.dtu.dk/files/57025387/prod11375088187360.NO_P_v8.pdf</a>
+  </ul>
+  <li>Another important change is an optimization of the
+  Single_crystal component that results in very large speedups,
+  especially for large unit cells with many reflections. A speedup of
+  more than a factor of 500 has been observed with the Perdeuterated
+  pyrophosphatase system, for which a very large reflection list (.lau
+  format) is provided.
+  <li>The release also contains the latest revision of the
+  ESS_moderator component, including updated "pancake" source
+  brilliance calculated by the ESS neutronics group and parametrized
+  for McStas by Troels Schönfeldt, DTU Nutech.
+</ul>
+We have also received a nice, long list of contributions and have also
+developed and improved both components, instruments and core package
+functionalty. For the full list of changes, please consult the <a href="CHANGES_McStas">CHANGES document</a>.
+
+<hr>
+<h3>
+July 17th, 2014: Updated ESS moderator component available
+</h3>
+<p>Unfortunately we are still hunting a few bugs in the development
+tree, and are (still!!) not ready to release the official McStas 2.1.
+<p>In the meantime, those of you simulating ESS instruments can try
+out our new ESS moderator component, available through the <a
+href="/download/share">download share</a> for use with both McStas 2.x
+and 1.12c.
+<p>The component comes with a library of ESS source brilliances, including:
+<ul>
+    <li> 2001, legacy "Mezei moderators" from the original F. Mezei documents, rescaled to ESS TDR frequency, pulselength and power.
+    <li> TDR,  Mezei moderators, with a wavelength-dependent correction term to the cold flux, derived from  2012 MCNPX calculations 
+      by ESS neutronics group. Corrections calculated by K Lieutenant (Vitess) NOTE: uses the 2001 brilliance for the thermal moderator!
+    <li> 2013, post-TDR update with non-Maxwellian cold spectrum, Troels Schoenfeldt, BEFORE the ESS pancake geometry was introduced.
+    <li> 2014  updated brilliance using formulation by Troels Schoenfeldt, including support for the "pancacke", i.e. flat geometry and
+      geometrical brilliance over the moderator surface.
+</ul>
+<p>An important detail about the 2014-pancake moderator is that the component origin is NOT at the centre of the cylindrical cold source, but
+instead at the middle of the front face of the cylinder. For technical reasons, neutrons are in this case propagated from a tangential plane
+through that point.
+<ul>
+    <li> We further provide a set of example instruments for producing curves corresponding to each of the brilliance settings.
+    <li> ... as well as an updated version of the Brilliance_monitor.comp, allowing multiple instances within an instrument file
+</ul>  
+<p>We hope you will find this useful even though the official McStas 2.1 is still pending... 
+<p>Vacation greetings on behalf of the McStas team
+<br>Peter Willendrup
+<hr>
+<h3>
+July 2014: ESS formally joins the McStas project
+</h3>
+<p>DTU and ESS have signed a collaboration contract, formally making
+the ESS a partner in the McStas project and Peter Willendrup
+affiliated with both institutions in the coming years.
+<p><b>Welcome on board</b> <a href="http://www.europeanspallationsource.se"><img valign="center"
+src="/ESS_Logo_Frugal_Blue_cmyk.png" alt="European Spallation Source"></a>
+<hr>
+<h3>
+March 10th, 2014: Public beta McStas 2.1rc1 available
+</h3>
+<p>A public beta-release of the forthcoming McStas 2.1 is now
+available.
+<p>As this is a beta-release that will be replaced by the official
+McStas 2.1, it is available via a special download page:
+<p><a _target=blank
+href="http://downloads.mcstas.org/mcstas-2.1rc1/">http://downloads.mcstas.org/mcstas-2.1rc1/</a>
+<p>The public beta includes an updated model for the ESS moderator (ESS_moderator.comp),
+including the "pancake" brilliance model and vertical assymetry
+of the cold moderator brilliance. (Special thanks to Troels
+Schoenfeldt and Esben Klinkby!) The final McStas 2.1 may still
+include further improvements of this new source component.
+<p>Please also consult the new platform-oriented installation pages:
+<ul>
+  <li><a href="/download/install_linux/">Linux (and general Unix) Installation page</a>
+  <li><a href="/download/install_mac_os_x/">Mac OS X Installation page</a>
+    <li><a href="/download/install_windows/">Windows Installation page</a>
+</ul>
+<p>If you are on Unix (Linux/Mac) and want to keep your McStas 1.x or 2.0
+alongside McStas 2.1rc or the forthcoming 2.1, please use our migration scripts
+<ul>
+  <li><a target=_blank
+  href="http://trac.mccode.org/browser/trunk/tools/migration-tool/migrate-mcstas-1.x.sh">mcstas
+  1.x migration script</a>
+  <li><a target=_blank
+  href="http://trac.mccode.org/browser/trunk/tools/migration-tool/migrate-mcstas-2.0.sh">mcstas
+  2.0 migration script</a>
+</ul>
+<hr>
+<h3>
+March 10th, 2014: Preparing for McStas 2.1
+</h3>
+<p>We are busy preparing for the release of McStas 2.1 within a couple
+of days and are reorganizing parts of the website for that reason. The
+updated list of changes for McStas can be found on <a
+_target="blank"
+href="http://trac.mccode.org/browser/trunk/CHANGES_McStas">our trac</a>
+<p>Please bear with us if you have difficulties finding information or
+if the found information feels inconsistent. :-)
+<p>Looking forward to releasing McStas 2.1 in a couple of days!
+<hr>
+<p><b>Previous news items: </b><a href="/news/2013.html">2013</a> <a href="/news/2012.html">2012</a>, </b><a href="/news/2011.html">2011</a>, </b><a href="/news/2010.html">2010</a>, <a href="/news/2009.html">2009</a>, <a href="/news/2008.html">2008</a>, <a href="/news/2007.html">2007</a>, <a href="/news/2006.html">2006</a>, <a href="/news/2005.html">2005</a>, <a href="/news/2004.html">2004</a>, <a href="/news/2003.html">2003</a>,<a href="/news/2002.html">2002</a>, <a href="/news/2001.html">2001</a>, <a href="/news/2000.html">2000</a>, <a href="/news/1999.html">1999</a>,
+<a href="/news/1998.html">1998</a>.
+
+</p></body></html>

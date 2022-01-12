@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD>
+<TITLE>Mosaic_simple</TITLE>
+<LINK REV="made" HREF="mailto:kristian.nielsen@risoe.dk">
+</HEAD>
+
+<BODY>
+
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<H1>The <CODE>Mosaic_simple</CODE> component</H1>
+
+Mosaic crystal, possibly off-cut.
+
+
+<H2><A NAME=id></A>Identification</H2>
+
+<UL>
+  <LI> <B>Author:</B> Kristian Nielsen</B>
+  <LI> <B>Origin:</B> McStas 1.5</B>
+  <LI> <B>Date:</B> 1999</B>
+  <LI> <B>Version:</B> 1.12 </B>
+</UL>
+<H2><A NAME=desc></A>Description</H2>
+
+<PRE>
+Flat, infinitely thin mosaic crystal, useful as a monochromator or analyzer.
+The mosaic is isotropic gaussian, with a given FWHM perpendicular to the
+scattering vector.
+For an unrotated monochromator component, the crystal plane lies in the y-z
+plane (ie. parallel to the beam).
+
+Example: Mosaic_simple(zmin=-0.1, zmax=0.1, ymin=-0.1, ymax=0.1,
+          mosaic=30, r0=0.7, Qx=1.8734, Qy=0, Qz=0)
+
+</PRE>
+
+<H2><A NAME=ipar></A>Input parameters</H2>
+Parameters in <B>boldface</B> are required;
+the others are optional.
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD><B>zmin</B></TD>
+     <TD>m</TD>
+     <TD>Lower z-bound of crystal </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>zmax</B></TD>
+     <TD>m</TD>
+     <TD>Upper z-bound of crystal </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ymin</B></TD>
+     <TD>m</TD>
+     <TD>Lower y-bound of crystal </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ymax</B></TD>
+     <TD>m</TD>
+     <TD>Upper y-bound of crystal </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD>mosaic</TD>
+     <TD>arc minutes</TD>
+     <TD>Mosaic (FWHM) </TD>
+<TD ALIGN=RIGHT>30</TD> </TR>
+<TR> <TD>r0</TD>
+     <TD>1</TD>
+     <TD>Maximum reflectivity </TD>
+<TD ALIGN=RIGHT>0.7</TD> </TR>
+<TR> <TD>Qx</TD>
+     <TD>AA-1</TD>
+     <TD>X coordinate of scattering vector </TD>
+<TD ALIGN=RIGHT>1.8734</TD> </TR>
+<TR> <TD>Qy</TD>
+     <TD>AA-1</TD>
+     <TD>Y coordinate of scattering vector </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>Qz</TD>
+     <TD>AA-1</TD>
+     <TD>Z coordinate of scattering vector </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=opar></A>Output parameters</H2>
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD><B>Q</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mos_rms</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>q0ux</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>q0uy</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>q0uz</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=links></A>Links</H2>
+
+<UL>
+  <LI> <A HREF="Mosaic_simple.comp">Source code</A> for <CODE>Mosaic_simple.comp</CODE>.
+</UL>
+<HR>
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<ADDRESS>
+Generated automatically by McDoc, Kristian Nielsen
+&lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt; /
+Jul 22 2002
+</ADDRESS>
+</BODY></HTML>

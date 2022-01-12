@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD>
+<TITLE>Beamstop</TITLE>
+<LINK REV="made" HREF="mailto:kristian.nielsen@risoe.dk">
+</HEAD>
+
+<BODY>
+
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<H1>The <CODE>Beamstop</CODE> component</H1>
+
+Rectangular/circular beam stop.
+
+
+<H2><A NAME=id></A>Identification</H2>
+
+<UL>
+  <LI> <B>Author:</B> Kristian Nielsen</B>
+  <LI> <B>Origin:</B> McStas 1.5</B>
+  <LI> <B>Date:</B> January 2000</B>
+  <LI> <B>Version:</B> 1.3 </B>
+</UL>
+<H2><A NAME=desc></A>Description</H2>
+
+<PRE>
+A simple rectangular or circular beam stop. 
+Infinitely thin and infinitely absorbing.
+The beam stop is by default rectangular. You may either 
+specify the radius (circular shape), or the rectangular bounds.
+
+Example: Beamstop(xmin=-0.05, xmax=0.05, ymin=-0.05, ymax=0.05)
+         Beamstop(radius=0.1)
+
+</PRE>
+
+<H2><A NAME=ipar></A>Input parameters</H2>
+Parameters in <B>boldface</B> are required;
+the others are optional.
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD>xmin</TD>
+     <TD>m</TD>
+     <TD>Lower x bound </TD>
+<TD ALIGN=RIGHT>-0.05</TD> </TR>
+<TR> <TD>xmax</TD>
+     <TD>m</TD>
+     <TD>Upper x bound </TD>
+<TD ALIGN=RIGHT>0.05</TD> </TR>
+<TR> <TD>ymin</TD>
+     <TD>m</TD>
+     <TD>Lower y bound </TD>
+<TD ALIGN=RIGHT>-0.05</TD> </TR>
+<TR> <TD>ymax</TD>
+     <TD>m</TD>
+     <TD>Upper y bound </TD>
+<TD ALIGN=RIGHT>0.05</TD> </TR>
+<TR> <TD>radius</TD>
+     <TD>m</TD>
+     <TD>radius of the beam stop in the z=0 plane, centered at Origo </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=opar></A>Output parameters</H2>
+None.
+
+<H2><A NAME=links></A>Links</H2>
+
+<UL>
+  <LI> <A HREF="Beamstop.comp">Source code</A> for <CODE>Beamstop.comp</CODE>.
+</UL>
+<HR>
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<ADDRESS>
+Generated automatically by McDoc, Kristian Nielsen
+&lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt; /
+Jul 22 2002
+</ADDRESS>
+</BODY></HTML>

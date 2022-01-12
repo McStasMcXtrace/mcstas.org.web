@@ -1,0 +1,840 @@
+/***********************************************************************************************************************************************
+*
+* McStas, version 1.2 released February 2000
+*         Maintained by Kristian Nielsen and Kim Lefmann,
+*         Risoe National Laboratory, Roskilde, Denmark
+*
+* %IDENTIFICATION
+*
+* Author: <a href="mailto:hansen@ill.fr">Thomas C Hansen</a>
+* Date: 10 March 2000
+* Version: $Revision: 1.1.1.1 $
+* Origin: <a href="http://www.ill.fr">ILL</a> (Dif/<a href="http://www.ill.fr/YellowBook/D20">D20</a>)
+*
+* D20 High Intensity Two Axis Diffractometer
+*
+* %DESCRIPTION
+*
+* This MC simulation of the High Intensity Two Axis Diffractometer D20 at Institut Laue-Langevin, Grenoble, France, uses an adaptive thermal (Maxwellian) neutron source,
+* a vertically foccussing monochromator in reflection or transmission, a cylindrical powder sample and a curved linear position sensitive detector (PSD). It is based upon
+* the instrument D20, but it should allow by varying the parameters, or by editing this instrument description code to simulate easily any constant wavelength neutron
+* powder diffractometer on a hot, cold or thermal reactor source. The PSD can be exchanged against the component Multidetector or any other monitor, if wanted. As a lot
+* of parameters are needed from the commandline, a perl macro mcsim goes along to read default input from a file and to permit the input of only changing parameters via
+* the commandline.
+*
+* %PARAMETERS
+*
+* INPUT PARAMETERS:
+*
+* Source_alpha:  	(1)     Learning cut-off factor (0 < alpha <= 1), try 0.25 for 5e5 neutron histories and 71 bins N_E, 1 bin N_xpos and N_xdiv
+* Source_beta:   	(1)     Aggressiveness of adaptive algorithm (0 < Source_beta <= 1), try 0.05 (5% uniformly sampled histories)
+* Source_N_E:    	(1)     Number of bins in energy dimension (try 71 - alpha*histories/N_E/N_xdiv/N_xpos should be about 1800, (Lmax-Lmin)/N_E should be smaller 0.04AA)
+* Source_N_xpos: 	(1)     Number of bins in horizontal position 
+* Source_N_xdiv: 	(1)     Number of bins in horizontal divergence
+* Source_Lmin:   	(AA)	Smallest wavelength sampled in adaptive source, try 0.4 for thermal source - attention the total thermal flux cannot not be correct anymore, if you choose only a small wavelength range!
+* Source_Lmax:		(AA)	Largest wavelength sampled in adaptive source, try 3.0 for thermal source
+* Soller_collim:	(min)	Soller collimation in incident primary polychromatic beam in arc minutes (0 = no collimator, try 10)
+* Soller_misalign:	(deg)	Misalignment of the Soller collimator in degrees, set it to 0 degrees
+* Filter_d:		(m)	Thickness of pyrrolytic graphite filter for short wavelengths in CENTIMETERS, try 5 cm for mon=2 or 0 for mon=200
+* Mono_position:	(m)	Distance of Monochromator from the source (set it to 17.2 m for D20)
+* Mono_omega:  		(deg)	Omega angle of monochromator (often takeoff/2, try -21)
+* Mono_foccus:   	(deg)	vertical foccusing angle of each monochromator blade (normaly positive, if takeoff negative, try 0.71)
+* Mono_mosh:		(min)	horizontal mosaic of monochromator, try 30'
+* Mono_mosv:		(min)	vertical mocaic of monochromator, try 5'
+* Takeoff:		(deg)	TakeOff angle of diffractometer in degrees (left-handed instr. like D20: negative, try -42)
+* SML			(m)	horizontal slits near the monochromator ("left"), set it to -0.035 m
+* SMR			(m)	horizontal slits near the monochromator ("right"), set it to 0.035 m
+* SMB			(m)	vertical slits near the monochromator ("bottom"), set it to -0.150 m
+* SMT			(m)	vertical slits near the monochromator ("top"), set it to 0.150 m
+* SSL			(m)	horizontal slits near the sample ("left"), set it to -0.007 m
+* SSR			(m)	horizontal slits near the sample ("right"), set it to 0.007 m
+* SSB			(m)	vertical slits near the sample ("bottom"), set it to -0.035 m
+* SST			(m)	vertical slits near the sample ("top"), set it to 0.035 m
+* Sample_file:		(1)	number of the powder sample input file, will read a file sample<in>.par, try 0 (Silicon), 1 (Yttrium Iron Garnet), or 2 (Iron)
+* Sample_broadening:	(1)	Lorentzian powder sample broadening by strain, part of lattice constants (try 0 - this stuff is not yet tested sufficiently)
+* Sample_transmission:	(1)	Part of generated neutrons transmitting the sample (normally put it to 0, except you are studying the beamstop - this implementation is not yet tested thoroughly)
+* PSD_ttmin:		(deg)	twotheta minimum of position sensitive detector (try 0)
+* PSD_ttmax:		(deg)	twotheta maximum of position sensitive detector (try 100)
+* Output_file:		(1)	naming number for output files, they will be called PSD_<nam>.dat, BiDim<nam>_Soll.dat, etc.
+*
+* %LINKS
+* A source producing a flat in energy distribution: <a href="http://neutron.risoe.dk/mcstas/mcdoc/components/sources/Source_adapt.html">Source_adapt.comp</a>
+* A PERL macro for easy input: <a href="mcsim.pl">mcsim.pl</a>
+* A file containing default parameters, to be used with mcsim: <a href="d20.par">d20.par</a>
+* A silicon powder sample: <a href="sample0.par">sample0.par</a>
+* An yttriyum iron garnet powder sample: <a href="sample1.par">sample1.par</a>
+* An iron powder sample: <a href="sample2.par">sample2.par</a>
+*
+* %END
+*
+***********************************************************************************************************************************************/
+
+DEFINE INSTRUMENT D20 (
+	Source_alpha, Source_beta, Source_N_E, Source_N_xpos, Source_N_xdiv, Source_Lmin, Source_Lmax, Source_flux,
+	Soller_collim, Soller_misalign, Filter_d,   
+	Mono_position, Mono_omega, Mono_foccus, Mono_mosh, Mono_mosv, Mono_a, Mono_Vc, 
+	Mono_h0, Mono_k0, Mono_l0, Mono_h, Mono_k, Mono_l, Mono_F2, Mono_B, Mono_xmax, Mono_ymax, Mono_dist, Mono_zmax, 
+	Mono_blades, Mono_harmonic, Mono_LIMIT,
+	Takeoff, SML, SMR, SMB, SMT, SSL, SSR, SSB, SST, 
+	Sample_file, Sample_broadening, Sample_transmission, Sample_pack, Sample_r, Sample_h, Sample_can_d, 
+	PSD_ttmin, PSD_ttmax, PSD_r, PSD_h, PSD_pitch, PSD_cellwidth, PSD_period, PSD_gap, PSD_pT_trace, PSD_p, Output_file)
+
+DECLARE
+%{
+  #define MAXQ 1200  
+  #define Mono_N   4
+  #define Filt_N 2
+  #define Monit_ncan 101
+  #define BLADE(no)  \
+    mrotz ## no =blade*Mono_foccus;   \
+    mpos ## no =blade*Mono_dist;  \
+    m ## no =1*( no <Mono_blades);  \
+    blade++;
+  #define FGETL(str,inputfile,i,c) \
+	strcpy(str,""); \
+	for (i=0;i<80-1;i++) \
+	{ 	c=(char)fgetc(inputfile); \
+		if (c!=(char)(-1)&&c!=(char)13&&c!=(char)10&&c!=(char)NULL)  \
+		{ str[i]=c; str[i+1]='\0'; \
+		} else 	break; \
+	} while (c!=(char)(-1)&&c!=(char)13&&c!=(char)10&&c!=(char)NULL)  c=(char)fgetc(inputfile); \
+	if (c==(char)EOF) str[0]=(char)NULL; /* *str=(char *)NULL; */  \
+  	while ((str[0]=='#')||(str[0]=='!'))  \
+	{ strcpy(str,""); \
+	  for (i=0;i<80-1;i++) \
+	  { 	c=(char)fgetc(inputfile); \
+		if (c!=(char)(-1)&&c!=(char)13&&c!=(char)10&&c!=(char)NULL)  \
+		{ str[i]=c; str[i+1]='\0'; \
+		} else 	break; \
+	  } while (c!=(char)(-1)&&c!=(char)13&&c!=(char)10&&c!=(char)NULL)  c=(char)fgetc(inputfile); \
+	  if (c==(char)EOF) str[0]=(char)NULL; /* *str=(char *)NULL; */  \
+	}
+  /** Variable Declarations **/
+  double SourceTemp = 293,Source_Emin,Source_Emax;
+  double d_source_mono=17.200;
+  double coll_xmin = -0.0475;
+  double coll_xmax =  0.0475;
+  double coll_ymin = -0.150;
+  double coll_ymax =  0.150;
+  double Al_a   = 4.04926;
+  double Al_d;
+  double Al_F2   =  47.52;
+  double Al_B=1.0, Al_DW;
+  double Al_sigma_a   = 0.231;
+  double Al_Vc=66.394,Vc;
+  double Mono_Q;
+  double VL, TT2Q, Q2d;
+  double Filt_Emin,   Filt_Emax;
+  double Filt_T, Filt_T_harmonic;
+  double Filt_Lmin,   Filt_Lmax;
+  double Monit_Emin,  Monit_Emax;
+  double Monit_Lmin,  Monit_Lmax, Monit0_Lmin,  Monit0_Lmax;
+  double mpos0, mpos1, mpos2, mpos3, mpos4, mpos5, mpos6, mpos7, mpos8, mpos9, mpos10, mpos11, mpos12, mpos13, mpos14;
+  double mrotz0, mrotz1, mrotz2, mrotz3, mrotz4, mrotz5, mrotz6, mrotz7,  mrotz8, mrotz9, mrotz10, mrotz11, mrotz12, mrotz13, mrotz14;
+  double Mono_ymin, L;
+  double Mono_zmin;
+  double Mono_xmin;
+  double Sample_xmin, Sample_xmax, Sample_ymin, Sample_ymax, Al_Q;
+  double Dist_MonoSample,Dist_MonoBeamStop;
+  double PSD_entry_r, PSD_entry_d, d_Scherrer, d_phi0;
+  double sigma_abs, sigma_inc;
+  double Container_r, Sample_d;
+  double F2[MAXQ], Q[MAXQ],DW[MAXQ];
+  double Mono_d, angle, contamination, l0, L2P, blade;
+  double Source_E0, Source_dE,Source_E1,Source_L0,Source_dL;
+  double L0,L1,T0,T1,Filt_T;
+  double Sample_Monitor_Position0,Sample_Monitor_Position1;
+  double Sample_Monitor_Position2,Sample_Monitor_Position3;
+  double BeamStop_Position,End_Position,norm,l0,k;
+  int	 m0,m1,m2,m3,m4,m5,m6,m7,m8,m9,m10,m11,m12,m13,m14;
+  int    coll_y,coll_x,lin=1;
+  int    mult[MAXQ],phase[MAXQ];
+  int    sign,mtransmission;
+  int    nbInt,nbphase;
+  int    ii;
+  int    PSD_cells;
+  char   c,psd_filename[20],mono_filename[20];
+  char   Lmoni_Srce_filename[20],Lmoni_Mxwl_filename[20],Lmoni_Soll_filename[20],Lmoni_Mslt_filename[20],Hmoni_Mslt_filename[20];
+  char   Lmoni_samp_filename[20],Hmoni_samp_filename[20];
+  char   input_filename[20],flux_filename[20];
+  char   bidim_Srce_filename[20],bidim_Nose_filename[20],bidim_Soll_filename[20],bidim_Mono_filename[20];
+  char   bidim_Mslt_filename[20],bidim_Sslt_filename[20],bidim_samp_filename[20],divpos_samp_filename[20];
+  char   biwav_Mono_filename[20],biwav_samp_filename[20];
+  char   *eof,str[80];
+  char   Source_filename[20];
+  FILE   *monofile,*inputfile;
+  time_t systime;
+  double created_neutrons=0.0;
+  double incident_p,leaving_p, first_p;
+%}
+
+INITIALIZE
+%{
+  systime=time(NULL); /* checking speed ... */
+  /* read-in of input<nam>.sim, containing nearly all data for powder sample */
+  sprintf(input_filename,"sample%d.par",(int)Sample_file);
+  inputfile=fopen(input_filename,"r");
+  if (inputfile==NULL) 
+  {
+	  printf("DESASTER STRIKES! Maybe the file does not exist in the right directory.\nNow try to enter the sample by hand ...\n");
+	  printf("Vc/A^3, sigma_abs/barn sigma_incoherent/barn\n");
+	  scanf("%lf%lf%lf",&Vc,&sigma_abs,&sigma_inc);
+	  printf("nbInt\n");
+	  scanf("%d",&nbInt);
+	  if (nbInt>=MAXQ) nbInt=MAXQ-(int)1;;
+	  for (ii=1;ii<=nbInt;ii++)
+	  {
+		  printf("%d: Q/A, mult, F2/fm^2, DW\n",ii);
+		  scanf("%lf%d%lf%lf",&(Q[ii]),&(mult[ii]),&(F2[ii]),&(DW[ii]));
+	  }
+  }
+  else
+  {
+	FGETL(str,inputfile,i,c) ;
+	sscanf(str,"%lf%lf%lf",&Vc,&sigma_abs,&sigma_inc);
+	FGETL(str,inputfile,i,c) ;
+	sscanf(str,"%d",&nbInt);
+	  for (ii=1;ii<=nbInt;ii++)
+	  {
+		FGETL(str,inputfile,i,c) ;
+		sscanf(str,"%lf%d%lf%lf",&(Q[ii]),&(mult[ii]),&(F2[ii]),&(DW[ii]));
+	  }
+	  fclose(inputfile);
+  }
+  Container_r = Sample_r + Sample_can_d;
+  /* Conversion factors */
+  Q2d = 2*PI;
+  VL  = 1e10*HBAR*2*PI/MNEUTRON; /* (1/(v[m/s])) -> lambda[AA] */
+  /* Aluminium data (PSD housing) */
+  Al_d  = Al_a/sqrt(3);
+  Al_Q  = 2*PI / Al_d;
+  Al_Vc = Al_a*Al_a*Al_a;
+  Al_DW = exp(-Al_B/4/Al_d/Al_d);
+  /* some derived values from that input .... */
+  Mono_xmax/=2.0;
+  Mono_xmin=-Mono_xmax;
+  Mono_ymax/=2.0;
+  Mono_ymin=-Mono_ymax;
+  Mono_zmax/=2.0;
+  Mono_zmin=-Mono_zmax;
+  Mono_d=Mono_a/sqrt(Mono_h*Mono_h+Mono_k*Mono_k+Mono_l*Mono_l);
+  Mono_Q = 2*PI/Mono_d;
+  printf("a=%lfAA, d=%lfAA, DW=%lf, F2=%lf, Vc=%lf\n",Mono_a,Mono_d,exp(-Mono_B/4.0/Mono_d/Mono_d),Mono_F2,Mono_Vc);
+  printf("Cut at (%1d%1d%1d), reflection (%1d%1d%1d) => ",(int)Mono_h0,(int)Mono_k0,(int)Mono_l0,(int)Mono_h,(int)Mono_k,(int)Mono_l);
+  /* calculation of rocking angle relative to cut face of monochromator */
+  angle = (Mono_h0*Mono_h+Mono_k0*Mono_k+Mono_l0*Mono_l)/sqrt(Mono_h0*Mono_h0+Mono_k0*Mono_k0+Mono_l0*Mono_l0)/sqrt(Mono_h*Mono_h+Mono_k*Mono_k+Mono_l*Mono_l);
+  if (angle>1) angle=1.0;
+  if (angle<-1) angle=-1.0; 
+  /*
+  printf("Cos(Mono_omega-Takeoff/2)=%lf\n",angle);
+  */
+  angle=acos(angle)*180/PI;
+  if ((-Mono_h/Mono_l+Mono_h0/Mono_l0)<0) angle=-angle; 
+  /*
+  printf("Mono_omega-Takeoff/2=%lfdeg\n",angle);
+  */
+  if (angle>0) printf("Well done! Fankuchen effect increases resolution and flux!\n");
+  if (angle<0) printf("That's bad! Fankuchen effect decreases resolution and flux!\n");
+  printf("Monochromator's omega should be %.3lf deg, it is at %.3lf deg\n",Takeoff/2.-angle,Mono_omega+Takeoff/2.-angle);
+  Mono_omega+=Takeoff/2.-angle;
+  /* Mono_F2*=exp(-Mono_B/4.0/Mono_d/Mono_d); - not yet - due to consideration of harmonics we have to wait_ */
+  /* Calculation of the geometrical wavelength */
+  L=fabs(4.0*PI/Mono_Q*sin(DEG2RAD*Takeoff/2.));
+  printf("Main wavelength will be around %.4lfAA\n",L);
+  /**** Adaptive Source *****/
+  Source_E0 = (VS2E*4.0*(PI*PI)/(V2K*V2K)/(Source_Lmax*Source_Lmax)  + VS2E*4.0*(PI*PI)/(V2K*V2K)/(Source_Lmin*Source_Lmin))/2.0; 
+  Source_dE = (VS2E*4.0*(PI*PI)/(V2K*V2K)/(Source_Lmin*Source_Lmin)) - Source_E0; 
+  Source_Emin = (VS2E*4.0*(PI*PI)/(V2K*V2K)/(Source_Lmax*Source_Lmax)); 
+  Source_Emax = (VS2E*4.0*(PI*PI)/(V2K*V2K)/(Source_Lmin*Source_Lmin)); 
+  Source_L0    = (Source_Lmax+Source_Lmin)/2.0;
+  Source_dL    = Source_L0-Source_Lmin;
+  printf("Energy of created neutrons will be around %.4lf(+/-%.4lf)meV (%.4lf and %.4lf AA)\n",Source_E0,Source_dE,Source_Lmin,Source_Lmax);
+  /* Calculations for consideration of contamination with some harmonic wavelength */
+  contamination=exp(-Mono_B/4.0/Mono_d/Mono_d);
+  printf("DW(lambda/1)=%lf (d=%lfAA),  ",contamination,Mono_d); 
+  Mono_d/=(double)Mono_harmonic;
+  contamination=exp(-Mono_B/4.0/Mono_d/Mono_d);
+  printf("DW(lambda/%d)=%lf (d=%lfAA)\n ",(int)Mono_harmonic,contamination,Mono_d); 
+  Mono_d*=(double)Mono_harmonic;
+  contamination=exp(-Mono_B/4.0/(Mono_d/(double)Mono_harmonic)/(Mono_d/(double)Mono_harmonic))/exp(-Mono_B/4.0/Mono_d/Mono_d);
+  contamination/=Mono_harmonic*Mono_harmonic*Mono_harmonic;
+  printf("lambda/%d contamination=%lf ",(int)Mono_harmonic,contamination); 
+  contamination*=(1.0 - exp(-0.07417*PSD_p*PSD_gap*100.0*L/Mono_harmonic))/(1.0 - exp(-0.07417*PSD_p*PSD_gap*100.0*L));
+  printf(", %lf with efficiency considered ",contamination); 
+  k  = 1.38066e-23;
+  l0=1.0e10*sqrt(HBAR*HBAR*4.0*PI*PI/2.0/MNEUTRON/k/SourceTemp);	     /* Assume Maxwell distribution */
+  contamination*=1/L/L/L/L/L*Mono_harmonic*Mono_harmonic*Mono_harmonic*Mono_harmonic*Mono_harmonic*exp(-l0*l0/L*Mono_harmonic/L*Mono_harmonic)/(1/L/L/L/L/L*exp(-l0*l0/L/L));   
+  printf("(%lf percent with flux considered)\n",contamination*100); 
+  /* not very nice, but this is the pyrolytic graphite filter - in d20adapt it's just for information */
+  if (L>2.60) {L1= L  ;L0=2.60;T1=0.06;T0=0.06;}; 
+  if (L<2.60) {L1=2.60;L0=2.40;T1=0.06;T0=0.05;}; 
+  if (L<2.40) {L1=2.40;L0=2.30;T1=0.05;T0=0.09;}; 
+  if (L<2.30) {L1=2.30;L0=2.20;T1=0.09;T0=0.22;}; 
+  if (L<2.20) {L1=2.20;L0=2.00;T1=0.22;T0=0.34;}; 
+  if (L<2.00) {L1=2.00;L0=1.90;T1=0.34;T0=0.61;}; 
+  if (L<1.90) {L1=1.90;L0=1.80;T1=0.61;T0=0.23;}; 
+  if (L<1.80) {L1=1.80;L0=1.60;T1=0.23;T0=0.25;}; 
+  if (L<1.60) {L1=1.60;L0=1.40;T1=0.25;T0=0.27;}; 
+  if (L<1.40) {L1=1.40;L0=1.30;T1=0.27;T0=0.53;}; 
+  if (L<1.30) {L1=1.30;L0=1.20;T1=0.53;T0=0.98;}; 
+  if (L<1.20) {L1=1.20;L0=1.10;T1=0.98;T0=0.89;}; 
+  if (L<1.10) {L1=1.10;L0=1.00;T1=0.89;T0=0.52;}; 
+  if (L<1.00) {L1=1.00;L0=0.87;T1=0.52;T0=0.47;}; 
+  if (L<0.87) {L1=0.87;L0= L  ;T1=0.47;T0=0.47;}; 
+  Filt_T=(T0+(L-L0)/(L1-L0)*(T1-T0))*100.0;
+  L/=Mono_harmonic;
+  if (L>2.60) {L1= L  ;L0=2.60;T1=0.06;T0=0.06;}; 
+  if (L<2.60) {L1=2.60;L0=2.40;T1=0.06;T0=0.05;}; 
+  if (L<2.40) {L1=2.40;L0=2.30;T1=0.05;T0=0.09;}; 
+  if (L<2.30) {L1=2.30;L0=2.20;T1=0.09;T0=0.22;}; 
+  if (L<2.20) {L1=2.20;L0=2.00;T1=0.22;T0=0.34;}; 
+  if (L<2.00) {L1=2.00;L0=1.90;T1=0.34;T0=0.61;}; 
+  if (L<1.90) {L1=1.90;L0=1.80;T1=0.61;T0=0.23;}; 
+  if (L<1.80) {L1=1.80;L0=1.60;T1=0.23;T0=0.25;}; 
+  if (L<1.60) {L1=1.60;L0=1.40;T1=0.25;T0=0.27;}; 
+  if (L<1.40) {L1=1.40;L0=1.30;T1=0.27;T0=0.53;}; 
+  if (L<1.30) {L1=1.30;L0=1.20;T1=0.53;T0=0.98;}; 
+  if (L<1.20) {L1=1.20;L0=1.10;T1=0.98;T0=0.89;}; 
+  if (L<1.10) {L1=1.10;L0=1.00;T1=0.89;T0=0.52;}; 
+  if (L<1.00) {L1=1.00;L0=0.87;T1=0.52;T0=0.47;}; 
+  if (L<0.87) {L1=0.87;L0= L  ;T1=0.47;T0=0.47;}; 
+  Filt_T_harmonic=(T0+(L-L0)/(L1-L0)*(T1-T0))*100.0;
+  L*=Mono_harmonic;
+  printf("Epsilon(lambda)=%lf/m, (lambda/%d)=%lf/m\n",Filt_T,(int)Mono_harmonic,Filt_T_harmonic);
+  Filt_T          = exp(-Filt_T         *Filter_d);
+  Filt_T_harmonic = exp(-Filt_T_harmonic*Filter_d);
+  contamination  *= Filt_T_harmonic/Filt_T;
+  printf("Transmission(lambda)=%lf, (lambda/%d)=%lf => contamination=%lf\n",
+  	Filt_T,(int)Mono_harmonic,Filt_T_harmonic,contamination);
+  /* at least during debuccing there are some reasons for writing in one output file from all monochromator blades */
+  sprintf(mono_filename,"Mono%d.dat",(int)Output_file);
+  /*
+  printf("Monochromator output file (if any) %s, Q=%lf/AA\n", mono_filename, Q[1]);
+  */
+  monofile=fopen(mono_filename,"w");
+  /* Wavelenght monitor limits */
+  Monit_Lmin = (double)L*0.96;
+  Monit_Lmax = (double)L*1.04;
+  Monit0_Lmin = (double)L/(double)Mono_harmonic*0.94;
+  Monit0_Lmax = (double)L*1.06;
+  if (Monit_Lmin<0) Monit_Lmin=0.0;
+  if (Monit0_Lmin<0) Monit0_Lmin=0.0;
+  /* position and rotation of every single monochromator blade */
+  printf("Tilt of monochromator blades (Blade_N) should be %.2lf deg.\n",
+  	-RAD2DEG*asin(Mono_dist/2./sin(DEG2RAD*Takeoff/2.)*(1./13.500+1./3.200))); 
+  blade=-(double)(Mono_blades-1)/(double)2;
+  BLADE(0) ;BLADE(1) ;BLADE(2) ;BLADE(3) ;BLADE(4) ;
+  BLADE(5) ;BLADE(6) ;BLADE(7) ;BLADE(8) ;BLADE(9) ;
+  BLADE(10);BLADE(11);BLADE(12);BLADE(13);BLADE(14);
+  /* D20's distance form monochromator to sample - could be an input parameter */
+  Dist_MonoSample = 3.200;
+  Dist_MonoBeamStop = 0.4+Dist_MonoSample;
+  /* sample cylinder dimensions */
+  Sample_d    = 2.0*Sample_r;
+  Sample_xmin = -Sample_r/1.0;
+  Sample_xmax =  Sample_r/1.0;
+  /* The optimum slit settings could be calculated */
+  /* SSlitL = -Sample_r/1.0-(0.03-Sample_r)/8.0;*/
+  /* SSlitR =  Sample_r/1.0+(0.03-Sample_r)/8.0;*/
+  /* But here we will just advise the user */
+  printf("Left/right sample-slit should be at %6.1lf/%6.1lfmm\n",-Sample_r/1.0-(0.03-Sample_r)/8.0*1000.0,Sample_r/1.0+(0.03-Sample_r)/8.0*1000.0);
+  /*  */
+  Sample_ymin = -Sample_h/2.0;
+  Sample_ymax =  Sample_h/2.0;
+  /* New definition of several detector characteristics, inconsitently given by sample input file (to be changed!) */
+  /* PSD_h=0.153;  height of MSGC plates not covered by protection electrodes */
+  /* PSD_r=1.4722052;  radius to center of MSGC plates */
+  /* PSD_entry_r=1.419;  outer radius of PSD Al entry window - inner radius will be smaller by PSD_entry_d (7 mm) */
+  /* gap=PSD_r-PSD_entry_r;  MSGC detection gap at the center of MSGC plates - will be larger at edges of MSGC plates */
+  PSD_entry_r=PSD_r-PSD_gap;
+  /* Aluminium entry window of PSD (7 mm thick on D20)*/
+  PSD_entry_d=0.007; /* thickness of Al PSD entry window */
+  /* number of detector cells in PSD (1536 on D20) */
+  PSD_cells=(int)((double)(PSD_ttmax-PSD_ttmin)/PSD_pitch+1);
+  /* printf("%d (%lf) detector cells over %lf degrees from %lf to %lf degrees of %lf degrees each\n",PSD_cells,(PSD_ttmax-PSD_ttmin)/pitch+1,(PSD_ttmax-PSD_ttmin),PSD_ttmin,PSD_ttmax, pitch);*/
+  /* Output filenames */
+  sprintf(Hmoni_Mslt_filename,"Hmoni%d_MSlt.dat",(int)Output_file);
+  sprintf(Lmoni_Srce_filename,"Lmoni%d_Srce.dat",(int)Output_file);
+  sprintf(Lmoni_Mxwl_filename,"Lmoni%d_Mxwl.dat",(int)Output_file);
+  sprintf(Lmoni_Soll_filename,"Lmoni%d_Soll.dat",(int)Output_file);
+  sprintf(Lmoni_Mslt_filename,"Lmoni%d_MSlt.dat",(int)Output_file);
+  sprintf(Hmoni_samp_filename,"Hmoni%d_Samp.dat",(int)Output_file);
+  sprintf(Lmoni_samp_filename,"Lmoni%d_Samp.dat",(int)Output_file);
+  sprintf(psd_filename,"PSD%d.dat",(int)Output_file/*,(int)acq*/);
+  sprintf(bidim_Srce_filename,"BiDim%d_Srce.dat",(int)Output_file);
+  sprintf(bidim_Nose_filename,"BiDim%d_Nose.dat",(int)Output_file);
+  sprintf(bidim_Soll_filename,"BiDim%d_Soll.dat",(int)Output_file);
+  sprintf(bidim_Mono_filename,"BiDim%d_Mono.dat",(int)Output_file);
+  sprintf(biwav_Mono_filename,"BiWav%d_Mono.dat",(int)Output_file);
+  sprintf(bidim_Mslt_filename,"BiDim%d_MSlt.dat",(int)Output_file);
+  sprintf(bidim_Sslt_filename,"BiDim%d_SSlt.dat",(int)Output_file);
+  sprintf(bidim_samp_filename,"BiDim%d_Samp.dat",(int)Output_file);
+  sprintf(biwav_samp_filename,"BiWav%d_Samp.dat",(int)Output_file);
+  sprintf(divpos_samp_filename,"DivPos%d_Samp.dat",(int)Output_file);
+  sprintf(flux_filename,"Flux%d_Samp.dat",(int)Output_file);
+  sprintf(Source_filename,"Source%d.dat",(int)Output_file);
+  coll_x=(int)(coll_xmax-coll_xmin)*1000;
+  coll_y=(int)(coll_ymax-coll_ymin)*1000;
+  if (Takeoff>0) sign=1; else sign=-1;
+  /* instrument geometry */
+  if (sign<0) printf("Left-handed instrument like D20\n"); 
+  else        printf("Right-handed instrument like D2B\n");
+  /* calculated detection effiency */
+  printf("Maximum detection efficiency: %.0lf percent\n",(1.0 - exp(-0.07417*PSD_p*PSD_gap*100.0*L)) *100.0);
+  /* the incoherent scattering cross section as found in input<in>.sim */
+  /*
+  printf("sigma(incoherent)=%lgbarn\n",sigma_inc);
+  */
+  /* number of detection cells, the PSD pitch (0.1degrees) is read in input<in>.sim */
+  PSD_cells=(int)((double)(PSD_ttmax-PSD_ttmin)/PSD_pitch+1);
+  PSD_cells=ceil((double)PSD_cells/(double)PSD_period)*PSD_period;
+  PSD_ttmax=PSD_ttmin+(double)(PSD_cells-1)*PSD_pitch;
+  printf("%d detector cells, 1st at %lf, last at %lf degrees\n",PSD_cells,PSD_ttmin,PSD_ttmax);
+  /* unfortunately these ridiculous variables are needed .... */
+  Sample_Monitor_Position0 = Dist_MonoSample - Container_r-.0004;
+  Sample_Monitor_Position1 = Dist_MonoSample - Container_r-.0003;
+  Sample_Monitor_Position2 = Dist_MonoSample - Container_r-.0002;
+  Sample_Monitor_Position3 = Dist_MonoSample - Container_r-.0001;
+  BeamStop_Position = Dist_MonoSample + PSD_entry_r - PSD_entry_d;
+  End_Position = Dist_MonoSample + PSD_r;
+  /** Adaptive Source informations ***/
+  printf("%.0lf histories, adapted by N(E)=%.0lf (ca.%lfAA or %lfmeV/bin), N(xpos)=%.0lf, N(xdiv)=%.0lf bins\n",
+  	mcget_ncount(),Source_N_E,(Source_Lmax-Source_Lmin)/Source_N_E,(Source_Emax-Source_Emin)/Source_N_E,Source_N_xdiv,Source_N_xpos);
+  printf("Learning phase alpha=%lf percent (%.0lf histories, %.0lf per bin)\n",
+  	Source_alpha*100.0,Source_alpha*mcget_ncount(),Source_alpha*mcget_ncount()/Source_N_E/Source_N_xpos/Source_N_xdiv);
+  printf("Uniformly sampled fraction beta=%lf percent (%.0lf histories)\n",Source_beta*100.0,Source_beta*mcget_ncount());
+  norm =/*2.0*l0*l0*l0*l0**/(l0*l0/Source_Lmax/Source_Lmax+1.0)*exp(-l0*l0/Source_Lmax/Source_Lmax);
+  norm-=/*2.0*l0*l0*l0*l0**/(l0*l0/Source_Lmin/Source_Lmin+1.0)*exp(-l0*l0/Source_Lmin/Source_Lmin);
+  printf("%lf percent of thermal flux simulated (lambda0=%lfAA)an\n",norm*100.0,l0);
+  system("date");
+  /*
+  fflush(stdout);
+  */
+%}
+
+/******************************************************************************/
+/******************************************************************************/
+/******************************************************************************/
+
+TRACE
+	
+COMPONENT Polychromatic_Beam = Arm() AT (0,0,0) ABSOLUTE
+
+/*
+COMPONENT Thermal_Source = Source_Maxwell(radius = 0.10, dist = Mono_position,
+   	xw = 0.095, yh = 0.300, T = SourceTemp, L = L, dL = dL,linear=lin,
+   	harmonic=Mono_harmonic,contamination=contamination,
+	created_neutrons=created_neutrons,ow=ow)
+ AT (0,0,0) RELATIVE Polychromatic_Beam
+*/
+
+/*
+COMPONENT Thermal_Source = Source_adapt_Maxwell(
+	xmin=-0.1,xmax=0.1,ymin=-0.1,ymax=0.1, 
+	dist = Mono_position, xw = 0.095, yh = 0.300, 
+	L0= Source_L0, dL = Source_dL, flux = Source_flux, 
+	N_L= Source_N_L, N_xpos= Source_N_xpos, N_xdiv= Source_N_xdiv,
+	alpha= Source_alpha, beta= Source_beta, filename=Source_filename,T=SourceTemp)
+  AT (0,0,0) RELATIVE Polychromatic_Beam
+*/
+
+COMPONENT Thermal_Source = Source_adapt(
+	xmin=-0.1,xmax=0.1,ymin=-0.1,ymax=0.1, 
+	dist = Mono_position, xw = 0.095, yh = 0.300, 
+	E0= Source_E0, dE = Source_dE, flux = Source_flux, 
+	N_E= Source_N_E, N_xpos= Source_N_xpos, N_xdiv= Source_N_xdiv,
+	alpha= Source_alpha, beta= Source_beta, filename=NULL)
+  AT (0,0,0) RELATIVE Polychromatic_Beam
+
+/*
+COMPONENT Wavelength_Neutrons = Flat_wavelength(E0=Source_E0,dE=Source_dE)
+  AT (0,0,0) RELATIVE Polychromatic_Beam
+*/
+
+/*
+COMPONENT WaveMonit_Source = L_monitor(xmin = -0.16, xmax = 0.16, ymin = -0.16, ymax = 0.16,
+	Lmin = Source_Lmin, Lmax = Source_Lmax,
+    	nchan = Monit_ncan, filename=Lmoni_Srce_filename)
+  AT ( 0, 0, 0) RELATIVE Polychromatic_Beam
+*/
+
+/*
+COMPONENT Thermal_Neutrons = Maxwell_wavelength(T = SourceTemp)
+  AT (0,0,0) RELATIVE Polychromatic_Beam
+*/
+
+COMPONENT Thermal_Neutrons = Convert_FlatE_2_Maxwell(T = SourceTemp, E0=Source_E0, dE=Source_dE)
+  AT (0,0,0) RELATIVE Polychromatic_Beam
+
+/*
+COMPONENT WaveMonit_Maxwell = L_monitor(xmin = -0.05, xmax = 0.05, 
+	ymin = -0.05, ymax = 0.05,
+	Lmin = Source_Lmin, Lmax = Source_Lmax,
+    	nchan = Monit_ncan, filename=Lmoni_Mxwl_filename)
+  AT ( 0, 0,  0) RELATIVE Polychromatic_Beam
+*/
+
+COMPONENT Circular_Source = Circular_slit(radius=0.1)
+  AT (0,0,0.001) RELATIVE Polychromatic_Beam
+
+/*  
+COMPONENT BiDim_Source = PSD_bidim (
+	xmin = -0.16, xmax = 0.16, ymin = -0.16, ymax = 0.16,
+	nx=120,ny=120,filename=bidim_Srce_filename,created_neutrons=created_neutrons)
+  AT ( 0, 0, 0.003) RELATIVE Polychromatic_Beam
+*/
+
+COMPONENT Nose1 = Slit(
+	xmin = -0.0750, xmax=0.0750 , ymin = -0.0750, ymax = 0.0750)
+  AT (0,0,3.3400) RELATIVE Polychromatic_Beam 
+
+COMPONENT Nose2 = Slit(
+	xmin = -0.0885, xmax=0.0885 , ymin = -0.0885, ymax = 0.0885)
+  AT (0,0,3.3401) RELATIVE Polychromatic_Beam 
+  ROTATED (0,0,45) RELATIVE Polychromatic_Beam
+
+/*
+COMPONENT BiDim_Nose = PSD_bidim (
+	xmin = -0.16, xmax = 0.16, ymin = -0.16, ymax = 0.16,
+	nx=120,ny=120,filename=bidim_Nose_filename)
+  AT ( 0, 0, 3.3402) RELATIVE Polychromatic_Beam
+*/  
+
+COMPONENT Flux_Nose_1cm2 = Monitor (xmin = -0.005, xmax = 0.005,  
+    	ymin = -0.005, ymax = 0.005)
+  AT ( 0, 0, 3.3402) RELATIVE Polychromatic_Beam
+
+COMPONENT Rotor1 = Slit(
+	xmin = -0.0750, xmax=0.0750 , ymin = -0.0630, ymax = 0.0630)
+  AT (0,0,3.720) RELATIVE Polychromatic_Beam 
+
+COMPONENT Rotor2 = Slit(
+	xmin = -0.07750, xmax=0.07750 , ymin = -0.0680, ymax = 0.0680)
+  AT (0,0,4.240) RELATIVE Polychromatic_Beam 
+
+COMPONENT Rotor3 = Slit(
+	xmin = -0.0800, xmax=0.0800 , ymin = -0.0730, ymax = 0.0730)
+  AT (0,0,4.7601) RELATIVE Polychromatic_Beam 
+
+COMPONENT Soller = Soller(len = 0.257, divergence = Soller_collim,
+    	xmin = coll_xmin, xmax = coll_xmax, ymin = coll_ymin, ymax = coll_ymax)
+  AT (0, 0, 16.400) RELATIVE Polychromatic_Beam 
+  ROTATED (0, Soller_misalign, 0) RELATIVE Polychromatic_Beam
+
+/*
+COMPONENT BiDim_Soller = PSD_bidim (
+	xmin = -0.16, xmax = 0.16, ymin = -0.16, ymax = 0.16,
+	nx=120,ny=120,filename=bidim_Soll_filename)
+  AT ( 0, 0,  16.660) RELATIVE Polychromatic_Beam
+*/
+
+/*
+COMPONENT WaveMonit_Soller = L_monitor(xmin = -0.16, xmax = 0.16, ymin = -0.16, ymax = 0.16,
+	Lmin = Source_Lmin, Lmax = Source_Lmax,
+    	nchan = Monit_ncan, filename=Lmoni_Soll_filename)
+  AT ( 0, 0,  16.661) RELATIVE Polychromatic_Beam
+*/
+
+COMPONENT Filter = Filter_Graphite(xmin = -0.16, xmax = 0.16, 
+	ymin = -0.16, ymax = 0.16, len = Filter_d)
+  AT (0, 0, 16.700) RELATIVE Polychromatic_Beam 
+
+COMPONENT Monochromator_Plane = Arm()
+  AT (0, 0, Mono_position) RELATIVE Polychromatic_Beam 
+  ROTATED (0, Mono_omega, 0) RELATIVE Polychromatic_Beam
+
+COMPONENT Blade0 = Monochromator0(xmin = Mono_xmin, xmax = Mono_xmax, 
+	zmin = Mono_zmin, zmax = Mono_zmax, ymin = Mono_ymin, ymax = Mono_ymax,
+	mosh = Mono_mosh,mosv = Mono_mosv,dist = Dist_MonoSample,
+    	xw = Sample_d, write=0,F2=Mono_F2,Vc=Mono_Vc,omega=angle,
+    	Q=Mono_Q,harmonic=Mono_harmonic,B=Mono_B,LIMIT=Mono_LIMIT,blade=0,present=m0)
+  AT (0, mpos0, 0) RELATIVE Monochromator_Plane 
+  ROTATED (0, 0, mrotz0) RELATIVE Monochromator_Plane
+  
+COMPONENT Blade1 = Monochromator0(xmin = Mono_xmin, xmax = Mono_xmax, 
+	zmin = Mono_zmin, zmax = Mono_zmax, ymin = Mono_ymin, ymax = Mono_ymax,
+	mosh = Mono_mosh,mosv = Mono_mosv,dist = Dist_MonoSample,
+    	xw = Sample_d, write=0,F2=Mono_F2,Vc=Mono_Vc,omega=angle,
+    	Q=Mono_Q,harmonic=Mono_harmonic,B=Mono_B,LIMIT=Mono_LIMIT,blade=1,present=m1)
+  AT (0, mpos1, 0) RELATIVE Monochromator_Plane 
+  ROTATED (0, 0, mrotz1) RELATIVE Monochromator_Plane
+  
+COMPONENT Blade2 = Monochromator0(xmin = Mono_xmin, xmax = Mono_xmax, 
+	zmin = Mono_zmin, zmax = Mono_zmax, ymin = Mono_ymin, ymax = Mono_ymax,
+	mosh = Mono_mosh,mosv = Mono_mosv,dist = Dist_MonoSample,
+    	xw = Sample_d ,write=0,F2=Mono_F2,Vc=Mono_Vc,omega=angle,
+    	Q=Mono_Q,harmonic=Mono_harmonic,B=Mono_B,LIMIT=Mono_LIMIT,blade=2,present=m2)
+  AT (0, mpos2, 0) RELATIVE Monochromator_Plane 
+  ROTATED (0, 0, mrotz2) RELATIVE Monochromator_Plane
+  
+COMPONENT Blade3 = Monochromator0(xmin = Mono_xmin, xmax = Mono_xmax, 
+	zmin = Mono_zmin, zmax = Mono_zmax, ymin = Mono_ymin, ymax = Mono_ymax,
+	mosh = Mono_mosh,mosv = Mono_mosv,dist = Dist_MonoSample,
+    	xw = Sample_d ,write=0,F2=Mono_F2,Vc=Mono_Vc,omega=angle,
+    	Q=Mono_Q,harmonic=Mono_harmonic,B=Mono_B,LIMIT=Mono_LIMIT,blade=3,present=m3)
+  AT (0, mpos3, 0) RELATIVE Monochromator_Plane 
+  ROTATED (0, 0, mrotz3) RELATIVE Monochromator_Plane
+  
+COMPONENT Blade4 = Monochromator0(xmin = Mono_xmin, xmax = Mono_xmax, 
+	zmin = Mono_zmin, zmax = Mono_zmax, ymin = Mono_ymin, ymax = Mono_ymax,
+	mosh = Mono_mosh,mosv = Mono_mosv,dist = Dist_MonoSample,
+    	xw = Sample_d ,write=0,F2=Mono_F2,Vc=Mono_Vc,omega=angle,
+    	Q=Mono_Q,harmonic=Mono_harmonic,B=Mono_B,LIMIT=Mono_LIMIT,blade=4,present=m4)
+  AT (0, mpos4, 0) RELATIVE Monochromator_Plane 
+  ROTATED (0, 0, mrotz4) RELATIVE Monochromator_Plane
+  
+COMPONENT Blade5 = Monochromator0(xmin = Mono_xmin, xmax = Mono_xmax, 
+	zmin = Mono_zmin, zmax = Mono_zmax, ymin = Mono_ymin, ymax = Mono_ymax,
+	mosh = Mono_mosh,mosv = Mono_mosv,dist = Dist_MonoSample,
+    	xw = Sample_d ,write=0,F2=Mono_F2,Vc=Mono_Vc,omega=angle,
+    	Q=Mono_Q,harmonic=Mono_harmonic,B=Mono_B,LIMIT=Mono_LIMIT,blade=5,present=m5)
+  AT (0, mpos5, 0) RELATIVE Monochromator_Plane 
+  ROTATED (0, 0, mrotz5) RELATIVE Monochromator_Plane
+
+COMPONENT Blade6 = Monochromator0(xmin = Mono_xmin, xmax = Mono_xmax, 
+	zmin = Mono_zmin, zmax = Mono_zmax, ymin = Mono_ymin, ymax = Mono_ymax,
+	mosh = Mono_mosh,mosv = Mono_mosv,dist = Dist_MonoSample,
+    	xw = Sample_d ,write=0,F2=Mono_F2,Vc=Mono_Vc,omega=angle,
+    	Q=Mono_Q,harmonic=Mono_harmonic,B=Mono_B,LIMIT=Mono_LIMIT,blade=6,present=m6)
+  AT (0, mpos6, 0) RELATIVE Monochromator_Plane 
+  ROTATED (0, 0, mrotz6) RELATIVE Monochromator_Plane
+
+COMPONENT Blade7 = Monochromator0(xmin = Mono_xmin, xmax = Mono_xmax, 
+	zmin = Mono_zmin, zmax = Mono_zmax, ymin = Mono_ymin, ymax = Mono_ymax,
+	mosh = Mono_mosh,mosv = Mono_mosv,dist = Dist_MonoSample,
+    	xw = Sample_d ,write=0,F2=Mono_F2,Vc=Mono_Vc,omega=angle,
+    	Q=Mono_Q,harmonic=Mono_harmonic,B=Mono_B,LIMIT=Mono_LIMIT,blade=7,present=m7)
+  AT (0, mpos7, 0) RELATIVE Monochromator_Plane 
+  ROTATED (0, 0, mrotz7) RELATIVE Monochromator_Plane
+  
+COMPONENT Blade8 = Monochromator0(xmin = Mono_xmin, xmax = Mono_xmax, 
+	zmin = Mono_zmin, zmax = Mono_zmax, ymin = Mono_ymin, ymax = Mono_ymax,
+	mosh = Mono_mosh,mosv = Mono_mosv,dist = Dist_MonoSample,
+    	xw = Sample_d ,write=0,F2=Mono_F2,Vc=Mono_Vc,omega=angle,
+    	Q=Mono_Q,harmonic=Mono_harmonic,B=Mono_B,LIMIT=Mono_LIMIT,blade=8,present=m8)
+  AT (0, mpos8, 0) RELATIVE Monochromator_Plane 
+  ROTATED (0, 0, mrotz8) RELATIVE Monochromator_Plane
+  
+COMPONENT Blade9 = Monochromator0(xmin = Mono_xmin, xmax = Mono_xmax, 
+	zmin = Mono_zmin, zmax = Mono_zmax, ymin = Mono_ymin, ymax = Mono_ymax,
+	mosh = Mono_mosh,mosv = Mono_mosv,dist = Dist_MonoSample,
+    	xw = Sample_d ,write=0,F2=Mono_F2,Vc=Mono_Vc,omega=angle,
+    	Q=Mono_Q,harmonic=Mono_harmonic,B=Mono_B,LIMIT=Mono_LIMIT,blade=9,present=m9)
+  AT (0, mpos9, 0) RELATIVE Monochromator_Plane 
+  ROTATED (0, 0, mrotz9) RELATIVE Monochromator_Plane
+  
+COMPONENT Blade10 = Monochromator0(xmin = Mono_xmin, xmax = Mono_xmax, 
+	zmin = Mono_zmin, zmax = Mono_zmax, ymin = Mono_ymin, ymax = Mono_ymax,
+	mosh = Mono_mosh,mosv = Mono_mosv,dist = Dist_MonoSample,
+    	xw = Sample_d ,write=0,F2=Mono_F2,Vc=Mono_Vc,omega=angle,
+    	Q=Mono_Q,harmonic=Mono_harmonic,B=Mono_B,LIMIT=Mono_LIMIT,blade=10,present=m10)
+  AT (0, mpos10, 0) RELATIVE Monochromator_Plane 
+  ROTATED (0, 0, mrotz10) RELATIVE Monochromator_Plane
+  
+COMPONENT Blade11 = Monochromator0(xmin = Mono_xmin, xmax = Mono_xmax, 
+	zmin = Mono_zmin, zmax = Mono_zmax, ymin = Mono_ymin, ymax = Mono_ymax,
+	mosh = Mono_mosh,mosv = Mono_mosv,dist = Dist_MonoSample,
+    	xw = Sample_d ,write=0,F2=Mono_F2,Vc=Mono_Vc,omega=angle,
+    	Q=Mono_Q,harmonic=Mono_harmonic,B=Mono_B,LIMIT=Mono_LIMIT,blade=11,present=m11)
+  AT (0, mpos11, 0) RELATIVE Monochromator_Plane 
+  ROTATED (0, 0, mrotz11) RELATIVE Monochromator_Plane
+  
+COMPONENT Blade12 = Monochromator0(xmin = Mono_xmin, xmax = Mono_xmax, 
+	zmin = Mono_zmin, zmax = Mono_zmax, ymin = Mono_ymin, ymax = Mono_ymax,
+	mosh = Mono_mosh,mosv = Mono_mosv,dist = Dist_MonoSample,
+    	xw = Sample_d ,write=0,F2=Mono_F2,Vc=Mono_Vc,omega=angle,
+    	Q=Mono_Q,harmonic=Mono_harmonic,B=Mono_B,LIMIT=Mono_LIMIT,blade=12,present=m12)
+  AT (0, mpos12, 0) RELATIVE Monochromator_Plane 
+  ROTATED (0, 0, mrotz12) RELATIVE Monochromator_Plane
+
+COMPONENT Blade13 = Monochromator0(xmin = Mono_xmin, xmax = Mono_xmax, 
+	zmin = Mono_zmin, zmax = Mono_zmax, ymin = Mono_ymin, ymax = Mono_ymax,
+	mosh = Mono_mosh,mosv = Mono_mosv,dist = Dist_MonoSample,
+    	xw = Sample_d ,write=0,F2=Mono_F2,Vc=Mono_Vc,omega=angle,
+    	Q=Mono_Q,harmonic=Mono_harmonic,B=Mono_B,LIMIT=Mono_LIMIT,blade=13,present=m13)
+  AT (0, mpos13, 0) RELATIVE Monochromator_Plane 
+  ROTATED (0, 0, mrotz13) RELATIVE Monochromator_Plane
+  
+COMPONENT Blade14 = Monochromator0(xmin = Mono_xmin, xmax = Mono_xmax, 
+	zmin = Mono_zmin, zmax = Mono_zmax, ymin = Mono_ymin, ymax = Mono_ymax,
+	mosh = Mono_mosh,mosv = Mono_mosv,dist = Dist_MonoSample,
+    	xw = Sample_d ,write=0,F2=Mono_F2,Vc=Mono_Vc,omega=angle,
+    	Q=Mono_Q,harmonic=Mono_harmonic,B=Mono_B,LIMIT=Mono_LIMIT,blade=14,present=m14)
+  AT (0, mpos14, 0) RELATIVE Monochromator_Plane 
+  ROTATED (0, 0, mrotz14) RELATIVE Monochromator_Plane
+
+/*
+COMPONENT BiDim_Backscattered = PSD_bidim (
+	xmin = -4, xmax = 0 , ymin = -4, ymax = 4,
+	nx=200,ny=400,filename="Bidim_Backscattered")
+  AT (-0.1, 0, d_source_mono) RELATIVE Polychromatic_Beam 
+  ROTATED (0, -90, 0) RELATIVE Polychromatic_Beam
+*/
+
+COMPONENT Monochromatic_Beam = Arm()
+  AT (0, 0, d_source_mono) RELATIVE Polychromatic_Beam 
+  ROTATED (0, Takeoff, 0) RELATIVE Polychromatic_Beam
+
+/*
+COMPONENT BiDim_Monochromator = PSD_bidim (
+	xmin = -0.16, xmax = 0.16 , ymin = -0.160, ymax = 0.160,
+	nx=120,ny=120,filename=bidim_Mono_filename)
+  AT ( 0, 0,  0.398) RELATIVE Monochromatic_Beam
+*/
+
+/*
+COMPONENT BiWav_Monochromator = PSD_wavelength (
+	xmin = -0.16, xmax = 0.16 , ymin = -0.160, ymax = 0.160,
+	nx=120,ny=120,filename=biwav_Mono_filename)
+  AT ( 0, 0,  0.399) RELATIVE Monochromatic_Beam
+*/ 
+
+/* The following Absorber for backscattered neutrons does not work properly */
+/*
+COMPONENT Backscatter_absorber = Slit(
+	xmin = SML, xmax=SMR , ymin = SMB, ymax = SMT)
+  AT (0,0,-0.400) RELATIVE Monochromatic_Beam ROTATED (0,0,0) RELATIVE Monochromatic_Beam
+*/
+
+COMPONENT MSlit = Slit(
+	xmin = SML, xmax=SMR , ymin = SMB, ymax = SMT)
+  AT (0,0,0.400) RELATIVE Monochromatic_Beam ROTATED (0,0,0) RELATIVE Monochromatic_Beam
+
+/*
+COMPONENT WavMonit_MonoSlits = L_monitor(xmin = SML, xmax=SMR , 
+     	ymin = SMB, ymax = SMT, Lmin = Monit0_Lmin, Lmax = Monit0_Lmax,
+    	nchan = Monit_ncan, filename=Lmoni_Mslt_filename)
+  AT (0, 0,  0.4001) RELATIVE Monochromatic_Beam 
+*/
+
+/*
+COMPONENT DivMonit_MonoSlits = Hdiv_monitor(xmin = SML, xmax=SMR , 
+     	ymin = SMB, ymax = SMT, nh=501, 
+    	h_maxdiv=2.5, filename=Hmoni_Mslt_filename)
+  AT (0, 0, 0.4002) RELATIVE Monochromatic_Beam 
+*/
+
+/*
+COMPONENT BiDim_MonoSlits = PSD_bidim (
+	xmin = -0.16, xmax=0.16 , ymin = -0.160, ymax = 0.160,
+	nx=120,ny=120,filename=bidim_Mslt_filename,created_neutrons=created_neutrons)
+  AT ( 0, 0,  0.4003) RELATIVE Monochromatic_Beam
+*/
+
+COMPONENT SSlit = Slit(
+	xmin = SSL, xmax = SSR, ymin = SSB, ymax = SST)
+  AT (0,0,2.800) RELATIVE Monochromatic_Beam ROTATED (0,0,0) RELATIVE Monochromatic_Beam
+
+/*
+COMPONENT BiDim_SSlt = PSD_bidim (
+	xmin = -0.025, xmax = 0.025, ymin = -0.05, ymax = 0.05,
+	nx=70,ny=70,filename=bidim_Sslt_filename,created_neutrons=created_neutrons)
+  AT ( 0, 0,  2.801) RELATIVE Monochromatic_Beam
+*/
+
+/*
+COMPONENT Transmitted_Beam = Arm()
+  AT      (0,  0, Dist_MonoSample) RELATIVE Monochromatic_Beam 
+  ROTATED (0,  0,               0) RELATIVE Monochromatic_Beam
+*/
+
+COMPONENT WavMonit_Sample = L_monitor(xmin = Sample_xmin, xmax = Sample_xmax, 
+   	ymin = Sample_ymin, ymax = Sample_ymax, Lmin = Monit_Lmin, Lmax = Monit_Lmax,
+    	nchan = Monit_ncan, filename=Lmoni_samp_filename)
+  AT ( 0, 0,  Sample_Monitor_Position0) RELATIVE Monochromatic_Beam
+
+COMPONENT DivMonit_Sample = Hdiv_monitor(xmin = Sample_xmin, xmax = Sample_xmax, 
+    	ymin = Sample_ymin, ymax = Sample_ymax, nh=201, 
+    	h_maxdiv=1, filename=Hmoni_samp_filename)
+  AT ( 0, 0,  Sample_Monitor_Position1) RELATIVE Monochromatic_Beam
+
+COMPONENT BiDim_Sample = PSD_bidim (xmin = -0.025, xmax = 0.025,  
+    	ymin = -0.05, ymax = 0.05,
+    	nx=70,ny=70,filename=bidim_samp_filename)
+  AT ( 0, 0,  Sample_Monitor_Position2) RELATIVE Monochromatic_Beam
+
+/* 
+COMPONENT BiWav_Sample = PSD_wavelength (xmin = -0.025, xmax = 0.025,  
+    	ymin = -0.05, ymax = 0.05,
+    	nx=70,ny=70,filename=biwav_samp_filename)
+  AT ( 0, 0,  Sample_Monitor_Position) RELATIVE Monochromatic_Beam
+*/ 
+
+/*
+COMPONENT DivPos_Sample = DivPos_monitor (xmin = -0.025, xmax = 0.025,  
+    	ymin = -0.05, ymax = 0.05,
+    	npos=70,ndiv=70,maxdiv=1,filename=divpos_samp_filename)
+  AT ( 0, 0,  Sample_Monitor_Position) RELATIVE Monochromatic_Beam
+*/
+
+COMPONENT Flux_Sample_1cm2 = Monitor (xmin = -0.005, xmax = 0.005,  
+    	ymin = -0.005, ymax = 0.005)
+  AT ( 0, 0,  Sample_Monitor_Position3) RELATIVE Monochromatic_Beam
+
+COMPONENT Sample = Powder0 (radius = Sample_r, h = Sample_h, 
+    	pack = Sample_pack, Vc=Vc, sigma_a = sigma_abs, q = Q, j = mult, F2 = F2, DW = DW,
+    	PSD_r = PSD_r, PSD_h = PSD_h, sign = sign,
+    	write=0,transmission=Sample_transmission,nbInt=nbInt, sigma_i = sigma_inc,d_V=Sample_can_d,
+    	broadening=Sample_broadening,ttmin=PSD_ttmin,ttmax=PSD_ttmax)
+  AT ( 0, 0,  Dist_MonoSample) RELATIVE Monochromatic_Beam
+
+/*
+COMPONENT Beamstop = Beamstop_rectangular (xmin=-0.01,xmax=0.01,ymin=-0.1,ymax=0.1)
+  AT ( 0, 0,  BeamStop_Position) RELATIVE Monochromatic_Beam
+*/
+
+/*
+COMPONENT PSD_Entry = PSD_entry(radius = PSD_entry_r, height = PSD_h, nd = PSD_cells, pitch=PSD_pitch,
+    	gap=PSD_entry_d,tt0=PSD_ttmin, pack=1, Vc=Al_Vc, 
+    	sigma_a=Al_sigma_a, q= Al_Q, j = 1, F2=Al_F2, DW=Al_DW,period=PSD_period,sign=sign)
+  AT ( 0, 0,  Dist_MonoSample) RELATIVE Monochromatic_Beam
+*/
+
+/*
+COMPONENT Adapt_Detector = Adapt_check(source_comp=Thermal_Source)
+  AT ( 0, 0,  Dist_MonoSample) RELATIVE Monochromatic_Beam
+*/  
+
+COMPONENT PSD = PSD_curved(radius = PSD_r, height = PSD_h, nd = PSD_cells, pitch=PSD_pitch,
+    	gap=PSD_gap,filename=psd_filename, sign = sign, tt0=PSD_ttmin, pdet=PSD_p,
+	pT_trace=PSD_pT_trace, period=PSD_period, cellwidth=PSD_cellwidth)
+  AT ( 0, 0,  Dist_MonoSample) RELATIVE Monochromatic_Beam
+
+/*
+COMPONENT PSD = PSD_curved(radius = PSD_r, height = PSD_h, nd = 3601, pitch=PSD_pitch,
+    	gap=PSD_gap,filename=psd_filename, sign = sign, tt0=-180, pdet=PSD_p,
+	pT_trace=PSD_pT_trace, period=PSD_period, cellwidth=PSD_cellwidth)
+  AT ( 0, 0,  Dist_MonoSample) RELATIVE Monochromatic_Beam
+*/
+
+COMPONENT scattered = Adapt_check(source_comp=Thermal_Source)
+  AT ( 0, 0,  End_Position) RELATIVE Monochromatic_Beam  
+
+/*
+COMPONENT Adapt_Detector = Adapt_check(source_comp=Thermal_Source)
+  AT ( 0, 0,  Dist_MonoSample) RELATIVE Monochromatic_Beam
+*/
+
+/*  
+COMPONENT Beamstop = Beamstop_rectangular (xmin=-0.01,xmax=0.01,ymin=-.1,ymax=0.1)
+  AT ( 0, 0,  BeamStop_Position) RELATIVE Monochromatic_Beam
+*/
+
+FINALLY 
+  %{
+	systime-=time(NULL); /* This is interesting for optimisation */
+	/*
+	printf("Detector: flux   =%lg part     =%lg dL     =%lg\n" ,Source_flux,norm,Source_Lmax-Source_Lmin);
+	printf("Detector: extra_I=%lg extra_ERR=%lg extra_N=%lg\n" ,Source_flux,norm,Source_Lmax-Source_Lmin);
+	*/
+	printf("Monochromator Reflectivity %lf percent (%lf after 1st scattering)\n",100*leaving_p/incident_p,100*first_p/incident_p);
+	printf("%d seconds for this simulation run no. %d\n",-systime,(int)Output_file);
+	system("date");
+    	/* system("mail -s Automatic Message: MCSTAS hansen@ill.fr < finished"); */
+   	/* fclose(monofile); *//* Should be done, but - funny enough - creates runtime error */
+	exit(0); 
+	/* Otherwise the program stops for some weird reason without closing files correctly*/
+ %}
+END
+
+

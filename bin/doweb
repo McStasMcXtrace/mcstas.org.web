@@ -1,0 +1,32 @@
+#!/bin/sh
+#
+# The disk of the Risø machine ftp.risoe.dk runs full sometimes, causing the build script to
+# crash. As the IT department don't want to fix this problem, I have simply decided that we
+# should take up the double diskspace to ensure that we can clear enough space to build the
+# website...
+#
+
+# Remove redundant information
+rm -rf /home/httpd/neutron.risoe.dk/bak/*
+
+/home/httpd/neutron.risoe.dk/web/bin/createweb.pl -c /home/httpd/neutron.risoe.dk/web/contents -s /home/httpd/neutron.risoe.dk/web/specialcontents -l /home/httpd/neutron.risoe.dk/web/layout -w /home/httpd/neutron.risoe.dk/html.new -p ""
+# Remove the list.html in the documentation folder
+rm -f /home/httpd/neutron.risoe.dk/html.new/documentation/list.html
+rm -f /home/httpd/neutron.risoe.dk/html.new/download/list.html
+# Create a link from download to downloads
+cd /home/httpd/neutron.risoe.dk/html.new/
+ln -s download downloads
+cd -
+# Create link to current 'stable' version - for use with updated mcsync script
+cd /home/httpd/neutron.risoe.dk/html.new/download
+ln -s `ls -t *src.tar.gz | grep -v Win32 | head -1` stable.tar.gz
+cd -
+rm -rf /home/httpd/neutron.risoe.dk/html.old
+mv /home/httpd/neutron.risoe.dk/html /home/httpd/neutron.risoe.dk/html.old
+mv /home/httpd/neutron.risoe.dk/html.new /home/httpd/neutron.risoe.dk/html
+chmod -R a+r /home/httpd/neutron.risoe.dk/html
+
+# Create redundant information
+cp -rp /home/httpd/neutron.risoe.dk/html  /home/httpd/neutron.risoe.dk/bak &
+cp -rp /home/httpd/neutron.risoe.dk/html.old  /home/httpd/neutron.risoe.dk/bak &
+cp -rp /home/httpd/neutron.risoe.dk/web  /home/httpd/neutron.risoe.dk/bak &

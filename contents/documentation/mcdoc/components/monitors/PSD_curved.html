@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD>
+<TITLE>PSD_curved</TITLE>
+<LINK REV="made" HREF="mailto:kristian.nielsen@risoe.dk">
+</HEAD>
+
+<BODY>
+
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<H1>The <CODE>PSD_curved</CODE> component</H1>
+
+Curved linear 1D MSGC PSD
+
+
+<H2><A NAME=id></A>Identification</H2>
+
+<UL>
+  <LI> <B>Author:</B> <a href="mailto:hansen@ill.fr">Thomas C Hansen</a></B>
+  <LI> <B>Origin:</B> <a href="http://www.ill.fr">ILL</a> (Dif/<a href="http://www.ill.fr/YellowBook/D20">D20</a>)</B>
+  <LI> <B>Date:</B> 07 March 2000</B>
+  <LI> <B>Version:</B> 1.0 </B>
+</UL>
+<H2><A NAME=desc></A>Description</H2>
+
+<PRE>
+
+A curved linear 1D PSD monitor using a cylindrical projection. This detector type is commonly
+used in constant wavelength neutron powder diffraction, based either on multiwire- (MWGC) or
+microstrip- (MSGC) gaschamber technology. This implementation is mainly pushed by the MSGC
+realisation (D20) of such a PSD, as done on D20 at ILL. So some kind of 'polygonality' effect 
+resulting from the polygonal arrangement of MSGC plates will be considered in the near future
+by an approximation of the electron avalanche trace in the electrical field.
+
+</PRE>
+
+<H2><A NAME=ipar></A>Input parameters</H2>
+Parameters in <B>boldface</B> are required;
+the others are optional.
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD><B>radius</B></TD>
+     <TD>m</TD>
+     <TD>Radius of detector at center of MSGC plate (=radius in <a href="PSD_entry.html">PSD_entry</a> + gap)	(1.471)
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>height</B></TD>
+     <TD>m</TD>
+     <TD>Height of detector (=height in <a href="PSD_entry.html">PSD_entry</a>)					(0.15)
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nd</B></TD>
+     <TD>1</TD>
+     <TD>Number of cells (=nd in <a href="PSD_entry.html">PSD_entry</a>)						(1536)
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pitch</B></TD>
+     <TD>deg</TD>
+     <TD>angular pitch (=pitch in <a href="PSD_entry.html">PSD_entry</a>)					(0.1)
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>gap</B></TD>
+     <TD>m</TD>
+     <TD>gaschamber detection gap										(0.053)
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>filename</B></TD>
+     <TD>string</TD>
+     <TD>Name of file in which to store the detector image							(NULL)
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>sign</B></TD>
+     <TD>1</TD>
+     <TD>Chirality of 1st diffractometer axis=sign[takeoff of <a href="../d20adapt.instr">d20adapt.instr]</a>	(-1)
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>tt0</B></TD>
+     <TD>deg</TD>
+     <TD>Angular position of 1st PSD cell (=tt0 in <a href="PSD_entry.html">PSD_entry</a>)			(0)
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pdet</B></TD>
+     <TD>bar</TD>
+     <TD>Pressure of 3He detection gas										(1.2)
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pT_trace</B></TD>
+     <TD>m</TD>
+     <TD>Average effective length of proton/tritium trace							(0.005)
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>period</B></TD>
+     <TD>1</TD>
+     <TD>Number of detection cells per MSGC plate (=period in <a href="PSD_entry.html">PSD_entry</a>)		(32)
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>cellwidth</B></TD>
+     <TD>m</TD>
+     <TD>Width of one detection cell on a MSGC plate								(0.002568)
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=opar></A>Output parameters</H2>
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD><B>PSD_N</B></TD>
+     <TD>*1</TD>
+     <TD>Array of neutron counts
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>PSD_p</B></TD>
+     <TD>*1.0</TD>
+     <TD>Array of neutron weight counts
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>PSD_p2</B></TD>
+     <TD>*1.0</TD>
+     <TD>Array of second moments
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>alpha</B></TD>
+     <TD>rad</TD>
+     <TD>Angle covered by one MSGC plate
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>R1</B></TD>
+     <TD>m</TD>
+     <TD>PSD radius at MSGC edge
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=links></A>Links</H2>
+
+<UL>
+  <LI> <A HREF="PSD_curved.comp">Source code</A> for <CODE>PSD_curved.comp</CODE>.
+  <LI> <a href="../d20adapt.instr">Source code of d20adapt.instr</a>, where this component is used
+  <LI> <a href="PSD_entry.html">Source code of PSD_entry.comp</a>, a corresponding entry window
+
+</UL>
+<HR>
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<ADDRESS>
+Generated automatically by McDoc, Kristian Nielsen
+&lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt; /
+Jan 22 2001
+</ADDRESS>
+</BODY></HTML>

@@ -1,0 +1,162 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: The first one to unsubscribe ? -->
+<!--X-From: Mark Hagen <mark.hagen@neutron&#45;server.kek.jp> -->
+<!--X-Date: Thu, 26 Nov 1998 14:38:23 +0000 -->
+<!--X-Message-Id: 365D67DF.E9B8689@neutron&#45;server.kek.jp -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 01J4MK66YNZW8WY25C@risoe.dk -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: The first one to unsubscribe ?</title>
+<link rev="made" href="mailto:mark.hagen@neutron-server.kek.jp">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00034.html">Date Prev</A>][<A HREF="msg00041.html">Date Next</A>]
+<a href="index.html#00040">[Chronological]</a>
+<a href="threads.html#00040">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: The first one to unsubscribe ?</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: The first one to unsubscribe ?</strong></LI>
+<LI><strong>From</strong>: <strong>Mark Hagen &lt;<A HREF="mailto:mark.hagen@neutron-server.kek.jp">mark.hagen@neutron-server.kek.jp</A>&gt;</strong></LI>
+<LI>Date: Thu, 26 Nov 1998 14:38:23 +0000</LI>
+<LI>References: &lt;<A HREF="msg00033.html">01J4MK66YNZW8WY25C@risoe.dk</A>&gt;</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Hi there,
+
+Thanks for your speedy reply.
+
+&gt; I do (the system sends me an e-mail). I did see your new address being
+&gt; added to the list, but I never saw the old one being removed, and in
+&gt; fact pha70@cc.keele.ac.uk is still on the list. Apparently there is some
+&gt; list problem?
+&gt; 
+
+Yes, perhaps. I checked on the Keele computer and the mail system has sent
+a message to my account that it is unable to deliver a message to
+majordomo@neutron.risoe.dk but will keep trying for 5 days. 
+
+
+
+&gt; &gt; The ALLOCA problem.
+&gt; Ok, I fixed (I hope) the alloca problem. Now mcstas should no longer use
+&gt; the alloca() function at all. I just checked, and mcstas now compiles on
+&gt; our HP box using the HP compiler (we normally use gcc).
+&gt; 
+
+Excellent I'll e-mail my man and tell him to download the beta version. I'll
+check with him if he tried the IBM. Looks good though, you've now covered
+pretty well all the major platforms, DEC, HP, IBM (I haven't heard, so
+no news is good news), Linux (in various versions) and Win95 with Visual C and
+Drew has it for the Borland C++ compiler.
+
+
+&gt; I already fixed the strcasecmp/stricmp problem in my sources. For
+&gt; Windows (32 bit) a few other minor details needs fixing, see the list
+&gt; archive for details. My current sources compile cleanly in Visual C (it
+&gt; is necessary to define the C preprocessor macro "WIN32").
+&gt; 
+&gt; In the end quite a few files have small changes, so rather than sending
+&gt; individual files I will build a beta of "McStas v1.01" and put it on the
+&gt; web page later today.
+
+I've downloaded a copy to my laptop and will give it a try tomorrow.
+
+&gt; Great. The reason for the "./program" thing is that "." (the current
+&gt; directory) is not included in the $PATH variable, probably for security
+&gt; reasons. I think that is even in the manual :-).
+
+Yes, looking in the manual was how I "worked it out", would have fooled me
+otherwise.
+
+&gt; 
+&gt; &gt; Collimator + Energy monitor. Okay so a flat energy distribution from say 5meV
+&gt; &gt; to 100meV. But it wasn't flat in the energy detector. Reason being, as Drew
+&gt; &gt; explained to me, your source emits as a uniform velocity distribution ? In other
+&gt; &gt; words you convert the low and high energy ranges to velocities and then use a
+&gt; &gt; 0 t 1 random number generator in the range of velocities ? Velocity is a funny
+&gt; 
+&gt; Ouch! We fixed this in the Source_flat component, but missed it in the
+&gt; Moderator component. I will fix this and include it in the McStas beta.
+&gt; 
+
+We hope to put McStas through it's paces next week. I have done a series of 
+calculations for a new spectrometer design they're thinking about at KEK
+using my program and Drew is going to check my results by repeating the 
+calculations with McStas next week.
+
+He sent a message to the mailing list about his Fermi chopper component, I don't
+know if you saw it or not. His explanation was a little opaque, but I have seen
+his computed results compared with results for the design of the MARI (spectrometer
+at ISIS) Fermi chopper and they do compare very well. A Fermi chopper is an important
+component for the ToF community, it is probably something, once you are happy with
+his code, that you want as a standard component in your library. I am reasonably
+happy with his code because.... for some reason it is jolly similar to my F90 code
+for a Fermi chopper :)
+
+Okay, it's late here in Japan, I'm off for some sleep, things look pretty good to
+me, hope you're getting plenty of hits and e-mail sign-ups, I'm sure it will grow
+with time,
+
+cheers,
+
+Mark
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<UL><LI><STRONG>References</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00033" HREF="msg00033.html">Re: The first one to unsubscribe ?</A></STRONG>
+<UL><LI><EM>From:</EM> Kristian Nielsen &lt;kristian.nielsen@risoe.dk&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00034.html">McStas v1.01 BETA 1</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00041.html">Re: McStas v1.01 BETA 1</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00040"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00040"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

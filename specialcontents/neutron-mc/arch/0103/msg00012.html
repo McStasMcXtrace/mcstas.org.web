@@ -1,0 +1,171 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: Component library -->
+<!--X-From: Per&#45;Olof =?iso&#45;8859&#45;1?Q?=C5strand?= <per&#45;olof.aastrand@risoe.dk> -->
+<!--X-Date: Fri, 16 Mar 2001 16:25:30 +0100 -->
+<!--X-Message-Id: 3AB2306A.F0BD5554@risoe.dk -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: Pine.LNX.4.04.10103161226180.18720&#45;100000@iritsf.iri.tudelft.nl -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: Component library</title>
+<link rev="made" href="mailto:per-olof.aastrand@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00011.html">Date Prev</A>][<A HREF="msg00013.html">Date Next</A>]
+<a href="index.html#00012">[Chronological]</a>
+<a href="threads.html#00012">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: Component library</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>Rob Kreuger &lt;<A HREF="mailto:R.Kreuger@IRI.TUDELFT.NL">R.Kreuger@IRI.TUDELFT.NL</A>&gt;, neutron-mc &lt;<A HREF="mailto:neutron-mc@risoe.dk">neutron-mc@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: Component library</strong></LI>
+<LI><strong>From</strong>: <strong>Per-Olof &Aring;strand &lt;<A HREF="mailto:per-olof.aastrand@risoe.dk">per-olof.aastrand@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: Fri, 16 Mar 2001 16:25:30 +0100</LI>
+<LI>References: &lt;Pine.LNX.4.04.10103161226180.18720-100000@iritsf.iri.tudelft.nl&gt;</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Hi,
+
+Rob Kreuger wrote:
+
+&gt; Hello,
+&gt;
+&gt; concerning the way the component libraries are maintained at Riso and ILL,
+&gt; I would like to make the following remarks:
+&gt;
+&gt; 1) There is no need to distinguish between official Mcstas and unofficial
+&gt; user components. Just define the "origin" of a component by the author,
+&gt; which for components made by Riso can be called "Risoe" or "Mcstas". Then
+&gt; people know that the component is from the official Mcstas team. This
+&gt; tells enough about the origin.
+
+The distinction is important for me as a maintainer since I need to make sure
+that I have the most recent versions of the components included in a McStas
+release. If it is only an issue for me, however, if a component is official
+or not then I think we should remove the components from the official release
+of McStas. Today I anyway regard a component as belonging to the author
+regardless of it is in the McStas release or only available in the component
+library, and I expect the author to make necessary changes and notify me if
+it is to be included somewhere.
+
+A suggestion is thus that components are only administrated by the McDoc tool
+and they are put there as provided by the author. If someone suspects a
+problem with a component, it is notified on the email list and I will put it
+in "News"/"Known Problems" on the web. If someone has suggestions for
+modifications in a component, they should be communicated to the author which
+then supplies the updated version to the McDoc maintainer. Further comments
+are very welcome!
+
+&gt;
+&gt; 2) Different versions of the components should remain available on the
+&gt; webpage. So a version number is the second part identifying the module.
+&gt;
+&gt; Why do I want to have old versions available?  Because if someone runs a
+&gt; simulation now, with the actual version of the components, he get certain
+&gt; results. If he is going to run it two years later, with components with
+&gt; updated versions, with the same instrument file he might get different
+&gt; results! That is very annoying and much time will be spent to find out
+&gt; what happened. So it is important that he can run the same instrument
+&gt; file, but with old components to make sure that the difference is in the
+&gt; upgrading of components and not a (forgotten) modification of his
+&gt; instrument file. Reproducability of simulation runs is very important on
+&gt; the long term.
+&gt;
+&gt; In order for this to make sense, people have to know with which version of
+&gt; components they have run their simulation. therefor I would propose to
+&gt; include in the Mcstas output file to write which components and which
+&gt; versions have been used in the simulation.
+
+This is a very important point.
+
+For the components developed by Kristian, all previous versions may be
+generated since we use a revision control system (RCS). The same is true for
+components by others sent to me, which I also put into RCS.
+
+I will put this on the to-do-list: a library available on the web with all
+versions of a component (that become available to me) and a print statement
+in the simulation program providing the versions of the components.
+
+&gt; 3)One could also separate the Mcstas kernel from the component library.
+&gt; People who want to use Mcstas just get the latest kernel and the
+&gt; component library with the most recent version of th components. And at
+&gt; any time they can get more recent or older component version by just
+&gt; downloading them from the webpage.
+&gt; And of course for a new release of Mcstas it might be said that it only
+&gt; works with the latest version of components.
+
+This is more or less in line with my response to the previous points. I think
+that a component written for a 1.x version should run in all 1.x versions of
+Mc. If backwards compability is not guaranteed, we have to announce a version
+2.0. If we are strict about this policy, it would make life easier for users
+writing components.
+
+&gt; cheers,
+&gt; Rob Kreuger
+&gt;
+
+Best regards,
+
+Per-Olof Åstrand
+
+
+--
+Per-Olof Åstrand
+Dept. of Chemistry, University of Copenhagen
+and Materials Research Department, Risø National Laboratory
+per-olof.aastrand@theory.ki.ku.dk or per-olof.aastrand@risoe.dk
+<A HREF="http://www.ki.ku.dk">http://www.ki.ku.dk</A> and <A HREF="http://www.risoe.dk">http://www.risoe.dk</A>
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00011.html">Re: About component version and origin</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00013.html">Still the 2e9...</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00012"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00012"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

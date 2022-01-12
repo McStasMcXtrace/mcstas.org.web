@@ -1,0 +1,178 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Basic understanding of instrument components</TITLE>
+<META NAME="description" CONTENT="Basic understanding of instrument components">
+<META NAME="keywords" CONTENT="tutorial">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="tutorial.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="tutorial.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html79"
+  HREF="node6.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html77"
+  HREF="tutorial.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html71"
+  HREF="node4.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html80"
+  HREF="node6.html">Basic McStas</A>
+<B> Up:</B> <A NAME="tex2html78"
+  HREF="tutorial.html">McStas neutron ray-trace tutorial</A>
+<B> Previous:</B> <A NAME="tex2html72"
+  HREF="node4.html">Basic neutron scattering</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000">
+Basic understanding of instrument components</A>
+</H1>
+In the McStas formulation of a neutron scattering instrument, all
+objects apart from the neutron ray are referred to as components. This
+includes for instance
+
+<UL>
+<LI><B>Source</B> The exit of a neutron production facility, where
+    neutron rays of certain velocities are emitted into some
+    portion of space.
+</LI>
+<LI><B>Monochromator</B> (Idealized) crystal that is used to select
+    neutrons of a single wavelength<A NAME="tex2html5"
+  HREF="footnode.html#foot64"><SUP>1</SUP></A> <IMG
+ WIDTH="20" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$\lambda_0$"> to probe the sample with (monochromator) or to 
+    analyze with (analyzer).
+</LI>
+<LI><B>Sample</B> An object altering the neutron physical properties
+    in some sense, examples used here are:
+  
+<UL>
+<LI>Vanadium. Scatters incoming neutron rays incoherently.
+</LI>
+<LI>PowderN. Can be thought of as a large number of crystals,
+        each scattering neutron rays according to Braggs law, thereby
+        producing N concentric Debye Scherrer cones. This sample also
+        has the posibility of adding inchoherent, eleastically scattered
+        neutron rays.
+    
+</LI>
+</UL>
+</LI>
+<LI><B>Monitors</B> Objects <I>monitoring</I> or registering neutron ray
+    characteristics. In the exercises below are used different types
+    of detectors or monitors:
+  
+<UL>
+<LI>Monitor. Single monitor, detecting the number of neutrons flying
+        through a plane. (User defined opening size).
+</LI>
+<LI>PSD_monitor. Square monitor, detecting the number of
+        neutron rays passing through a plane, divided into
+        pixels. Square regions of a plane. (User defined resolution 
+        and opening size).
+</LI>
+<LI>PSD_monitor_4PI. As PSD_monitor but shaped like a sphere.
+</LI>
+<LI>L_monitor. Wavelength monitor, measuring the different
+        wavelengths of the passing neutron rays. (L is for <IMG
+ WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\lambda$">).
+</LI>
+<LI>Monitor_nD. General monitor for detecting all sorts of
+        physical properties of the neutron ray. In our cases used with
+        options:
+      
+<UL>
+<LI>'single' - as PSD_monitor but only one small square.
+</LI>
+<LI>'banana' - as PSD_monitor but shaped like a curved,
+          horizontal band.
+      
+</LI>
+</UL>
+</LI>
+</UL>
+</LI>
+<LI><B>Collimators</B> Devices controling the direction and divergence
+   of the neutron ray.
+    
+<UL>
+<LI>Collimator_linear A series of parallel absorbing neutron plates
+       that limits the beam divergence. 
+       Typical values are <IMG
+ WIDTH="16" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img13.png"
+ ALT="$6'$"> to <IMG
+ WIDTH="32" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.png"
+ ALT="$120'$">.
+    
+</LI>
+</UL>
+</LI>
+</UL>
+More information on the McStas components is available by using the
+<code>mcdoc</code> program (You may need to set the BROWSER system variable
+to your webbrowser of choice):
+
+<UL>
+<LI><code>mcdoc -s</code> , Shows a html list of all the components
+</LI>
+<LI><code>mcdoc Monitor.comp</code> , Shows the documentation for a given component
+</LI>
+<LI><code>mcdoc -M</code> , brings up the McStas manual in PDF format
+</LI>
+<LI><code>mcdoc -c</code> , brings up the McStas component manual in PDF format
+</LI>
+</UL>
+
+<P>
+<HR>
+<!--Navigation Panel-->
+<A NAME="tex2html79"
+  HREF="node6.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html77"
+  HREF="tutorial.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html71"
+  HREF="node4.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html80"
+  HREF="node6.html">Basic McStas</A>
+<B> Up:</B> <A NAME="tex2html78"
+  HREF="tutorial.html">McStas neutron ray-trace tutorial</A>
+<B> Previous:</B> <A NAME="tex2html72"
+  HREF="node4.html">Basic neutron scattering</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+Peter Kjær Willendrup
+2015-11-12
+</ADDRESS>
+</BODY>
+</HTML>

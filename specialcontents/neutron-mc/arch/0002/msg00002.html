@@ -1,0 +1,118 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: Calulating intensities -->
+<!--X-From: Kristian Nielsen <kristian.nielsen@risoe.dk> -->
+<!--X-Date: Mon, 07 Feb 2000 11:34:39 +0100 -->
+<!--X-Message-Id: 01JLMHX3CV9U919Z2M@risoe.dk -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 389AF72F.384B4B99@studsvik.uu.se -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: Calulating intensities</title>
+<link rev="made" href="mailto:kristian.nielsen@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00001.html">Date Prev</A>][<A HREF="msg00012.html">Date Next</A>]
+<a href="index.html#00002">[Chronological]</a>
+<a href="threads.html#00002">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: Calulating intensities</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:stuart@studsvik.uu.se">stuart@studsvik.uu.se</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: Calulating intensities</strong></LI>
+<LI><strong>From</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: Mon, 07 Feb 2000 11:34:39 +0100</LI>
+<LI>Cc: <A HREF="mailto:neutron-mc@risoe.dk">neutron-mc@risoe.dk</A></LI>
+<LI>Date-warning: Date header was inserted by risoe.dk</LI>
+<LI>In-reply-to: &lt;<A HREF="msg00000.html">389AF72F.384B4B99@studsvik.uu.se</A>&gt;(message from stuart on Fri, 04 Feb 2000 16:58:40 +0100)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+&gt; Date: Fri, 04 Feb 2000 16:58:40 +0100
+&gt; From: stuart &lt;stuart@studsvik.uu.se&gt;
+
+&gt; I was trying to compare the intensities given from a simulation when
+&gt; using different energy/wavelength neutrons, and have been trying to
+&gt; understand the way in which the monochromator mosaicity would affect the
+&gt; number reflected, for those different incident energies/wavelengths.
+&gt; 
+&gt; Should the energy spread of the neutrons, from the source be different
+&gt; for each energy simulated in order to give an identical wavelength
+&gt; spread, incident upon the monochromator?  Or maybe I'm thinking about it
+&gt; the wrong way!
+
+I am not quite sure here about what you have in mind, but it sounds like
+your problem is that the neutron source you use specifies the spectrum
+in terms of energy, while what you need is to specify it in terms of
+wavelength. In that case you should try to use the Source_flux_lambda
+component that is included in the just-released McStas version 1.2 (I
+assume you use McStas though you did not mention it explicitly). That
+will give you easily the same wavelength spread at all wavelengths.
+
+More generally, the prediction of absolute reflectivity at different
+wavelengths of mosaic crystals is (as far as I know) a very hard
+problem. Complications arise because both primary and secondary
+extinction becomes important, and these depend strongly on the precise
+characteristics on the mosaic (a simple Gaussian model may not be
+sufficient). Samuel Werner discusses the problem in his 1965 PhD thesis
+(I think the title is "The multiple Bragg scattering of neutrons from
+mosaic crystals").
+
+Hope this helps,
+
+ - Kristian.
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<UL><LI><STRONG>References</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00000" HREF="msg00000.html">Calulating intensities</A></STRONG>
+<UL><LI><EM>From:</EM> stuart &lt;stuart@studsvik.uu.se&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00001.html">New release v1.2 of McStas</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00012.html">Re: McStas PANDA simulation</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00002"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00002"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

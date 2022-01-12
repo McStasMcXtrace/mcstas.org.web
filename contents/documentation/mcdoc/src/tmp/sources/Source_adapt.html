@@ -1,0 +1,193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD>
+<TITLE>Source_adapt</TITLE>
+<LINK REV="made" HREF="mailto:kristian.nielsen@risoe.dk">
+</HEAD>
+
+<BODY>
+
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<H1>The <CODE>Source_adapt</CODE> component</H1>
+
+Neutron source with adaptive importance sampling
+
+
+<H2><A NAME=id></A>Identification</H2>
+
+<UL>
+  <LI> <B>Author:</B> Kristian Nielsen</B>
+  <LI> <B>Origin:</B> McStas 1.5</B>
+  <LI> <B>Date:</B> 1999</B>
+  <LI> <B>Version:</B> 1.15 </B>
+</UL>
+<H2><A NAME=desc></A>Description</H2>
+
+<PRE>
+Rectangular source with flat energy distribution that uses adaptive
+importance sampling to improve simulation efficiency. Works
+together with the Adapt_check component.
+
+The source divides the three-dimensional phase space of (energy,
+horizontal position, horizontal divergence) into a number of
+rectangular bins. The probability for selecting neutrons from each
+bin is adjusted so that neutrons that reach the Adapt_check
+component with high weights are emitted more frequently than those
+with low weights. The adjustment is made so as to attemt to make
+the weights at the Adapt_check components equal.
+
+Focosing is achieved by only emitting neutrons towards a rectangle
+perpendicular to and placed at a certain distance along the Z axis.
+Focusing is only approximate (for simplicity); neutrons are also
+emitted to pass slightly above and below the focusing rectangle,
+more so for wider focusing.
+
+In order to prevent false learning, a parameter beta sets a
+fraction of the neutrons that are emitted uniformly, without regard
+to the adaptive distribution. The parameter alpha sets an initial
+fraction of neutrons that are emitted with low weights; this is
+done to prevent early neutrons with rare initial parameters but
+high weight to ruin the statistics before the component adapts its
+distribution to the problem at hand. Good general-purpose values
+for these parameters are alpha = beta = 0.25.
+
+</PRE>
+
+<H2><A NAME=ipar></A>Input parameters</H2>
+Parameters in <B>boldface</B> are required;
+the others are optional.
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD>N_E</TD>
+     <TD>1</TD>
+     <TD>Number of bins in energy dimension
+</TD>
+<TD ALIGN=RIGHT>20</TD> </TR>
+<TR> <TD>N_xpos</TD>
+     <TD>1</TD>
+     <TD>Number of bins in horizontal position
+</TD>
+<TD ALIGN=RIGHT>20</TD> </TR>
+<TR> <TD>N_xdiv</TD>
+     <TD>1</TD>
+     <TD>Number of bins in horizontal divergence
+</TD>
+<TD ALIGN=RIGHT>20</TD> </TR>
+<TR> <TD>alpha</TD>
+     <TD>1</TD>
+     <TD>Learning cut-off factor (0 < alpha <= 1)
+</TD>
+<TD ALIGN=RIGHT>0.25</TD> </TR>
+<TR> <TD>beta</TD>
+     <TD>1</TD>
+     <TD>Aggressiveness of adaptive algorithm (0 < beta <= 1)
+</TD>
+<TD ALIGN=RIGHT>0.25</TD> </TR>
+<TR> <TD>filename</TD>
+     <TD>string</TD>
+     <TD>Optional filename for adaptive distribution output
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD><B>xmin</B></TD>
+     <TD>m</TD>
+     <TD>Left edge of rectangular source
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>xmax</B></TD>
+     <TD>m</TD>
+     <TD>Right edge
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ymin</B></TD>
+     <TD>m</TD>
+     <TD>Lower edge
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ymax</B></TD>
+     <TD>m</TD>
+     <TD>Upper edge
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD>dist</TD>
+     <TD>m</TD>
+     <TD>Distance to target rectangle along z axis
+</TD>
+<TD ALIGN=RIGHT>2.33</TD> </TR>
+<TR> <TD>xw</TD>
+     <TD>m</TD>
+     <TD>Width(x) of target
+</TD>
+<TD ALIGN=RIGHT>0.05</TD> </TR>
+<TR> <TD>yh</TD>
+     <TD>m</TD>
+     <TD>Height(y) of target
+</TD>
+<TD ALIGN=RIGHT>0.1</TD> </TR>
+<TR> <TD>E0</TD>
+     <TD>meV</TD>
+     <TD>Mean energy of neutrons
+</TD>
+<TD ALIGN=RIGHT>14.68</TD> </TR>
+<TR> <TD>dE</TD>
+     <TD>meV</TD>
+     <TD>Energy spread (energy range is from E0-dE to E0+dE)
+</TD>
+<TD ALIGN=RIGHT>2</TD> </TR>
+<TR> <TD>flux</TD>
+     <TD>1/(cm**2*AA**st)</TD>
+     <TD>Absolute source flux
+</TD>
+<TD ALIGN=RIGHT>1e13</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=opar></A>Output parameters</H2>
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD><B>p_in</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>y_0</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>C</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>r_0</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>count</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>adpt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=links></A>Links</H2>
+
+<UL>
+  <LI> <A HREF="Source_adapt.comp">Source code</A> for <CODE>Source_adapt.comp</CODE>.
+</UL>
+<HR>
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<ADDRESS>
+Generated automatically by McDoc, Kristian Nielsen
+&lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt; /
+Jul 22 2002
+</ADDRESS>
+</BODY></HTML>

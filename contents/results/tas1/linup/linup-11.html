@@ -1,0 +1,63 @@
+<html><head>
+<title></title>
+<LINK REV="made" HREF="mailto:kristian.nielsen@risoe.dk">
+</head>
+
+<body>
+
+<h1>PHA scan on vanadium with analysator</h1>
+
+<h2>Measurements</h2>
+
+Now the analysator is mounted. The collimations are still 30'/28'/67', and a
+vanadium sample is at the sample position. 2TA is set to 34.883° and PHA is
+scanned from -1 to 1 around the zero position which is half of 2TA
+(17.44°). Each point is counted for 10 seconds. Data file
+<a href="linup019.dat"><TT>linup019.dat</TT></a>.
+
+<P ALIGN=CENTER><IMG SRC="fit019.gif"></P>
+<PRE>
+  Amplitude     1.2204e+02    4.5524e+00
+  Centre       -1.5553e-01    1.2315e-02
+  Width         3.7758e-01    1.6463e-02
+  Background    8.8756e+00    2.3591e+00
+
+* Chi Squared 0.8507
+</PRE>
+
+
+<h2>Simulations</h2>
+
+<P>
+This is the result <a href="linup_11.sim"><TT>linup_11.sim</TT></a> of
+simulation with 3e6 neutrons.
+Instrument definition <a href="linup-6.instr"><TT>linup-6.instr</TT></a>.
+
+
+<P ALIGN=CENTER><IMG SRC="fit_11.gif"></P>
+<PRE>
+  Amplitude     9.5078e-07    1.2839e-08
+  Centre       -1.7493e+01    2.8674e-03
+  Width         3.7039e-01    4.7474e-03
+  Background   -2.8020e-09    5.4312e-09
+
+* Chi Squared 1.5742
+</PRE>
+
+<h2>Comparison</h2>
+
+<P ALIGN=CENTER><IMG SRC="cmp_11.gif"></P>
+
+The measured and simulated data are in good agreement.
+
+
+
+
+<hr><address>
+Kristian Nielsen
+&lt;<a href="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</a>&gt; /
+<!-- hhmts start -->
+Aug 13, 1998.
+<!-- hhmts end -->
+</address>
+</body></html>

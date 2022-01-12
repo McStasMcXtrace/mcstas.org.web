@@ -1,0 +1,487 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: pgperl problem -->
+<!--X-From: martin rotter <rotter@physik.tu&#45;dresden.de> -->
+<!--X-Date: Mon, 31 Jan 2000 16:10:04 +0100 -->
+<!--X-Message-Id: 3895A5CC.17E805BE@physik.tu&#45;dresden.de -->
+<!--X-ContentType: multipart/mixed -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>pgperl problem</title>
+<link rev="made" href="mailto:rotter@physik.tu-dresden.de">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00005.html">Date Prev</A>][Date Next]
+<a href="index.html#00002">[Chronological]</a>
+<a href="threads.html#00002">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>pgperl problem</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:neutron-mc@risoe.dk">neutron-mc@risoe.dk</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>pgperl problem</strong></LI>
+<LI><strong>From</strong>: <strong>martin rotter &lt;<A HREF="mailto:rotter@physik.tu-dresden.de">rotter@physik.tu-dresden.de</A>&gt;</strong></LI>
+<LI>Date: Mon, 31 Jan 2000 16:10:04 +0100</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+I was not able to install the PgPerl 2.15 library
+on linux suse 6.2
+
+Please find enclosed an error report.
+
+PGPLOT compiles successfully, however
+make test gives the output shown in file o4
+(o1, o2, o3 conatin the output of Perl -V,
+perl Makefile.PL, make - respectively)
+
+
+The problem seems to be that the /usr/local/pgplot/libpgplot.so is not
+compatible with blib/arch/auto/PGPLOT.so
+
+
+I would appreciate any help on this problem
+because I not very expierenced (I have managed
+to run PgPerl under Suse 6.0 system, files *ok
+contain the description of this system)
+
+With best regards
+Martin R
+
+I. LINUX SUSE 6.2 INSTALLATION CONFIGURATION WITH PROBLEMS:
+
+Summary of my perl5 (5.0 patchlevel 5 subversion 3) configuration:
+  Platform:
+    osname=linux, osvers=2.2.10, archname=i586-linux
+    uname='linux fatou 2.2.10 #2 smp thu jul 15 15:03:02 mest 1999 i686 unknown
+'
+    hint=recommended, useposix=true, d_sigaction=define
+    usethreads=undef useperlio=undef d_sfio=undef
+  Compiler:
+    cc='cc', optimize='-O2 -pipe', gccversion=egcs-2.91.66 19990314/Linux
+(egcs-1.1.2 release)
+    cppflags='-Dbool=char -DHAS_BOOL -I/usr/local/include'
+    ccflags ='-Dbool=char -DHAS_BOOL -I/usr/local/include'
+    stdchar='char', d_stdstdio=undef, usevfork=false
+    intsize=4, longsize=4, ptrsize=4, doublesize=8
+    d_longlong=define, longlongsize=8, d_longdbl=define, longdblsize=12
+    alignbytes=4, usemymalloc=n, prototype=define
+  Linker and Libraries:
+    ld='cc', ldflags =' -L/usr/local/lib'
+    libpth=/usr/local/lib /lib /usr/lib
+    libs=-lnsl -lndbm -lgdbm -ldb -ldl -lm -lc -lposix -lcrypt
+    libc=, so=so, useshrplib=false, libperl=libperl.a
+  Dynamic Linking:
+    dlsrc=dl_dlopen.xs, dlext=so, d_dlsymun=undef, ccdlflags='-rdynamic'
+    cccdlflags='-fpic', lddlflags='-shared -L/usr/local/lib'
+
+
+Characteristics of this binary (from libperl):
+  Built under linux
+  Compiled at Jul 22 1999 21:20:02
+  @INC:
+    /usr/lib/perl5/5.00503/i586-linux
+    /usr/lib/perl5/5.00503
+    /usr/lib/perl5/site_perl/5.005/i586-linux
+    /usr/lib/perl5/site_perl/5.005
+    .
+
+Found compiler g77
+ExtUtils::F77: Using system=Generic compiler=G77
+Checking for gcc in disguise
+Compiler is gcc version egcs-2.91.66 19990314/Linux (egcs-1.1.2
+release)ExtUtils::F77: Validating -L/usr/lib
+ -L/usr/lib -lf2c -lm -L/usr/lib/gcc-lib/i486-linux/egcs-2.91.66 -lgcc   [ok]
+ExtUtils::F77: Compiler: g77
+ExtUtils::F77: Cflags: -O
+Writing Makefile for PGPLOT
+Warning: prerequisite ExtUtils::F77 1.11 not found at (eval 1) line 220.
+
+
+cc -c -I/usr/local/pgplot -I/home/aaossm/kgb/soft/pgplot/bld -I/usr/local/pgplot
+-Dbool=char -DHAS_BOOL -I/usr/local/include -O2 -pipe    -DVERSION=\"2.15\"
+-DXS_VERSION=\"2.15\" -fpic -I/usr/lib/perl5/5.00503/i586-linux/CORE  PGPLOT.c
+Running Mkbootstrap for PGPLOT ()
+chmod 644 PGPLOT.bs
+LD_RUN_PATH="/usr/local/pgplot:/usr/X11/lib:/usr/lib:/usr/lib/gcc-lib/i486-linux/egcs-2.91.66"
+cc -o blib/arch/auto/PGPLOT/PGPLOT.so  -shared -L/usr/local/lib PGPLOT.o
+-L/usr/local/pgplot -L/usr/local/pgplot -L/usr/local/lib -lcpgplot -lpgplot
+-L/usr/X11/lib -L/usr/X11R6/lib -lX11 -L/usr/lib -L/usr/lib -lf2c -lm
+-L/usr/lib/gcc-lib/i486-linux/egcs-2.91.66 -lgcc
+chmod 755 blib/arch/auto/PGPLOT/PGPLOT.so
+cp PGPLOT.bs blib/arch/auto/PGPLOT/PGPLOT.bs
+chmod 644 blib/arch/auto/PGPLOT/PGPLOT.bs
+Manifying blib/man3/PGPLOT.3pm
+
+PERL_DL_NONLAZY=1 /usr/bin/perl -Iblib/arch -Iblib/lib
+-I/usr/lib/perl5/5.00503/i586-linux -I/usr/lib/perl5/5.00503 test.pl
+Default Device for plot tests [recommend /XSERVE] ?
+
+ ============== Running test1.p ==============
+Can't load 'blib/arch/auto/PGPLOT/PGPLOT.so' for module PGPLOT:
+/usr/local/pgplot/libpgplot.so: undefined symbol: G77_getenv_0 at
+/usr/lib/perl5/5.00503/i586-linux/DynaLoader.pm line 169, &lt;STDIN&gt; chunk 1.
+
+ at test1.p line 3
+ BEGIN failed--compilation aborted at test1.p line 3, &lt;STDIN&gt; chunk 1.
+
+II. LINUX SUSE 6.0 INSTALLATION CONFIGURATION WITHOUT  PROBLEMS:
+
+Summary of my perl5 (5.0 patchlevel 5 subversion 2) configuration:
+  Platform:
+    osname=linux, osvers=2.0.36, archname=i586-linux
+    uname='linux einstein 2.0.36 #79 tue jan 19 12:41:20 met 1999 i686 unknown '
+
+    hint=recommended, useposix=true, d_sigaction=define
+    usethreads=undef useperlio=undef d_sfio=undef
+  Compiler:
+    cc='cc', optimize='-O2 -pipe', gccversion=egcs-2.91.60 19981201 (egcs-1.1.1
+release)
+    cppflags='-Dbool=char -DHAS_BOOL -I/usr/local/include'
+    ccflags ='-Dbool=char -DHAS_BOOL -I/usr/local/include'
+    stdchar='char', d_stdstdio=define, usevfork=false
+    intsize=4, longsize=4, ptrsize=4, doublesize=8
+    d_longlong=define, longlongsize=8, d_longdbl=define, longdblsize=12
+    alignbytes=4, usemymalloc=n, prototype=define
+  Linker and Libraries:
+    ld='cc', ldflags =' -L/usr/local/lib'
+    libpth=/usr/local/lib /lib /usr/lib
+    libs=-lnsl -lndbm -lgdbm -ldb -ldl -lm -lc -lposix -lcrypt
+    libc=, so=so, useshrplib=false, libperl=libperl.a
+  Dynamic Linking:
+    dlsrc=dl_dlopen.xs, dlext=so, d_dlsymun=undef, ccdlflags='-rdynamic'
+    cccdlflags='-fpic', lddlflags='-shared -L/usr/local/lib'
+
+
+Characteristics of this binary (from libperl):
+  Built under linux
+  Compiled at Jan 27 1999 12:19:30
+  @INC:
+    /usr/lib/perl5/5.00502/i586-linux
+    /usr/lib/perl5/5.00502
+    /usr/lib/perl5/site_perl/5.005/i586-linux
+    /usr/lib/perl5/site_perl/5.005
+    .
+Found compiler g77
+ExtUtils::F77: Using system=Linux compiler=G77
+Checking for gcc in disguise
+Compiler is gcc version egcs-2.91.60 19981201 (egcs-1.1.1 release)ExtUtils::F77:
+Validating -L/usr/lib
+ -L/usr/lib -lf2c -lm -L/usr/lib/gcc-lib/i486-linux/egcs-2.91.60 -lgcc   [ok]
+ExtUtils::F77: Compiler: g77
+ExtUtils::F77: Cflags: -O
+Writing Makefile for PGPLOT
+
+cc -c -I/home/aaossm/kgb/soft/pgplot/bld -I/usr/local/pgplot -Dbool=char
+-DHAS_BOOL -I/usr/local/include -O2 -pipe    -DVERSION=\"2.11\"
+-DXS_VERSION=\"2.11\" -fpic -I/usr/lib/perl5/5.00502/i586-linux/CORE  PGPLOT.c
+Running Mkbootstrap for PGPLOT ()
+chmod 644 PGPLOT.bs
+LD_RUN_PATH="/usr/local/pgplot:/usr/X11/lib:/usr/lib:/usr/lib/gcc-lib/i486-linux/egcs-2.91.60"
+cc -o blib/arch/auto/PGPLOT/PGPLOT.so  -shared -L/usr/local/lib PGPLOT.o
+-L/usr/local/pgplot -L/usr/local/pgplot -L/usr/local/lib -lcpgplot -lpgplot
+-L/usr/openwin/lib -L/usr/X11/lib -L/usr/X11R6/lib -lX11 -L/usr/lib -L/usr/lib
+-lf2c -lm -L/usr/lib/gcc-lib/i486-linux/egcs-2.91.60 -lgcc
+chmod 755 blib/arch/auto/PGPLOT/PGPLOT.so
+cp PGPLOT.bs blib/arch/auto/PGPLOT/PGPLOT.bs
+chmod 644 blib/arch/auto/PGPLOT/PGPLOT.bs
+Manifying blib/man3/ExtUtils::F77.3pm
+Manifying blib/man3/PGPLOT.3pm
+
+
+description of installation of suse 6.0, where
+pgperl is running successfully, the packages
+installed resemble those in suse 6.2 where
+pgperl does not run ...
+
+
+[i] aalibdev  Development package for aalib                  0xxMount point
+x
+x [i] autoconf  An m4 macro package                            0xx
+Freex
+x [i] automake  Tool for automatically generating GNU style Makhxx/
+x
+x [i] bin86     8086 assembler and linker                      hxx
+468.2 Mx
+x [i] binutils  GNU binutils                                   hxx/dosc
+x
+x [i] bison     GNU bison parser generator                     hxx
+36.0 Mx
+x [i] bwbasic   There is Basic under Linux, too                hxx/dosd
+x
+x [ ] clisp     A Common-Lisp interpreter                      hxx
+188.8 Mx
+x [ ] cvs       Concurrent Versions System                     hxx/dose
+x
+x [ ] efence    ElectricFence                                  hxx
+13.8 Mx
+x [i] egcs      the egcs-compiler                              hxx/dosf
+x
+x [i] f2c       A Fortran-77 to C translator                   hxx
+76.1 Mx
+x [i] f2caout   a.out version of libf2c                        hxx/dosg
+x
+x [i] flex      flex - fast lexical analyzer generator   [i] flex      flex
+- fast lexical analyzer generator         hxxMount point  x
+x [ ] fpk       Free Pascal Compiler                           hxx
+Freex
+x [i] g77       GNU Fortran Compiler                           0xx/
+x
+x [i] gcc       The GNU C compiler and support files           0xx
+468.2 Mx
+x [ ] gccfront  frontend for gcc-2.7.2.x                       hxx/dosc
+x
+x [i] gcl       GNU Common Lisp                                hxx
+36.0 Mx
+x [i] gdb       The GNU debugger                               hxx/dosd
+x
+x [i] gdlib     Gif-Manipulating Library                       hxx
+188.8 Mx
+x [i] gettext   Tools for National Language Support (NLS)      hxx/dose
+x
+x [i] gforth    GNU Forth                                      hxx
+13.8 Mx
+x [i] global    common source code tag system                  hxx/dosf
+x
+x [i] gmp       GNU MP library                                 hxx
+76.1 Mx
+x [i] gnats     GNATS - Problem Report Management System       hxx/dosg
+x
+x [i] gobjc     GNU objective C Compiler                      [i] gobjc
+GNU objective C Compiler                       hxxMount point  x
+x [ ] gpc       GNU Pascal Compiler                            hxx
+Freex
+x [i] gpp       GNU C++ Compiler                               hxx/
+x
+x [i] guavac    A free compiler for the Java language          hxx
+468.2 Mx
+x [i] guile     GNU's Ubiquitous Intelligent Language for Exten0xx/dosc
+x
+x [ ] icmake    A Maker for C-Fans                             0xx
+36.0 Mx
+x [ ] indent    formats C source code                          hxx/dosd
+x
+x [ ] java      Java Developers Kit                            hxx
+188.8 Mx
+x [ ] javarunt  Java Runtime Environment                       hxx/dose
+x
+x [ ] joystick  joystick support (kernel module and binaries)  hxx
+13.8 Mx
+x [ ] jresep    Java Runtime Environment                       hxx/dosf
+x
+x [ ] kaffe     A virtual machine to run Java(tm) code         hxx
+76.1 Mx
+x [i] lclint    LCLint - a tool for statically checking C progrhxx/dosg
+x
+x [i] leda      a library of efficient data types and algorithmh [i] leda
+a library of efficient data types and algorithmhxxMount point  x
+x [i] libc      Libraries for the C compiler                   hxx
+Freex
+x [i] libd      Profiling and Debugging versions of libc.      hxx/
+x
+x [i] libgpp    C++-library                                    hxx
+468.2 Mx
+x [i] libgpp27  old version of the c++ libraries               hxx/dosc
+x
+x [i] libobjc   libobjects                                     hxx
+36.0 Mx
+x [i] libtool   Tool to build "shared libraries"               0xx/dosd
+x
+x [i] libxml    Library to manipulate XML files                0xx
+188.8 Mx
+x [i] libxmld   libxml development package                     hxx/dose
+x
+x [i] linclude  Include files for the kernel                   hxx
+13.8 Mx
+x [ ] linux     Rest of the kernel source code.                hxx/dosf
+x
+x [ ] lx_glibc  kernel-includes for glibc build                hxx
+76.1 Mx
+x [ ] lx_hack   Source of the newest hacker's kernel           hxx/dosg
+x
+x [ ] lx_large  Kernel sources for big servers.                 [ ] lx_large
+Kernel sources for big servers.                hxxMount point  x
+x [ ] lx_suse   The sources of the SuSE kernel                 hxx
+Freex
+x [i] make      GNU make command                               hxx/
+x
+x [ ] mico      Mico is CORBA                                  hxx
+468.2 Mx
+x [ ] minigcc   The GCC Preprocessor without the C-Compiler    hxx/dosc
+x
+x [ ] mocka     Modula-2 compiler                              hxx
+36.0 Mx
+x [ ] mtc       Modula-2 / C Converter                         hxx/dosd
+x
+x [i] nasm      Netwide Assembler (an x86 assembler)           hxx
+188.8 Mx
+x [ ] orbit     A high-performance CORBA ORB                   0xx/dose
+x
+x [ ] orbitdev  The ORBit development environment              0xx
+13.8 Mx
+x [ ] p2c       A Pascal to C translator.                      hxx/dosf
+x
+x [i] patch     GNU patch program                              hxx
+76.1 Mx
+x [ ] pccts     Purdue Compiler Construction Tool Set          hxx/dosg
+x
+x [i] pmake     BSD make                                       x [i] pmake
+BSD make                                       hxxMount point  x
+x [i] prcs      PRCS -- Project Revision Control System        hxx
+Freex
+x [i] python    Python Interpreter                             hxx/
+x
+x [i] rcs       Revision Control System                        hxx
+468.2 Mx
+x [ ] scheme    UMB Scheme                                     hxx/dosc
+x
+x [i] slang     Display control                                hxx
+36.0 Mx
+x [ ] smaltalk  GNU Smalltalk                                  hxx/dosd
+x
+x [ ] smeiffel  SmallEiffel                                    hxx
+188.8 Mx
+x [i] strace    Trace system calls of a program.               hxx/dose
+x
+x [ ] svgaaout  Svgalib Super-VGA Graphics Library (a.out)     hxx
+13.8 Mx
+x [i] svgalib   Svgalib Super-VGA Graphics Library             0xx/dosf
+x
+x [ ] swi_pl    SWI-Prolog distribution                        0xx
+76.1 Mx
+x [i] toolpack  extensive collection of tools for Fortran progrhxx/dosg
+x
+x [ ] tvision   tvision                                         [i] slang
+Display control                                hxxMount point  x
+x [ ] smaltalk  GNU Smalltalk                                  hxx
+Freex
+x [ ] smeiffel  SmallEiffel                                    hxx/
+x
+x [i] strace    Trace system calls of a program.               hxx
+468.2 Mx
+x [ ] svgaaout  Svgalib Super-VGA Graphics Library (a.out)     hxx/dosc
+x
+x [i] svgalib   Svgalib Super-VGA Graphics Library             hxx
+36.0 Mx
+x [ ] swi_pl    SWI-Prolog distribution                        hxx/dosd
+x
+x [i] toolpack  extensive collection of tools for Fortran progrhxx
+188.8 Mx
+x [ ] tvision   tvision                                        hxx/dose
+x
+x [ ] tya       TYA is a 100% inofficial JIT-compiler          hxx
+13.8 Mx
+x [ ] xclass    Linux Explorer + library                       hxx/dosf
+x
+x [ ] xscheme   An object-oriented scheme                      hxx
+76.1 Mx
+x [i] yacc      BSD yacc                                       0xx/dosg
+x
+x [ ] yodl      Yet Oneother Document Language                 0x [ ] ddd
+Debugger with graphical user interface         0xxMount point  x
+x [ ] dlgedit   QT Dialog Editor                               0xx
+Freex
+x [ ] ezwgl     ezwgl                                          0xx/
+x
+x [ ] iv        InterViews - a GUI.                            0xx
+468.2 Mx
+x [ ] qtcompat  Compatibility includes for older QT programs   0xx/dosc
+x
+x [ ] qtdevel   QT development environment                     0xx
+36.0 Mx
+x [ ] qtext     QT extensions                                  0xx/dosd
+x
+x [i] qtlib     QT runtime libraries                           0xx
+188.8 Mx
+x [ ] vtk       Visualization ToolKit                          hxx/dose
+x
+x [ ] vtkdata   Visualization ToolKit - Datafiles              hxx
+13.8 Mx
+x [ ] wxwdemo   Demo programs for wxwin                        hxx/dosf
+x
+x [ ] wxwdocht  Documentation for wxwin in HTML                hxx
+76.1 Mx
+x [ ] wxwdocps  Documentation of wxwin in PostScript           hxx/dosg
+x
+x [ ] wxwin     GUI Library for Motif, Openlook and MS-Windows  [ ] wxwin
+GUI Library for Motif, Openlook and MS-Windows hxx       36.0 Mx
+x [ ] wxwstat   Static libraries for package wxwin             0xx/dosd
+x
+x [ ] wxxt      Port of wxwin with motif look-and-feel         0xx
+188.8 Mx
+x [i] xforms    Forms Library                                  0xx/dose
+x
+x [ ] xtpanel   Interface Builder using scripts                0xx
+13.8 Mx
+x [i] xwb       software development environment for openwin   0xx/dosf
+x
+x [i] xwpe      A X-window programming environment             0xx
+76.1 Mx
+x [i] xxgdb     xxgdb, user interface to the GNU debugger under0xx/dosg
+x
+x [ ] ygl       a GL graphics library with sample file         0
+
+
+linux base system (nearly) everything
+no source packages
+
+</PRE>
+<PRE>
+begin:vcard 
+n:Rotter;Martin
+x-mozilla-html:FALSE
+org:Technische Universitdt Dresden, 01069 Dresden
+adr:;;01069 Dresden;01069 Dresden;Sachsen;01069;Germany
+version:2.1
+email;internet:rotter@physik.tu-dresden.de
+title:Institut f|r angewandte Physik IAPD
+tel;fax:++43 351 463 3199
+tel;work:++43 351 463 4460
+note:Tel 
+x-mozilla-cpt:;0
+fn:Martin Rotter
+end:vcard
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00005.html">Re: Cristallographica</A></STRONG>
+</LI>
+
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00002"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00002"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

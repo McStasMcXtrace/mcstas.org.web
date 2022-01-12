@@ -1,0 +1,116 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: Bugs in McStas/McGUI&#45;2 -->
+<!--X-From: Kristian Nielsen <kristian.nielsen@risoe.dk> -->
+<!--X-Date: 17 Feb 2000 10:32:31 +0100 -->
+<!--X-Message-Id:  -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 38AADEAF.333BE852@ill.fr -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: Bugs in McStas/McGUI-2</title>
+<link rev="made" href="mailto:kristian.nielsen@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00022.html">Date Prev</A>][<A HREF="msg00024.html">Date Next</A>]
+<a href="index.html#00023">[Chronological]</a>
+<a href="threads.html#00023">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: Bugs in McStas/McGUI-2</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:ron@ill.fr">ron@ill.fr</A>, <A HREF="mailto:farhi@ill.fr">farhi@ill.fr</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: Bugs in McStas/McGUI-2</strong></LI>
+<LI><strong>From</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: 17 Feb 2000 10:32:31 +0100</LI>
+<LI>In-reply-to: &lt;<A HREF="msg00022.html">38AADEAF.333BE852@ill.fr</A>&gt; (message from Ron Ghosh on Wed, 16 Feb2000 18:30:23 +0100)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Hi Ron and Emmanuel,
+
+Thanks for the debug output. I took a look at them and have some ideas.
+
+I think the most likely problem is that mcgui fails to start the
+"mcstas" program. In that case the mcgui in v1.2 starts running two
+processes simultaneously in Perl/Tk (due to a bug in mcgui). This
+usually causes spectacular crashes.
+
+I just tried running mcgui where I artificially made mcgui fail to spawn
+mcstas, and got an error similar to what you reported. I fixed the bug
+in mcgui, and the new version does not crash.
+
+I put the new version of mcgui up on host "mica", in the directory
+"/home/cs/nielsen/mcgui-crash" as the file "mcgui-new.pl". Please try
+the new version, and see if it works any better. In any case, please
+let me know how it works!
+
+About the compilation problem with in14_tut.instr that Ron had: this is
+caused by an error in the file; in line 102 there is a spurious newline
+inside a string constant (as reported by the C compiler). I believe this
+is unrelated to the mcgui problem. A fixed instrument file is found in
+the same directory as the new mcgui.
+
+ - Kristian.
+
+--
+Kristian Nielsen        kristian.nielsen@risoe.dk
+Risø National Laboratory
+Condensed Matter Physics and Chemistry Department
+Tel. +45 4677 5515   Fax +45 4677 4790
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<UL><LI><STRONG>References</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00022" HREF="msg00022.html">Re: Bugs in McStas/McGUI-2</A></STRONG>
+<UL><LI><EM>From:</EM> Ron Ghosh &lt;ron@ill.fr&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00022.html">Re: Bugs in McStas/McGUI-2</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00024.html">Re: Bugs in McStas/McGUI-2</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00023"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00023"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

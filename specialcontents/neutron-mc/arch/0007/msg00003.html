@@ -1,0 +1,170 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: Future... -->
+<!--X-From: Kristian Nielsen <kristian.nielsen@risoe.dk> -->
+<!--X-Date: Fri, 21 Jul 2000 13:34:00 +0200 -->
+<!--X-Message-Id: 01JS1470H8ZM8ZE7DI@risoe.dk -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 3964AFAB.27A9BDF3@ill.fr -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: Future...</title>
+<link rev="made" href="mailto:kristian.nielsen@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00001.html">Date Prev</A>][<A HREF="msg00004.html">Date Next</A>]
+<a href="index.html#00003">[Chronological]</a>
+<a href="threads.html#00003">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: Future...</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:farhi@ill.fr">farhi@ill.fr</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: Future...</strong></LI>
+<LI><strong>From</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: Fri, 21 Jul 2000 13:34:00 +0200</LI>
+<LI>Date-warning: Date header was inserted by risoe.dk</LI>
+<LI>In-reply-to: &lt;3964AFAB.27A9BDF3@ill.fr&gt;(message from Farhi on Thu, 06 Jul 2000 18:11:23 +0200)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Hi Emmanuel,
+
+Ok, I am now back from vacation, so here are some comments on the points
+you asked about on July 6.
+
+&gt; As I told you last time you passed at the ILL, I have applied to a
+&gt; permanent position at the ILL in the Computer Simulation group.
+&gt; And that's OK !
+
+Once again congratulations with your new positions, I hope this will
+mean that you will play an even more active role in McStas development.
+
+Several of your points touch upon a subtle but important detail in the
+way parameters are passed to components from the instrument
+definitions. This currently works (in the generated C code) using C
+macros (#define). Because of this, many of the usual problems with C
+macros apply.
+
+Using C macros was the easiest solution, but I kind of regret it now. It
+would have been better to use proper variables. However, in order to use
+real C variables, McStas will need to understand the C types of
+component parameters. Most of these are "double" of course, but they can
+also be strings, arrays, structures, function pointers, etc. It is not
+inherently difficult to make this extension in McStas, but it is some
+work because of the complexity of C.
+
+[Hm. Actually, McStas already knows the type of "SETTING PARAMETERS",
+since they are always "double"... ]
+
+In any case, the desirable features that you mention would be rather
+easy to implement once McStas was extended to use real C variables for
+component parameters instead of macros. You might want to take a closer
+look at the C code that McStas generates to see the details.
+
+&gt; 1) would it be possible to put, in the TRACE section, some bits of C
+&gt; code, e.g.:
+
+&gt; COMPONENT ... blahblah = bouh(a=my_local_variable)
+
+I think I see what you want. It is difficult in the current design
+because of the use of C macros for parameters, but by using proper C
+variables it should be simple.
+
+&gt; 2) would it be possible, for numerical component parameters, to indicate
+&gt; (in TRACE) an expression instead of a single variables name, e.g.:
+&gt; 
+&gt; COMPONENT ... blahblah = bouh(a=my_local_variable*2)
+
+Again, not so good when using C macros (the expression would be recomputed
+for each neutron!), but simple with real C variables. Of course, it
+would be necessary to write a parser for C expressions, which is not
+completely trivial.
+
+&gt; 3) about neutron polarisation, I'm lost.
+
+I think we discussed this previously? Basically, the s1 and s2 STATE
+PARAMETERS are NOT used in McStas, period. The are just dummy names and
+have nothing to do with polarisation or anything else. For example, they
+are not transformed when components are ROTATED. Polarisation should
+always use POLARISATION PARAMETERS(sx,sy,sz).
+
+However, I see your point about the Monitor_nD. If you were to put in
+polarisation, non-polarisation instruments would create a bunch of
+warnings. I think we should just remove the warning and use POLARISATION
+PARAMETERS. No components need to be changed, those that do not use
+POLARISATION PARAMETERS will just pass on (sx,sy,sz) unchanged.
+
+&gt; 5) Would it be possible to define a macro
+&gt; PROTECT name
+&gt; that would append the current component/instrument name root and
+&gt; generate
+&gt; #define name component+name
+&gt; just as component and instrument parameters
+
+I think this is exactly what is achieved by including the name in the
+list of OUTPUT PARAMETERS.
+
+
+
+I should tell you that there is going to be a change of things here at
+Risoe concerning McStas. Management decisions two years ago have forced
+me to the opposite change of work that you do now, from scientific
+computing towards physics. I have decided that this is not what I want,
+and I am therefore leaving my job at Risoe, and hence McStas. The plan
+is that someone else at Risoe will take over, but nothing is decided
+yet. In any case, you have a lot of in-depth knowledge and interest
+concerning McStas, and with the intense simulation activity at the ILL I
+think it would be very good if you and the ILL got more involved in the
+development of McStas itself.
+
+ - Kristian.
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00001.html">Re: Problems with McStas</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00004.html">Re: Problems with McStas</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00003"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00003"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

@@ -1,0 +1,129 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: cylinder_intersect -->
+<!--X-From: hansen@ill.fr (Thomas Hansen) -->
+<!--X-Date: Wed, 10 Mar 1999 20:26:26 +0100 -->
+<!--X-Message-Id: v0213050ab30c74c13f76@[193.48.250.126] -->
+<!--X-ContentType: text/plain -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>cylinder_intersect</title>
+<link rev="made" href="mailto:hansen@ill.fr">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00031.html">Date Prev</A>][<A HREF="msg00005.html">Date Next</A>]
+<a href="index.html#00004">[Chronological]</a>
+<a href="threads.html#00004">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>cylinder_intersect</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>cylinder_intersect</strong></LI>
+<LI><strong>From</strong>: <strong><A HREF="mailto:hansen@ill.fr">hansen@ill.fr</A> (Thomas Hansen)</strong></LI>
+<LI>Date: Wed, 10 Mar 1999 20:26:26 +0100</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Dear Kristian,
+
+As 'promised', I've got some trouble with mcstas, trying to put in the
+powder1 sample. In fact, all incoming neutrons are absorbed by the
+condition:
+...
+  if (cylinder_intersect(&amp;t0, &amp;t1, x, y, z, vx, vy, vz, radius, h))
+  {
+    printf("t0 %lf   t1 %lf \n",t0, t1);
+    if (t0 &lt; 0)
+    {
+      ABSORB;
+    }
+...
+I checked the neutron parameters, and a typical neutron comes in with:
+ vx=    15 vy=   -29 vz=  2903 m/s
+  x=-0.003  y=-0.014  z= 0.000 m
+The sample is defined as
+ radius 0.020000 height 0.050000 m
+And the routine cylinder_intersect gives finally
+  t0 -0.000007   t1 0.000007
+Unfortunately that routine cylinder_intersect is not very clear, especially
+the meanings of D, t_in, y_in etc. The other way round it's probably easy
+to understand, but coming from the source code to guess the systam is not
+evident. I'd like to understand what's happening, why my neutron gets a
+negative time t0 (I guess it's because the neutron arrives already at z=0,
+so is already IN the sample at that time). If it is okay that the neutron
+gets a negative time t0, why has it to be excluded from any diffraction,
+even absorbed? So up to now with the existing components, the neutrons
+cannot pass the sample.
+
+On the other hand, up to that point, the sample position, I managed to
+simulate fairly well the beam with focussing monochromators etc. and with a
+better 'neutron production' in my Maxwell source in order to have better
+efficiency. So now I can at least do rocking curves and check the focussing
+of the monochromators, also in transmission (I just added xmin and xmax)
+for my component Monochromator0.
+
+Best wishes,
+
+Thomas
+
+________________________________________________________________________
+Dr.Thomas HANSEN, Science/Diffrac/D20, Institut Laue-Langevin (ILL4-100)
+BP 156, 38042 GRENOBLE Cedex 9, FRANCE, hansen@ill.fr, <A HREF="http://www.ill.fr">http://www.ill.fr</A>
+Phone (+33/0)4.76.20-70.44  Fax:(~)4.76.48.39.06   Home:(~)4.76.18.05.53
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<UL><LI><STRONG>Follow-Ups</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00006" HREF="msg00006.html">Re: cylinder_intersect</A></STRONG>
+<UL><LI><EM>From:</EM> Kristian Nielsen &lt;kristian.nielsen@risoe.dk&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00031.html">double-bent monochromator component</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00005.html">mcstas</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00004"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00004"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

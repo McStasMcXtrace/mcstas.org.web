@@ -1,0 +1,130 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: What's new ? -->
+<!--X-From: Kristian Nielsen <kristian.nielsen@risoe.dk> -->
+<!--X-Date: 12 Nov 1999 17:38:36 +0100 -->
+<!--X-Message-Id:  -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 38269E01.DA976AB4@ill.fr -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: What's new ?</title>
+<link rev="made" href="mailto:kristian.nielsen@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00002.html">Date Prev</A>][<A HREF="msg00004.html">Date Next</A>]
+<a href="index.html#00003">[Chronological]</a>
+<a href="threads.html#00003">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: What's new ?</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:farhi@ill.fr">farhi@ill.fr</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: What's new ?</strong></LI>
+<LI><strong>From</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: 12 Nov 1999 17:38:36 +0100</LI>
+<LI>In-reply-to: &lt;<A HREF="msg00002.html">38269E01.DA976AB4@ill.fr</A>&gt; (message from Farhi on Mon, 08 Nov1999 10:55:14 +0100)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+&gt; Date: Mon, 08 Nov 1999 10:55:14 +0100
+&gt; From: Farhi &lt;farhi@ill.fr&gt;
+
+&gt; This all sounds great.
+&gt; Please send me your 'clic and run' version of McStas.I'll be glad to =
+&gt; test
+&gt; it. What interface did you use : Tcl/Tk ? Java ? ...
+
+Ok, I put it on the web server at
+
+    <A HREF="http://neutron.risoe.dk/mcstas/support/farhi/mcstas-1.17A.tar.gz">http://neutron.risoe.dk/mcstas/support/farhi/mcstas-1.17A.tar.gz</A>
+
+It installs as usual. After installation, two new front-ends should be
+available, "mcgui" and "mcrun". The "mcrun" one is a command-line
+interface that automatically recompiles simulations if necessary, ie.
+
+    mcrun in14_6.instr -n 1e5 KI=2.66 WN=0.03 ORDER=1 MHV=3
+
+will run your in14 simulation, automatically running mcstas and the C
+compiler when the definition is changed.
+
+The "mcgui" front-end is the point-and-click interface. It allows you to
+load an instrument definition and modify it in a simple editor. You then
+select "run simulation", and a dialog will pop up allowing you to enter
+the values for instrument parameters etc, and then run the
+simulation. Optionally, the results will be plottet using mcplot. It is
+also possible to read in the "mcstas.sim" file from a previous
+simulation ("Read old simulation") to either plot the data or to re-run
+the simulation with the same parameters. Please let me know if you have
+any problems, I have tried to make it as simple and intuitive to use as
+possible.
+
+I used the Perl/Tk library, which is the same graphics library used in
+Tcl/Tk, but using Perl instead of Tcl. You can download it from the
+download page on the McStas web server, hopefully it will be easier to
+install than the PgPerl library.
+
+I also now put your new components on the "unofficial downloads"
+page. Once again, many thanks for your work! I hope I got everything
+right with file versions and so on. I think your components will be very
+useful. Have you considered sending a message to the mailing list
+(neutron-mc@risoe.dk) to announce your work and offer it to the other
+McStas users?
+
+ - Kristian.
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<UL><LI><STRONG>References</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00002" HREF="msg00002.html">Re: What's new ?</A></STRONG>
+<UL><LI><EM>From:</EM> Farhi &lt;farhi@ill.fr&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00002.html">Re: What's new ?</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00004.html">v1.17A</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00003"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00003"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

@@ -1,0 +1,138 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: Error in Calculation of absolute Flux (Source_flux) ??? -->
+<!--X-From: Kristian Nielsen <kristian.nielsen@risoe.dk> -->
+<!--X-Date: 25 Jan 1999 10:09:05 +0100 -->
+<!--X-Message-Id:  -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 36A87B56.CF5A647B@ph.tum.de -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: Error in Calculation of absolute Flux (Source_flux) ???</title>
+<link rev="made" href="mailto:kristian.nielsen@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00014.html">Date Prev</A>][<A HREF="msg00017.html">Date Next</A>]
+<a href="index.html#00012">[Chronological]</a>
+<a href="threads.html#00012">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: Error in Calculation of absolute Flux (Source_flux) ???</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:Georg_Artus@Physik.TU-Muenchen.DE">Georg_Artus@Physik.TU-Muenchen.DE</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: Error in Calculation of absolute Flux (Source_flux) ???</strong></LI>
+<LI><strong>From</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: 25 Jan 1999 10:09:05 +0100</LI>
+<LI>CC: <A HREF="mailto:kim.lefmann@risoe.dk">kim.lefmann@risoe.dk</A></LI>
+<LI>In-reply-to: &lt;<A HREF="msg00011.html">36A87B56.CF5A647B@ph.tum.de</A>&gt; (Georg_Artus@Physik.TU-Muenchen.DE)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+&gt; &gt; I hope this clarifies matters? Otherwise, please ask again. Do you think
+&gt; &gt; the way the monitors in McStas work should be changed to handle flux
+&gt; &gt; like in Beamline, and if so, why?
+&gt; 
+
+&gt; It would be extremely useful to have monitors which calculate flux
+
+&gt; If you see the chance of writing a monitor, which computes flux
+&gt; densities automatically, it would be of really great help to us!
+
+First we must decide on how "flux" is defined exactly.
+
+You mentioned that in Beamline, the flux is given in the units of
+n/cm**2/AA/s. Now, clearly this value will depend on the position in the
+beam and the wavelength at which it is computed. So now it is I who is
+confused about the units, which seems only fair after the confusion you
+have been through :-)
+
+I assume that Beamline gives you the average flux in the area under
+consideration (eg. monitor/detector area or perhaps guide exit in
+Beamline?). This makes sense and is easily handled by dividing neutron
+counts with the monitor area.
+
+But what about the wavelength dependence (as you yourself mention)? Can
+you explain the precise meaning of the Beamline flux numbers you gave,
+
+&gt; Beamline:   Transmission (%)   Flux at Monitor2 (n/cm**2/AA/s)
+&gt; 
+&gt; straight     3.5                 1.75E+09
+&gt; focusing     2.9                 1.82E+09
+
+in terms of wavelength dependence? More precisely, suppose I have a
+neutron beam that is uniform on a 1 cm**2 area. The wavelength dependent
+flux of the beam is given by a function f such that for a given
+wavelength lambda in AA, the flux of the beam in n/cm**2/AA/s at that
+lambda is f(lambda). Then what is the flux value corresponding to the
+Beamline numbers?
+
+I can see a couple of possibilities:
+
+1. The average flux in a user supplied wavelength range, i.e.
+     (integral(lmin,lmax) f(l) dl) / (lmax - lmin)
+
+2. The maximum flux, i.e. the maximum of f (hm, that might be
+   non-trivial to compute from monte carlo data)
+
+and maybe others, but I would like to know what Beamline does.
+
+Once we resolve this issue, I will be happy to provide you with a flux
+monitor component for McStas.
+
+ - Kristian.
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<UL><LI><STRONG>References</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00011" HREF="msg00011.html">Re: Error in Calculation of absolute Flux (Source_flux) ???</A></STRONG>
+<UL><LI><EM>From:</EM> "Dr. Georg Artus" &lt;Georg_Artus@Physik.TU-Muenchen.DE&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00014.html">Re: McStas installation and questions</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00017.html">McStas and W32</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00012"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00012"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

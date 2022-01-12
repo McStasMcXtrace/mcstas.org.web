@@ -1,0 +1,197 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD>
+<TITLE>Powder_filter</TITLE>
+<LINK REV="made" HREF="mailto:kristian.nielsen@risoe.dk">
+</HEAD>
+
+<BODY>
+
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<H1>The <CODE>Powder_filter</CODE> component</H1>
+
+Incorporating code from Single_crystal, written by KN, December 1999
+Box-shaped powder filter
+
+
+<H2><A NAME=id></A>Identification</H2>
+
+<UL>
+  <LI> <B>Author:</B> <a href="mailto:benjamin.fortescue@oriel.ox.ac.uk">B. Fortescue</a></B>
+  <LI> <B>Origin:</B> Based on Be_filter, written by SN Klausen, December 1999,</B>
+  <LI> <B>Date:</B> August 2000</B>
+  <LI> <B>Version:</B> 1.1</B>
+  <LI> <B>Modification history:</B> <UL>
+    <LI>  EF, Aug. 24th 2001: made it work
+  </UL>
+</UL>
+<H2><A NAME=desc></A>Description</H2>
+
+<PRE>
+This is a general box-shaped powder filter which simulates multiple coherent
+scattering vectors and absorption (incoherent scattering is modelled as
+absorption).  Crystal structure is specified with an ascii data file. Each
+line contains seven numbers, separated by white space. The first three
+numbers are the (h,k,l) indices of the reciprocal lattice point, and the
+last number is the value of the structure factor |F|**2, in barns.  (The rest
+of the numbers are not used; the file is in the format output by the
+Crystallographica program).  Optionally, a number of absorbing blades may be
+incorporated into the filter - these are X-Z or Y-Z planes evenly spaced
+along the X or Y axis of the filter which absorb any neutron encountering them.
+
+EXAMPLE:
+You may use something like:
+    Powder_filter(
+     ax=2.714, by=2.714, cz=4.405, cc=120,
+     sigma_a = 0.0156,
+     reflections="BeO.dat")
+with file <a href="http://www.ill.fr/tas/mcstas/doc/BeO.dat">BeO.dat</a>.
+See also <a href="http://www.ill.fr/tas/mcstas/doc/filter.ps">filter.ps</a> (PS doc).
+
+</PRE>
+
+<H2><A NAME=ipar></A>Input parameters</H2>
+Parameters in <B>boldface</B> are required;
+the others are optional.
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD><B>reflections</B></TD>
+     <TD>string</TD>
+     <TD>File name containing structure factors of reflections </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD>xmin</TD>
+     <TD>m</TD>
+     <TD>Lower x-value of powder sample </TD>
+<TD ALIGN=RIGHT>-0.05</TD> </TR>
+<TR> <TD>xmax</TD>
+     <TD>m</TD>
+     <TD>Upper x-value of powder sample </TD>
+<TD ALIGN=RIGHT>0.05</TD> </TR>
+<TR> <TD>ymin</TD>
+     <TD>m</TD>
+     <TD>Lower y-value of powder sample </TD>
+<TD ALIGN=RIGHT>-0.05</TD> </TR>
+<TR> <TD>ymax</TD>
+     <TD>m</TD>
+     <TD>Upper y-value of powder sample </TD>
+<TD ALIGN=RIGHT>0.05</TD> </TR>
+<TR> <TD>zmin</TD>
+     <TD>m</TD>
+     <TD>Lower z-value of powder sample </TD>
+<TD ALIGN=RIGHT>-0.05</TD> </TR>
+<TR> <TD>zmax</TD>
+     <TD>m</TD>
+     <TD>Upper z-value of powder sample </TD>
+<TD ALIGN=RIGHT>0.05</TD> </TR>
+<TR> <TD>ax</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.714</TD> </TR>
+<TR> <TD>ay</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>az</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>bx</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>by</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.714</TD> </TR>
+<TR> <TD>bz</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>cx</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>cy</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>cz</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>4.405</TD> </TR>
+<TR> <TD>pack</TD>
+     <TD>1</TD>
+     <TD>Packing factor of powder </TD>
+<TD ALIGN=RIGHT>1</TD> </TR>
+<TR> <TD>sigma_a</TD>
+     <TD>barns</TD>
+     <TD>Absorption cross-section per unit cell at 2200 m/s </TD>
+<TD ALIGN=RIGHT>0.0156</TD> </TR>
+<TR> <TD>DW</TD>
+     <TD>1</TD>
+     <TD>Debye-Waller factor of reflection </TD>
+<TD ALIGN=RIGHT>1</TD> </TR>
+<TR> <TD>XBlades</TD>
+     <TD>1</TD>
+     <TD>Number of vertical absorbing blades </TD>
+<TD ALIGN=RIGHT>2</TD> </TR>
+<TR> <TD>YBlades</TD>
+     <TD>1</TD>
+     <TD>Number of horizontal absorbing blades </TD>
+<TD ALIGN=RIGHT>2</TD> </TR>
+<TR> <TD>aa</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>90</TD> </TR>
+<TR> <TD>bb</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>90</TD> </TR>
+<TR> <TD>cc</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=opar></A>Output parameters</H2>
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD><B>XBlade_pos</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>YBlade_pos</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>xb</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>xt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>yb</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>yt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pf_hkl_info</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=links></A>Links</H2>
+
+<UL>
+  <LI> <A HREF="Powder_filter.comp">Source code</A> for <CODE>Powder_filter.comp</CODE>.
+</UL>
+<HR>
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<ADDRESS>
+Generated automatically by McDoc, Kristian Nielsen
+&lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt; /
+Jul 22 2002
+</ADDRESS>
+</BODY></HTML>

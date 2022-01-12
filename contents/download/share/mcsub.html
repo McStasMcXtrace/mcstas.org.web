@@ -1,0 +1,19 @@
+<p>Quick and dirty perl-hack for generating a batchfile for PBS cluster
+schedulers.
+
+<p>Takes an mcrun commandline as input, plus the following extra
+parameters controlling parallization and scheduling.
+
+<p>Written by <a href="mailto:pkwi@risoe.dtu.dk">Peter Willendrup</a>,
+Ris&oslash; DTU, 2010.
+
+<pre>Usage: mcsub [options] [mcrun params] 
+ -h        --help            Show this help
+ -r N      --runtime=N       Specify maximum runtime (hours) [default 99]
+ -q QNAME  --queue=QNAME    Specify wanted openPBS queue [default 'default']
+           --nodes=NUM       Specify wanted number of nodes [default 3]
+           --name=NAME       Specify openPBS job name [default McSub]
+
+
+After running mcsub NAME.batch is ready for submission using the qsub command
+</pre>

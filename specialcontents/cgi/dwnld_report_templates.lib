@@ -1,0 +1,202 @@
+#chmod 711 to the server
+
+# displays the "error page"
+sub print_error
+{
+  ($error) = @_;
+print "Content-type: text/html\n\n";
+print <<__Error_Page__;
+<html>
+<head>
+<title>Download Manager Admin Tool - Error - Hallmann Web Design</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td>
+      <div align="center"><font face="Verdana, Arial, Helvetica, sans-serif" size="5">$title<br>
+        <font size="3">$error<br>
+        Click your <a href="javascript:history.back(1)">&quot;back&quot;</a> button and try again.<br><br>
+        </font></font></div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <div align="center">
+        <table width="250" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td><center>$cmd{"logout"}</center></td>
+            <td><center>$cmd{"mainmenu"}</center></td>
+          </tr>
+        </table>
+        <br>
+        <br>
+       $developer</div>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td> 
+      </td>
+  </tr>
+</table>
+</body>
+</html>
+__Error_Page__
+exit;
+}
+
+# displays the "result page"
+sub print_result
+{
+  ($message,$button) = @_;
+print "Content-type: text/html\n\n";
+print <<__Report_Page__;
+<html>
+<head>
+<title>Download Manager Admin Tool - Hallmann Web Design</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td>
+      <div align="center"><font face="Verdana, Arial, Helvetica, sans-serif" size="5">$title<br>
+        <font size="3">$message<br><br><br>
+        </font></font></div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <div align="center">
+        <table width="250" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td colspan="3">
+          <hr WIDTH="100%">
+          </td>
+        </tr>
+          <tr>
+            <td><center>$cmd{"logout"}</center></td>
+            <td><center>$cmd{"mainmenu"}</center></td>
+            <td>
+__Report_Page__
+            if ($button ne "")
+            {
+              print "<center>$cmd{\"$button\"}</center>";
+            }
+print <<__Report_Page1__;
+          </td>
+          </tr>
+          <tr>
+          <td colspan="3">
+          <hr WIDTH="100%">
+          </td>
+        </tr>
+        </table>
+        <br>
+        <br>
+        $developer</div>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td> 
+      </td>
+  </tr>
+</table>
+</body>
+</html>
+__Report_Page1__
+exit;
+}
+
+# displays the "Ask Question page"
+sub print_AskQuestion
+{
+  ($ActionYes,$ActionNo,$message,$ID) = @_;
+print "Content-type: text/html\n\n";
+print <<__Main_Page__;
+<html>
+<head>
+<title>Download Manager Admin Tool - Are you sure? - Hallmann Web Design</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body bgcolor="#FFFFFF" text="#000000">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td>
+      <div align="center"><font face="Verdana, Arial, Helvetica, sans-serif" size="5">$title<br>
+        <font size="3">$message<br>
+        <br>
+        </font></font></div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <center>
+      <table width="400" border="0" cellspacing="5" cellpadding="5">
+        <tr>
+          <td colspan="2">
+          <hr WIDTH="100%">
+          </td>
+        </tr>
+        <tr>
+          <td valign="top"><center>
+            <form name="ActionYes" method="post" action="$ScriptName">
+            <input type="hidden" name="action" value="$ActionYes">
+            <input type="hidden" name="ID" value="$ID">
+            <input type="submit" name="cmdYes" value="Yes">
+            </form></center>
+            </td>
+          <td valign="top"><center>
+            <form name="ActionNo" method="post" action="$ScriptName">
+            <input type="hidden" name="action" value="$ActionNo">
+            <input type="hidden" name="ID" value="$ID">
+            <input type="submit" name="cmdNo" value="No">
+            </form></td></center>
+        </tr>
+        <tr>
+          <td colspan="2">
+          <hr WIDTH="100%">
+          </td>
+        </tr>
+      </table>
+      </center>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <br><br>
+        <center>$developer</center>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td> 
+      </td>
+  </tr>
+</table>
+</body>
+</html>
+__Main_Page__
+exit;
+}
+1;
+
+
+

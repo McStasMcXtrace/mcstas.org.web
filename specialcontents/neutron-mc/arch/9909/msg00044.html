@@ -1,0 +1,172 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: McStas: forgotten attachment -->
+<!--X-From: "Pay H. Schulze Horn" <horn@ill.fr> -->
+<!--X-Date: Mon, 06 Sep 1999 15:26:02 +0200 -->
+<!--X-Message-Id: 37D3C0EA.794B@ill.fr -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 01JF7Y4FJTL89JEAIX@risoe.dk -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>McStas: forgotten attachment</title>
+<link rev="made" href="mailto:horn@ill.fr">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00007.html">Date Prev</A>][<A HREF="msg00008.html">Date Next</A>]
+<a href="index.html#00044">[Chronological]</a>
+<a href="threads.html#00044">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>McStas: forgotten attachment</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>McStas: forgotten attachment</strong></LI>
+<LI><strong>From</strong>: <strong>"Pay H. Schulze Horn" &lt;<A HREF="mailto:horn@ill.fr">horn@ill.fr</A>&gt;</strong></LI>
+<LI>Date: Mon, 06 Sep 1999 15:26:02 +0200</LI>
+<LI>Content-disposition: inline; filename=Divenergymon.comp</LI>
+<LI>Organization: Institut Laue Langevin</LI>
+<LI>References: &lt;01JF7Y4FJTL89JEAIX@risoe.dk&gt;</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+/* This Monitor give the horizontal divergence in korrelation to the energy in a 2D McStas styled array out.
+If you want the vertikal divergence, turn it like you will.
+
+THERE IS NO SECTION FOR MCDISPLAY!
+
+* xmin:     Lower x bound of detector opening (m)
+* xmax:     Upper x bound of detector opening (m)
+* ymin:     Lower y bound of detector opening (m)
+* ymax:     Upper y bound of detector opening (m)
+* nenergy:  Number of counting-rate-channels for the intervall [e_min;e_max] of the energy.
+* ndiv:		Number of counting-rate-channels for the intervall [-maxdiv;maxdiv] of the horizontal divergence.
+* maxdiv:	Maximum divergence to detect.
+* E_middle: The middle of the energy intervall [E_middle-E_delta;E_middle+E_delta] to detect.
+* E_delta: 	Gives the range of the energy intervall [E_middle-E_delta;E_middle+E_delta] to detect.
+
+This Monitor is component for McStas and written by Pay Schulze Horn at 
+Institut Laue Langevin in August 1999.
+e-mail: horn@ill.fr until 26.10.99
+		  stu32232@mail.uni-kiel.de for the next 2 years
+
+McStas is written by Kim Lefmann and
+Kristian Nielsen at Risoe National Laboratory Danmark.
+
+The source-code is based on the component-source-code Divergence_monitor, which
+is written by: KL,  Nov. 11, 1998 
+
+*/
+
+DEFINE COMPONENT Divenergymon
+DEFINITION PARAMETERS (xmin, xmax, ymin, ymax, nenergy, ndiv, maxdiv,E_middle,E_delta,filename)
+SETTING PARAMETERS ()
+OUTPUT PARAMETERS (Div_N, Div_p, Div_p2) 
+STATE PARAMETERS (x,y,z,vx,vy,vz,t,s1,s2,p)
+DECLARE
+  %{
+    
+	 /* the 2D-arrays in which the data will be stored */
+	 int Div_N[ndiv][nenergy];
+    double Div_p[ndiv][nenergy];
+    double Div_p2[ndiv][nenergy];
+  %}
+INITIALIZE
+  %{
+	 int i,j;
+    for (i=0; i&lt;ndiv; i++)
+     for (j=0; j&lt;nenergy; j++) 
+     {
+      Div_N[i][j] = 0;
+      Div_p[i][j] = 0;
+      Div_p2[i][j] = 0;
+     }
+  %}
+TRACE
+  %{
+    int i,j;
+    double neut_energy, neut_div;
+    /* Here are getting all neutrons lost, which won't fly to the z=0 plane. */
+	 PROP_Z0;
+    
+	 /* Only neutrons that will fly through the monitor area will be rocognized. */
+	 if (x&gt;xmin &amp;&amp; x&lt;xmax &amp;&amp; y&gt;ymin &amp;&amp; y&lt;ymax)
+  	 {
+		neut_energy =(vx*vx+vy*vy+vz*vz)*VS2E;
+		neut_div = RAD2DEG*atan2(vx,vz);
+      
+		/* making sure that the neutron is in the described intervalls */
+		if (neut_energy &lt; E_middle+E_delta &amp;&amp; neut_energy &gt; E_middle-E_delta &amp;&amp; 
+          neut_div &lt; maxdiv &amp;&amp; neut_div &gt; -maxdiv)
+      {
+        /* counting at what space the datas will be stored */
+		  i = floor(((neut_energy-E_middle+E_delta)/(2*E_delta))*nenergy);
+        j = floor((neut_div + maxdiv)*ndiv/(2.0*maxdiv));
+        Div_N[i][j]++;
+        Div_p[i][j] += p;
+        Div_p2[i][j] += p*p;
+      }
+    }
+  %}
+FINALLY
+  %{
+    DETECTOR_OUT_2D(
+        "horizontal divergence related to energy monitor",
+        "Energy [meV]",
+        "horizontal(y) divergence [deg]",
+        E_middle-E_delta, E_middle+E_delta, -maxdiv, maxdiv,
+        ndiv, nenergy,
+        &amp;Div_N[0][0],&amp;Div_p[0][0],&amp;Div_p2[0][0],
+        filename);
+  %}
+
+END
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00007.html">McStas</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00008.html">Re: McStas</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00044"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00044"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

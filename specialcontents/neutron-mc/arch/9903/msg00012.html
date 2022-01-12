@@ -1,0 +1,148 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: cylinder_intersect -->
+<!--X-From: hansen@ill.fr (Thomas Hansen) -->
+<!--X-Date: Thu, 11 Mar 1999 14:02:44 +0100 -->
+<!--X-Message-Id: v0213050cb30d6c37711a@[193.48.250.126] -->
+<!--X-ContentType: text/plain -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: cylinder_intersect</title>
+<link rev="made" href="mailto:hansen@ill.fr">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00006.html">Date Prev</A>][<A HREF="msg00007.html">Date Next</A>]
+<a href="index.html#00012">[Chronological]</a>
+<a href="threads.html#00012">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: cylinder_intersect</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: cylinder_intersect</strong></LI>
+<LI><strong>From</strong>: <strong><A HREF="mailto:hansen@ill.fr">hansen@ill.fr</A> (Thomas Hansen)</strong></LI>
+<LI>Date: Thu, 11 Mar 1999 14:02:44 +0100</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+&gt;&gt; As 'promised', I've got some trouble with mcstas, trying to put in the
+&gt;&gt; powder1 sample. In fact, all incoming neutrons are absorbed by the
+&gt;&gt; condition:
+&gt;&gt; ...
+&gt;&gt;   if (cylinder_intersect(&amp;t0, &amp;t1, x, y, z, vx, vy, vz, radius, h))
+&gt;&gt;   {
+&gt;&gt;     printf("t0 %lf   t1 %lf \n",t0, t1);
+&gt;&gt;     if (t0 &lt; 0)
+&gt;&gt;     {
+&gt;&gt;       ABSORB;
+&gt;&gt;     }
+&gt;&gt; ...
+&gt;&gt; I checked the neutron parameters, and a typical neutron comes in with:
+&gt;&gt;  vx=    15 vy=   -29 vz=  2903 m/s
+&gt;&gt;   x=-0.003  y=-0.014  z= 0.000 m
+&gt;&gt; The sample is defined as
+&gt;&gt;  radius 0.020000 height 0.050000 m
+&gt;&gt; And the routine cylinder_intersect gives finally
+&gt;&gt;   t0 -0.000007   t1 0.000007
+&gt;
+&gt;As you mention yourself, the problem is that the neutron is already in
+&gt;the middle of the sample (z=0) when the sample scattering is computed,
+&gt;so a negative flight time to the sample surface is computed. Since
+&gt;neutrons cannot pass backwards in time, McStas absorbs in this case (of
+&gt;course, it should really provide some warning about this condition; that
+&gt;will be in a later version).
+&gt;
+&gt;This kind of problem is usually caused by overlapping components. My
+&gt;guess is that you have some kind of monitor/detector at the same
+&gt;physical position as the sample, but before the sample in the logical
+&gt;ordering. Move the monitor 0.021 cm closer to the monochromator so that
+&gt;it does not overlap the sample, and I think the problem will be solved.
+&gt;
+&gt;Good luck with your simulations!
+&gt;
+&gt; - Kristian.
+
+I am just comming into my office after having had some cross country skiing
+with lots of snow but spring temperatures ... thanks for your quick answer,
+in fact, I actually have had, as you may see, a monitor of sample cross
+section in order to get the flux at sample position - that explains the
+negative time.
+
+...
+COMPONENT mon7 = L_monitor(xmin = Sample_xmin, xmax = Sample_xmax,
+    ymin = Sample_ymin, ymax = Sample_ymax, Lmin = Monit_Lmin,
+    Lmax = Monit_Lmax,
+    nchan = Monit_ncan, filename="sim/mon7.dat", columns=Monit_columns)
+  AT (0, 0,  3.2) RELATIVE beta
+
+COMPONENT sample = Powder0 (d_phi0 = d_phi0, radius = Sample_r, h = Sample_h,
+    pack = 1, Vc=100, sigma_a = 0, q = HOPG_Q, j = 1, F2 = 1, DW = 1,
+    target_x = 0, target_y = 0, target_z = 1)
+  AT (0,0,3.200) RELATIVE beta
+...
+
+Ian Anderson encouraged us to comment the necessarity of instrument
+simulations, the usefullness of McStas in special and to suggest further
+steps. I will do so soon as I have now some - in spite of difficulties
+mostly good - experiences and a lot of suggestions - which might make you
+working hard, if you take everything serious ...
+
+Bye,
+
+Thomas
+
+________________________________________________________________________
+Dr.Thomas HANSEN, Science/Diffrac/D20, Institut Laue-Langevin (ILL4-100)
+BP 156, 38042 GRENOBLE Cedex 9, FRANCE, hansen@ill.fr, <A HREF="http://www.ill.fr">http://www.ill.fr</A>
+Phone (+33/0)4.76.20-70.44  Fax:(~)4.76.48.39.06   Home:(~)4.76.18.05.53
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00006.html">Re: cylinder_intersect</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00007.html">McStas</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00012"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00012"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

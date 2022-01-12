@@ -1,0 +1,19 @@
+<p>Matlab script to generate .lau datafiles (for Single_crystal.comp) from .laz type
+
+<pre>  function laz2laue(datafile)
+  
+    Script to generate '.lau' type datafile from '.laz' (generates
+    multiples and sorts by h.^2+k.^2+l.^2 )
+ 
+    Example:
+       laz2laue('/usr/local/lib/mcstas/data/Cu.laz')
+</pre>    
+<p>Important details:
+<ul>
+  <li>1) Does NOT change F2 units etc.   
+  <li>2) No clever spacegroup considerations etc. copies every reflection to the other 7 octants...
+  <li>3) Unix specific as it relies on having a 'grep' command on the system path
+  <li>4) Saves resulting datafile to current directory
+</ul>
+
+ 

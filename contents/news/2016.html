@@ -1,0 +1,371 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"></head><body>
+<h3>
+December 16th, 2016: Aiming at releasing McStas 2.4 in January
+</h3>
+Dear all,
+
+<p>This is just to let you have a sneak preview of what we expect to include in McStas 2.4, which we are planning to release in January 2017:
+
+<ul>
+  <li>Tools:
+     <ul>
+       <li>From 2.4 we will default to use our new set of Python tools, the perl ones will stay around as a backup solution
+       <li>Our Python tools are now Python 3 compliant
+       <li>A mcgui editor in with a rich syntax highlighting
+       <li>A mcrun utility script, with new features wrt. the legacy perl solution:
+       <ol>
+	 <li>The feature --autoplot spawns your selected plotter on sim completion
+	 <li>The feature --multi (or -M) allows grid-scanning, i.e. multidimensional scans
+	 <li>The --list (or -L) allows to make 1D-scans that are not equidistant or even filename strings etc. 
+	</ol>
+	<li>A newly developed mcplot-pyqtgraph with new features wrt. the legacy mcplot solution:
+	<ol>
+	  <li>Easy mouse-based zooming on individual monitor plots
+	  <li>Colormaps can be changed for 2D-plots
+	  <li>Select a single plot by clicking, get back to overview by right-clicking
+	  <li>On scans ctrl-click (meta-click on OS X) to see monitor as function of scanned variable
+	  <li>On scans press 'x' to receive all scan points as individual plot windows
+	</ol>
+	<li>A newly developed mcdisplay-webgl
+	<ol>
+	  <li>Fully 3D and interactive, uses your HTML5-capable browser with javascript controls
+	  <li>Pause or resume visualisation of the neutron rays in the instrument
+	  <li>Allows to keep already rendered rays to illustrate the full beam
+	  <li>Visualises rays with color, scaled with particle velocity (ideal for illustrating e.g. monochromatisation)
+	</ol>
+	<li>(* If time allows we will also include a simple mcdisplay-pyqtgraph ala the legacy mcdisplay tool *)
+      </ul>
+   <li>Components and instruments:
+      <ul>
+	<li>A new set of components referred to as "Union" components, contribution by Mads Bertelsen Uni Copenhagen.
+	<ol>
+	  <li>Allows very rich simulation of samples and sample environment
+	  <li>Several instrument files included to illustrate the capabilities and use
+	  <li>See separate news flash from November 2016 below
+	</ol>
+	<li>New PSD_monitor_TOF that outputs a TOF signal pr. PSD pixel (single files).  Used in templateNMX_TOF.instr
+	<li>MCPL_input allows to repeat input files an integer number of times
+	<ul><li>possible to modify particle energy, position and direction on repetition
+	</ul>
+	<li>MCPL_output has an option to merge generated output files in case of MPI
+	<li>ESS_butterfly_MCPL.instr implementing the use of MCPL files in the ESS butterfly geometry
+	<li>PowderN can "flip" the d_phi focusing to "zoom" on a range of angles.
+	<li>Various bugfixes and improvements across the example instruments and component library
+      </ul>
+   <li>Platforms:
+      <ul>
+	<li>Our macOS application bundle fully transportable, i.e. can be moved away from the default /Applications/ location
+	<li>On Windows 10 64bit and newer, the Windows Subsystem for Linux allows a much improved McStas experience
+      </ul>
+    </ul>
+  </ul>
+  <p>As always, let us know if you have nice things in your desktop drawers that you would like to contribute! :-)
+  
+
+  <p>All the best and seasons greetings,
+  <br>Peter Willendrup
+<hr>
+<h3>
+November 18th, 2016: Video presentation about Mads Bertelsen (NBI) about the new "Union" feature
+of McStas
+</h3>
+Yesterday afternoon at the ESS DMSC, Mads Bertelsen from the Niels Bohr Institute gave an interesting talk about his new "Union" concept for McStas - flyer visible below.
+The presentation was recorded, and is now available for viewing online at 
+<a href="http://media.mcstas.org/ESS_DMSC_20161117/DMSC_talk_MBertelsen_McStas_Union.mp4">http://media.mcstas.org/ESS_DMSC_20161117/DMSC_talk_MBertelsen_McStas_Union.mp4</a>
+<br>
+<a target=_blank href="http://media.mcstas.org/ESS_DMSC_20161117/McStas_Union_DMSC_abstract.png"><img width="400" src="http://media.mcstas.org/ESS_DMSC_20161117/McStas_Union_DMSC_abstract.png"></a>
+<hr>
+<h3>
+October 6th, 2016: Use Microsofts "Windows subsystem for Linux" for
+running McStas under Windows 10!
+</h3>
+Partnering with Ubuntu Linux, Microsoft has released the (experimental) feature "Windows subsystem for
+Linux" (WSL), also known as "Bash on Ubuntu on Windows". Read more <a
+href="http://www.pcworld.com/article/3106463/windows/how-to-get-bash-on-windows-10-with-the-anniversary-update.html">here</a> and <a href="http://www.howtogeek.com/249966/how-to-install-and-use-the-linux-bash-shell-on-windows-10/">here</a>.
+<p>It turns out that it is relatively straightforward to get McStas
+running under this new feature - thereby overcoming some of the
+annoyances of McStas on the Windows platform.
+<p>To try it out, please follow the below steps
+<ol>
+  <li>Install a copy of Windows 10 64 bit
+  <li>Update it beyond "Windows 10 Version 1607" - aka the "anniversary build"
+  <li>Enable "developer mode" in settings
+  <li>Use "turn features on or off" to enable "Bash in windows"
+  <li>Start bash via the start icon / cmd+esc
+  <li>Install McStas as <a
+  href="http://mcstas.org/download/install_linux/">usual on a Debian
+  systems</a>. Also remember that you can easily install openmpi etc.
+  <li>Install and start the <a href="https://sourceforge.net/projects/xming/">Xming</a> X-server
+  <li>Turn back to your bash and execute
+  <ul>
+    <li><tt>export DISPLAY=localhost:0.0</tt>
+    <li><tt>mcgui &</tt> or <tt>mcgui-py &</tt> (or any of the usual McStas commands)
+  </ul>
+</ol>
+<img src="McStas-WSL.png"><br>
+As the feature is considered experimental, you might still find some
+rough edges, but so far it seems functional and looks very promising!
+<p>A few extra tips:
+<ul>
+  <li>An easy way to access your data simulated under Linux is to run
+  from within your Windows home folder, accessible under Linux at
+  <tt>/mnt/c/Users/&lt;your_username&gt;</tt>.
+  <li>Add Xming to your windows Startup items via "windows+r" key and
+  shell:startup
+  <li>Add the line <tt>export DISPLAY=localhost:0.0</tt> to your Linux
+  <tt>.bashrc</tt> file
+</ul>
+<hr>
+<h3>
+September 21st, 2016: McStas 2.3 on macOS Sierra
+</h3>
+<p>If you want to install McStas on the new macOS Sierra, here is a recipe:
+<ol>
+  <li>Install xcode commandline tools by issuing the command
+  <tt>xcode-select --install</tt> in a terminal
+  <li>Install Xquartz from <a href="https://www.xquartz.org">https://www.xquartz.org</a>
+  <li>In your System Preferences, Security & Privacy tab, select to
+  allow installation from <b>Mac App Store and identified developers</b>
+  <li>Download McStas 2.3 labled for use on El Capitan from <a
+  href="http://downloads.mcstas.org/mcstas-2.3/mac/">http://downloads.mcstas.org/mcstas-2.3/mac/</a>
+  and unpack. Open the resulting <tt>McStas-2.3-10.11_El_Capitan</tt> folder.
+  <li>Right-click/Ctrl-click McStas-2.3-10.11_El_Capitan.pkg packge
+  and choose <b>Open</b>. (Allow installation when prompted to install
+  package form unidentified developer.)
+  <li>If you want to use our Python tools
+  <ul>
+    <li>Download and install Anaconda Python 2.7 from <a href="https://www.continuum.io/downloads">Contiuum</a>
+    <li>In a terminal, go to your Anaconda binary folder
+    <tt>$HOME/anaconda/bin</tt> and issue the commands
+    <ul>
+      <li><tt>ln -s qmake-qt4 qmake</tt>
+      <li><tt>ln -s moc-qt4 moc</tt>
+    </ul>
+    <li>Relocate your <tt>McStas-2.3-10.11_El_Capitan</tt> folder
+    where it was downloaded/unpacked and open the <tt>extras</folder>
+    <li>Right-click/Ctrl-click the <tt>BuildMe.command</tt> script and
+    choose <b>Open</b>. (Allow execution when prompted.)
+    <li>Follow instructions in the terminal that opens.
+  </ul>
+</ol>
+If you upgraded from an earlier Mac OS X release, your installed
+McStas 2.3 is expected to "survive" that upgrade.
+<p>Please report any issue you may find to <a href="mailto:mcstas-users@mcstas.org">mcstas-users@mcstas.org</a>
+<hr>
+<h3>
+September 15th, 2016: Updated component library for McStas 2.3
+released, including ESS_butterfly.comp
+</h3>
+<p>A updated component library has been pushed to the <a
+href="http://packages.mccode.org/debian">deb</a> and <a
+href="http://packages.mccode.org/rpm">rpm</a> repositories, plus to
+the relevant platform folders at <a
+href="http://download.mcstas.org/mcstas-2.3/">http://download.mcstas.org/mcstas-2.3</a>. If
+you are on Windows or Mac OS, please simply locate the
+<pre>updates/</pre> folder in the download site, find the relevant
+mcstas-comps-2.3 package and install it on top of your existing McStas
+2.3.
+<p>Highlights are
+<ul>
+  <li>An new implementation of the ESS moderator component called
+  <pre>ESS_butterfly.comp</pre> and test instrument
+  <pre>ESS_butterfly_test.instr</pre>
+  The moderator is of course also available as a "DIY
+  update archive" for people running older versions of McStas, and can be
+  downloaded from a <a
+  href="http://downloads.mcstas.org/mcstas-2.3/updates/">new update
+  folder at the download site</a> or from the <a
+  href="/download/share">share</a>. For more information on the updated ESS
+  moderator, its use and benchmark data, please consult <a
+  href="http://ess_butterfly.mcstas.org">http://ess_butterfly.mcstas.org</a>. The
+  website also contain (currently draft)
+  documents written with Ken Andersen and Luca Zanini, explaining the reasoning
+  behind changing from the BF2 design to the BF1 design, neutronical calculations and benchmarks. Please note that these are
+  still in DRAFT status, are expected to be in their final shape around 2016-09-22.
+  <li>Bug-fixed MCPL i/o components and library - see <a
+  href="https://mctools.github.io/mcpl/">https://mctools.github.io/mcpl/</a>
+  for more details.
+  <li>... plus other minor things, see the <a
+  href="https://github.com/McStasMcXtrace/McCode/commits/master/mcstas-comps">GitHub
+  log for mcstas-comps</a> for more information. 
+</ul>
+<p>Development is also moving fast on our tools, so we are further
+planning to release a McStas 2.4 within forseeable future.
+<p>Enjoy! :)<br>Peter Willendrup
+<hr>
+<h3>
+April 6th, 2016:  McStas 2.3 released!
+</h3>
+<p>Here it is: McStas 2.3 is released and ready for download via
+<a href="http://downloads.mcstas.org/mcstas-2.3">http://downloads.mcstas.org/mcstas-2.3</a>
+<p>Selected, important highligts from the release are listed
+below. The full list of changes is also available <a href="/CHANGES_McStas">HERE</a>.
+<ul>
+  <li>General:
+  <ul>
+    <li>As of McStas 2.3, we support a new binary event file format: "MCPL" (Monte Carlo Particle List), developed
+    by Thomas Kittelmann, ESS. The format aims to allow easier interchange of particle event data between monte
+    carlo codes, and read/write functionality has been implemented for
+    MCNP, Geant4 and McStas.
+    <li>Interoperability with Mantid has been improved, as OFF-based detectors can be used to define detector geometries
+   in Mantid-oriented simulation runs. See <a href="https://github.com/McStasMcXtrace/McCode/wiki/McStas-and-Mantid">https://github.com/McStasMcXtrace/McCode/wiki/McStas-and-Mantid</a> for
+   more documentation on the use.
+  </ul>
+  <li>Infrastructure:
+  <ul>
+    <li>To build McStas from GitHub, you will now need a CMake version >= 3.0
+    <li>At the ILL, Emmanuel Farhi has set up a nice web-service called cif2hkl, which allows to generate Laz/Lau
+   structure data files from CIF files. See <a href="http://barns.ill.fr/cif2hkl.html">http://barns.ill.fr/cif2hkl.html</a>
+    <li>A new e-Learning infrastructure for neutron scattering has been set up at https://www.e-neutrons.org . Among
+   other things, it features a web-simulator powered by McStas. Once you have signed up, you will have access
+   to many interesting things, among these this "close to complete" list of McStas instruments that can be run
+   on the web: <a href="https://www.e-neutrons.org/mcstas-distrib">https://www.e-neutrons.org/mcstas-distrib</a>
+  </ul>
+  <li>Components:
+  <ul>
+    <li>New component SASview_model.comp by Jakob Garde and Torben Nielsen allows to use SASview scattering kernels
+    from within McStas. See also the test instrument
+    templateSasView.instr
+    <li>New components MCPL_input and MCPL_output by Erik Knudsen. Used to read and write MCPL binary event files. See
+   corresponding test instruments below. 
+    <li>New component Refractor.comp by Emmanuel Farhi and Bob Cubitt, ILL. Implements a single bulk material shape 
+   that can be used as a prism or lens.
+    <li>PerfectCrystal.comp by Markus Appel, ILL / FAU Erlangen-Nuernberg. Perfect crystal component, primarily for 
+   use as monochromator and analyzer in backscattering spectrometers. Reflections are simulated using a Darwin, 
+   Ewald or Gaussian profile. Doppler movement of the monochromator is supported.
+    <li>MultiDiskChopper.comp by Markus Appel, ILL / FAU Erlangen-Nuernberg. Models a disk chopper with a freely 
+   configurable slit pattern. For simple applications, use the DiskChopper component instead.
+    <li>Updated version of Sample_nxs from Mirko Boin (HZB), including more nxs material definitions.
+    <li>Bugfix to ESS_moderator from Jan Saroun (RESTRAX/Simres): missing focusing/direction cosine inserted. Please
+   note that <b>this component does not implement "engineering reality"</b> and currently uses a coordinate system 
+   centered on the moderator assembly. <b>An updated moderator component which references the "Moderator focus 
+   coordinate system" will be released later during the spring of 2016.</b>
+  </ul>
+  <li>Instruments:
+  <ul>
+    <li>New test instrument templateSasView.instr, documenting use of
+    SASview_model.comp
+    <li>New test instruments Test_MCPL_input.instr and Test_MCPL_output.instr, documenting use of the MCPL components
+    <li>New test instrument Test_PowderN_Res.instr, demonstrates difference of using 'banana, theta' and 'banana, divergence'
+    in Monitor_nD - and can be used to show influence of sample size on detected line with in diffractometers.
+    <li>New test instrument LLB_6T2.instr by Xavier Fabreges, LLB. Model of the LLB 6T2 thermal single crystal
+    diffractometer.
+    <li>New ILL_IN13.instr by E. Farhi and A. Dennison, ILL. Models the IN13 Thermal neutron backscattering spectrometer.
+    <li>New SAFARI_MPISI.instr by Deon Marais, Necsa. Models the SAFARI instrument 'Materials Probe for Internal Strain 
+    Investigations'
+    <li>New SAFARI_PITSI.instr by Deon Marais, Necsa. Models the SAFARI instrument 'Powder Instrument for Transition in 
+    Structure Investigations'
+  </ul>
+</ul>
+IMPORTANT: Please ensure to use our "migration scripts" for McStas 2.0 and 1.12c if you want
+these to co-exist with 2.3. See <a href="https://github.com/McStasMcXtrace/McCode/tree/master/tools/migration-tool">https://github.com/McStasMcXtrace/McCode/tree/master/tools/migration-tool</a>
+<hr>
+<h3>
+March 7th, 2016: Most mcstas-2.2a instruments available at <a href="https://www.e-neutrons.org/?page_id=295">e-neutrons.org</a>
+</h3>
+If you take a look at <a
+href="https://www.e-neutrons.org/?page_id=295">this e-neutrons.org
+page</a>, you will see that it resembles the <i>examples</i> part of a
+McDoc documentation page - with one exception: The <b>Run
+simulation</b> links on the right
+side of the table points to virtual instruments that may be run
+through the new McStas web frontend.
+<p>As usual, you must have an <a
+href="https://www.e-neutrons.org/?page_id=71">account at e-neutrons.org</a> to execute
+these simulations.
+<hr>
+<h3>
+March 3rd, 2016: Announcement of <a href="https://e-neutrons.org">e-neutrons.org</a>, e-learning platform for neutron scattering
+</h3>
+Dear all,
+<p>
+We are happy to officially announce the availability of <a href="https://e-neutrons.org">e-neutrons.org</a>: An e-learning platform for neutron scattering.
+<p>
+The platform was developed with support from <a href="http://nmi3.eu">NMI3-II</a> (EU-FP7) and features an introductory course in neutron scattering and muon spin spectroscopy. The courses contain a varied selection of interactive learning material using three main technologies
+<ol>
+  <li>A "WIKIbook" built on Mediawiki with various extensions, e.g. for producing mathematical expressions. It is used as the main source of textbook-material
+  <li>A Learning Management System (LMS) built on Moodle which , provides exercises, quizzes and evaluation
+  <li>A web simulator for the McStas neutron instrument simulation program, allowing users to perform virtual neutron scattering experiments on predefined instruments
+</ol>
+The platform will be further developed and the learning material expanded in connection with SINE2020 (EU-H2020).
+<p>
+To access the e-learning portal, go to <a href="https://www.e-neutrons.org">https://www.e-neutrons.org</a>, choose "Get an account" and fill in your personal information.
+<p>
+We hope that you will enjoy this new resource and encourage you to try it out!
+<p>
+On behalf of the <a href="https://e-neutrons.org">e-neutrons.org</a> team,
+<p>
+Peter Willendrup
+<p>
+For background information on the platform, the teaching material and
+didactical considerations, please read the related article from <a href="http://www.tandfonline.com/doi/abs/10.1080/10448632.2013.751795">Neutron News Volume 24, Issue 1, 2013 - DOI:10.1080/10448632.2013.751795</a>.
+<br>
+<a href="https://e-neutrons.org"><img width="640" src="e-neutrons.org.png"></a>
+<br>
+- - - - - - -
+<p>
+<h4>Funding:</h4>
+The main funding for the project is provided by the European Union's 7th Framework Programme for research, technological development and demonstration under the NMI3-II Grant number 283883 and from the European Union's Horizon 2020 research and innovation programme under grant agreement No 654000.
+<p>
+We are also grateful for the financial support recieved from the University of Copenhagen via the "Good Education" and "Education 2016" programmes and from Interreg IV via the OMIC programme.
+<p>
+<h4>Development:</h4>
+The people behind the e-neutrons.org infrastructure are
+<p>
+Project leader: Linda Udby, Associate Professor, Niels Bohr Institute, University of Copenhagen
+<p>
+Platform development leader: Peter Willendrup, Senior Research Engineer, Technical University of Denmark
+<p>
+Course content and didactical developers: Julie Hougaard, PhD student, Niels Bohr Institute, University of Copenhagen & Jesper Bruun, Assistant Professor, Department of Science Education, University of Copenhagen
+<p>
+Content management and development: Pia J. Ray, PhD student & Linda Udby, Associate Professor, Niels Bohr Institute, University of Copenhagen 
+<p>
+Software engineer: Jakob Garde, Software developer, Technical University of Denmark
+<p>
+Running server administrator: J&ouml;rg Pulz, Technical University of Munich
+<p>
+<h4>Learning material:</h4>
+Contents was contributed by
+<p>
+University of Copenhagen:
+Kim Lefmann, Linda Udby, Pia Jensen Ray, Julie Hougaard, Lise Arleth, Kell Mortensen, Bente Lebech, Jesper Bruun
+<p>
+Institut Laue-Langevin, ILL:
+Andrew Wildes, Alain Filhol, Helmut Schober
+<p>
+Technische Universit&auml;t M&uuml;nchen:
+J&ouml;rg Pulz, J&uuml;rgen Neuhaus
+<p>
+European Spallation Source, ESS:
+Markus Strobl
+<hr>
+<h3>
+February 16th, 2016: Patch for Tk::wrap errors from mcgui
+</h3>
+If you ever encounter an error like
+<pre>
+Tk::Error###: This shouldn't happen at /usr/share/perl/5.18/Text/Wrap.pm line 84.
+ Tk callback for .toplevel
+ Text::Wrap::wrap at /usr/share/perl/5.18/Text/Wrap.pm line 84
+ main::run_dialog_create at /usr/local/bin/mcgui line 752
+ main::run_dialog at /usr/local/bin/mcgui line 824
+ main::my_system at /usr/local/bin/mcgui line 985
+ main::menu_run_simulation at /usr/local/bin/mcgui line 1320
+ main::__ANON__ at /usr/local/bin/mcgui line 1752
+ Tk callback for .frame1.button
+ Tk::__ANON__ at /usr/lib/perl5/Tk.pm line 251
+ Tk::Button::butUp at /usr/lib/perl5/Tk/Button.pm line 175
+ <ButtonRelease-1>
+ (command bound to event)
+</pre>
+- then the fix is to replace run_dialog_create in your local mcgui by
+follwing the instructions
+<a href="download/share/mcgui-2.2a_fix_wrapping_issue.txt.html">described here</a>.
+<hr>
+<p><b>Previous news items: </b><a href="/news/2015.html">2015</a>, </b><a href="/news/2014.html">2014</a>, <a href="/news/2013.html">2013</a>, <a href="/news/2012.html">2012</a>, </b><a href="/news/2011.html">2011</a>, </b><a href="/news/2010.html">2010</a>, <a href="/news/2009.html">2009</a>, <a href="/news/2008.html">2008</a>, <a href="/news/2007.html">2007</a>, <a href="/news/2006.html">2006</a>, <a href="/news/2005.html">2005</a>, <a href="/news/2004.html">2004</a>, <a href="/news/2003.html">2003</a>,<a href="/news/2002.html">2002</a>, <a href="/news/2001.html">2001</a>, <a href="/news/2000.html">2000</a>, <a href="/news/1999.html">1999</a>,
+<a href="/news/1998.html">1998</a>.
+
+</p></body></html>

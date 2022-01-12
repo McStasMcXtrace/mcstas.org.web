@@ -1,0 +1,56 @@
+If you ever encounter the below error from mcgui versions < 2.3,
+
+<pre>
+Tk::Error###: This shouldn't happen at /usr/share/perl/5.18/Text/Wrap.pm line 84.
+ Tk callback for .toplevel
+ Text::Wrap::wrap at /usr/share/perl/5.18/Text/Wrap.pm line 84
+ main::run_dialog_create at /usr/local/bin/mcgui line 752
+ main::run_dialog at /usr/local/bin/mcgui line 824
+ main::my_system at /usr/local/bin/mcgui line 985
+ main::menu_run_simulation at /usr/local/bin/mcgui line 1320
+ main::__ANON__ at /usr/local/bin/mcgui line 1752
+ Tk callback for .frame1.button
+ Tk::__ANON__ at /usr/lib/perl5/Tk.pm line 251
+ Tk::Button::butUp at /usr/lib/perl5/Tk/Button.pm line 175
+ <ButtonRelease-1>
+ (command bound to event)
+</pre>
+
+- then the fix is to replace the function run_dialog_create in your mcgui by the one below.
+
+<pre>
+sub run_dialog_create {
+    my ($w, $title, $text, $cancel_cmd, $update_cmd) = @_;
+    my $dlg = $w->Toplevel(-title => $title);
+    # Ad-hoc "wrapping" of the tooltip text, without use of string limit + Text::Wrap
+    $title =~ s/\ /\n/g;
+
+    $dlg->transient($dlg->Parent->toplevel);
+    $dlg->withdraw;
+    $dlg->protocol("WM_DELETE_WINDOW" => sub { } );
+    $b = $dlg->Balloon(-state => 'balloon');
+    # Add labels
+    my $text_label = $dlg->Label(-text => $text,
+                -anchor => 'w',
+                -justify => 'left')->pack(-fill => 'x');
+    $b->attach($text_label, -balloonmsg => $title);
+    my $bot_frame = $dlg->Frame(-relief => "raised", -bd => 1);
+    $bot_frame->pack(-side => "top", -fill => "both",
+                     -ipady => 3, -ipadx => 3);
+    my $but = $bot_frame->Button(-text => "Cancel", -command => $cancel_cmd);
+    my $buttext = "Save results\nand Stop/Abort";
+    if ($text =~ /compil/i || $text =~ /DSA/i || $title =~ /compil/i || $title =~ /DSA/i ) { $buttext="Abort current Job"; }
+    $b->attach($but, -balloonmsg => $buttext);
+    $but->pack(-side => "left", -expand => 1, -padx => 1, -pady => 1);
+    # can only update when in Single or OpenMP simulation mode (no cluster/grid)
+    # and performing simulation
+    if ($Config{'osname'} ne 'MSWin32' && $update_cmd && $inf_sim->{'Mode'}==0
+      && $MCSTAS::mcstas_config{'CLUSTER'} <= 1 && $text !~ /compil/i && $text !~ /DSA/i
+      && $title !~ /compil/i && $title !~ /DSA/i) {
+      $but = $bot_frame->Button(-text => "Update", -command => $update_cmd);
+      $but->pack(-side => "right");
+      $b->attach($but, -balloonmsg => "Save results\nand continue");
+    }
+    return $dlg;
+}
+</pre>

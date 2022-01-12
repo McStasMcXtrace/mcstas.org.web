@@ -1,0 +1,182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD>
+<TITLE>Channeled_guide</TITLE>
+<LINK REV="made" HREF="mailto:kristian.nielsen@risoe.dk">
+</HEAD>
+
+<BODY>
+
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<H1>The <CODE>Channeled_guide</CODE> component</H1>
+
+Neutron guide with channels (bender section).
+
+
+<H2><A NAME=id></A>Identification</H2>
+
+<UL>
+  <LI> <B>Author:</B> Kristian Nielsen</B>
+  <LI> <B>Origin:</B> McStas 1.5</B>
+  <LI> <B>Date:</B> 1999</B>
+  <LI> <B>Version:</B> 1.7 </B>
+</UL>
+<H2><A NAME=desc></A>Description</H2>
+
+<PRE>
+Models a rectangular guide tube centered on the Z axis. The entrance lies
+in the X-Y plane.
+The guide may be tapered, and may have vertical subdivisions (used for
+bender devices).
+
+Example: Channeled_guide(w1=0.1, h1=0.1, w2=0.1, h2=0.1, l=2.0,
+ R0=0.99, Qcx=0.021, Qcy=0.021, alphax=6.07, alphay=6.07, W=0.003, k=1,
+d=0.0005, mx=1, my=1)
+
+Example values: mx=4 my=2 Qcx=Qcy=0.02 W=1/300 alphax=alphay=6.49 R0=1
+
+</PRE>
+
+<H2><A NAME=ipar></A>Input parameters</H2>
+Parameters in <B>boldface</B> are required;
+the others are optional.
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD><B>w1</B></TD>
+     <TD>m</TD>
+     <TD>Width at the guide entry
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h1</B></TD>
+     <TD>m</TD>
+     <TD>Height at the guide entry
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w2</B></TD>
+     <TD>m</TD>
+     <TD>Width at the guide exit
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h2</B></TD>
+     <TD>m</TD>
+     <TD>Height at the guide exit
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>l</B></TD>
+     <TD>m</TD>
+     <TD>Length of guide
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD>R0</TD>
+     <TD>1</TD>
+     <TD>Low-angle reflectivity
+</TD>
+<TD ALIGN=RIGHT>0.99</TD> </TR>
+<TR> <TD>Qcx</TD>
+     <TD>AA-1</TD>
+     <TD>Critical scattering vector for left and right vertical
+mirrors in each channel
+</TD>
+<TD ALIGN=RIGHT>0.021</TD> </TR>
+<TR> <TD>Qcy</TD>
+     <TD>AA-1</TD>
+     <TD>Critical scattering vector for top and bottom mirrors
+</TD>
+<TD ALIGN=RIGHT>0.021</TD> </TR>
+<TR> <TD>alphax</TD>
+     <TD>AA</TD>
+     <TD>Slope of reflectivity for left and right vertical
+mirrors in each channel
+</TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphay</TD>
+     <TD>AA</TD>
+     <TD>Slope of reflectivity for top and bottom mirrors
+</TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>W</TD>
+     <TD>AA-1</TD>
+     <TD>Width of supermirror cut-off for all mirrors
+</TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>k</TD>
+     <TD>1</TD>
+     <TD>Number of channels in the guide (>= 1)
+</TD>
+<TD ALIGN=RIGHT>1</TD> </TR>
+<TR> <TD>d</TD>
+     <TD>m</TD>
+     <TD>Thickness of subdividing walls
+</TD>
+<TD ALIGN=RIGHT>0.0005</TD> </TR>
+<TR> <TD>mx</TD>
+     <TD>1</TD>
+     <TD>m-value of material for left and right vertical mirrors
+in each channel. Zero means completely absorbing.
+</TD>
+<TD ALIGN=RIGHT>1</TD> </TR>
+<TR> <TD>my</TD>
+     <TD>1</TD>
+     <TD>m-value of material for top and bottom mirrors. Zero
+means completely absorbing.
+</TD>
+<TD ALIGN=RIGHT>1</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=opar></A>Output parameters</H2>
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD><B>w1c</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w2c</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ww</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>hh</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>whalf</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>hhalf</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>lwhalf</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>lhhalf</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=links></A>Links</H2>
+
+<UL>
+  <LI> <A HREF="Channeled_guide.comp">Source code</A> for <CODE>Channeled_guide.comp</CODE>.
+</UL>
+<HR>
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<ADDRESS>
+Generated automatically by McDoc, Kristian Nielsen
+&lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt; /
+Jul 22 2002
+</ADDRESS>
+</BODY></HTML>

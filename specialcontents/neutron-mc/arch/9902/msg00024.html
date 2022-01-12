@@ -1,0 +1,158 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: rounding errors? -->
+<!--X-From: "Dr. Georg Artus" <Georg_Artus@Physik.TU&#45;Muenchen.DE> -->
+<!--X-Date: Wed, 24 Feb 1999 10:46:23 +0000 -->
+<!--X-Message-Id: 36D3D87F.414DBDE@ph.tum.de -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 01J845HDLK428ZFT4Z@risoe.dk -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: rounding errors?</title>
+<link rev="made" href="mailto:Georg_Artus@Physik.TU-Muenchen.DE">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00022.html">Date Prev</A>][<A HREF="msg00023.html">Date Next</A>]
+<a href="index.html#00024">[Chronological]</a>
+<a href="threads.html#00024">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: rounding errors?</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: rounding errors?</strong></LI>
+<LI><strong>From</strong>: <strong>"Dr. Georg Artus" &lt;<A HREF="mailto:Georg_Artus@Physik.TU-Muenchen.DE">Georg_Artus@Physik.TU-Muenchen.DE</A>&gt;</strong></LI>
+<LI>Date: Wed, 24 Feb 1999 10:46:23 +0000</LI>
+<LI>Organization: TUM</LI>
+<LI>References: &lt;01J845HDLK428ZFT4Z@risoe.dk&gt;</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Hello,
+
+&gt; Ah, now I see the problem. Your numbers are all integers, and look like
+&gt; the values of N (neutron events) in the monitors with 5e7 simulated
+&gt; neutrons. That will not work; because of neutron weights, the N values
+&gt; are not very meaningful in McStas. You need to use the I values instead
+&gt; (the 3rd column in the file).
+
+Bingo! Stupid, but probably I was confused because all other monitors
+have only one column (the correct one) in the output and energy monitors
+have three. It was rather naive to use the first column without
+thinking. Unfortunately the patterns of two detectors looked ok that
+way!
+
+&gt; Hm, I wonder if a better file format would have helped to avoid this
+&gt; problem for you. I am in the process of designing a proper output file
+&gt; format for McStas. Do you have any suggestions resulting from your
+&gt; experience with McStas? I am considering NeXus, of course. There will
+&gt; also be an ASCII format, the challenge of which is to remain compatible
+&gt; with many different programs (excel, matlab, perldl, gnuplot, ...) while
+&gt; getting as much information in as possible.
+
+A general solution fitting all needs will not be easy. Thousand
+programs, thousand formats, in practice conversion impossible. So the
+best thing would be to give the user as much choices as possible instead
+of fixing anything to one format. 
+May be it would be useful if Mcstas would title any column in output
+files. So confusion like above might be avoided. Otherwise this might
+disturb any automated graphical display with other programs afterwards.
+Comfortable would be to let this be controlled by a user defined option
+or variable, do it or leave it. 
+
+I don't know the nexus format and how it can be used by all common
+programs for graphical display. Which common programs read nexus or
+which graphic packages do you need for it?
+
+May be it would be a good idea for the ascii output, if the user could
+select the output format. For me it would be very helpful it I could
+chose '.' or ',' for the decimal separation and blank or tab for
+separating columns. I'm using Excel under the windows3.11 emulation wabi
+for display. Unfortunately we only have the german version and I cannot
+switch to . instead of ,! It's not comfortable but the best I can do. I
+also have tried Applixware 4.4.1 but there are a lot of flaws in it and
+this packages still is too uncommon. I'm no fan of Microsoft but Excel
+and Word are spoken nearly everywhere. :-{ 
+
+
+Here some forther suggestion for McStas:
+
+Any output files produced by e.g. psd monitors are always overwritten!!!
+This is a heavy loss of calculated data! It would be advantageous to
+keep them by version numbers or user defined names or anything like
+this.
+
+For some instruments one needs many conponents of the same type, think
+of focussing monochromators. It would be nice to have something like a
+loop construction for such setups in the *.instr files. 
+
+At the Risoe meeting last November discussion also turned on how to
+estimate the background. I know this leads very far but I think you
+could 'easily  invert' the simulation if you calculate the neutrons
+leaving the instrument with weight 1-p. The user may define the hitted
+material surrounding the instrument (Fe, B4C, PE would be enough) and
+with some principle interactions (e.g. for three neutron energy reanges)
+one might get an estimate for background sources around the instrument.
+
+Georg
+
+-- 
+*********************************************
+
+Dr. Georg Artus
+Technische Universitaet Muenchen
+Neue Forschungsneutronenquelle Garching
+D-85747 Garching
+
+Tel: +49 (0)89/289-14675
+Fax: +49 (0)89/289-14666 or 12112
+E-mail: gartus@ph.tum.de
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00022.html">Re: rounding errors?</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00023.html">Visiting =?UNKNOWN?Q?Ris=F8?=</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00024"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00024"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

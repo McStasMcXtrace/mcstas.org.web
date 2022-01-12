@@ -1,0 +1,309 @@
+\documentclass[12pt]{report}
+
+\begin{document}
+% sections to add in  "manual.tex";
+% \section{Detectors and monitors}
+
+
+\subsection{Monitor\_nD: A general Monitor for 0D/1D/2D records}
+\label{s:monitornd}
+
+The component {\bf Monitor\_nD} is a general Monitor that can output any set of 
+physical parameters concerning the passing neutrons. The gerenated files are eit
+her a set of 1D signals ([Intensity] {\it vs.} [Variable]), or a single 2D signa
+l ([Intensity] {\it vs.} [Variable 1] {\it vs.} [Variable 1]), and possibly a si
+mple long list of the selected physical parameters for each neutron.
+
+The input parameters for {\bf Monitor\_nD} are its dimensions $x_{\rm min}, x_{\
+rm max}, y_{\rm min}$, $y_{\rm max}$ (in meters) and an {\it options} string des
+cribing what to detect, and what to do with the signals, in clear language. The 
+formatting of the {\it options} parameter is free, as long as it contains some s
+pecific keywords, that can be sometimes followed by values. The {\it no} or {\it
+ not} option modifier will revert next option. The {\it all} option can also aff
+ect a set of monitor configuration parameters (see below). 
+
+\subsubsection{The Monitor\_nD geometry}
+
+The monitor shape can be selected among four geometries:
+\begin{enumerate}
+\item{({\it square}) The default geometry is flat rectangular in ($xy$) plane wi
+th dimensions $x_{\rm min}, x_{\rm max}, y_{\rm min}$, $y_{\rm max}$.}
+\item{({\it disk}) When choosing this geometry, the detector is a flat disk in (
+$xy$) plane. The radius is then
+\begin{equation}
+\mbox{radius} =  \max ( \mbox{abs } [ x_{\rm min}, x_{\rm max}, y_{\rm min}, y_{
+\rm max} ] ).
+\end{equation}
+}
+\item{({\it sphere}) The detector is a sphere with the same radius as for the {\
+it disk} geometry.}
+\item{({\it cylinder}) The detector is a cylinder with revolution axis along $y$
+ (vertical). The radius in ($xz$) plane is
+\begin{equation}
+\mbox{radius} =  \max ( \mbox{abs } [ x_{\rm min}, x_{\rm max} ] ),
+\end{equation}
+and the height along $y$ is 
+\begin{equation}
+\mbox{height} =  | y_{\rm max} - y_{\rm max} |.
+\end{equation}
+}
+\end{enumerate}
+
+By default, the monitor is flat, rectangular. Of course, you can choose the orie
+ntation of the {\bf Monitor\_nD} in the instrument description file with the usu
+al \texttt{ROTATED} modifier.
+
+For the {\it sphere} and {\it cylinder}, the incoming neutrons are monitored by 
+default, but you can choose to monitor outgoing neutron with the {\it outgoing} 
+option.
+
+At last, the {\it slit} or {\it absorb} option will ask the component to absorb 
+the neutrons that do not intersect the monitor.
+
+\subsubsection{The neutron parameters that can be monitored}
+
+There are 25 different variables that can be monitored at the same time and posi
+tion. Some can have more than one name (e.g. \texttt{energy} or \texttt{omega}).
+
+
+\begin{verbatim}
+ kx ky kz k wavevector (Angs-1) Wavevector norm or coordinates
+ vx vy vz v            (m/s)    Velocity norm or coordinates
+ x y z radius          (m)      Position and radius in (xy) plane
+ t time                (s)      Time of Flight
+ energy omega          (meV)    Neutron energy
+ lambda wavelength     (Angs)   Neutron wavelength
+ p intensity flux      (n/s) or (n/cm^2/s) The neutron weight
+ ncounts               (1)      The number of events detected
+ sx sy sz              (1)      Spin of the neutron
+ vdiv                  (deg)    vertical divergence
+ hdiv divergence       (deg)    horizontal divergence
+ angle                 (deg)    divergence from <z> direction
+ theta longitude       (deg)    longitude (x/z)
+ phi   lattitude       (deg)    lattitude (y/z)
+\end{verbatim}
+
+To tell the component what you want to monitor, just add the variable names in t
+he {\it options} parameter. The data will be sorted into {\it bins} cells (defau
+lt is 20), between some default {\it limits}, that can also be set by user. The 
+{\it auto} option will automatically determine what limits should be used to hav
+e a good sampling of signals.
+
+The {\it with borders} option will monitor variables that are outside the limits
+. These values are then accumulated on the 'borders' of the signal.
+
+Each monitoring will record the flux (sum of weights $p$) versus the given varia
+bles. The {\it per cm2} option will ask to normalize the flux to the monitor sec
+tion surface.
+
+Some examples ?
+\begin{enumerate}
+\item{\texttt{options="x bins=30 limits=[-0.05 0.05] ; y"} \\
+will set the monitor to look at $x$ and $y$. For $y$, default bins and limits va
+lues (monitor dimensions) are used.}
+\item{\texttt{options="x y, all bins=30, all limits=[-0.05 0.05]"} \\
+will do the same, but set limits and bins for $x$ and $y$.}
+\item{\texttt{options="x y, auto limits"} \\
+will determine itself the required limits for $x$ and $y$ to monitor passing neu
+trons with default {\it bins}=20.}
+\end{enumerate}
+
+\subsubsection{The output files}
+
+By default, the file names will be the component name, followed by automatic ext
+ensions showing what was monitored (such as \texttt{MyMonitor.x}). You can also 
+set the filename in {\it options} with the {\it file} keyword followed by the fi
+le name that you want. The extension will then be added if the name does not con
+tain a dot (.).
+
+The output files format are standard 1D or 2D McStas detector files.
+The {\it no file} option will {\it unactivate} monitor, and make it a single 0D 
+monitor detecting integrated flux and counts.
+The {\it verbose} option will display the nature of the monitor, and the names o
+f the generated files.
+
+\subsubsection{The 2D output}
+
+When you ask the {\bf Monitor\_nD} to monitor only two variables (e.g. {\it opti
+ons} = "x y"), a single 2D file of intensity versus these two correlated variabl
+es will be created.
+
+\subsubsection{The 1D output}
+
+The {\bf Monitor\_nD} can produce a set of 1D files, one for each monitored vari
+able, when using 1 or more than 2 variables, or when specifying the {\it multipl
+e} keyword option.
+
+\subsubsection{The List output}
+
+The {\bf Monitor\_nD} can additionally produce a {\it list} of variable values f
+or neutrons that pass into the monitor. This feature is additive to the 1D or 2D
+ output. By default only 1000 events will be recorded in the file, but you can s
+pecify for instance "{\it list} 3000 neutrons" or "{\it list all} neutrons". Thi
+s last option might require a lot of memory and generate huge files.
+
+\subsubsection{Usage examples}
+
+\begin{itemize}
+\item{
+\begin{verbatim}
+COMPONENT MyMonitor = Monitor_nD( 
+    xmin = -0.1, xmax = 0.1, 
+    ymin = -0.1, ymax = 0.1, 
+    options = "energy auto limits")
+\end{verbatim}
+will monitor the neutron energy in a single 1D file (a kind of E\_monitor)}
+\item{\texttt{{\it options}="x y, all bins=50"} \\
+will monitor the neutron $x$ and $y$ in a single 2D file (same as PSD\_monitor)}
+
+\item{\texttt{{\it options}="multiple x bins=30, y limits=[-0.05 0.05]"} \\
+will monitor the neutron $x$ and $y$ in two 1D files}
+\item{\texttt{{\it options}="x y z kx ky kz,  auto limits"} \\
+will monitor theses variables in six 1D files}
+\item{\texttt{{\it options}="x y z kx ky kz, list all, auto limits"} \\
+will monitor all theses neutron variables in one long list}
+\item{\texttt{{\it options}="multiple x y z kx ky kz, and list 2000,  auto limit
+s"} \\
+will monitor all theses neutron variables in one list of 2000 events and in six 
+1D files}
+\end{itemize}
+
+
+% \section{Sources}
+
+\subsection{Source\_Optimizer: A general Optimizer for McStas}
+\label{s:sourceoptimizer}
+
+The component {\bf Source\_Optimizer} optimizes the whole neutron flux in order 
+to achieve better statistics at each {\bf Monitor\_Optimizer} location(s) (see s
+ection (\ref{s:monitoroptimizer}) for this latter component. It can act on any i
+ncoming neutron beam (from any source type), and more than one optimization crit
+eria location can be placed along the instrument. 
+
+The usage of the optimizer is very simple, and usually does not require any conf
+iguration parameter. Anyway the user can still customize the optimization {\it v
+ia} various {\it options}.
+
+The optimizer efficiency makes it easy to increase the number of events at optim
+ization criteria locations by a factor of 20, and thus decreases the signal erro
+r bars by a factor 4.5. Higher factors can often be achieved in practise. Of cou
+rse, the overall flux remains the same as without optimizer.
+
+\subsubsection{The optimization algorithm}
+
+When a neutron reaches the {\bf Monitor\_Optimizer} location(s), the component r
+ecords what were its position ($x$, $y$) and speed ($v_x, v_y, v_z$) when it pas
+sed in the {\bf Source\_Optimizer}. Some distribution tables of {\it good} neutr
+ons characteristics are then built. 
+
+When a {\it bad} neutron comes to the {\bf Source\_Optimizer} (it would then hav
+e few chances to reach {\bf Monitor\_Optimizer}), it is changed into a better on
+e. That means that its position and velocity coordinates are translated to bette
+r values according to the {\it good} neutrons distribution tables. Anyway, the n
+eutron energy ($\surd v_x^2 + v_y^2 + v_z^2$) is kept as far as possible. 
+
+The {\bf Source\_Optimizer} works as follow:
+\begin{enumerate}
+\item{First of all, the {\bf Source\_Optimizer} determines some limits ({\it min
+} and {\it max}) for variables $x, y, v_x, v_y, v_z$.}
+\item{Then the component records the non-optimized flux distributions in arrays 
+with {\it bins} cells (default is 10 cells). This constitutes the {\it Reference
+} source.}
+\item{\label {SourceOptimizer:step3}The {\bf Monitor\_Optimizer} records the {\i
+t good} neutrons (that reach it) and communicate an {\it Optimized} source to th
+e {\bf Source\_Optimizer}. However, '{\it keep}' percent of the original {\it Re
+ference} source is sent unmodified (default is 10 \%). The {\it Optimized} sourc
+e is thus: 
+
+\begin{center}
+\begin{tabular}{rcl}
+{\it Optimized} & = & {\it keep} * {\it Reference} \\
+& + & (1 - {\it keep}) [Neutrons that will reach monitor].
+\end{tabular}
+\end{center}
+}
+\item{The {\bf Source\_Optimizer} transforms the {\it bad} neutrons into {\it go
+od} ones from the {\it Optimized} source. 
+The resulting optimised flux is normalised to the non-optimized one:
+\begin{equation}
+p_{optimized} = p_{initial} \frac{\mbox{Reference}}{\mbox{Optimized}},
+\end{equation}
+and thus the overall flux at {\bf Monitor\_Optimizer} location is the same as wi
+thout the optimizer. Usually, the process sends more {\it good} neutrons from th
+e {\it Optimized} source than than in the {\it Reference} one.
+The energy (and velocity) spectra of neutron beam is also kept, as far as possib
+le. For instance, an optimization of $v_z$ will induce a modification of $v_x$ o
+r $v_y$ to try to keep $|\vec{v}|$ constant.
+}
+\item{When the {\it continuous} optimization option is activated (by default), t
+he process loops to Step (\ref{SourceOptimizer:step3}) every '{\it step}' percen
+t of the simulation. This parameter is computed automatically (usually around 10
+ \%) in {\it auto} mode, but can also be set by user.}
+\end{enumerate}
+
+During steps (1) and (2), some non-optimized neutrons with original weight $p_{i
+nitial}$ may  lead to spikes on detector signals. This is greatly improved by lo
+wering the weight $p$ during these steps, with the {\it smooth} option.
+The component optimizes the neutron parameters on the basis of independant varia
+bles. Howver, it usually does work fine when these variables are correlated (whi
+ch is often the case in the course of the instrument simulation).
+The memory requirements of the component are very low, as no big $n$-dimensional
+ array is needed.
+
+\subsubsection{Using the Source\_Optimizer}
+
+To use this component, just install the {\bf Source\_Optimizer} after a source (
+but any location is possible in principle), and use the {\bf Monitor\_Optimizer}
+ at a location where you want to have better statistics.
+
+\begin{verbatim}
+    /* where to act on neutrons */
+    COMPONENT optim_s = Source_Optimizer(options="") 
+    ...
+    /* where to have better statistics */
+    COMPONENT optim_m = Monitor_Optimizer( 
+    xmin = -0.05, xmax = 0.05, 
+    ymin = -0.05, ymax = 0.05,
+    optim_comp = optim_s) 
+    ...
+    /* using more than one Monitor_Optimizer is possible */
+\end{verbatim}
+
+The input parameter for {\bf Source\_Optimizer} is a single {\it options} string
+ that can contain some specific optimizer configuration settings in clear langua
+ge. The formatting of the {\it options} parameter is free, as long as it contain
+s some specific keywords, that can be sometimes followed by values.
+
+The default configuration (equivalent to {\it options} = "") is
+\begin{center}
+\begin{tabular}{rcl}
+{\it options} & = & "{\it continuous} optimization, {\it auto} setting, {\it kee
+p} = 10, {\it bins} = 10, \\
+& & {\it smooth} spikes, and do {\it not free} energy during optimization".
+\end{tabular}
+\end{center}
+The keyword modifiers {\it no} or {\it not} revert the next option. Other option
+s not shown here are:
+\begin{verbatim}
+verbose         displays optimization process (debug purpose).
+unactivate      to unactivate the Optimizer.
+file=[name]     Filename where to save optimized source distributions
+\end{verbatim}
+The {\it file} option will save the source distributions at the end of the optim
+ization. If no name is given the component name will be used, and a '.src' exten
+sion will be added. By default, no file is generated. The file format is in a Mc
+Stas 2D record style.
+
+\subsection{Monitor\_Optimizer: Optimization locations for the Source\_Optimizer
+ component}
+\label{s:monitoroptimizer}
+
+The {\bf Monitor\_Optimizer} component works with the {\bf Source\_Optimizer} co
+mponent. See section (\ref{s:sourceoptimizer}) for usage.
+
+The input parameters for {\bf Monitor\_Optimizer} are the rectangular shaped ope
+ning coordinates $x_{\rm min}, x_{\rm max}, y_{\rm min}$, $y_{\rm max}$ (in mete
+rs), and the name of the associated {\bf Source\_Optimizer} used in the instrume
+nt description file (one word, without quotes).
+
+\end{document}

@@ -1,0 +1,242 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Bug in Mon_2foc Component -->
+<!--X-From: Peter Link <Peter_Link@physik.tu&#45;muenchen.de> -->
+<!--X-Date: Mon, 27 Sep 1999 15:59:16 +0200 -->
+<!--X-Message-Id: 37EF7833.BCB8E10D@physik.tu&#45;muenchen.de -->
+<!--X-ContentType: multipart/mixed -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Bug in Mon_2foc Component</title>
+<link rev="made" href="mailto:Peter_Link@physik.tu-muenchen.de">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00039.html">Date Prev</A>][<A HREF="msg00042.html">Date Next</A>]
+<a href="index.html#00041">[Chronological]</a>
+<a href="threads.html#00041">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Bug in Mon_2foc Component</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>Bug in Mon_2foc Component</strong></LI>
+<LI><strong>From</strong>: <strong>Peter Link &lt;<A HREF="mailto:Peter_Link@physik.tu-muenchen.de">Peter_Link@physik.tu-muenchen.de</A>&gt;</strong></LI>
+<LI>Date: Mon, 27 Sep 1999 15:59:16 +0200</LI>
+<LI>Organization: IPC Universit&auml;t G&ouml;ttingen (Au&szlig;enstelle Garching)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Hi Kristian,
+I'm sorry about a stupid beginners bug that I made in the double
+focussing monochromator. In some cases this produced wrong results, but
+not always very obious.
+Please find the corrected version as attached file.
+Best regards, Peter.
+
+P.S. What about this self optimizing source Kim talked to me about!
+
+-- 
+******************************************
+Dr. P. Link
+IPC Uni Göttingen
+Außenstelle Garching
+Neue Forschungs- Neutronenquelle Garching
+ZBE- FRM II- Bau
+85747 Garching
+
+Tel. 089 2891 4622
+Fax. 089 2895 4622
+mailto: plink@physik.tu-muenchen.de
+******************************************
+
+</PRE>
+<PRE>
+/*******************************************************************************
+*
+* McStas, version 1.0, released October 26, 1998
+*         Maintained by Kristian Nielsen and Kim Lefmann,
+*         Risoe National Laboratory, Roskilde, Denmark
+*
+* Component: Mon_2foc
+*
+* Written by: KL, HMR  June 16, 1997
+* Rewritten by: KL  Oct. 16, 1997
+* Added double bent feature by: Peter Link Feb. 12,1999
+* corrected bug in rotation of v-coords: Peter Link Sep. 24. 1999 
+* 
+* Double bent monochromator which uses a small-mosaicity approximation as well as
+* the approximation vy^2 &lt;&lt; vz^2 + vx^2.
+* Second order scattering is neglected.
+* For an unrotated monochromator component, the crystal plane lies in the y-z
+* plane (ie. parallel to the beam).
+*
+* INPUT PARAMETERS:
+*
+* zwidth:  (horizontal) width of an individual slab
+* ywidth:  (vertical) heigth of an individual slab
+* gap   :   typical gap  between adjacent slabs
+* NH    :   number of slabs horizontal ( columns )
+* NV    :   number of slabs vertical   ( rows )
+* mosaich: Horisontal mosaic (FWHM) (arc minutes)
+* mosaicv: Vertical mosaic (FWHM) (arc minutes)
+* R0:      Maximum reflectivity (1)
+* Q:       Scattering vector (AA-1)
+* RV :     radius of vertical focussing (m)
+* RH :     radius of horizontal focussing (m)
+*
+*******************************************************************************/
+
+DEFINE COMPONENT Mon_2foc
+DEFINITION PARAMETERS (zwidth, ywidth, gap, NH, NV, mosaich, mosaicv, r0, Q, RV, RH)
+SETTING PARAMETERS ()
+STATE PARAMETERS (x,y,z,vx,vy,vz,t,s1,s2,p)
+DECLARE
+  %{
+#define DIV_CUTOFF 2            /* ~ 10^-5 cutoff. */
+  %}
+
+TRACE
+  %{
+    double dphi,tmp1,tmp2,tmp3,tmp4,vratio,phi,theta0,theta,v,cs,sn;
+    double zmin,zmax,ymin,ymax,zp,yp,row,col;
+	double tilth,tiltv;         /* used to calculate tilt angle of slab */
+	double sna,snb,csa,csb,vxp,vyp,vzp;
+	double old_x = x, old_y = y, old_z = z, old_t = t;
+    double dt;
+    
+	if(vx != 0.0 &amp;&amp; (dt = -x/vx) &gt;= 0.0)
+    {
+      zmax = ((NH*(zwidth+gap))-gap)/2;
+	  zmin = -1*zmax;
+	  ymax = ((NV*(ywidth+gap))-gap)/2;
+	  ymin = -1*ymax;
+      y += vy*dt; z += vz*dt; t += dt; x = 0.0;
+	  zp = fmod ( (z-zmin),(zwidth+gap) );
+	  yp = fmod ( (y-ymin),(ywidth+gap) );
+	  
+	/* hit a slab or a gap ? */
+    
+    if (z&gt;zmin &amp;&amp; z&lt;zmax &amp;&amp; y&gt;ymin &amp;&amp; y&lt;ymax &amp;&amp; zp&lt;zwidth &amp;&amp; yp&lt; ywidth)
+    {
+      
+      col = ceil ( (z-zmin)/(zwidth+gap));
+	  row = ceil ( (y-ymin)/(ywidth+gap));
+	  tilth = asin((col-(NH+1)/2)*(zwidth+gap)/RH);
+	  tiltv = -asin((row-(NV+1)/2)*(ywidth+gap)/RV);
+	  
+	  /* rotate with tilth and tiltv */
+
+      sna = sin(tilth);
+	  snb = sin(tiltv);
+	  csa = cos(tilth);
+	  csb = cos(tiltv);
+	  vxp = vx*csa*csb+vy*snb-vz*sna*csb;
+	  vyp = -vx*csa*snb+vy*csb+vz*sna*snb;
+	  vzp = vx*sna+vz*csa;  
+
+	  
+	  /* First: scattering in plane */
+      /* theta0 = atan2(vx,vz);           neutron angle to slab Risoe version */
+      
+      v = sqrt(vxp*vxp+vyp*vyp+vzp*vzp);
+      theta0 = asin(vxp/v);                /* correct neutron angle to slab */
+
+	  theta = asin(Q2V*Q/(2.0*v));               /* Bragg's law */
+      if(theta0 &lt; 0)
+        theta = -theta;
+      tmp3 = (theta-theta0)/(MIN2RAD*mosaich);
+      if(tmp3 &gt; DIV_CUTOFF)
+      {
+        x = old_x; y = old_y; z = old_z; t = old_t;
+      }
+      else
+      {
+        p *= r0*exp(-tmp3*tmp3*4*log(2)); /* Use mosaics */
+        tmp1 = 2*theta;
+        cs = cos(tmp1);
+        sn = sin(tmp1);
+        tmp2 = cs*vxp - sn*vzp; 
+        vyp = vyp;
+        /*  vz = cs*vz + sn*vx;   diese Zeile wurde durch die folgende ersetzt */
+        tmp4 = vyp/vzp;     /* korrigiert den schrägen Einfall aufs Plättchen  */
+		vzp = cs*(-vyp*sin(tmp4)+vzp*cos(tmp4)) + sn*vxp;  
+        vxp = tmp2;
+
+        /* Second: scatering out of plane. 
+           Approximation is that Debye-Scherrer cone is a plane */
+
+        phi = atan2(vyp,vzp);  /* out-of plane angle */
+        dphi = (MIN2RAD*mosaicv)/(2*sqrt(2*log(2)))*randnorm();  /* MC choice: */
+        /* Vertical angle of the crystallite */
+        vyp = vzp*tan(phi+2*dphi*sin(theta));
+        vratio = v/sqrt(vxp*vxp+vyp*vyp+vzp*vzp);
+        vzp = vzp*vratio;
+        vyp = vyp*vratio;                             /* Renormalize v */
+        vxp = vxp*vratio;
+      }
+    /* rotate v coords back */
+    vx = vxp*csb*csa-vyp*snb*csa+vzp*sna;
+	vy = vxp*snb+vyp*csb;
+	vz = -vxp*csb*sna+vyp*snb*sna+vzp*csa;    
+    v=sqrt(vx*vx+vy*vy+vz*vz); 
+	}
+    else
+    {
+      x = old_x; y = old_y; z = old_z; t = old_t;
+    }
+    }
+  %}
+END
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<UL><LI><STRONG>Follow-Ups</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00042" HREF="msg00042.html">Re: Bug in Mon_2foc Component</A></STRONG>
+<UL><LI><EM>From:</EM> Kristian Nielsen &lt;kristian.nielsen@risoe.dk&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00039.html">Re: new modules</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00042.html">Re: Bug in Mon_2foc Component</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00041"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00041"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

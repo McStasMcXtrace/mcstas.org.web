@@ -1,0 +1,149 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: McStas -->
+<!--X-From: "P. Horn" <horn@ill.fr> -->
+<!--X-Date: Wed, 25 Aug 1999 14:23:22 +0200 -->
+<!--X-Message-Id: 37C3E039.41C6@ill.fr -->
+<!--X-ContentType: multipart/mixed -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>McStas</title>
+<link rev="made" href="mailto:horn@ill.fr">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00005.html">Date Prev</A>][<A HREF="msg00008.html">Date Next</A>]
+<a href="index.html#00006">[Chronological]</a>
+<a href="threads.html#00006">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>McStas</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>McStas</strong></LI>
+<LI><strong>From</strong>: <strong>"P. Horn" &lt;<A HREF="mailto:horn@ill.fr">horn@ill.fr</A>&gt;</strong></LI>
+<LI>Date: Wed, 25 Aug 1999 14:23:22 +0200</LI>
+<LI>Organization: Institut Max von Laue Langevin</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Hello!
+
+At working with McStas i found a bug in the component Monochromator at
+line 59. The instrument definition i attached to this e-mail should
+reproduce the error or not.
+
+Something else:
+What else monitors are existing now? 
+I have only seen the official and unofficial components on your
+McStas-pages.
+
+I have written a Monitor wich gives a 2D-output of the energy an the
+vertical divergence. Do you want it?
+
+Thanks a lot in forward.
+
+
+Pay Schulze Horn
+</PRE>
+<PRE>
+DEFINE INSTRUMENT mono_bug()
+DECLARE
+%{
+double mono_q, lambda_zero, e_zero;
+%}
+
+INITIALIZE
+%{
+lambda_zero=5;
+e_zero=((2*PI)/lambda_zero)*((2*PI)/lambda_zero)*K2V*K2V*VS2E;
+mono_q=4*PI*sin(DEG2RAD*45)/lambda_zero; /* Here is the angle 45 deg not 80 */
+%}
+
+TRACE
+COMPONENT a1=Arm()
+	AT (0,0,0) ABSOLUTE
+	ROTATED (0,0,0) ABSOLUTE
+COMPONENT s=Source_div(
+		width=0.001,
+		height=0.001,
+		hdiv=0,
+		vdiv=0,
+		E0=e_zero,
+		dE=0)
+	AT (0,0,0) RELATIVE a1
+	ROTATED (0,0,0) RELATIVE a1
+COMPONENT m1=Monochromator(
+		zmin=-0.5,
+		zmax=0.5,
+		ymin=-0.5,
+		ymax=0.5,
+		mosaich=15,
+		mosaicv=15,
+		r0=1,
+		Q=mono_q)
+	AT (0,0,0.2) RELATIVE a1
+	ROTATED (0,40,0) RELATIVE a1
+COMPONENT a2=Arm()
+	AT (0,0,0.3) RELATIVE a1
+	ROTATED (0,80,0) RELATIVE a1  /* But here is an angle above twice of the
+												mosiaic.*/
+COMPONENT moni1=Monitor(
+		xmin=-0.3,
+		xmax=0.3,
+		ymin=-0.3,
+		ymax=0.3)
+	AT (0,0,0.2) RELATIVE a2
+	ROTATED (0,0,0) RELATIVE a2
+END
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<UL><LI><STRONG>Follow-Ups</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00007" HREF="msg00007.html">Re: McStas</A></STRONG>
+<UL><LI><EM>From:</EM> Kristian Nielsen &lt;kristian.nielsen@risoe.dk&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00005.html">Re: McStas</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00008.html">Mcstas</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00006"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00006"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

@@ -1,0 +1,18 @@
+perl scan/gscan.pl 41 ./align-1-i386 sim/align_1.sim -35.5,-38.5 -74 0 1e5
+perl scan/gscan.pl 41 ./align-1-i386 sim/align_2_1.sim -35.5,-38.5 -74 15 1e5
+perl scan/gscan.pl 41 ./align-1-i386 sim/align_2_2.sim -35.5,-38.5 -74 30 1e5
+perl scan/gscan.pl 41 ./align-2-i386 sim/align_3_1.sim -37 -74 -1,1 15 0 0 1e5
+perl scan/gscan.pl 41 ./align-2-i386 sim/align_3_2.sim -37 -74 -1,1 30 0 0 1e5
+perl scan/gscan.pl 41 ./align-2-i386 sim/align_4_1.sim -37 -74 -1,1 15 0 30 1e5
+perl scan/gscan.pl 41 ./align-2-i386 sim/align_4_2.sim -37 -74 -1,1 30 0 30 1e5
+perl scan/gscan.pl 41 ./align-2-i386 sim/align_5_1.sim -37 -74 -1,1 15 28 30 1e5
+perl scan/gscan.pl 41 ./align-2-i386 sim/align_5_2.sim -37 -74 -1,1 30 28 30 1e5
+perl scan/gscan.pl 41 ./align-3-i386 sim/align_6_1.sim -37 -74 69,73 15 28 30 1e5
+perl scan/gscan.pl 41 ./align-3-i386 sim/align_6_2.sim -37 -74 69,73 30 28 30 1e5
+perl scan/gscan.pl 41 ./align-3-i386 sim/align_7_1.sim -37 -74 -69,-73 15 28 30 1e5
+perl scan/gscan.pl 41 ./align-3-i386 sim/align_7_2.sim -37 -74 -69,-73 30 28 30 1e5
+perl scan/gscan.pl 1 ./align-4-i386 sim/align_8_1.sim -37 -74 70.8 15 28 30 1e7
+perl scan/gscan.pl 1 ./align-4-i386 sim/align_8_2.sim -37 -74 70.8 30 28 30 1e7
+perl scan/gscan.pl 21 ./align-5-i386 sim/align_9_1.sim -37 -74 70.8 -35.5,-38.5 -74 15 28 30 5e7
+perl scan/gscan.pl 41 ./align-6-i386 sim/align_11_1.sim -37 -74 69.5,72 -37 -74 30 28 30 1e5
+perl scan/gscan.pl 41 ./align-6-i386 sim/align_11_2.sim -37 -74 69.5,72 -37 -74 60 62 67 1e5

@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+</head>
+<body>
+<h1>Platform list</h1>
+<p><span style="font-weight: bold;">System <a name="requirements"></a>requirements
+for McStas</span><br>
+</p>
+<p>McStas has been tested on various systems (see extensive tests
+further). All of them were found to run McStas, eventhough some of the
+tools (GUI) could fail.<br>
+</p>
+<p>The complete installation for McStas requires:<br>
+</p>
+<ol>
+  <li>a C compiler</li>
+  <li>perl and perl-Tk</li>
+  <li>Matlab <span style="font-style: italic;">OR</span> (pgplot+pgperl+PDL) <span style="font-style: italic;">OR</span> Gnuplot (Scilab 4.0 is also supported but not recommended)</li>
+  <li>Optional stuff: VRML viewer, MPI, octave+gnuplot</li>
+</ol>
+<p style="color: rgb(255, 0, 0); font-weight: bold;">WARNING:</p>
+<p><span style="font-style: italic; font-weight: bold;">McStas 1.12a</span>
+ONLY works with <span style="font-weight: bold;">scilab 4.0</span>
+(All systems).
+</p>
+We <i>recommend</i> <a href="http://www.ubuntulinux.org/">Ubuntu</a>
+and <a href="http://www.debian.org/">Debian</a> systems, easy to
+install and provide all the necessary software. Matlab runs on these
+system as well. <a href="http://www.microsoft.com/">Microsoft Windows</a>
+installer is now <span style="font-style: italic; font-weight: bold;">available</span>
+for a very easy installation from a complete package (C compiler,
+Scilab, VRML viewer, McStas, perl)<br>
+<br>
+The color codes indicate:
+<br>
+<br>
+<img src="green.png" align="middle"> - McStas builds + works fully
+(including gui + at least one plotting backend)<br>
+<img src="yellow.png" align="middle"> - McStas builds + works (no gui
+and/or
+no plotting backend)<br>
+<img src="red.png" align="middle"> - McStas does not build (no mcstas)<br>
+<p><span style="font-weight: bold;"><span style="font-style: italic;">Tests
+performed with McStas 1.12/1.12a:</span></span><br>
+</p>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td
+ style="vertical-align: top; font-weight: bold; font-style: italic;">System<br>
+      </td>
+      <td
+ style="vertical-align: top; font-weight: bold; font-style: italic;">C
+compiler<br>
+      </td>
+      <td
+ style="vertical-align: top; font-weight: bold; font-style: italic;">perl,
+perl-Tk<br>
+      </td>
+      <td
+ style="vertical-align: top; font-weight: bold; font-style: italic;"><a
+ href="http://www.astro.caltech.edu/%7Etjp/pgplot/">PGPLOT</a>, <a
+ href="http://www.ast.cam.ac.uk/AAO/local/www/kgb/pgperl/">pgperl</a>, <a
+ href="http://pdl.perl.org/">PDL</a></td>
+      <td
+ style="vertical-align: top; font-weight: bold; font-style: italic;"><a
+ href="http://www-rocq.inria.fr/scilab/">Scilab</a></td>
+      <td
+ style="vertical-align: top; font-weight: bold; font-style: italic;"><a
+ href="http://www.mathworks.com/">Matlab</a></td>
+      <td style="font-weight: bold; font-style: italic;">Status</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a href="http://www.debian.org/">Debian</a>
+Lenny<br>
+      </td>
+      <td style="vertical-align: top;">gcc<br>
+      </td>
+      <td style="vertical-align: top;">packages<br>
+      </td>
+      <td style="vertical-align: top;">packages<br>(included in .deb)</td>
+      <td style="vertical-align: top;">package<br>
+      </td>
+      <td style="vertical-align: top;">OK on i386<br>
+      </td>
+      <td style="vertical-align: top;"><img src="green.png"
+ align="middle"></td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a
+ href="http://www.ubuntulinux.org/">Ubuntu</a> Hardy/Intrepid<br>
+      </td>
+      <td style="vertical-align: top;">gcc/icc<br>
+      </td>
+      <td style="vertical-align: top;">packages</td>
+      <td style="vertical-align: top;">packages<br>(included in .deb)
+      </td>
+      <td style="vertical-align: top;">package<br>
+      </td>
+      <td style="vertical-align: top;">OK<br>
+      </td>
+      <td style="vertical-align: top;"><img src="green.png"
+ align="middle"></td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a href="http://www.redhat.com/">CentOS 5</a>
+</td>
+      <td style="vertical-align: top;">gcc/icc</td>
+      <td style="vertical-align: top;">perl,<br>
+compiled perl-Tk<br>
+      </td>
+      <td style="vertical-align: top;">compiled<br>
+      </td>
+      <td style="vertical-align: top;">compiled<br>
+      </td>
+      <td style="vertical-align: top;">OK<br>
+      </td>
+      <td style="vertical-align: top;"><img src="green.png"
+ align="middle"></td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a href="http://www.freebsd.org/">FreeBSD</a>
+7.1 <a href="http://www.freebsd.org"></a><br>
+      </td>
+      <td style="vertical-align: top;">gcc</td>
+      <td style="vertical-align: top;">perl</td>
+      <td style="vertical-align: top;">compiled<br>
+      </td>
+      <td style="vertical-align: top;">untested</td>
+      <td style="vertical-align: top;">untested</td>
+      <td style="vertical-align: top;"><img src="green.png"
+ align="middle"></td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a href="http://www.sun.com/">Solaris 10</a>
+Intel <a href="http://www.freebsd.org"></a><br>
+      </td>
+      <td style="vertical-align: top;">gcc</td>
+      <td style="vertical-align: top;">perl,<br>compiled perl-Tk</td>
+      <td style="vertical-align: top;">compiled<br>
+      </td>
+      <td style="vertical-align: top;">untested</td>
+      <td style="vertical-align: top;">untested</td>
+      <td style="vertical-align: top;"><img src="green.png"
+ align="middle"></td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a
+ href="http://www.microsoft.com/">Microsoft Windows XP / Vista</a></td>
+      <td style="vertical-align: top;"><a
+ href="http://www.bloodshed.net/">Dev-Cpp</a><br>(included in .exe)</td>
+      <td style="vertical-align: top;"><a
+ href="http://www.activestate.com/">ActiveState</a><br>(included in .exe)
+      </td>
+      <td style="vertical-align: top;">OK<br>(included in .exe)
+      </td>
+      <td style="vertical-align: top;">exe from scilab.org <br>(v4.0 - included in .exe)<br>
+      </td>
+      <td style="vertical-align: top;">OK<br>
+      </td>
+      <td style="vertical-align: top;"><img src="green.png"
+ align="middle"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a href="http://www.apple.com">Mac
+OS X</a> Panther/Tiger/Leopard <br>- both Intel and PPC
+      </td>
+      <td style="vertical-align: top;">gcc/icc<br>
+      </td>
+      <td style="vertical-align: top;">perl<br>
+compiled perl-Tk<br>(included in .dmg)
+      </td>
+      <td style="vertical-align: top;">compiled<br>(included in .dmg)
+      </td>
+      <td style="vertical-align: top;">compiled<br>(included in .dmg)</td>
+      <td style="vertical-align: top;">OK<br>
+      </td>
+      <td style="vertical-align: top;"><img src="green.png"
+ align="middle"></td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<p><br>
+<br>
+<br>
+</p>
+</body>
+</html>

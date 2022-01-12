@@ -1,0 +1,448 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD>
+<TITLE>McStas: RITA_II Instrument at  PSI</TITLE>
+<LINK REV="made" HREF="mailto:peter.willendrup@risoe.dk">
+</HEAD>
+
+<BODY>
+
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<H1>The <CODE>RITA_II</CODE> Instrument</H1>
+
+RITA type triple-axis spectrometer (TAS)
+
+
+<H2><A NAME=id></A>Identification</H2>
+
+<UL>
+  <LI> <B>Site:    PSI</B>
+  <LI> <B>Author:</B> <a href="mailto:udby@fys.ku.dk">Linda Udby</a>  and <a href="mailto:pkwi@fysik.dtu.dk">Peter Willendrup</a></B>
+  <LI> <B>Origin:</B> <a href="http://www.nbi.dk">NBI</a>, <a
+  href="http://www.fys.dtu.dk">DTU Physics</a>, <a
+  href="http://www.risoe.dk">Ris&oslash;</a>, <a href="http://www.psi.ch">PSI</a></B>
+  <LI> <B>Date:</B> 2012</B>
+  <LI> <B>Version:</B> $June 03 2011 $</B>
+</UL>
+<H2><A NAME=desc></A>Description</H2>
+
+<PRE>
+This instrument is model of RITA-II at the RNR13 guide at SINQ, PSI as of 2009. The energy and q-resolution as been verified against measured data in 2- and 3-axis modes. See Udby et al., Nuclear Instruments and Methods 634 (2011) s138-.<br>
+The model is based on the following components in downstream order
+<ul>
+<li> The SINQ source in 2009 - tested up to Ei=15 meV versus measurements. The spectrum of genereated rays is controlled by the BPL and BPH parameters.</li>
+<li> The RNR13 guide with average m-value based on color-codes on guide pieces and gaps as measured/from technical drawings.</li>
+<li> The Druckal monochromator: 5 slabs of PG(002) with vertically focusing option. The horizontal rotation angle (A1) and  scattering angle (A2) can either be set by user input or calculated automatically from EI/KI. </li>
+<li> Optional filter after the monochromator, before the sample. </li>
+<li> Variable linear collimator after the monochromator, before the sample. </li>
+<li> Optional perspex attenuation. </li>
+<li> Inbound Diaphagm slit. </li>
+<li> Sample: Incoherent scatterer, powder or single crystal from reflection list. </li>
+<li> Outbound Diaphragm slit. </li>
+<li> Optional filter after the sample, with radial collimator.</li>
+<li> 9 - blade analyser: Base-rotation (AA5) and individual blade angles (C1-C9) can either be set by user or calculated automatically from EF/KF. </li>
+<li> Coarse collimator: Removes cross-talk by allowing only passage of scattered neutrons from specified blade in each channel.</li>
+<li> Detector: PSD detector with 100% efficiency and specified point-spread function from measurements.</li>
+<li> Windows: Monitors the neutrons in each electronically specified window [XWinMin,XWinMax;YWinMin,YWinMax].</li>
+</ul>
+EXAMPLES
+<ul>
+<li>Generating a virtual source </li>
+mcrun RITA-II.instr -n3e6  BPL=0.97 BPH=1.03 EI=5 EF=5 COLL_MS=40 SAMPLE=1 OUTFILTER=0 REP=10 VIRTUALOUT=1 -d  RITA-II_Vsource40 <br>
+<li>Vanadium sample, no filters, seeing 1st-3rd order neutrons </li>
+mcrun RITA-II.instr -n3e6 BPL=0.30 BPH=1.03 EI=5 EF=5 SAMPLE=1 INFILTER=0 OUTFILTER=0  REP=10 -d RITA-II_Vanadium <br>
+<li>Powder sample (default sapphire), simulation 1) through entire instrument or  2)from virtual source 3) in 2-axis mode, with particular slit settings scaling the source yield to 2008 values </li>
+1) mcrun RITA-II.instr -n3e6 EF=5 EN=0 SAMPLE=2 COLL_MS=40 SAMPLEFILE="Al2O3_sapphire.lau" BARNS=0 SOURCEFILE="RITA-II_Vsource40/Vin_default.dat" REP=10 -d RITA-II_40_powder<br>
+2) mcrun RITA-II.instr EI=5 EF=5 SAMPLE=2 SAMPLEFILE="Al2O3_sapphire.lau" BARNS=0 SOURCEFILE="RITA-II_Vsource40/Vin_default.dat" VIRTUALIN=1 REP=3 -d RITA-II_VINsource40_powder <br>
+3) mcrun RITA-II.instr -n 1e7 ITAR=0.71 COLL_MS=19.6 BPL=0.97 BPH=1.03 EI=5 EF=5 QH=0 QK=0 QL=0 QM=1 A3=0.001 A4=-71 AA5=-90 A6=1e-3 MST=25 MSB=25 MSL=10 MSR=10 SAMPLE=2 SAMPLEFILE="Al2O3_sapphire.lau" SST=25 SSB=25 SSL=10 SSR=10 OUTFILTER=0 OUTFILTERFILE=Be.trm COARSE=1 REP=5 LC=6 RC=4 REP=1 BARNS=0 ANAFORCE=1 -d RITA-II_Al2O3_2axis<br>
+<li>Single crystal sample. Define first lattice vector (a) along -x (to the right) , second lattice vector (b) along z (forward), third lattice vector (c) along y (up). </li>
+ mcrun RITA-II.instr -n1e6 BPL=0.97 BPH=1.03 EI=5 EF=5 SAMPLE=3 REP=10 QH=2 QM=0 AS=4.95 BS=4.95 CS=4.95 AAX=-4.95 BBZ=4.95 CCY=4.95 AH=0 AK=1 AL=0  BH=1 BK=0 BL=0 SAMPLEFILE="Pb.laz" -d RITA-II_SXPb200 <br>
+<li> Phonon sample, inelastic scattering, no Bragg peaks in sample </li>
+mcrun RITA-II.instr -n1e6 L0=3.418 BPL=0.97 BPH=1.03 EI=7 EF=5 SAMPLE=4 REP=10 QH=2 QK=0.16 QM=0 AS=4.95 BS=4.95 CS=4.95 AAX=-4.95 BBZ=4.95 CCY=4.95 AH=0 AK=1 AL=0  BH=1 BK=0 BL=0 SAMPLEFILE="Pb.laz" -d RITA-II_SXPb200_2meV <br>
+</ul>
+</PRE>
+
+<H2><A NAME=ipar></A>Input parameters</H2>
+Parameters in <B>boldface</B> are required;
+the others are optional.
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD>ITAR</TD>
+     <TD>mA</TD>
+     <TD>Relative neutron yield from the spallation target. Value relative to 2009 </TD>
+<TD ALIGN=RIGHT>1.0</TD> </TR>
+<TR> <TD>L0</TD>
+     <TD>Angs</TD>
+     <TD>Centre of generated wavelength distribution from source </TD>
+<TD ALIGN=RIGHT>4.045</TD> </TR>
+<TR> <TD>BPL</TD>
+     <TD>-</TD>
+     <TD>Band Pass Low factor, multiplied on source wavelength L0 to allow neutrons with wavelengths with lambda {BPL*L0,BPH*L0} to be traced from the source.</TD>
+<TD ALIGN=RIGHT>0.97</TD> </TR>
+<TR> <TD>BPH</TD>
+     <TD>-</TD>
+     <TD>Band Pass High factor, multiplied on source wavelength L0 to allow neutrons with wavelengths with lambda {BPL*L0,BPH*L0} to be traced from the source.</TD>
+<TD ALIGN=RIGHT>1.03</TD> </TR>
+<TR> <TD>MONO_N</TD>
+     <TD>1</TD>
+     <TD>Order of reflection used on mono </TD>
+<TD ALIGN=RIGHT>1</TD> </TR>
+<TR> <TD>MONOFORCE</TD>
+     <TD>1</TD>
+     <TD>If set, monochromator is flat </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>MONO_MOS_H</TD>
+     <TD>min</TD>
+     <TD>Monochromator, horizontal mosaicity </TD>
+<TD ALIGN=RIGHT>37</TD> </TR>
+<TR> <TD>MONO_MOS_V</TD>
+     <TD>min</TD>
+     <TD>Monochromator, vertical mosaicity </TD>
+<TD ALIGN=RIGHT>37</TD> </TR>
+<TR> <TD>EI</TD>
+     <TD>meV</TD>
+     <TD>Incoming neutron energy. Also used to set range of energy monitors </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>EF</TD>
+     <TD>meV</TD>
+     <TD>Outgoing neutron energy. Also used to set range of energy monitors </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>EN</TD>
+     <TD>meV</TD>
+     <TD>Energy transferred in crystal </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>SM</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>1</TD> </TR>
+<TR> <TD>SS</TD>
+     <TD>1</TD>
+     <TD>Scattering configuration signs. 'W' is SM=1,SS=-1,SA=1 </TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>SA</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>1</TD> </TR>
+<TR> <TD>QH</TD>
+     <TD>rlu</TD>
+     <TD>Measurement QH position in crystal </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>QK</TD>
+     <TD>rlu</TD>
+     <TD>Measurement QK position in crystal </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>QL</TD>
+     <TD>rlu</TD>
+     <TD>Measurement QL position in crystal </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>QM</TD>
+     <TD>Angs-1</TD>
+     <TD>Wavevector transferred in sample, use QM=0 if (QH,QK,QL) is specified </TD>
+<TD ALIGN=RIGHT>1.8051</TD> </TR>
+<TR> <TD>AS</TD>
+     <TD>Angs</TD>
+     <TD>Sample lattice parameter A </TD>
+<TD ALIGN=RIGHT>4.95</TD> </TR>
+<TR> <TD>BS</TD>
+     <TD>Angs</TD>
+     <TD>Sample lattice parameter B </TD>
+<TD ALIGN=RIGHT>4.95</TD> </TR>
+<TR> <TD>CS</TD>
+     <TD>Angs</TD>
+     <TD>Sample lattice parameter C </TD>
+<TD ALIGN=RIGHT>4.95</TD> </TR>
+<TR> <TD>AA</TD>
+     <TD>deg</TD>
+     <TD>Angle between lattice vectors B,C </TD>
+<TD ALIGN=RIGHT>90</TD> </TR>
+<TR> <TD>BB</TD>
+     <TD>deg</TD>
+     <TD>Angle between lattice vectors C,A </TD>
+<TD ALIGN=RIGHT>90</TD> </TR>
+<TR> <TD>CC</TD>
+     <TD>deg</TD>
+     <TD>Angle between lattice vectors A,B </TD>
+<TD ALIGN=RIGHT>90</TD> </TR>
+<TR> <TD>AH</TD>
+     <TD>rlu</TD>
+     <TD>First reciprocal lattice vector in scattering plane, X </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>AK</TD>
+     <TD>rlu</TD>
+     <TD>First reciprocal lattice vector in scattering plane, Y </TD>
+<TD ALIGN=RIGHT>1</TD> </TR>
+<TR> <TD>AL</TD>
+     <TD>rlu</TD>
+     <TD>First reciprocal lattice vector in scattering plane, Z </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>BH</TD>
+     <TD>rlu</TD>
+     <TD>Second reciprocal lattice vector in scattering plane, X </TD>
+<TD ALIGN=RIGHT>1</TD> </TR>
+<TR> <TD>BK</TD>
+     <TD>rlu</TD>
+     <TD>Second reciprocal lattice vector in scattering plane, Y </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>BL</TD>
+     <TD>rlu</TD>
+     <TD>Second reciprocal lattice vector in scattering plane, Z </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>INFILTER</TD>
+     <TD>1</TD>
+     <TD>Flag to indicate if mono-block filter is in or out </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>INFILTERFILE</TD>
+     <TD>string</TD>
+     <TD>An input file of wavevector vs transmission to use with incoming filter </TD>
+<TD ALIGN=RIGHT>"Be.trm"</TD> </TR>
+<TR> <TD>COLL_MS</TD>
+     <TD>deg</TD>
+     <TD>Primary collimator max divergence </TD>
+<TD ALIGN=RIGHT>80</TD> </TR>
+<TR> <TD>MST</TD>
+     <TD>m</TD>
+     <TD>Monochromator TOP slit </TD>
+<TD ALIGN=RIGHT>40</TD> </TR>
+<TR> <TD>MSB</TD>
+     <TD>m</TD>
+     <TD>Monochromator BOTTOM slit </TD>
+<TD ALIGN=RIGHT>40</TD> </TR>
+<TR> <TD>MSL</TD>
+     <TD>m</TD>
+     <TD>Monochromator LEFT slit </TD>
+<TD ALIGN=RIGHT>40</TD> </TR>
+<TR> <TD>MSR</TD>
+     <TD>m</TD>
+     <TD>Monochromator RIGHT slit </TD>
+<TD ALIGN=RIGHT>40</TD> </TR>
+<TR> <TD>PTHICK</TD>
+     <TD>m</TD>
+     <TD>Thickness of perspex attenuator </TD>
+<TD ALIGN=RIGHT>1e-3</TD> </TR>
+<TR> <TD>PERSPEX</TD>
+     <TD>1</TD>
+     <TD>Flag to indicate if perspex attenuator is in or out </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>SAMPLE</TD>
+     <TD>1</TD>
+     <TD>1 is incoherent scatterer, 2 is powder, 3 is single crystal.</TD>
+<TD ALIGN=RIGHT>1</TD> </TR>
+<TR> <TD>SAMPLEFILE</TD>
+     <TD>string</TD>
+     <TD>Name of samplefile (with reflectionlist etc) </TD>
+<TD ALIGN=RIGHT>"default"</TD> </TR>
+<TR> <TD>MOS</TD>
+     <TD>-</TD>
+     <TD>Isotropic 'mosaicity' of single crystal</TD>
+<TD ALIGN=RIGHT>100</TD> </TR>
+<TR> <TD>DD_D</TD>
+     <TD>-</TD>
+     <TD>spead of lattice parameter</TD>
+<TD ALIGN=RIGHT>1e-3</TD> </TR>
+<TR> <TD>SAMPLESIZE</TD>
+     <TD>m</TD>
+     <TD>Length, height and width of single crystal sample, or radius and height of phonon sample </TD>
+<TD ALIGN=RIGHT>0.01</TD> </TR>
+<TR> <TD>BARNS</TD>
+     <TD>1</TD>
+     <TD>If set the flag indicates that reflection list structure factors are in units of barns, otherwise fm^2 </TD>
+<TD ALIGN=RIGHT>1</TD> </TR>
+<TR> <TD>AAX</TD>
+     <TD>-</TD>
+     <TD>
+</TD>
+<TD ALIGN=RIGHT>-4.95</TD> </TR>
+<TR> <TD>AAY</TD>
+     <TD>-</TD>
+     <TD>Orientation vector of unit cell, single_crystal</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>AAZ</TD>
+     <TD>-</TD>
+     <TD>
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>BBX</TD>
+     <TD>-</TD>
+     <TD>
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>BBY</TD>
+     <TD>-</TD>
+     <TD>Orientation vector of unit cell, single_crystal</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>BBZ</TD>
+     <TD>-</TD>
+     <TD>
+</TD>
+<TD ALIGN=RIGHT>4.95</TD> </TR>
+<TR> <TD>CCX</TD>
+     <TD>-</TD>
+     <TD>
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>CCY</TD>
+     <TD>-</TD>
+     <TD>Orientation vector of unit cell, single_crystal</TD>
+<TD ALIGN=RIGHT>4.95</TD> </TR>
+<TR> <TD>CCZ</TD>
+     <TD>-</TD>
+     <TD> 
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>A1</TD>
+     <TD>deg</TD>
+     <TD>Monohromator rotation angle </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>A2</TD>
+     <TD>deg</TD>
+     <TD>Monohromator take-off angle </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>A3</TD>
+     <TD>deg</TD>
+     <TD>Sample rotation angle </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>A4</TD>
+     <TD>deg</TD>
+     <TD>Sample take-off angle </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>AA5</TD>
+     <TD>deg</TD>
+     <TD>Analyzer rack rotation angle </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>A6</TD>
+     <TD>deg</TD>
+     <TD>Analyzer take-off angle </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>TILT</TD>
+     <TD>deg</TD>
+     <TD>Tilt angle out of plane of the sample scattering vector out of plane (rotation around z of the A3 arm)  </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>SST</TD>
+     <TD>m</TD>
+     <TD>Sample TOP slit </TD>
+<TD ALIGN=RIGHT>100</TD> </TR>
+<TR> <TD>SSB</TD>
+     <TD>m</TD>
+     <TD>Sample BOTTOM slit </TD>
+<TD ALIGN=RIGHT>100</TD> </TR>
+<TR> <TD>SSL</TD>
+     <TD>m</TD>
+     <TD>Sample LEFT slit </TD>
+<TD ALIGN=RIGHT>100</TD> </TR>
+<TR> <TD>SSR</TD>
+     <TD>m</TD>
+     <TD>Sample RIGHT slit </TD>
+<TD ALIGN=RIGHT>100</TD> </TR>
+<TR> <TD>OUTFILTER</TD>
+     <TD>1</TD>
+     <TD>Flag to indicate if the outbound filter is in or out </TD>
+<TD ALIGN=RIGHT>1</TD> </TR>
+<TR> <TD>OUTFILTERFILE</TD>
+     <TD>string</TD>
+     <TD>An input file of wavevector vs transmission to use with outgoing filter </TD>
+<TD ALIGN=RIGHT>"Be.trm"</TD> </TR>
+<TR> <TD>ANAFORCE</TD>
+     <TD>1</TD>
+     <TD>If set the analyzer is forced flat </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>AA5</TD>
+     <TD>deg</TD>
+     <TD>Analyzer rack rotation angle </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>C1</TD>
+     <TD>deg</TD>
+     <TD>Analyzer blade 1 position </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>C2</TD>
+     <TD>deg</TD>
+     <TD>Analyzer blade 2 position </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>C3</TD>
+     <TD>deg</TD>
+     <TD>Analyzer blade 3 position </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>C4</TD>
+     <TD>deg</TD>
+     <TD>Analyzer blade 4 position </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>C5</TD>
+     <TD>deg</TD>
+     <TD>Analyzer blade 5 position </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>C6</TD>
+     <TD>deg</TD>
+     <TD>Analyzer blade 6 position </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>C7</TD>
+     <TD>deg</TD>
+     <TD>Analyzer blade 7 position </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>C8</TD>
+     <TD>deg</TD>
+     <TD>Analyzer blade 8 position </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>C9</TD>
+     <TD>deg</TD>
+     <TD>Analyzer blade 9 position </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>COARSE</TD>
+     <TD>1</TD>
+     <TD>Flag to indicate if Detector collimator is in or out </TD>
+<TD ALIGN=RIGHT>1</TD> </TR>
+<TR> <TD>LC</TD>
+     <TD>deg</TD>
+     <TD>Detector-collimator angle of the leftmost blade </TD>
+<TD ALIGN=RIGHT>4</TD> </TR>
+<TR> <TD>RC</TD>
+     <TD>deg</TD>
+     <TD>Detector-collimator angle of the rightmost blade </TD>
+<TD ALIGN=RIGHT>3</TD> </TR>
+<TR> <TD>REP</TD>
+     <TD>1</TD>
+     <TD>Repetition factor of virtual_input or Monochromator/Sample/Analyzer SPLITs </TD>
+<TD ALIGN=RIGHT>1</TD> </TR>
+<TR> <TD>VIRTUALOUT</TD>
+     <TD>1</TD>
+     <TD>If set, flag indicates that a Virtual source is created after the monochromator collimator </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>VIRTUALIN</TD>
+     <TD>1</TD>
+     <TD>If set, flag to indicates that Virtual source is used after the monochromator collimator </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>SOURCEFILE</TD>
+     <TD>string</TD>
+     <TD>Name of file to be used/genereated as virtual input/output </TD>
+<TD ALIGN=RIGHT>"Vin_default.dat"</TD> </TR>
+<TR> <TD>verbose</TD>
+     <TD>1</TD>
+     <TD>print TAS configuration. 0 to be quiet </TD>
+<TD ALIGN=RIGHT>1</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=links></A>Links</H2>
+
+<UL>
+  <LI> Download <A HREF="L_Udby_RITA-II.tgz">Source code</A> for
+  <CODE>RITA_II.instr</CODE>. (tar.gz file)
+  <LI> Rescal for Matlab at http://www.ill.fr/tas/matlab
+  <LI> Restrax at http://omega.ujf.cas.cz/restrax/
+</UL>
+<HR>
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<ADDRESS>
+Generated automatically by McDoc, Peter Willendrup
+&lt;<A HREF="mailto:peter.willendrup@risoe.dk">peter.willendrup@risoe.dk</A>&gt; /
+Wed Jul  4 21:55:17 2012</ADDRESS>
+</BODY></HTML>

@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.70)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Finishing and Testing the McStas distribution</TITLE>
+<META NAME="description" CONTENT="Finishing and Testing the McStas distribution">
+<META NAME="keywords" CONTENT="install">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="install.css">
+
+<LINK REL="next" HREF="node13.html">
+<LINK REL="previous" HREF="node11.html">
+<LINK REL="up" HREF="install.html">
+<LINK REL="next" HREF="node13.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html161"
+  HREF="node13.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html159"
+  HREF="install.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html153"
+  HREF="node11.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html162"
+  HREF="node13.html">About this document ...</A>
+<B> Up:</B> <A NAME="tex2html160"
+  HREF="install.html">McStas installation instructions</A>
+<B> Previous:</B> <A NAME="tex2html154"
+  HREF="node11.html">Binary install, Windows</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00070000000000000000"></A>
+<A NAME="s:testing"></A>
+<BR>
+Finishing and Testing the McStas distribution
+</H1>
+
+<P>
+The <code>examples</code> directory of the distribution contains a set of instrument examples. These are used for the McStas self test procedure, which is executed with
+<PRE>
+    mcrun --test
+</PRE>
+This test takes a few minutes to complete, and ends with a short report on the installation itself, the simulation accuracy and the plotter check. 
+
+<P>
+You should now be able to use McStas. For some examples to try, see the
+examples/ directory. Start 'mcgui' (mcgui.pl on Windows), and select one of the examples in the 'Neutron Sites' menu.
+
+<P>
+Important note for Windows users: It is a known problem that some of
+the McStas tools do not support filenames / directories with spaces.
+We are working on a more general approach to this problem, which will
+hopefully be solved in the next release.
+
+<P>
+<BR><HR>
+<ADDRESS>
+Peter Willendrup
+2004-03-05
+</ADDRESS>
+</BODY>
+</HTML>

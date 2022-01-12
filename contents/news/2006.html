@@ -1,0 +1,62 @@
+<hr WIDTH="100%">
+<h3>
+December 11th, 2006: McStas-1.10 in vmware and Knoppix
+</h3>
+If you would like to try out the latest release without installing it, a Knoppix bootable cd and a vmware appliance are now <a href="/knoppix">available</a>.
+<hr WIDTH="100%">
+<h3>
+December 8th, 2006: McStas-1.10 is now ready
+</h3>
+A new release of <a href="/">McStas</a> is finally ready! Pick it up from the <a href="/download">download</a> page. The changes since last stable release (1.9.1) are available <a href="/download/src/CHANGES">here</a>, including much improved support for polarisation, a new optimization feature, a complete .exe installer for Win32 systems and many other useful new things.
+<hr WIDTH="100%">
+<h3>
+October 12th, 2006: WINS2006 and PSI Monte Carlo workshops
+</h3>
+The McStas team attended two consecutive workshops. McStas is being widely used for simulation of neutron facilities and instruments. A tutorial took place at PSI. McStas 1.10 planed for November.
+<hr WIDTH="100%">
+<h3>
+August 4th, 2006: Monthly update
+</h3>
+If you want an update on project status plus the current TODO list, please have a look at the <a href="http://mailman.risoe.dk/pipermail/neutron-mc/2006q3/000676.html">august 2006 update message</a> sent out this morning.
+<hr WIDTH="100%">
+<h3>
+July 7th, 2006: Monte Carlo workshop reminder
+</h3>
+As you may know already, the <a href="http://lns00.psi.ch/mcworkshop/"> International Workshop on Applications of Advanced Monte Carlo Simulations in Neutron Scattering</a> is beeing held at <a href="http://www.psi.ch">PSI</a>, october 2nd-4th.
+<hr WIDTH="100%">
+<h3>
+July 2nd, 2006: McStas RSS feed
+</h3>
+As a service to the McStas users, an <a href="http://rss.mcstas.org/RSS.xml">RSS feed</a> featuring news items from the website is now available.
+<hr WIDTH="100%">
+<h3>
+June 21st, 2006: McStas at ACNS 2006
+</h3>
+On behalf of the <a href="/about/contacts">McStas team</a>, Peter Willendrup attented <a href="http://acns2006.anl.gov">ACNS 2006</a>. PDF slides from the presentation are available <a href="McStas_ACNS2006.pdf">here</a>.
+<hr WIDTH="100%">
+<h3>
+April 18th, 2006: Small corrections to <a href="/download">mcstas-1.9.1</a></h3>
+A couple of minor bugs have been found in the mcstas-1.9.1 distribution package:<ul>
+<li>The <a href="download/components/examples/PSI_Focus.html">Focus</a> example instrument distributed did not compile. To run this instrument with mcstas-1.9.1, <a href="download/components/examples/PSI_Focus.instr">download</a> and place in the MCSTAS/examples folder. (On Unix systems the MCSTAS directory is usually /usr/local/lib/mcstas, on windows machines, this typically c:\mcstas\lib)
+<li>For people running McStas on FreeBSD and derived systems (tested on a
+ FreeBSD 6.0 system), <a href="http://cvs.mcstas.org/cgi-bin/viewcvs.cgi/mcstas/lib/share/mcstas-r.h?rev=1.80&content-type=text/vnd.viewcvs-markup">mcstas-r.h</a> needs a minor correction. Please <a href="http://cvs.mcstas.org/cgi-bin/viewcvs.cgi/*checkout*/mcstas/lib/share/mcstas-r.h?rev=1.80">download</a> and place in your MCSTAS/share/ directory.
+</ul>.
+<hr width="100%">
+<h3>
+March 29th, 2006: Announcing <a href="/download">mcstas-1.9.1</a></h3>
+Today, we are releasing a McStas update release. Mostly bugfixes and a few updates. A summary list of changes are available in the <a href="/download/src/CHANGES">CHANGES</a> document. Get your new McStas <a href="/download">here<a>.
+<hr WIDTH="100%">
+<h3>
+March 27th, 2006: Bug in perl-Tk</h3>
+<p>NOTE: The problem below applies to Unix systems with gnome only.
+
+<p>Recent updates to Gtk (gnome library) has made the mcgui graphical
+interface crash on startup/use of certain gnome applications.
+
+<p>If you experience this problem, please either
+<ol>
+<li>Install our locally patched version of perl-Tk, available <a href="/download/Tk-804.027_gtk2_patch.tar.gz">here</a> (Source code package, requires you to do perl Makefile.PL && make && make install)
+<li>Apply the patch yourself from the patchfile available <a href="/download/gtk2-patch">here</a>
+</ol>
+<hr WIDTH="100%">
+

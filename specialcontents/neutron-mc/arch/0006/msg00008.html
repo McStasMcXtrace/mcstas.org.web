@@ -1,0 +1,183 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: vitess codes -->
+<!--X-From: Kristian Nielsen <kristian.nielsen@risoe.dk> -->
+<!--X-Date: 21 Jun 2000 09:42:29 +0200 -->
+<!--X-Message-Id:  -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 3949F949.3FC98C83@hmi.de -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: vitess codes</title>
+<link rev="made" href="mailto:kristian.nielsen@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00009.html">Date Prev</A>][Date Next]
+<a href="index.html#00008">[Chronological]</a>
+<a href="threads.html#00008">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: vitess codes</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:zsigmond@hmi.de">zsigmond@hmi.de</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: vitess codes</strong></LI>
+<LI><strong>From</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: 21 Jun 2000 09:42:29 +0200</LI>
+<LI>In-reply-to: &lt;<A HREF="msg00009.html">3949F949.3FC98C83@hmi.de</A>&gt; (message from Geza Zsigmond on Fri, 16Jun 2000 11:54:17 +0200)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+&gt; Date: Fri, 16 Jun 2000 11:54:17 +0200
+&gt; From: Geza Zsigmond &lt;zsigmond@hmi.de&gt;
+
+Hi Geza,
+
+Ok, I now have a first version of an automatic translation of McStas
+components into VITESS modules. It seems to work quite well, but I will
+need some help from you in testing it.
+
+I found that the most convenient way to give you the translation program
+is to make it part of McStas. I have therefore made a special "ALPHA"
+version of McStas available for download at
+
+    <A HREF="http://neutron.risoe.dk/mcstas/support/geza/mcstas-1.31A.tar.gz">http://neutron.risoe.dk/mcstas/support/geza/mcstas-1.31A.tar.gz</A>
+
+Installation in any Linux system should be really simple (just the
+single command "./configure &amp;&amp; make install" should be sufficient). Note
+that the translated McStas components should compile without problems on
+Windows also; if not let me know and I will fix it.
+
+Once installed, the new McStas command "mcstas2vitess" will read a
+McStas component and automatically translate it into a corresponding
+VITESS module. For example:
+
+    cp /usr/local/lib/mcstas/samples/V_sample.comp .
+    mcstas2vitess V_sample.comp
+
+This will produce a number of files:
+
+ - V_sample_VITESS.instr, a McStas instrument definition that implements
+the corresponding VITESS module.
+ - V_sample_VITESS.c, the instrument definition translated into ANSI C
+(this could be compiled separately on Windows).
+ - V_sample_VITESS, the compiled, executable VITESS module.
+ - V_sample_VITESS.tcl, TCL code to be added the the VITESS file
+vitess.tcl.
+
+Optionally, the user may include a file V_sample.vif in the current
+directy that mcstas2vitess will read. This file should consists of one
+or more lines each with three words seperated by spaces. For example
+
+    reflections -P string
+
+The first word is the name of a parameter of the McStas component, the
+second is the corresponding VITESS option name, and the third is either
+`string' (for a string parameter) or `double' (for a numeric parameter,
+which is the default). Parameters not listed in a .vif file will be
+given suitable default VITESS option names and assumed to be numeric.
+
+&gt; The Tcl thing was made rather complicated (all compressed into the
+&gt; Vitess.tcl file) but in the next future we try to make it more
+&gt; accessible for the user, that is we want that the user can generate his
+
+Actually, it turns out to be not so bad, and I sorted it out quite
+easily even without knowledge of Tcl/Tk. My translator ouputs a comp.tcl
+file which can be included in the vitess.tcl file. Only two more changes
+in the vitess.tcl file are necessary: Add the translated module name to
+the `AvailableSET' variable, and add a line giving the module executable
+name in the `generateVitessCommand' function.
+
+About the help-info I am not sure how to include that. I think VITESS
+uses HTML documentation? In that case, we can just copy the HTML
+generated automatically for all McStas components by the McDoc program
+(see <A HREF="http://neutron.risoe.dk/mcstas/mcdoc/components/">http://neutron.risoe.dk/mcstas/mcdoc/components/</A>).
+
+There is a significant difference between McStas and VITESS: In VITESS,
+position and rotation of components is handled inside each module
+(though you can also use the `frame' modules I guess). In McStas all
+position and rotation is handled in the main engine outside the
+components. The translation program adds position options (-x, -y, and
+-z) to every translated module. Maybe there should also be automatic
+rotation options for all modules? It is easy to implement but I think
+you have more experience with this in VITESS and you should decide how
+and if it should be done.
+
+-----------------------------------------------------------------------
+
+Anyway, I hope that you and the other VITESS people will now try the
+translation program and see if you can get it to work. Please feel free
+to ask any stupid questions that may come up if you have problems, and I
+will try to help.
+
+I tried myself to use some of the sample components of McStas in a
+VITESS simulation, but I had difficulties sorting out how to get the
+rotation of the crystal (theta and 2*theta) correct. I also tried
+working from the VITESS crystaltest example, but for some reason that
+did not work at all in the VITESS version I have (1.02).
+
+Once you manage to run a successful VITESS simulation using an
+automatically translated McStas component, we should announce it on the
+SCANS mailing list. I think that would be taken as a great success of
+the SCANS network.
+
+ - Kristian.
+
+--
+Kristian Nielsen        kristian.nielsen@risoe.dk
+Risø National Laboratory
+Condensed Matter Physics and Chemistry Department
+Tel. +45 4677 5515   Fax +45 4677 4790
+Encryption PGP key <A HREF="http://neutron.risoe.dk/kn.txt">http://neutron.risoe.dk/kn.txt</A>
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<UL><LI><STRONG>References</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00009" HREF="msg00009.html">Re: vitess codes</A></STRONG>
+<UL><LI><EM>From:</EM> Geza Zsigmond &lt;zsigmond@hmi.de&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00009.html">Re: vitess codes</A></STRONG>
+</LI>
+
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00008"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00008"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

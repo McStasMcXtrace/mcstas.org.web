@@ -1,0 +1,123 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: Inter&#45;component transformations -->
+<!--X-From: Kristian Nielsen <kristian.nielsen@risoe.dk> -->
+<!--X-Date: Thu, 04 Feb 1999 14:41:10 +0100 -->
+<!--X-Message-Id: 01J7CL78CG3Y8X9VGO@risoe.dk -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: Pine.HPP.3.96.990204104318.10017A&#45;200000@amos.krist.uni&#45;erlangen.de -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: Inter-component transformations</title>
+<link rev="made" href="mailto:kristian.nielsen@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00003.html">Date Prev</A>][<A HREF="msg00004.html">Date Next</A>]
+<a href="index.html#00002">[Chronological]</a>
+<a href="threads.html#00002">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: Inter-component transformations</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:bernhard@amos.krist.uni-erlangen.de">bernhard@amos.krist.uni-erlangen.de</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: Inter-component transformations</strong></LI>
+<LI><strong>From</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: Thu, 04 Feb 1999 14:41:10 +0100</LI>
+<LI>Cc: <A HREF="mailto:neutron-mc@risoe.dk">neutron-mc@risoe.dk</A></LI>
+<LI>Date-warning: Date header was inserted by risoe.dk</LI>
+<LI>In-reply-to: &lt;<A HREF="msg00003.html">Pine.HPP.3.96.990204104318.10017A-200000@amos.krist.uni-erlangen.de</A>&gt;(message from Philipp Bernhardt on Thu, 04 Feb 1999 11:33:36 +0100 (MET))</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+&gt; I tried to change the the compiler optimation,
+&gt; but there was no change in the results. I will run the simulation on
+&gt; another computer this weekend.
+
+Don't bother, I found the problem. It turns out you ran into a nasty
+"off-by-one" bug in the TOF_monitor component. Any neutrons with
+time-of-flight beyond the upper detector limit would be placed in the
+position just after the last array element of the detector output,
+overwriting whatever value was there. Ouch.
+
+To fix it, download a new version of the TOF_monitor from
+
+  <A HREF="http://neutron.risoe.dk/mcstas/support/philipp/TOF_monitor.comp">http://neutron.risoe.dk/mcstas/support/philipp/TOF_monitor.comp</A>
+
+or to do the fix manually: change the line in TOF_monitor.comp (usually
+found in "/usr/local/lib/mcstas/TOF_monitor.comp") that reads
+
+      if(i &gt;= nchan) i = nchan;
+
+to read
+
+      if(i &gt;= nchan) i = nchan - 1;
+
+I verified that this fixes the problem you saw. I will put this
+information in the "known bugs" list on the web page on Monday.
+
+It also seems to me that the TOF monitor in your instrument has a little
+too few bins for the 2AA wavelength you ran in the example, but perhaps
+that was intentional.
+
+Thanks for your effort in finding this bug!
+
+ - Kristian.
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<UL><LI><STRONG>Follow-Ups</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00008" HREF="msg00008.html">Inter-component transformations - Bender</A></STRONG>
+<UL><LI><EM>From:</EM> Philipp Bernhardt &lt;bernhard@amos.krist.uni-erlangen.de&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<UL><LI><STRONG>References</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00003" HREF="msg00003.html">Re: Inter-component transformations</A></STRONG>
+<UL><LI><EM>From:</EM> Philipp Bernhardt &lt;bernhard@amos.krist.uni-erlangen.de&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00003.html">Re: Inter-component transformations</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00004.html">Component libraries</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00002"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00002"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

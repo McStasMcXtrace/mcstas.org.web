@@ -1,0 +1,130 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: newlines -->
+<!--X-From: Farhi <farhi@ill.fr> -->
+<!--X-Date: Fri, 26 Mar 1999 18:51:24 +0100 -->
+<!--X-Message-Id: 36FBC90A.3325F91C@ill.fr -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 01J94V8JLJBW90Q8JY@risoe.dk -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>newlines</title>
+<link rev="made" href="mailto:farhi@ill.fr">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00023.html">Date Prev</A>][<A HREF="msg00026.html">Date Next</A>]
+<a href="index.html#00025">[Chronological]</a>
+<a href="threads.html#00025">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>newlines</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>newlines</strong></LI>
+<LI><strong>From</strong>: <strong>Farhi &lt;<A HREF="mailto:farhi@ill.fr">farhi@ill.fr</A>&gt;</strong></LI>
+<LI>Date: Fri, 26 Mar 1999 18:51:24 +0100</LI>
+<LI>Organization: ILL DS-TAS</LI>
+<LI>References: &lt;<A HREF="msg00002.html">01J94V8JLJBW90Q8JY@risoe.dk</A>&gt;</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Hello Kristian
+
+We are now performing on IN14/ILL experimental flux test as well as computations for the used configuration with McStas and restrax programs. That should make 3 sets of data to be compared (and one is real !)
+
+I'm now using McStas v1.01 beta and there are 2 things that might be fixed perhaps on HP-UX systems :
+1- when executing gscan, each '\n' is duplicated, what produces blank lines between each display line in .sim output file :
+In the following example I get 5 detectors in output
+1  -6.95048e+08 9.35462e+06
+ -5.08249e+08 8.01985e+06
+ -4.00478e+07 2.2823e+06
+ -4.00466e+07 2.2823e+06
+ -2.0727e+07 1.63933e+06
+
+1.2  -1.44675e+09 1.34564e+07
+ -1.08893e+0 ...
+
+instead of
+1  -6.95048e+08 9.35462e+06 -5.08249e+08 8.01985e+06 -4.00478e+07 2.2823e+06
+ -4.00466e+07 2.2823e+06 -2.0727e+07 1.63933e+06
+
+1.2  -1.44675e+09 1.34564e+07 -1.08893e+0 ...
+
+2- This also happens in the direct printf output (on terminal) :
+running 'in14_4 --ncount=1e8 KI=1 WN=0.03 DM=3.355 MHV=2'
+Instrument : IN14, v4.00
+
+Flat source, m=2.00 noze, width 0.03
+
+Monochromator : (DM = 3.355)
+
+A1 = 69.45, A2 = 138.91 (deg)
+
+This doesn't occur on SGI machines, strange. Perhaps this doesn't happen anymore in 1.04a...
+
+Cheers. We should have IN14/McStas/Restrax comparison results next week.
+
+EF.
+
+--------------------------------------------
+Emmanuel FARHI, <A HREF="http://www.ldv.univ-montp2.fr:7082/~manuf">http://www.ldv.univ-montp2.fr:7082/~manuf</A>   \|/ ____ \|/
+TAS-Group, Institut Laue-Langevin (ILL) Grenoble            ~@-/ oO \-@~
+6, rue J. Horowitz, BP 156, 38042 Grenoble Cedex 9,France   /_( \__/ )_\
+Work :Tel (33/0) 4 76 20 71 83. Fax (33/0) 4 76 48 39 06       \__U_/
+La Grande Arche, Chateau d'Uriage, 38410 Saint Martin d'Uriage 04 76 59 73 94
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<UL><LI><STRONG>References</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00002" HREF="msg00002.html">Re: order of moving and rotating</A></STRONG>
+<UL><LI><EM>From:</EM> Kristian Nielsen &lt;kristian.nielsen@risoe.dk&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00023.html">Re: Error in Calculation of absolute Flux (Source_flux) ???</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00026.html">Re: order of moving and rotating</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00025"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00025"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

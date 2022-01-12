@@ -1,0 +1,173 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: Error in Calculation of absolute Flux (Source_flux) ??? -->
+<!--X-From: Kristian Nielsen <kristian.nielsen@risoe.dk> -->
+<!--X-Date: Fri, 22 Jan 1999 13:02:34 +0100 -->
+<!--X-Message-Id: 01J6UBYHXD748X7I94@risoe.dk -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 36A844A3.377923B4@ph.tum.de -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: Error in Calculation of absolute Flux (Source_flux) ???</title>
+<link rev="made" href="mailto:kristian.nielsen@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00008.html">Date Prev</A>][<A HREF="msg00011.html">Date Next</A>]
+<a href="index.html#00007">[Chronological]</a>
+<a href="threads.html#00007">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: Error in Calculation of absolute Flux (Source_flux) ???</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:Georg_Artus@Physik.TU-Muenchen.DE">Georg_Artus@Physik.TU-Muenchen.DE</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: Error in Calculation of absolute Flux (Source_flux) ???</strong></LI>
+<LI><strong>From</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: Fri, 22 Jan 1999 13:02:34 +0100</LI>
+<LI>Cc: <A HREF="mailto:neutron-mc@risoe.dk">neutron-mc@risoe.dk</A></LI>
+<LI>Date-warning: Date header was inserted by risoe.dk</LI>
+<LI>In-reply-to: &lt;<A HREF="msg00006.html">36A844A3.377923B4@ph.tum.de</A>&gt; (Georg_Artus@Physik.TU-Muenchen.DE)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+
+&gt; Look at the following simple example: It is just a straight guide with a
+&gt; monitor at the beginning and at the end:
+
+&gt; COMPONENT part1 = Guide2(
+
+&gt;         h1 = 0.1,
+
+&gt;         h2 = 0.01,
+
+
+I think you have a typo here (or else I did not understand you
+properly). The guide entrance is 10cm high, but the exit is 1cm.
+
+&gt; Let's compare the results with the same instrument, but now the guide is
+&gt; focusing (exit height is now 8cm instead of 10cm):
+
+&gt; COMPONENT part1 = Guide2(
+
+&gt;         h1 = 0.1,
+
+&gt;         h2 = 0.008,
+
+The exit height is in fact 0.8 cm! I think this probably accounts for
+some of your confusion. Fortunately, errors like this will be easy to
+detect with the new graphics display program that has already been
+finished and will be in the next release (let me know if you want a
+pre-release copy to play with).
+
+Anyway, I think that some of your points can still be discussed.
+
+&gt; McStas:     Transmission (%)   Flux at Monitor2 (units ?)
+&gt; 
+&gt; straight     3.43                3.42E+08
+&gt; focusing     2.87                2.87E+08
+&gt; 
+&gt; Transmission = Flux at Monitor2 / Flux at Monitor1  
+&gt; Flux at Monitor1 = 9.977E+09
+
+Hm. I am starting to think that I may have mislead you about fluxes in
+McStas. The ONLY place the notion of flux is used in McStas is in the
+"flux" parameter of Source_flux. All the monitors simulate real
+monitors/detectors, and compute neutron counts, not neutron fluxes.
+Depending on your viewpoint, you can say that you are simulating a one
+second experiment; then the monitors count neutrons per second.
+
+What this means is that if you want the flux in n/cm**2, you need to
+divide by the area of the monitor. Since the flux will probably depend
+on the position, you really need to use a position-sensitive detector
+and divide each bin by the pixel area. I suspect that the McStas flux
+values given above are in fact the "raw" counts in monitor2.
+
+When I divide by the monitor area, I get the following numbers:
+
+                             Flux [neutrons/cm**2]
+straight     3.43                1.71E7
+focusing     2.87                1.79E7
+
+These numbers match well with the Beamline results when compared relatively.
+
+To get the units in neutrons/AA, it would be necessary to use an energy
+sensitive detector and divide each bin by its wavelength range.
+
+&gt; calculated with McStas are and how they are calculated. Due to an erlier
+&gt; discussion about this matter on this newsgroup (11/23/98) I expected it
+&gt; to be n/cm**2/s/AA/ster.
+
+Yes. That is the unit of the input parameter to the source. The unit for
+the detector outputs is just counts (or counts/sec, if you like). I am
+sorry about the confusion here.
+
+&gt; While the fluxes calculated by hand and calulated by Beamline fit well,
+&gt; from the numbers it seems as if McStas calculates fluxes with units
+&gt; n/cm**2/s!
+
+As I said above, it is in fact just n/s, to get the 1/cm**2/AA you need
+to use an energy sensitive detector and do the computation by hand.
+
+I hope this clarifies matters? Otherwise, please ask again. Do you think
+the way the monitors in McStas work should be changed to handle flux
+like in Beamline, and if so, why?
+
+ - Kristian.
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<UL><LI><STRONG>Follow-Ups</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00011" HREF="msg00011.html">Re: Error in Calculation of absolute Flux (Source_flux) ???</A></STRONG>
+<UL><LI><EM>From:</EM> "Dr. Georg Artus" &lt;Georg_Artus@Physik.TU-Muenchen.DE&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<UL><LI><STRONG>References</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00006" HREF="msg00006.html">Error in Calculation of absolute Flux (Source_flux) ???</A></STRONG>
+<UL><LI><EM>From:</EM> "Dr. Georg Artus" &lt;Georg_Artus@Physik.TU-Muenchen.DE&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00008.html">Re: McStas installation and questions</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00011.html">Re: Error in Calculation of absolute Flux (Source_flux) ???</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00007"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00007"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

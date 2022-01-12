@@ -1,0 +1,105 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Bugs in McStas/McGUI -->
+<!--X-From: Farhi <farhi@ill.fr> -->
+<!--X-Date: Thu, 10 Feb 2000 11:45:17 +0100 -->
+<!--X-Message-Id: 38A296BD.5136980A@ill.fr -->
+<!--X-ContentType: multipart/alternative -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Bugs in McStas/McGUI</title>
+<link rev="made" href="mailto:farhi@ill.fr">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00013.html">Date Prev</A>][<A HREF="msg00014.html">Date Next</A>]
+<a href="index.html#00017">[Chronological]</a>
+<a href="threads.html#00017">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Bugs in McStas/McGUI</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>Bugs in McStas/McGUI</strong></LI>
+<LI><strong>From</strong>: <strong>Farhi &lt;<A HREF="mailto:farhi@ill.fr">farhi@ill.fr</A>&gt;</strong></LI>
+<LI>Date: Thu, 10 Feb 2000 11:45:17 +0100</LI>
+<LI>Organization: ILL</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+
+
+Hy again
+<p>just a note to tell you about strange behaviours of McStas 1.2
+<p>1- When on a SGI machine, I launch mcgui with the example tutorial in14_tut
+(from web)
+<p><tt>mica~farhi 32% mcgui in14_tut.instr</tt>
+<br><tt>Ambiguous use of expand => resolved to "expand" => at /usr/ill/lib/perl5/site_perl/Tk/Text.pm
+line 1038.</tt>
+<br><tt>Ambiguous use of expand => resolved to "expand" => at /usr/ill/lib/perl5/site_perl/Tk/Text.pm
+line 1075.</tt>
+<p>Then if I try to compile instrument
+<br><tt>mcstas -t -o in14_tut.out.c in14_tut.instr</tt>
+<p>Then I crashes (mcgui disappears, core dumped). No 'cc' call is displayed
+in mcgui, but I think the problem occurs here.
+<br>The manual processing works ok.
+<p>2- When using the POLARISATION macro, mcstas warns about comps that
+do not handle that, but also crashes (seg fault) at the end.
+<br>The '.c' file is generated anyway.
+<p>Cheers again. EF.
+<pre>--&nbsp;
+Emmanuel FARHI, <A HREF="http://www.ill.fr/tas/people/Farhi.html">http://www.ill.fr/tas/people/Farhi.html</A>&nbsp;&nbsp;&nbsp;&nbsp; \|/ ____ \|/
+TAS-Group, Institut Laue-Langevin (ILL) Grenoble&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ~@-/ oO \-@~
+Avenue des Martyrs, BP 156, 38042 Grenoble Cedex 9,France&nbsp;&nbsp; /_( \__/ )_\
+Work :Tel (33/0) 4 76 20 71 83. Fax (33/0) 4 76 48 39 06&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \__U_/
+La Grande Arche, Chateau d'Uriage, 38410 Saint Martin d'Uriage 04 76 59 73 94</pre>
+&nbsp;
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<UL><LI><STRONG>Follow-Ups</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00016" HREF="msg00016.html">Re: Bugs in McStas/McGUI</A></STRONG>
+<UL><LI><EM>From:</EM> Kristian Nielsen &lt;kristian.nielsen@risoe.dk&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00013.html">McStas installation and Perl</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00014.html">publications</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00017"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00017"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

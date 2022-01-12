@@ -1,0 +1,67 @@
+<hr WIDTH="100%">
+<h3>
+September 24th, 2008: Ven ESS workshop website
+</h3>
+<p>A website has been set up for the forthcoming workshop on <a href="http://www.essworkshop.org">instrumentation for the ESS</a>. The workshop is a continuation of the work started at the <a href="http://rencurel.essworkshop.org">Rencurel ESS workshop</a> and will take place at the island of <a href="http://www.alltomven.se">Ven</a>.
+<hr WIDTH="100%">
+<h3>
+September 24th, 2008: McStas 1.12 Windows, bug and fix
+</h3>
+<p>McStas user Tom Chen has recently made the McStas team aware of a bug preventing him to do optimization from mcgui on Windows, which always selected --ncount=1e6. Further testing showed that both scans and --optim runs using both mcgui and mcrun were affected.
+
+<p>Only Windows installations of McStas 1.12 are affected.
+
+<p>To remedy the problem, please replace your c:\McStas\bin\mcrun.pl with <a href="http://cvs.mcstas.org/cgi-bin/viewcvs.cgi/mcstas/mcrun.pl?revision=1.92&root=McStasStable">this version</a>.
+
+<p>An updated version of McStas 1.12 with this and other fixes will be made available within a few weeks.
+<hr WIDTH="100%">
+<h3>
+September 3rd, 2008: Workshop on ESS instruments
+</h3>
+<p>The <a href="http://rencurel.essworkshop.org">Rencurel ESS workshop</a> was a great succes, and a similar workshop has now been arranged for 2008.
+<p>This years workshop will take place at the island of <a href="http://www.alltomven.se">Ven</a> in the &Oslash;resund strait between Sweden and Denmark, October 27th-31st. No official workshop webpage is available yet, a link will be posted here when this changes.
+<p>The workshop is arranged and sponsored by the <a href="http://www.esss.se">ESS Lund secretariat</a> and the <a href="http://www.nbi.dk">Niels Bohr Institute</a> in Copenhagen.
+<p><a href="http://www.risoe.dtu.dk">Ris&oslash; DTU</a> is in charge of the computing infrastructure and has partnered with <a href="http://www.ibm.dk">IBM Denmark</a> who have kindly made computer hardware available to the workshop.
+<p>
+<table bgcolor=#000000><tr><td><a href="http://www.ibm.dk"><img border=0 src="/ibm-logo.gif"></a></td><td><font color=#ffffff> - official computing sponsor of the Ven ESS workshop 2008</font></td></tr></table>
+<hr WIDTH="100%">
+<h3>
+September 2nd, 2008: Looking forward at McStas 2.0
+</h3>
+<p>During a meeting this summer, the developer team agreed that time has come to release a new major release of McStas, leaving the 1.x series. As explained in the manual, a change in the major release number should only occur in case of loss of backward compatibility. The main areas where this will happen is:
+<ul>
+  <li>Component parameter naming convention. We have defined a common nomemclature for similar components, easing the process of interchanging components.
+  <li>Polarisation. We are making serious progress in polarisation support, meaing that we will merge the existing STATE PARAMETERS (x,y,z,vx,vy,vz,t,s1,s2,p) and POLARISATION PARAMETERS (sx, sy, sz) to a new STATE PARAMETERS (x,y,z,vx,vy,vz,t,sx,sy,sz,p)
+</ul>
+<p>Since we have now defined that the next version will break (some) backward compatibilty, this list might extend slightly.
+<p>McStas 1.12 will remain supported for one year after release of McStas 2.0, allowing users a calm transition period.
+<p>Possibly a bugfix release of McStas 1.12 will appear during fall/winter of 2008.
+<p>McStas 2.0 is planned for spring 2009
+<hr width="100%">
+<h3>
+June 12th, 2008: New email adresses for support issues
+</h3>
+The support email adresses have today been moved to the mcstas.org domain:
+<ul>
+<li><a href="mailto:mcstas-users@mcstas.org">mcstas-users@mcstas.org</a> is for general, open questions to all "registered" mcstas users (was neutron-mc@risoe.dk)
+<li><a href="mailto:mcstas-support@mcstas.org">mcstas-support@mcstas.org</a> is for more discrete, personal contact with the mcstas team (was mcstas@risoe.dk)
+</ul>
+For a certain period of time the old email adresses will still work, but please update your address books.
+<hr WIDTH="100%">
+<h3>
+May 11th, 2008: McStas 1.12 / Ubuntu 8.04 DVD availble
+</h3>
+A new live DVD / combined install medium for McStas 1.12 and Ubuntu 8.04 has been compiled. It is of size approximately 1 Gb and is available from our <a href="/ubuntu">Ubuntu download page</a>. If you are attending the ACNS next week, you can also get a copy there.
+<hr WIDTH="100%">
+<h3>
+May 8th, 2008: McStas 1.12 talk / demo at ACNS
+</h3>
+Emmanuel Farhi and Peter Willendrup will attend the <a href="http://www.lansce.lanl.gov/ACNS2008/">ACNS 2008</a> conference from monday. Emmanuel is giving the talk Virtual Neutron Scattering Experiments on the TeraGrid during the monday A symposium on instrumentation and data analysis, and there will be a number of Monte-Carlo related posters in the monday PA1 poster session, including a McStas 1.12 poster. If you are also an attendee of the ACNS conference please come and see us for software demos!
+<hr WIDTH="100%">
+<h3>
+May 8th, 2008: McStas 1.12 is now ready
+</h3>
+A new release of <a href="/">McStas</a> is finally ready! Pick it up from the <a href="/download">download</a> page. The changes since last stable release (1.11) 
+are available <a href="/download/src/CHANGES">here</a>, including a new %include INSTR keyword for inclusion of instruments in instruments, many useful new features
+in mcgui, support for recent releases of Windows and Mac OS, new components, new example instruments and many other useful new things.
+<hr WIDTH="100%">

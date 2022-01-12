@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD>
+<TITLE>V_sample</TITLE>
+<LINK REV="made" HREF="mailto:kristian.nielsen@risoe.dk">
+</HEAD>
+
+<BODY>
+
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<H1>The <CODE>V_sample</CODE> component</H1>
+
+Vanadium sample.
+
+
+<H2><A NAME=id></A>Identification</H2>
+
+<UL>
+  <LI> <B>Author:</B> Kim Lefmann and Kristian Nielsen</B>
+  <LI> <B>Origin:</B> McStas 1.5</B>
+  <LI> <B>Date:</B> 15.4.98</B>
+  <LI> <B>Version:</B> 1.6 </B>
+</UL>
+<H2><A NAME=desc></A>Description</H2>
+
+<PRE>
+A Double-cylinder shaped incoherent scatterer (a V-sample)
+No multiple scattering. Absorbtion included.
+
+Example: V_sample(radius_i=0.001,radius_o=0.01,h=0.02,focus_r=0.035,pack=1, 
+          target_x = 0, target_y = 0, target_z = 0.235)
+
+</PRE>
+
+<H2><A NAME=ipar></A>Input parameters</H2>
+Parameters in <B>boldface</B> are required;
+the others are optional.
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD><B>radius_i</B></TD>
+     <TD>m</TD>
+     <TD>Inner radius of sample in (x,z) plane </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>radius_o</B></TD>
+     <TD>m</TD>
+     <TD>Outer radius of sample in (x,z) plane </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h</B></TD>
+     <TD>m</TD>
+     <TD>Height of sample y direction </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD>focus_r</TD>
+     <TD>m</TD>
+     <TD>Radius of sphere containing target. </TD>
+<TD ALIGN=RIGHT>0.035</TD> </TR>
+<TR> <TD>pack</TD>
+     <TD>1</TD>
+     <TD>Packing factor </TD>
+<TD ALIGN=RIGHT>1</TD> </TR>
+<TR> <TD>target_x</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>target_y</TD>
+     <TD>m</TD>
+     <TD>position of target to focus at </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>target_z</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.235</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=opar></A>Output parameters</H2>
+None.
+
+<H2><A NAME=links></A>Links</H2>
+
+<UL>
+  <LI> <A HREF="V_sample.comp">Source code</A> for <CODE>V_sample.comp</CODE>.
+  <LI> <A HREF="http://neutron.risoe.dk/mcstas/components/tests/v_sample/">Test
+results</A> (not up-to-date).
+
+</UL>
+<HR>
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<ADDRESS>
+Generated automatically by McDoc, Kristian Nielsen
+&lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt; /
+Jul 22 2002
+</ADDRESS>
+</BODY></HTML>

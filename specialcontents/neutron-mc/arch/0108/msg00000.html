@@ -1,0 +1,472 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Gravity_guide and Monitor_nD components for McStas 1.4 -->
+<!--X-From: Emmanuel Farhi <farhi@ill.fr> -->
+<!--X-Date: Mon, 06 Aug 2001 12:09:00 +0200 -->
+<!--X-Message-Id: 3B6E6CBC.73F7DA08@ill.fr -->
+<!--X-ContentType: multipart/mixed -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Gravity_guide and Monitor_nD components for McStas 1.4</title>
+<link rev="made" href="mailto:farhi@ill.fr">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[Date Prev][<A HREF="msg00001.html">Date Next</A>]
+<a href="index.html#00000">[Chronological]</a>
+<a href="threads.html#00000">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Gravity_guide and Monitor_nD components for McStas 1.4</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>"<A HREF="mailto:neutron-mc@risoe.dk">neutron-mc@risoe.dk</A>" &lt;<A HREF="mailto:neutron-mc@risoe.dk">neutron-mc@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>Gravity_guide and Monitor_nD components for McStas 1.4</strong></LI>
+<LI><strong>From</strong>: <strong>Emmanuel Farhi &lt;<A HREF="mailto:farhi@ill.fr">farhi@ill.fr</A>&gt;</strong></LI>
+<LI>Date: Mon, 06 Aug 2001 12:09:00 +0200</LI>
+<LI>Organization: ILL</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+
+
+Hello McStas users,
+<p>I found a bug in the Gravity_guide component. The computed intensity
+when using it is not the same as when one uses the other guide components
+(Guide, Channeled_guide...). It depends on the wavelength and is completely
+different (not a gravity effect, or perhaps on Jupiter).
+<br>I've re-written the component, as attached with this e-mail.
+<p>Also, there is a small mistyping in the Monitor_nD 0.15 I sent last
+time
+<br>in <tt>void Monitor_nD_Init</tt>, replace
+<br><tt>if (fabs(zmax-zmin) == 0)</tt>
+<br>by
+<br><tt>if (fabs(aVars->mzmax-aVars->mzmin) == 0)</tt>
+<p>Cheers. EF.
+<pre>--&nbsp;
+What's up Doc ?
+--------------------------------------------
+Emmanuel FARHI, <A HREF="http://www.ill.fr/tas/people/Farhi.html">http://www.ill.fr/tas/people/Farhi.html</A>&nbsp;&nbsp; \|/ ____ \|/
+CS-Group ILL4/156, Institut Laue-Langevin (ILL) Grenoble&nbsp; ~@-/ oO \-@~
+6 rue J. Horowitz, BP 156, 38042 Grenoble Cedex 9,France&nbsp; /_( \__/ )_\
+Work :Tel (33/0) 4 76 20 71 35. Fax (33/0) 4 76 48 39 06&nbsp;&nbsp;&nbsp;&nbsp; \__U_/</pre>
+&nbsp;
+<PRE>
+/*******************************************************************************
+*
+* McStas, the neutron ray-tracing package: Gravity_guide.comp
+*         Copyright 1997-2001 Risoe National Laboratory, Roskilde, Denmark
+*
+* %I
+* Written by: &lt;a href="<A HREF="mailto:farhi@ill.fr">mailto:farhi@ill.fr</A>"&gt;Emmanuel Farhi&lt;/a&gt;
+* Date: Aug 03 2001
+* Version: $Revision: 1.1.1.1 $
+* Origin: &lt;a href="<A HREF="http://www.ill.fr">http://www.ill.fr</A>"&gt;ILL (France)&lt;/a&gt;. Aug 03 2001.
+* Modified by: E. Farhi, from Gravity_guide by K. Lefmann (buggy).
+*
+* Neutron guide with gravity.
+*
+* %D
+* Models a rectangular guide tube centered on the Z axis. The entrance lies
+* in the X-Y plane. Gravitation applies also when reaching the guide input
+* window. The guide can be channeled (k,d parameters). The guide coating
+* specifications may be entered via different ways (global, opposite side 
+* pars, each wall m-value).
+* For details on the geometry calculation see the description in the McStas
+* reference manual.
+*
+* %P
+* INPUT PARAMETERS:
+*
+* w1:      (m)    Width at the guide entry
+* h1:      (m)    Height at the guide entry
+* w2:      (m)    Width at the guide exit
+* h2:      (m)    Height at the guide exit
+* l:       (m)    length of guide
+* R0:      (1)    Low-angle reflectivity
+* Qc:      (AA-1) Critical scattering vector
+* alpha:   (AA)   Slope of reflectivity
+* m:       (1)    m-value of material. Zero means completely absorbing.
+* W:       (AA-1) Width of supermirror cut-off
+* d:       (m)    Thickness of subdividing walls [0]
+* k:       (1)    Number of channels in the guide (&gt;= 1) [1]
+*
+* Optional input parameters: (different ways for m-specifications)
+*
+* G:       (m/s2) Gravitation acceleration along y axis [-9.81]
+* Gx:      (m/s2) Gravitation acceleration along x axis [0]
+* Gy:      (m/s2) Gravitation acceleration along y axis [-9.81]
+* Gz:      (m/s2) Gravitation acceleration along z axis [0]
+* mh:      (1)    m-value of material for left/right vert. mirrors
+* mv:      (1)    m-value of material for top/bottom horz. mirrors
+* mx:      (1)    m-value of material for left/right vert. mirrors
+* my:      (1)    m-value of material for top/bottom horz. mirrors
+* mleft:   (1)    m-value of material for left.   vert. mirror
+* mright:  (1)    m-value of material for right.  vert. mirror
+* mtop:    (1)    m-value of material for top.    horz. mirror
+* mbottom: (1)    m-value of material for bottom. horz. mirror
+* 
+*
+* %D
+* Example values: m=4 Qc=0.02 W=1/300 alpha=6.49 R0=1
+*
+* %E
+*******************************************************************************/
+
+DEFINE COMPONENT Gravity_guide
+DEFINITION PARAMETERS ()
+SETTING PARAMETERS (w1, h1, w2, h2, l, 
+  R0=0.99, Qc=0.021, alpha=6.07, m=1.0, W=0.003, k=1, d=0.0005,
+  Gx=0,Gy=-9.81,Gz=0, G=0,
+  mh=-1,mv=-1,mx=-1, my=-1, 
+  mleft=-1, mright=-1, mtop=-1, mbottom=-1)
+OUTPUT PARAMETERS (gx,gy,gz,nx,ny,nz,wx,wy,wz,A,norm_n,norm_n2,N_reflection,w1c,w2c,M)
+STATE PARAMETERS (x,y,z,vx,vy,vz,t,s1,s2,p)
+POLARISATION PARAMETERS (sx,sy,sz)
+
+DECLARE 
+%{
+#ifndef Gravity_guide_here
+#define Gravity_guide_here
+ /* this function calculates the intersection between a neutron trajectory
+  * and a plane with acceleration gx,gy,gz. The neutron starts at point x,y,z
+  * with velocity vx, vy, vz. The plane has a normal vector nx,ny,nz and 
+  * contains the point wx,wy,wz
+  * The function returns 0 if no intersection occured after the neutron started
+  * and 1 if there is an intersection. Then *Idt is the elapsed time until 
+  * the neutron hits the roof.
+  */
+  /* Let n=(nx,ny,nz) be the normal plane vector (one of the six sides) 
+   * Let W=(wx,wy,wz) be Any point on this plane (for instance at z=0)
+   * The problem consists in solving the 2nd order equation:
+   *      1/2.n.g.t^2 + n.v.t + n.(r-W) = 0 (1)
+   * Without acceleration, t=-n.(r-W)/n.v
+   */
+  
+  int plane_intersect_Gfast(double *Idt, 
+                  double A,  double B,  double C)
+  {
+    /* plane_intersect_Gfast(&amp;dt, A, B, C)
+     * A = 0.5 n.g; B = n.v; C = n.(r-W);
+     * no cceleration when A=0
+     */
+    double D, sD;
+    double dt1, dt2;
+    
+    *Idt = -1;
+    
+    if (A == 0) /* this plane is parallel to the acceleration */
+    {
+      if (B == 0)  /* the speed is parallel to the plane, no intersection */
+        return (0);
+      else  /* no acceleration case */
+        { *Idt = -C/B; 
+          if (*Idt &gt;= 0) return (2);
+          else return (0); }
+    }
+    else
+    {
+      /* Delta &gt; 0: neutron trajectory hits the mirror */
+      D = B*B - 4*A*C;
+      if (D &gt;= 0)
+      {
+        sD = sqrt(D);
+        dt1 = (-B + sD)/2/A;
+        dt2 = (-B - sD)/2/A;
+        if (dt1 &lt;0 &amp;&amp; dt2 &gt;=0) *Idt = dt2;
+        else
+        if (dt2 &lt;0 &amp;&amp; dt1 &gt;=0) *Idt = dt1;
+        else
+        if (dt1 &lt;0 &amp;&amp; dt2 &lt; 0) return (0);
+        else
+        if (dt1 &lt; dt2) *Idt = dt1;
+        else
+          *Idt = dt2;
+        return (1);
+      }
+      else  /* Delta &lt;0: no intersection */
+        return (0);
+    }     
+  }
+  
+  #define PROP_GRAV_DT(dt, Ax, Ay, Az) \
+  do { \
+    mcnlx  += mcnlvx*dt + Ax*dt*dt/2; \
+    mcnly  += mcnlvy*dt + Ay*dt*dt/2; \
+    mcnlz  += mcnlvz*dt + Az*dt*dt/2; \
+    mcnlvx += Ax*dt; \
+    mcnlvy += Ay*dt; \
+    mcnlvz += Az*dt; \
+    mcnlt  += dt; \
+  } while(0)
+  
+  /* The rotation of axes is a variable named "mcrota" ## mccompcurname */
+  /* The position of comp is a variable named "mcposa" ## mccompcurname */
+  
+#endif
+    
+  double gx;
+  double gy;
+  double gz;
+  double nx[6], ny[6], nz[6];
+  double wx[6], wy[6], wz[6];
+  double A[6], norm_n2[6], norm_n[6];
+  long   N_reflection[7]={0,0,0,0,0,0,0};
+  double w1c;
+  double w2c;
+  double M[5]={0,0,0,0,0};
+%}
+
+INITIALIZE
+%{
+  int i;
+  
+  gx = Gx; /* The gravitation vector in the current component axis system */
+  if (G) gy = G; else gy = Gy;
+  gz = Gz;
+  
+  if (k == 0) { fprintf(stderr,"%s: Fatal: no channel in this guide (k=0).\n", mccompcurname); exit(-1); }
+  if (d &lt; 0) { fprintf(stderr,"%s: Fatal: subdividing walls have negative thickness in this guide (d&lt;0).\n", mccompcurname); exit(-1); }
+  w1c = (w1 + d)/(double)k;
+  w2c = (w2 + d)/(double)k;
+  
+  for (i=0; i &lt;= 4; M[i++]=m);
+  if (mx &gt;= 0) { M[1] = mx; M[2] = mx; }
+  if (mh &gt;= 0) { M[1] = mh; M[2] = mh; }
+  if (my &gt;= 0) { M[1] = my; M[2] = my; }
+  if (mv &gt;= 0) { M[1] = mv; M[2] = mv; }
+  if (mleft   &gt;= 0) M[1] = mleft  ;
+  if (mright  &gt;= 0) M[2] = mright ;
+  if (mtop    &gt;= 0) M[3] = mtop   ;
+  if (mbottom &gt;= 0) M[4] = mbottom;
+  
+  /* This is now the downward gravitation vector */
+                                                     
+  nx[1] =  l; ny[1] =  0; nz[1] = -0.5*(w2c-w1c); /* 1:+X left       */
+  nx[2] = -l; ny[2] =  0; nz[2] =  nz[1];         /* 2:-X right      */
+  nx[3] =  0; ny[3] =  l; nz[3] = -0.5*(h2-h1);   /* 3:+Y top        */
+  nx[4] =  0; ny[4] = -l; nz[4] =  nz[3];         /* 4:-Y bottom     */
+  nx[5] =  0; ny[5] =  0; nz[5] =  1;             /* 5:+Z exit       */
+  nx[0] =  0; ny[0] =  0; nz[0] = -1;             /* 0:Z0 input      */
+  
+  wx[1] = +(w1c-d)/2; wy[1] =  0;    wz[1] = 0;   /* 1:+X left       */
+  wx[2] = -(w1c-d)/2; wy[2] =  0;    wz[2] = 0;   /* 2:-X right      */
+  wx[3] =  0;         wy[3] = +h1/2; wz[3] = 0;   /* 3:+Y top        */
+  wx[4] =  0;         wy[4] = -h1/2; wz[4] = 0;   /* 4:-Y bottom     */
+  wx[5] =  0;         wy[5] =  0;    wz[5] = l;   /* 5:+Z exit       */
+  wx[0] =  0;         wy[0] =  0;    wz[0] = 0;   /* 0:Z0 input      */
+  
+  for (i=0; i &lt;= 5; i++)
+  {
+    A[i] = scalar_prod(nx[i], ny[i], nz[i], gx, gy, gz)/2;
+    norm_n2[i] = nx[i]*nx[i] + ny[i]*ny[i] + nz[i]*nz[i];
+    if (norm_n2[i] &lt;= 0)
+      { fprintf(stderr,"%s: Fatal: normal vector norm %i is null/negative ! Check guide dimensions.\n", mccompcurname, i); exit(-1); } /* should never occur */
+    else
+      norm_n[i] = sqrt(norm_n2[i]);
+  }
+  
+  
+%}
+
+TRACE
+%{
+  double n_dot_v[6];
+  double B, C, dt0, dt;
+  double q;
+  int    ret, side;
+  double edge;
+  double hadj;                                  /* Channel displacement */
+
+  
+  dt = -1; dt0 = -1;
+  /* propagate to box input (with gravitation) in comp local coords */
+  /* 0=Z0 side: n=(0, 0, 1) ; W = (0, 0, 0) (at z=0, guide input)*/
+  B = -vz; C = -z;
+  ret = plane_intersect_Gfast(&amp;dt0, A[0], B, C);
+  if (ret &amp;&amp; dt0&gt;0)
+  { 
+    dt = dt0; 
+    PROP_GRAV_DT(dt, gx, gy, gz);
+    N_reflection[6]++;
+  }
+  /* check if we are in the box input, else absorb */
+  if(dt &lt; 0 || x &lt;= -w1/2 || x &gt;= w1/2 || y &lt;= -h1/2 || y &gt;= h2/2)
+    { ABSORB; }
+    
+  /* Shift origin to center of channel hit (absorb if hit dividing walls) */
+  x += w1/2.0;
+  edge = floor(x/w1c)*w1c;
+  if(x - edge &gt; w1c - d)
+  {
+    x -= w1/2.0; /* Re-adjust origin */
+    ABSORB;
+  }
+  x -= (edge + (w1c - d)/2.0);
+  hadj = edge + (w1c - d)/2.0 - w1/2.0;
+
+  /* neutron is now in the input window of the guide */
+  
+  /* do loops on reflections in the box */
+  for(;;)
+  {
+    /* get intersections for all box sides */
+    /* A = 0.5 n.g; B = n.v; C = n.(r-W); 
+    
+       A = scalar_prod(nx,ny,nz,gx,gy,gz)/2;
+       B = scalar_prod(nx,ny,nz,vx,vy,vz);
+       C = scalar_prod(nx,ny,nz,x-wx,y-wy,z-wz);
+    */
+    side = 0;
+    /* starts with the exit side intersection (the last one !)*/
+    
+   /* 5=+Z side: n=(0, 0, 1) ; W = (0, 0, l) (at z=l, guide exit)*/
+    B = vz; C = z - wz[5];
+    ret = plane_intersect_Gfast(&amp;dt0, A[5], B, C);
+    if (ret &amp;&amp; dt0&gt;0)     
+    { dt = dt0; side=5;  
+      n_dot_v[5] = B; }
+    else
+    { fprintf(stderr,"%s: warning: neutron trajectory is parallel to guide exit, and thus can not exit\n", mccompcurname); x += hadj; ABSORB; }
+      
+    /* now look if there is a previous intersection with guide sides */
+    
+    /* 1=+X side: n=(l, 0, -0.5*(w2-w1)) ; W = (+w1/2, 0, 0) (left)*/ 
+    B = nx[1]*vx + nz[1]*vz; C = nx[1]*(x-wx[1]) + nz[1]*z; /* ny=wz=0 */
+    ret = plane_intersect_Gfast(&amp;dt0, A[1], B, C);
+    if (ret &amp;&amp; dt0&gt;10e-10 &amp;&amp; dt0&lt;dt)
+    { dt = dt0; side=1; n_dot_v[1] = B; }
+    
+    /* 2=-X side: n=(l, 0, +0.5*(w2-w1)) ; W = (-w1/2, 0, 0) (right) */
+    B = nx[2]*vx + nz[2]*vz; C = nx[2]*(x-wx[2]) + nz[2]*z; /* ny=wz=0 */
+    ret = plane_intersect_Gfast(&amp;dt0, A[2], B, C);
+    if (ret &amp;&amp; dt0&gt;10e-10 &amp;&amp; dt0&lt;dt)
+    { dt = dt0; side=2; n_dot_v[2] = B; }
+    
+    /* 3=+Y side: n=(0, l, -0.5*(h2-h1)) ; W = (0, +h1/2, 0) (up) */
+    B = ny[3]*vy + nz[3]*vz; C = ny[3]*(y-wy[3]) + nz[3]*z; /* nx=wz=0 */
+    ret = plane_intersect_Gfast(&amp;dt0, A[3], B, C);
+    if (ret &amp;&amp; dt0&gt;10e-10 &amp;&amp; dt0&lt;dt)
+    { dt = dt0; side=3; n_dot_v[3] = B; }
+    
+    /* 4=-Y side: n=(0, l, +0.5*(h2-h1)) ; W = (0, -h1/2, 0) (down) */
+    B = ny[4]*vy + nz[4]*vz; C = ny[4]*(y-wy[4]) + nz[4]*z; /* nx=wz=0 */
+    ret = plane_intersect_Gfast(&amp;dt0, A[4], B, C);
+    if (ret &amp;&amp; dt0&gt;10e-10 &amp;&amp; dt0&lt;dt)
+    { dt = dt0; side=4; n_dot_v[4] = B; }
+    
+    /* only positive dt are valid */
+    /* exit reflection loops if no intersection (neutron is after box) */
+    if (side == 0 || dt &lt; 0)
+      { fprintf(stderr,"%s: warning: neutron has entered guide, but can not exit !\n", mccompcurname); ABSORB; } /* should never occur */   
+     /* 
+    if (side &lt; 5 &amp;&amp; (x &lt; -w1 || x &gt; w1 || y &lt; -h1 || y &gt; h2 ))  
+      ABSORB;  */ /* neutron has left guide through wall */
+      
+    /* propagate to dt */
+    PROP_GRAV_DT(dt, gx, gy, gz);
+    
+    /* do reflection on speed for l/r/u/d sides */
+    if (side == 5) /* neutron reaches end of guide: end loop and exit comp */
+      { N_reflection[side]++; break; }
+    /* else reflection on a guide wall */
+    if(M[side] == 0 || Qc == 0)  /* walls are absorbing */
+      { x += hadj; ABSORB; }
+    /* change/mirror velocity: v_f = v - n.2*n.v/|n|^2 */  
+    N_reflection[side]++; /* norm_n2 &gt; 0 was checked at INIT */
+    dt0 = 2*n_dot_v[side]/norm_n2[side]; /* 2*n.v/|n|^2 */
+    vx -= nx[side]*dt0;
+    vy -= ny[side]*dt0;
+    vz -= nz[side]*dt0;
+    
+    /* compute q and modify neutron weight */
+    /* scattering q=|k_i-k_f| = V2Q*|vf - v| = V2Q*2*n.v/|n| */
+    q = 2*V2Q*fabs(n_dot_v[side])/norm_n[side];
+    if(q &gt; Qc)
+    {
+      double arg;
+      if (W&gt;0)
+        arg = (q-M[side]*Qc)/W;
+      else
+        arg = (q-M[side]*Qc)*10000; /* W = 0.00001 */
+
+      if(arg &lt; 10)
+        p *= .5*(1-tanh(arg))*(1-alpha*(q-Qc));
+      else
+        { x += hadj; ABSORB; };                               /* Cutoff ~ 1E-10 */
+     }
+     p *= R0;
+     x += hadj; SCATTER; x -= hadj;
+     N_reflection[0]++;
+     /* go to the next reflection */
+   }
+    x += hadj; /* Re-adjust origin after SCATTER */
+%}
+
+MCDISPLAY
+%{
+  double x;
+  int i;
+
+  magnify("xy");
+  for(i = 0; i &lt; k; i++)
+  {
+    multiline(5,
+              i*w1c - w1/2.0, -h1/2.0, 0.0,
+              i*w2c - w2/2.0, -h2/2.0, (double)l,
+              i*w2c - w2/2.0,  h2/2.0, (double)l,
+              i*w1c - w1/2.0,  h1/2.0, 0.0,
+              i*w1c - w1/2.0, -h1/2.0, 0.0);
+    multiline(5,
+              (i+1)*w1c - d - w1/2.0, -h1/2.0, 0.0,
+              (i+1)*w2c - d - w2/2.0, -h2/2.0, (double)l,
+              (i+1)*w2c - d - w2/2.0,  h2/2.0, (double)l,
+              (i+1)*w1c - d - w1/2.0,  h1/2.0, 0.0,
+              (i+1)*w1c - d - w1/2.0, -h1/2.0, 0.0);
+  }
+  line(-w1/2.0, -h1/2.0, 0.0, w1/2.0, -h1/2.0, 0.0);
+  line(-w2/2.0, -h2/2.0, (double)l, w2/2.0, -h2/2.0, (double)l);
+%}
+
+END
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00001.html">McStas: next version</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00000"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00000"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

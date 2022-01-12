@@ -1,0 +1,150 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: install prob. AIX HPUX -->
+<!--X-From: Kristian Nielsen <kristian.nielsen@risoe.dk> -->
+<!--X-Date: 17 Dec 1998 10:29:57 +0100 -->
+<!--X-Message-Id:  -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 199812120924.SAA43050@comp.metro&#45;u.ac.jp -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: install prob. AIX HPUX</title>
+<link rev="made" href="mailto:kristian.nielsen@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00005.html">Date Prev</A>][Date Next]
+<a href="index.html#00006">[Chronological]</a>
+<a href="threads.html#00006">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: install prob. AIX HPUX</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:kadowaki@phys.metro-u.ac.jp">kadowaki@phys.metro-u.ac.jp</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: install prob. AIX HPUX</strong></LI>
+<LI><strong>From</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: 17 Dec 1998 10:29:57 +0100</LI>
+<LI>In-reply-to: &lt;<A HREF="msg00005.html">199812120924.SAA43050@comp.metro-u.ac.jp</A>&gt;(kadowaki@phys.metro-u.ac.jp)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Sorry to take so long in getting back to you, but I am just recovering
+from a week with the flue ...
+
+&gt; In the cases of AIX and HP-UX9, errors occurred
+&gt; during "make install". Could you see the following messages
+&gt; of the installation, and tell me what should I do?
+
+Hm, the errors you get look pretty strange to me ...
+Apparently, the compile runs fine, but the installation is unable to
+copy the files to their proper location. And the install fails in
+different ways on the two machines.
+
+Anyway, a quick workaround is to install the files manually. While in
+the main mcstas directory, execute the commands
+
+  cp mcstas gscan mcdisplay /home/phys/kadowaki/bin/
+  cp lib/* /home/phys/kadowaki/lib/mcstas/
+  chmod +x /home/phys/kadowaki/bin/mcstas
+  chmod +rx /home/phys/kadowaki/bin/gscan
+  chmod +rx /home/phys/kadowaki/bin/mcdisplay
+  chmod +r /home/phys/kadowaki/lib/mcstas/*
+
+The same commands should work on the HP, but with the path
+/home/phys/kadowaki replaced with /home/issp/kado, of course.
+
+As to why the install does not work on these machines I am not really
+sure. I do not know anything about AIX, but McStas installs without
+problems on our HPUX machine here at Risø.
+
+The easiest way to track this down would probably be if I could get
+temporary accounts on the two machines and log in and check things out
+myself. That is, if the policies at your institution would allow this?
+
+Here are a few comments on the output you sent me:
+
+&gt; kunugi(kadowaki)% configure --prefix=/home/phys/kadowaki
+
+&gt; checking for a BSD compatible install... /usr/bin/installbsd -c
+
+Here the installation decides to use the AIX own install program rather
+than its own.
+
+&gt;         /usr/bin/installbsd -c mcstas /home/phys/kadowaki/bin/mcstas
+&gt; installbsd: /home/phys/kadowaki/bin/mcstas: Not owner
+
+Here the install fails, but in a really strange way. Apparently it is
+saying that the mcstas program is owned by another user, even though it
+was just copied over ???
+
+
+&gt; ----------- HP-UX----------------------------------
+&gt;
+&gt; konisiki98$configure --prefix=/home/issp/kado
+&gt;
+&gt; ./configure: sh internal 2K buffer overflow
+
+Now this error message has me somewhat worried, even though I see no
+immediate consequences. I wonder if your HPUX is very old? and maybe
+uses a shell with bugs or limitations?
+
+&gt;         ./install-sh -c mcstas /home/issp/kado/bin/mcstas
+&gt; Make: Cannot load ./install-sh.  Stop.
+
+Here the install fails to even start the installation program
+./install-sh, which again suggest a severe problem with the shell on the
+system.
+
+ - Kristian.
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<UL><LI><STRONG>References</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00005" HREF="msg00005.html">install prob. AIX HPUX</A></STRONG>
+<UL><LI><EM>From:</EM> kadowaki@phys.metro-u.ac.jp (Kadowaki Hiroaki)</LI></UL></LI>
+</UL></LI></UL>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00005.html">install prob. AIX HPUX</A></STRONG>
+</LI>
+
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00006"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00006"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

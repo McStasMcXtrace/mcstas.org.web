@@ -1,0 +1,142 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: Energy_Monitor affects final intensity? -->
+<!--X-From: Kristian Nielsen <kristian.nielsen@risoe.dk> -->
+<!--X-Date: Fri, 20 Nov 1998 13:08:44 +0100 -->
+<!--X-Message-Id: 01J4EBTDRPMU8WX0AY@risoe.dk -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 13908.5823.254805.170353@obiwan.kri.physik.uni&#45;muenchen.de -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: Energy_Monitor affects final intensity?</title>
+<link rev="made" href="mailto:kristian.nielsen@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00023.html">Date Prev</A>][<A HREF="msg00025.html">Date Next</A>]
+<a href="index.html#00024">[Chronological]</a>
+<a href="threads.html#00024">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: Energy_Monitor affects final intensity?</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:artus@obiwan.kri.physik.uni-muenchen.de">artus@obiwan.kri.physik.uni-muenchen.de</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: Energy_Monitor affects final intensity?</strong></LI>
+<LI><strong>From</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: Fri, 20 Nov 1998 13:08:44 +0100</LI>
+<LI>Cc: <A HREF="mailto:neutron-mc@risoe.dk">neutron-mc@risoe.dk</A></LI>
+<LI>Date-warning: Date header was inserted by risoe.dk</LI>
+<LI>In-reply-to: &lt;<A HREF="msg00036.html">13908.5823.254805.170353@obiwan.kri.physik.uni-muenchen.de</A>&gt;(artus@obiwan.kri.physik.uni-muenchen.de)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+&gt; Hello Kristian,
+&gt; 
+&gt; I have just encountered a strange result with my last job:
+&gt; 
+&gt; The instrument looks like source, guide, Cu monochromator and several
+&gt; detectors at the sample position. To investigate more precisely what
+&gt; happens to the energy distribution I added another E_monitor just in
+&gt; front of the monochromator. But then the final intensity at the sample 
+&gt; position drops by a factor of about 2/3!!! This difference is a
+&gt; factor of 20 larger then the error. This happens also with fixed
+&gt; seed. Running with -s 2 gives
+
+&gt; It seems as if the E_monitor is absorbing neutrons??? Isn't it 
+&gt; supposed not to do so!? Am I wrong somewhere?
+
+The problem is that in your instrument, the E_monitor is placed in the
+middle of the third guide section:
+
+&gt; COMPONENT part3 = Guide2(
+&gt; 	w1 = 0.038644,
+&gt; 	h1 = 0.072392,
+&gt; 	w2 = 0.020,
+&gt; 	h2 = 0.060,
+&gt; 	l = 9.500,
+...
+&gt;   AT (0,0,4.202) RELATIVE a1
+
+&gt; COMPONENT enmon = E_monitor(
+...
+&gt;   AT (0,0,9.88) RELATIVE a1
+                          ^^^
+
+I suspect that you meant to say "RELATIVE part3" here, which would place
+the monitor after the end of the guide, but then it would overlap the
+monochromator! You need to put the E_monitor "AT(0,0,9.7) RELATIVE part3"
+or something similar to put it between the guide section and the
+monochromator.
+
+This is a common "gotcha" of McStas, I am afraid, and I will look into
+finding a way for McStas to help catch these kinds of errors (I have
+a few ideas already).
+
+I will look into your profile problem later. I also investigated the
+PgPerl problem by logging in to the account you supplied me with. On my
+system (Debian/GNU Linux), PgPerl is preinstalled, so I had no
+problems. I tried installing it manually first on your machine and then
+on my own, and both fail in the same way! So yes, there is a problem,
+and I will sort it out as soon as I can (should be early next week at
+the latest). I will also investigate the strange beam profile you
+mentioned.
+
+ - Kristian.
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<UL><LI><STRONG>Follow-Ups</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00038" HREF="msg00038.html">absolute flux and M2</A></STRONG>
+<UL><LI><EM>From:</EM> artus@obiwan.kri.physik.uni-muenchen.de</LI></UL></LI>
+</UL></LI></UL>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<UL><LI><STRONG>References</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00036" HREF="msg00036.html">Energy_Monitor affects final intensity?</A></STRONG>
+<UL><LI><EM>From:</EM> artus@obiwan.kri.physik.uni-muenchen.de</LI></UL></LI>
+</UL></LI></UL>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00023.html">New mailing list for neutron simulation</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00025.html">MC</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00024"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00024"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

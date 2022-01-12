@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+</head>
+<body>
+<h3 style="text-align: center;">Changes in version 1.9 (November 16th,
+2005)</h3>
+<div style="text-align: center;">[ <a href="#General">general</a> ][ <a
+ href="changes_1.9.html#Documentation">documentation</a> ][ <a
+ href="#Tools">tools</a> ][ <a href="#Components">components</a> ][ <a
+ href="#WARNINGS">WARNING</a> ]<br>
+<br>
+<br>
+<div style="text-align: left;">
+<pre><a name="General"></a>General<br>  - To indicate the collaborative nature of the McStas package, the main website<br>    URL does no longer belong to Risoe or ILL but is <a
+ href="http://www.mcstas.org">http://www.mcstas.org</a>.<br>  - The package has been strengthened by the presence of Klaus Lieutenant (former<br>    captain of Vitess, HMI) at ILL. He has focused a lot on validation and testing<br>    of the package, giving very important input and done very valuable work.<br>  - To help us in the fight against bugs, a BUGZILLA system has been set up for users<br>    to report their suggestions and problems. The system is available at the URL<br>    <a
+ href="http://www.mcstas.org/McZilla">http://www.mcstas.org/McZilla</a> .<br>  - The VnCS (Virtual neutron Code Sharing) agreement has been signed by the leaders<br>    of the Vitess and McStas software packages to formally support closer collaboration<br>    and sharing of code between the packages. At least one component (Vitess_ChopperFermi)<br>    now works with both packages, work done by Klaus Lieutenant and Geza Zsigmond.<br>  - Many big and small BUGS ellimnated!<br>  - First attempt at "concentric components" (sample environment). See Isotropic_Sqw in<br>    the 'Components' section below.<br><br><a
+ name="Documentation"></a>Documentation<br>  - With this release, the component manual has finally been updated! Major work has<br>    been put into this by especially Kim Lefmann and Emmanuel Farhi. The user manual<br>    has also been revised, but not as intensively.<br>  - Improvements to tutorial/teaching material as result of Copenhagen University course on<br>    neutron scattering, given by Kim Lefmann and Peter Willendrup. The idea is that when<br>    improved further, the full simulation part of the course can serve as an extended<br>    tutorial for McStas. In the package, projects on virtual experiments at DMC, RITA-2 and<br>    SANS-2 at PSI is included.<br><br><a
+ name="Tools"></a>Tools<br>  - A web frontend is now available for McStas, check it out at http://www.mcstas.org/webfront .<br>    Currently it is not actually part of the package, may become so in a near future release.<br>  - On Unix systems, mcdaemon is a tool to periodically send -USR2 signals (save) to running<br>    simulation processes. Is in an early state but should work okay, but not documented in the<br>    user manual. Replots intermediate data.<br>  - mcgui has been intensively revised, many annoyances have been removed and features adjusted<br>    for easier use.<br><br><a
+ name="Components"></a>Components<br>  - For simplicity, a number of components (especially monitors and sources) have been merged.<br>    This for example means that the Source_simple replaces the former Source_flat* components.<br>    Fewer duplications of code =&gt; smaller risk of old bugs surviving in the code.<br>  - PowderN: General powder sample component, replaces the simpler Powder1 and Powder2 components,<br>    has a very flexible system to read crystallographic data for powder line description. Is<br>    in the process of beeing validated against data from DMC@PSI. The code itself and the<br>    validation of it is the result of collaboration between mainly Peter Willendrup from the<br>    McStas team and Laurent Chapon (ISIS), Uwe Filges (PSI) and Lukas Keller (PSI). A validation<br>    paper will be presented at ICNS, Sydney.<br>  - Isotropic_Sqw: Originally work for the Ph.D. thesis of V. Hugouvieux, ILL. Extended and<br>    validated intensively by Emmanuel Farhi, ILL. It handles elastic and inelastic scattering<br>    for both coherent and incoherent processes, with secondary absorption and multiple scattering.<br>    The code has been validated against PowderN and V_sample. It comes with the same flexible<br>    system as PowderN to read data files, including crystallographic data for powder line<br>    description. Moreover, it may be used to describe concentric geometries in order to model<br>    sample environments.<br>  - Vitess_ChopperFermi: Originally work for Vitess by Geza Zsigmond, now PSI. Validated and<br>    adapted for use with McStas by Klaus Lieutentant, ILL in the frame of the VnCS agreement.<br>  - TOFRes_sample: time-of-flight version of the Res_sample component. Written by Kim Lefmann,<br>    Risoe. Will be merged with the res_sample component in next release.<br>  - The full suite of Fermi Choppers have been tested intensively by Klaus Lieutentant, partly<br>    inspired by the work of ILL stagiere Rebecca Peacock.<br><br><a
+ name="WARNINGS"></a>WARNINGS<br>  - Because of rapid changes in the support software for McStas, the current release has support<br>    for only some releases of:<br><br>    * Scilab (Win32 and Unix) - pick release 3.0 from , e.g. from<br>      <a
+ href="http://www.scilab.org/download/index_download.php?page=oldReleases.html">http://www.scilab.org/download/index_download.php?page=oldReleases.html</a><br><br>    * Perl (Win32) - on Windows we only support Perl 5.6 - pick<br>      <a
+ href="http://downloads.activestate.com/ActivePerl/Windows/5.6/ActivePerl-5.6.1.638-MSWin32-x86.msi">http://downloads.activestate.com/ActivePerl/Windows/5.6/ActivePerl-5.6.1.638-MSWin32-x86.msi</a></pre>
+</div>
+<br>
+</div>
+<br>
+<hr width="100%">
+<div style="text-align: center;"><i>Last modified Jan 19 2006 by E.
+Farhi</i></div>
+<pid><pid></pid></pid>
+</body>
+</html>

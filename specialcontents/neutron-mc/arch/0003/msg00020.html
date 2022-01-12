@@ -1,0 +1,108 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: About spin ? -->
+<!--X-From: Farhi <farhi@ill.fr> -->
+<!--X-Date: Wed, 08 Mar 2000 14:11:32 +0100 -->
+<!--X-Message-Id: 38C65184.E3C7A706@ill.fr -->
+<!--X-ContentType: multipart/alternative -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>About spin ?</title>
+<link rev="made" href="mailto:farhi@ill.fr">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00001.html">Date Prev</A>][<A HREF="msg00021.html">Date Next</A>]
+<a href="index.html#00020">[Chronological]</a>
+<a href="threads.html#00020">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>About spin ?</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>About spin ?</strong></LI>
+<LI><strong>From</strong>: <strong>Farhi &lt;<A HREF="mailto:farhi@ill.fr">farhi@ill.fr</A>&gt;</strong></LI>
+<LI>Date: Wed, 08 Mar 2000 14:11:32 +0100</LI>
+<LI>Cc: Trefor Roberts &lt;<A HREF="mailto:roberts@ill.fr">roberts@ill.fr</A>&gt;</LI>
+<LI>Organization: ILL</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+
+
+Hy Kristian
+<p>I'm now writing the documentation for components Source_Optimizer, Monitor_Optimizer
+and Monitor_nD. Hope it will be clear and usefull.
+<br>I was wondering what you think about neutron spin. I mean the fact
+that you have s1 and s2 [ STATE PARAMETERS (x,y,z,vx,vy,vz,t,s1,s2,p) ]
+in all components,
+<br>but you do not have (sx, sy, sz) except if you really ask for it [
+POLARISATION PARAMETERS (sx,sy,sz) ]. In this latter case, one usually
+get huge amounts of warning from other components. This is very starnge
+as s1 and s2 should contain the same information as sx sy sz, but in a
+different way.
+<p>What about writing a MACRO that would compute sx, sy sz from s1 and
+s2, according to the component orientation, and possibly neutron direction,
+and an other one that would do the reverse operation ?
+<p>This would make all component beeing able to handle polarisation, and
+would thus avoid warnings.
+<p>Also, I just point out that writing a component that does or does not
+handle polarisation with POLARISATION PARAMETERS symbol makes two way of
+programming : in one hand you will use s1 s2, in the other, sx sy sz....
+<p>Cheers. EF.
+<pre>--&nbsp;
+Emmanuel FARHI, <A HREF="http://www.ill.fr/tas/people/Farhi.html">http://www.ill.fr/tas/people/Farhi.html</A>&nbsp;&nbsp;&nbsp;&nbsp; \|/ ____ \|/
+TAS-Group, Institut Laue-Langevin (ILL) Grenoble&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ~@-/ oO \-@~
+Avenue J. Horowitz, BP 156, 38042 Grenoble Cedex 9,France&nbsp;&nbsp; /_( \__/ )_\
+Work :Tel (33/0) 4 76 20 71 83. Fax (33/0) 4 76 48 39 06&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \__U_/
+La Grande Arche, Chateau d'Uriage, 38410 Saint Martin d'Uriage 04 76 59 73 94</pre>
+&nbsp;
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<UL><LI><STRONG>Follow-Ups</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00022" HREF="msg00022.html">Re: About spin ?</A></STRONG>
+<UL><LI><EM>From:</EM> Kristian Nielsen &lt;kristian.nielsen@risoe.dk&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00001.html">New tested components for McStas</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00021.html">Doc for components</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00020"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00020"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

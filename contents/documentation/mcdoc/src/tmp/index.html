@@ -1,0 +1,707 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <META NAME="GENERATOR" CONTENT="McDoc">
+   <TITLE>McStas : Library components</TITLE>
+</HEAD>
+<BODY>
+
+<P ALIGN=CENTER>
+ [ <A href="#sources">sources</A>
+ | <A href="#optics">optics</A>
+ | <A href="#samples">samples</A>
+ | <A href="#monitors">monitors</A>
+ | <A href="#misc">misc</A> ]
+</P>
+
+<CENTER><H1>Components for <i>McStas</i></H1></CENTER>
+
+<P> Names in <B>Boldface</B> denote components that are properly
+documented with comments in the source code.</P>
+
+<P><A NAME="sources"></A>
+<B><FONT COLOR="#FF0000">Sources</FONT></B>
+<TABLE BORDER COLS=5 WIDTH="100%" NOSAVE>
+<TR>
+<TD><B><I>Name</I></B></TD>
+<TD WIDTH="10%"><B><I>Origin</I></B></TD>
+<TD WIDTH="10%"><B><I>Author(s)</I></B></TD>
+<TD WIDTH="10%"><B><I>Help</I></B></TD>
+<TD><B><I>Description</I></B></TD>
+</TR>
+<TR>
+<TD> <B><A HREF="sources/Adapt_check.comp">Adapt_check</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kristian Nielsen</TD>
+<TD><A HREF="sources/Adapt_check.html">More...</A></TD>
+<TD>Optimization specifier for the Source_adapt component.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="sources/Convert_FlatE_2_Maxwell.comp">Convert_FlatE_2_Maxwell</A></B></TD>
+<TD> McStas 1.5/<a href="http://www.ill.fr">ILL</a></TD>
+<TD> <a href="mailto:hansen@ill.fr">Thomas C Hansen</a></TD>
+<TD><A HREF="sources/Convert_FlatE_2_Maxwell.html">More...</A></TD>
+<TD>Conversion from flat energy distribution to Maxwellian neutron spectra
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="sources/ESS_moderator_long.comp">ESS_moderator_long</A></B></TD>
+<TD> McStas 1.4.2</TD>
+<TD> Kim Lefmann</TD>
+<TD><A HREF="sources/ESS_moderator_long.html">More...</A></TD>
+<TD>Adapted from Moderator by: KN, M.Hagen, August 1998
+A parametrised pulsed source for modelling ESS long pulses.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="sources/ESS_moderator_short.comp">ESS_moderator_short</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kim Lefmann</TD>
+<TD><A HREF="sources/ESS_moderator_short.html">More...</A></TD>
+<TD>Adapted from Moderator by: KN, M.Hagen, August 1998
+A parametrised pulsed source for modelling ESS short pulses.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="sources/Flux_adapter.comp">Flux_adapter</A></B></TD>
+<TD>(Unknown)</TD>
+<TD> EF, Oct 14, 1999, Rev Nov 17, 1999</TD>
+<TD><A HREF="sources/Flux_adapter.html">More...</A></TD>
+<TD></TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="sources/Moderator.comp">Moderator</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> KN, M.Hagen</TD>
+<TD><A HREF="sources/Moderator.html">More...</A></TD>
+<TD>A simple pulsed source for time-of-flight.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="sources/Monitor_Optimizer.comp">Monitor_Optimizer</A></B></TD>
+<TD> McStas 1.5/<a href="http://www.ill.fr">ILL (France)</a></TD>
+<TD> <a href="mailto:farhi@ill.fr">Emmanuel Farhi</a></TD>
+<TD><A HREF="sources/Monitor_Optimizer.html">More...</A></TD>
+<TD>To be used after the <b>Source_Optimizer</b> component
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="sources/Source_Maxwell_3.comp">Source_Maxwell_3</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kim Lefmann </TD>
+<TD><A HREF="sources/Source_Maxwell_3.html">More...</A></TD>
+<TD>Source with up to three Maxwellian distributions
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="sources/Source_Optimizer.comp">Source_Optimizer</A></B></TD>
+<TD> McStas 1.5/<a href="http://www.ill.fr">ILL (France)</a></TD>
+<TD> <a href="mailto:farhi@ill.fr">Emmanuel Farhi</a></TD>
+<TD><A HREF="sources/Source_Optimizer.html">More...</A></TD>
+<TD>A component that optimizes the neutron flux passing through the
+Source_Optimizer in order to have the maximum flux at the 
+<b>Monitor_Optimizer</b> position.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="sources/Source_adapt.comp">Source_adapt</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kristian Nielsen</TD>
+<TD><A HREF="sources/Source_adapt.html">More...</A></TD>
+<TD>Neutron source with adaptive importance sampling
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="sources/Source_file.comp">Source_file</A></B></TD>
+<TD> McStas 1.5//<a href="http://www.ill.fr">ILL</a></TD>
+<TD> <a href="mailto:farhi@ill.fr">E. Farhi</a></TD>
+<TD><A HREF="sources/Source_file.html">More...</A></TD>
+<TD>Source that generates neutron events from an ascii/binary 'source' file.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="sources/Source_flat.comp">Source_flat</A></B></TD>
+<TD> McStas 1.5.1</TD>
+<TD> Kim Lefmann </TD>
+<TD><A HREF="sources/Source_flat.html">More...</A></TD>
+<TD>A circular neutron source with flat energy spectrum and arbitrary flux
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="sources/Source_flat_lambda.comp">Source_flat_lambda</A></B></TD>
+<TD> McStas 1.5.1</TD>
+<TD> Kristian Nielsen and Kim Lefmann</TD>
+<TD><A HREF="sources/Source_flat_lambda.html">More...</A></TD>
+<TD>Neutron source with flat wavelength spectrum and arbitrary flux.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="sources/Source_flux.comp">Source_flux</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kristian Nielsen</TD>
+<TD><A HREF="sources/Source_flux.html">More...</A></TD>
+<TD>An old variant of the official <b>Source_flux_lambda</b> component. 
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="sources/Source_flux_lambda.comp">Source_flux_lambda</A></B></TD>
+<TD> McStas 1.5.1</TD>
+<TD> Kristian Nielsen</TD>
+<TD><A HREF="sources/Source_flux_lambda.html">More...</A></TD>
+<TD>Neutron source with flat wavelength spectrum and user-specified flux.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="sources/Source_gen.comp">Source_gen</A></B></TD>
+<TD> McStas 1.5.1</TD>
+<TD> Kristian Nielsen, Kim Lefmann and Emmanuel Farhi</TD>
+<TD><A HREF="sources/Source_gen.html">More...</A></TD>
+<TD>Circular/squared neutron source with flat or Maxwellian energy spectrum 
+(possibly spatially gaussian)
+</TD>
+</TR>
+
+</TABLE>
+
+
+<P><A NAME="optics"></A>
+<B><FONT COLOR="#FF0000">Optics</FONT></B>
+<TABLE BORDER COLS=5 WIDTH="100%" NOSAVE>
+<TR>
+<TD><B><I>Name</I></B></TD>
+<TD WIDTH="10%"><B><I>Origin</I></B></TD>
+<TD WIDTH="10%"><B><I>Author(s)</I></B></TD>
+<TD WIDTH="10%"><B><I>Help</I></B></TD>
+<TD><B><I>Description</I></B></TD>
+</TR>
+<TR>
+<TD> <A HREF="optics/Arm.comp">Arm</A></TD>
+<TD> McStas 1.5</TD>
+<TD> Kim Lefmann and Kristian Nielsen</TD>
+<TD><A HREF="optics/Arm.html">More...</A></TD>
+<TD>Arm/optical bench
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="optics/Beamstop.comp">Beamstop</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kristian Nielsen</TD>
+<TD><A HREF="optics/Beamstop.html">More...</A></TD>
+<TD>Rectangular/circular beam stop.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="optics/Bender.comp">Bender</A></B></TD>
+<TD> McStas 1.5/Uni. Erlangen (Germany)</TD>
+<TD> Philipp Bernhardt</TD>
+<TD><A HREF="optics/Bender.html">More...</A></TD>
+<TD>Models a curved neutron guide. 
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="optics/Channeled_guide.comp">Channeled_guide</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kristian Nielsen</TD>
+<TD><A HREF="optics/Channeled_guide.html">More...</A></TD>
+<TD>Neutron guide with channels (bender section).
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="optics/Chopper.comp">Chopper</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Philipp Bernhardt</TD>
+<TD><A HREF="optics/Chopper.html">More...</A></TD>
+<TD>Disk chopper.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="optics/Curved_Monochromator.comp">Curved_Monochromator</A></B></TD>
+<TD> McStas 1.5/<a href="http://www.ill.fr">ILL</a></TD>
+<TD> Emmanuel Farhi</TD>
+<TD><A HREF="optics/Curved_Monochromator.html">More...</A></TD>
+<TD>                                 by Kristian Nielsen and Peter Link
+Double bent multiple crystal slabs with anisotropic gaussian mosaic.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="optics/Fermi_Chopper.comp">Fermi_Chopper</A></B></TD>
+<TD> McStas 1.5/KEK (Japan)</TD>
+<TD> Andrew Garrett</TD>
+<TD><A HREF="optics/Fermi_Chopper.html">More...</A></TD>
+<TD> Fermi Chopper with curved slits. 
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="optics/Filter.comp">Filter</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kim Lefmann and Kristian Nielsen</TD>
+<TD><A HREF="optics/Filter.html">More...</A></TD>
+<TD>A simple cut-off neutron filter.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="optics/Filter_Graphite.comp">Filter_Graphite</A></B></TD>
+<TD> McStas 1.5/<a href="http://www.ill.fr">ILL</a></TD>
+<TD> <a href="mailto:hansen@ill.fr">Thomas C Hansen</a></TD>
+<TD><A HREF="optics/Filter_Graphite.html">More...</A></TD>
+<TD>Pyrolytic graphite filter (analytical model)
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="optics/Gravity_guide.comp">Gravity_guide</A></B></TD>
+<TD> McStas 1.6/<a href="http://www.ill.fr">ILL (France)</a>.</TD>
+<TD> <a href="mailto:farhi@ill.fr">Emmanuel Farhi</a></TD>
+<TD><A HREF="optics/Gravity_guide.html">More...</A></TD>
+<TD>Neutron guide with gravity. Can be channeled and focusing.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="optics/Guide.comp">Guide</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kristian Nielsen</TD>
+<TD><A HREF="optics/Guide.html">More...</A></TD>
+<TD>Neutron guide.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="optics/Guide_wavy.comp">Guide_wavy</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kim Lefmann</TD>
+<TD><A HREF="optics/Guide_wavy.html">More...</A></TD>
+<TD>Neutron guide with gaussian waviness.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="optics/He3_cell.comp">He3_cell</A></B></TD>
+<TD> McStas 1.5/ILL</TD>
+<TD> Trefor Roberts </TD>
+<TD><A HREF="optics/He3_cell.html">More...</A></TD>
+<TD>Polarised 3He cell
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="optics/Mirror.comp">Mirror</A></B></TD>
+<TD> McStas release</TD>
+<TD> Kristian Nielsen</TD>
+<TD><A HREF="optics/Mirror.html">More...</A></TD>
+<TD>Single mirror plate.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="optics/Mon_2foc.comp">Mon_2foc</A></B></TD>
+<TD> McStas 1.5/Uni. Gottingen (Germany)</TD>
+<TD> <a href="mailto:plink@physik.tu-muenchen.de">Peter Link</a>.</TD>
+<TD><A HREF="optics/Mon_2foc.html">More...</A></TD>
+<TD>Double bent monochromator with multiple slabs
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="optics/Monochromator.comp">Monochromator</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kim Lefmann and Henrik M. Roennow</TD>
+<TD><A HREF="optics/Monochromator.html">More...</A></TD>
+<TD>Monochromator/analyzer crystal (OBSOLETE).
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="optics/Mosaic_anisotropic.comp">Mosaic_anisotropic</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kristian Nielsen</TD>
+<TD><A HREF="optics/Mosaic_anisotropic.html">More...</A></TD>
+<TD>Mosaic crystal with anisotropic mosaic.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="optics/Mosaic_simple.comp">Mosaic_simple</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kristian Nielsen</TD>
+<TD><A HREF="optics/Mosaic_simple.html">More...</A></TD>
+<TD>Mosaic crystal, possibly off-cut.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="optics/Powder_filter.comp">Powder_filter</A></B></TD>
+<TD> Based on Be_filter, written by SN Klausen, December 1999,</TD>
+<TD> <a href="mailto:benjamin.fortescue@oriel.ox.ac.uk">B. Fortescue</a></TD>
+<TD><A HREF="optics/Powder_filter.html">More...</A></TD>
+<TD>Incorporating code from Single_crystal, written by KN, December 1999
+Box-shaped powder filter
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="optics/Selector.comp">Selector</A></B></TD>
+<TD> McStas 1.5/Uni. Gottingen (Germany)</TD>
+<TD> <a href="mailto:plink@physik.tu-muenchen.de">Peter Link</a>.</TD>
+<TD><A HREF="optics/Selector.html">More...</A></TD>
+<TD>velocity selector (helical lamella type) such as <b>V_selector</b> component
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="optics/Slit.comp">Slit</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kim Lefmann and Henrik M. Roennow</TD>
+<TD><A HREF="optics/Slit.html">More...</A></TD>
+<TD>Rectangular/circular slit.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="optics/Soller.comp">Soller</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kristian Nielsen</TD>
+<TD><A HREF="optics/Soller.html">More...</A></TD>
+<TD>A simple analytical Soller collimator (with triangular transmission).
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="optics/V_selector.comp">V_selector</A></B></TD>
+<TD> McStas 1.4.2</TD>
+<TD>  Kim Lefmann</TD>
+<TD><A HREF="optics/V_selector.html">More...</A></TD>
+<TD>Velocity selector.
+</TD>
+</TR>
+
+</TABLE>
+
+
+<P><A NAME="samples"></A>
+<B><FONT COLOR="#FF0000">Samples</FONT></B>
+<TABLE BORDER COLS=5 WIDTH="100%" NOSAVE>
+<TR>
+<TD><B><I>Name</I></B></TD>
+<TD WIDTH="10%"><B><I>Origin</I></B></TD>
+<TD WIDTH="10%"><B><I>Author(s)</I></B></TD>
+<TD WIDTH="10%"><B><I>Help</I></B></TD>
+<TD><B><I>Description</I></B></TD>
+</TR>
+<TR>
+<TD> <B><A HREF="samples/Powder1.comp">Powder1</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> E.M.Lauridsen, N.B.Christensen, A.B.Abrahamsen</TD>
+<TD><A HREF="samples/Powder1.html">More...</A></TD>
+<TD>General powder sample with a single scattering vector.
+Example: Powder1(radius=0.015,h=0.05,q =1.8049,d_phi0 =0.07,pack=1,j=6,DW=1, 
+      F2=56.8,Vc=85.0054,sigma_a=0.463,target_x=0,target_y=0, target_z=1000)
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="samples/Res_sample.comp">Res_sample</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kristian Nielsen</TD>
+<TD><A HREF="samples/Res_sample.html">More...</A></TD>
+<TD>Sample for resolution function calculation.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="samples/SiC.comp">SiC</A></B></TD>
+<TD> McStas 1.5/IRI.</TD>
+<TD> <a href="mailto:S.RYCROFT@IRI.TUDELFT.NL">S. Rycroft</a></TD>
+<TD><A HREF="samples/SiC.html">More...</A></TD>
+<TD></TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="samples/Single_crystal.comp">Single_crystal</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kristian Nielsen</TD>
+<TD><A HREF="samples/Single_crystal.html">More...</A></TD>
+<TD>Mosaic single crystal with multiple scattering vectors.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="samples/V_sample.comp">V_sample</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kim Lefmann and Kristian Nielsen</TD>
+<TD><A HREF="samples/V_sample.html">More...</A></TD>
+<TD>Vanadium sample.
+</TD>
+</TR>
+
+</TABLE>
+
+
+<P><A NAME="monitors"></A>
+<B><FONT COLOR="#FF0000">Detectors</FONT> and monitors</B>
+<TABLE BORDER COLS=5 WIDTH="100%" NOSAVE>
+<TR>
+<TD><B><I>Name</I></B></TD>
+<TD WIDTH="10%"><B><I>Origin</I></B></TD>
+<TD WIDTH="10%"><B><I>Author(s)</I></B></TD>
+<TD WIDTH="10%"><B><I>Help</I></B></TD>
+<TD><B><I>Description</I></B></TD>
+</TR>
+<TR>
+<TD> <B><A HREF="monitors/DivLambda_monitor.comp">DivLambda_monitor</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kristian Nielsen</TD>
+<TD><A HREF="monitors/DivLambda_monitor.html">More...</A></TD>
+<TD>Divergence/wavelength monitor.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="monitors/DivPos_monitor.comp">DivPos_monitor</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kristian Nielsen</TD>
+<TD><A HREF="monitors/DivPos_monitor.html">More...</A></TD>
+<TD>Divergence/position monitor (acceptance diagram).
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="monitors/Divergence_monitor.comp">Divergence_monitor</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kim Lefmann</TD>
+<TD><A HREF="monitors/Divergence_monitor.html">More...</A></TD>
+<TD>Horizontal+vertical divergence monitor.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="monitors/EPSD_monitor.comp">EPSD_monitor</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kim Lefmann </TD>
+<TD><A HREF="monitors/EPSD_monitor.html">More...</A></TD>
+<TD>A monitor measuring neutron intensity vs. position, x, and neutron energy, E
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="monitors/E_monitor.comp">E_monitor</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kristian Nielsen and Kim Lefmann</TD>
+<TD><A HREF="monitors/E_monitor.html">More...</A></TD>
+<TD>Energy-sensitive monitor.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="monitors/Hdiv_monitor.comp">Hdiv_monitor</A></B></TD>
+<TD>(Unknown)</TD>
+<TD> Thomas Hansen,  December, 1999</TD>
+<TD><A HREF="monitors/Hdiv_monitor.html">More...</A></TD>
+<TD></TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="monitors/L_monitor.comp">L_monitor</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kristian Nielsen and Kim Lefmann</TD>
+<TD><A HREF="monitors/L_monitor.html">More...</A></TD>
+<TD>Wavelength-sensitive monitor.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="monitors/Monitor.comp">Monitor</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kim Lefmann</TD>
+<TD><A HREF="monitors/Monitor.html">More...</A></TD>
+<TD>Simple single detector/monitor.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="monitors/Monitor_4PI.comp">Monitor_4PI</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kim Lefmann and Kristian Nielsen</TD>
+<TD><A HREF="monitors/Monitor_4PI.html">More...</A></TD>
+<TD>Monitor that detects ALL non-absorbed neutrons.
+Example: Monitor_4PI()
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="monitors/Monitor_nD.comp">Monitor_nD</A></B></TD>
+<TD> McStas 1.6/<a href="http://www.ill.fr">ILL</a></TD>
+<TD> <a href="mailto:farhi@ill.fr">Emmanuel Farhi</a></TD>
+<TD><A HREF="monitors/Monitor_nD.html">More...</A></TD>
+<TD>This component is a general Monitor that can output 0/1/2D signals 
+(Intensity vs. [something] and vs. [something] ...)
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="monitors/PSD_monitor.comp">PSD_monitor</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kim Lefmann</TD>
+<TD><A HREF="monitors/PSD_monitor.html">More...</A></TD>
+<TD>Position-sensitive monitor.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="monitors/PSD_monitor_4PI.comp">PSD_monitor_4PI</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kim Lefmann and Kristian Nielsen</TD>
+<TD><A HREF="monitors/PSD_monitor_4PI.html">More...</A></TD>
+<TD>Spherical position-sensitive detector.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="monitors/PSDcyl_monitor.comp">PSDcyl_monitor</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kim Lefmann</TD>
+<TD><A HREF="monitors/PSDcyl_monitor.html">More...</A></TD>
+<TD>A 2D Position-sensitive monitor. The shape is cylindrical with
+the axis vertical. The monitor covers the whole cylinder (360 degrees).
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="monitors/PSDlin_monitor.comp">PSDlin_monitor</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD>  Kim Lefmann</TD>
+<TD><A HREF="monitors/PSDlin_monitor.html">More...</A></TD>
+<TD>Rectangular 1D PSD, measuring intensity vs. vertical position, x
+Example: PSDlin_monitor(nx=20, filename="Output.x",
+         xmin=-0.1, xmax=0.1, ymin=-0.1, ymax=0.1)
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="monitors/PreMonitor_nD.comp">PreMonitor_nD</A></B></TD>
+<TD> McStas 1.5/<a href="http://www.ill.fr">ILL (France)</a></TD>
+<TD> <a href="mailto:farhi@ill.fr">Emmanuel Farhi</a></TD>
+<TD><A HREF="monitors/PreMonitor_nD.html">More...</A></TD>
+<TD>This component is a PreMonitor that is to be used with one Monitor_nD, in
+order to record some neutron parameters 
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="monitors/Res_monitor.comp">Res_monitor</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD> Kristian Nielsen</TD>
+<TD><A HREF="monitors/Res_monitor.html">More...</A></TD>
+<TD>Monitor for resolution calculations
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="monitors/TOFLambda_monitor.comp">TOFLambda_monitor</A></B></TD>
+<TD> McStas release</TD>
+<TD> KL</TD>
+<TD><A HREF="monitors/TOFLambda_monitor.html">More...</A></TD>
+<TD>Time-of-flight/wavelength monitor.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="monitors/TOF_cylPSD_monitor.comp">TOF_cylPSD_monitor</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD>  Kim Lefmann</TD>
+<TD><A HREF="monitors/TOF_cylPSD_monitor.html">More...</A></TD>
+<TD>Cylindrical (2pi) PSD Time-of-flight monitor.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="monitors/TOF_monitor.comp">TOF_monitor</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD>  KN, M. Hagan</TD>
+<TD><A HREF="monitors/TOF_monitor.html">More...</A></TD>
+<TD>Rectangular Time-of-flight monitor.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="monitors/TOFlog_mon.comp">TOFlog_mon</A></B></TD>
+<TD> McStas 1.5</TD>
+<TD>  Kim Lefmann</TD>
+<TD><A HREF="monitors/TOFlog_mon.html">More...</A></TD>
+<TD>Rectangular Time-of-flight monitor with logarithmic time binning.
+</TD>
+</TR>
+
+</TABLE>
+
+
+<P><A NAME="misc"></A>
+<B><FONT COLOR="#FF0000">Misc</FONT></B>
+<TABLE BORDER COLS=5 WIDTH="100%" NOSAVE>
+<TR>
+<TD><B><I>Name</I></B></TD>
+<TD WIDTH="10%"><B><I>Origin</I></B></TD>
+<TD WIDTH="10%"><B><I>Author(s)</I></B></TD>
+<TD WIDTH="10%"><B><I>Help</I></B></TD>
+<TD><B><I>Description</I></B></TD>
+</TR>
+<TR>
+<TD> <B><A HREF="misc/Vitess_input.comp">Vitess_input</A></B></TD>
+<TD> McStas 1.5.0</TD>
+<TD> Kristian Nielsen</TD>
+<TD><A HREF="misc/Vitess_input.html">More...</A></TD>
+<TD>Read neutron state parameters from VITESS neutron file.
+</TD>
+</TR>
+
+<TR>
+<TD> <B><A HREF="misc/Vitess_output.comp">Vitess_output</A></B></TD>
+<TD> McStas 1.5.0</TD>
+<TD> Kristian Nielsen</TD>
+<TD><A HREF="misc/Vitess_output.html">More...</A></TD>
+<TD>Write neutron state parameters to VITESS neutron file.
+</TD>
+</TR>
+
+</TABLE>
+
+<P>This Component list was updated on Jul 22 2002
+.
+<HR WIDTH="100%">
+<CENTER>
+  [ <A HREF="http://www.ill.fr/tas/mcstas/mcstas_ill.html"><I>McStas</I> at ILL</A>
+  | <A href="http://neutron.risoe.dk/mcstas/"><I>McStas</I> at Ris&oslash;</A> ]
+</CENTER>
+
+<P><BR>
+<ADDRESS>
+Generated by McDoc, 
+Maintained by Emmanuel Farhi &lt;<a href="mailto:farhi@ill.fr">farhi@ill.fr</a>>
+and Kristian Nielsen &lt;<a href="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</a>>.
+Contact us for any comments.
+</ADDRESS>
+</BODY></HTML>

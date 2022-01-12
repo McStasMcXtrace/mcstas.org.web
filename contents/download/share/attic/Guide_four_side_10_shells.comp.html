@@ -1,0 +1,5560 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD>
+<TITLE>McStas: Guide_four_side_10_shells Component</TITLE>
+<LINK REV="made" HREF="mailto:peter.willendrup@risoe.dk">
+</HEAD>
+
+<BODY>
+
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<H1>The <CODE>Guide_four_side_10_shells</CODE> Component</H1>
+
+ This component models a guide with four side walls surounded by up to 10 shells (every shell consists of 
+ additional four walls). In the  end it  forms a guide with an inner and up to 10 outer channel.
+ As user you can controll the properties of every wall separatly. All togther you have up to 
+ 88 walls: From the inner channel 4 inner walls and four outer walls and from every outer
+ channel 4 inner and 4 outer walls.
+ Every single wall can have a elliptic, parabolic or straight shape.
+ All four sides of the guide are independent from each other.
+ In the elliptic case the side wall shape follows the equation x^2/b^2+(z+z0)^2/a^2=1
+ (the center of the ellipse is located at (0,-z0)).
+ In the parabolic case the side wall shape follows the equation z=b-ax^2;mc
+ In the straight case the side wall shape follows the equation z=l/(w2-w1)*x-w1.
+ The shape selection is done by the focal points. The focal points are located at the 
+ z-axis and are defined by their distance to the entrance or exit window of the guide
+ (in the following called 'focal length').
+ If both focal lengths for one wall are zero it will be a straight wall (entrance and 
+ exit width have to be given in the beginning).
+ If one of the focal lengths is not zero the shape will be parabolic (only the entrance width 
+ given in the beginning is recognized; exit width will be calculated). If the the entrance 
+ focal length is zero the guide will be a focusing devise.
+ If the exit focal length is zero it will be defocusing devise.
+ If both focals are non zero the shape of the wall will be elliptic (only the entrance width 
+ given in the beginning is recognized; exit width will be calculated). 
+ Notice: 1.)The focal points are in general located outside the guide (positive focal lengths).
+            Focal points inside the guide need to have negative focal lengths.
+         2.)The exit width parameters (w2r, w2l, h2u,h2d) are only taken into account if the 
+            walls have a linear shape. In the ellitic or parabolic case they will be ignored.
+ For the inner channel: the outer side of each wall is calculated by the component in depentence 
+ of the wallthickness and the shape of the inner side.
+ Each of the 88 walls can have a own indepenting reflecting layer (defined by an input file) 
+ or it can be a absorber or it can be transparent.
+ The reflectivity properties can be given by an input file (Format [q(Angs-1) R(0-1)]) or by 
+ parameters (Qc, alpha, m, W).
+%BUGS
+This component does not work with gravitation on.
+This component does not work correctly in GROUP-modus.
+
+
+<H2><A NAME=id></A>Identification</H2>
+
+<UL>
+  <LI> <B>Author:</B> Tobias Panzner</B>
+  <LI> <B>Origin:</B> PSI</B>
+  <LI> <B>Date:</B> 07/08/2010</B>
+  <LI> <B>Version:</B> 1.1 </B>
+</UL>
+
+<H2><A NAME=ipar></A>Input parameters</H2>
+Parameters in <B>boldface</B> are required;
+the others are optional.
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD>RIreflect</TD>
+     <TD>DEFAULT : no file</TD>
+     <TD>@: (str)  Name of relfectivity file for the right inner wall.
+Format [q(Angs-1) R(0-1)]  </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>LIreflect</TD>
+     <TD>DEFAULT : no file</TD>
+     <TD>@: (str)  Name of relfectivity file for the left inner wall.
+Format [q(Angs-1) R(0-1)]   </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>UIreflect</TD>
+     <TD>DEFAULT : no file</TD>
+     <TD>@: (str)  Name of relfectivity file for the top inner wall. 
+Format [q(Angs-1) R(0-1)]    </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>DIreflect</TD>
+     <TD>DEFAULT : no file</TD>
+     <TD>@: (str)  Name of relfectivity file for the bottom inner wall.
+Format [q(Angs-1) R(0-1)] </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>ROreflect</TD>
+     <TD>DEFAULT : no file</TD>
+     <TD>@: (str)  Name of relfectivity file for the right outer wall.
+Format [q(Angs-1) R(0-1)]  </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>LOreflect</TD>
+     <TD>DEFAULT : no file</TD>
+     <TD>@: (str)  Name of relfectivity file for the left outer wall.
+Format [q(Angs-1) R(0-1)]   </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>UOreflect</TD>
+     <TD>DEFAULT : no file</TD>
+     <TD>@: (str)  Name of relfectivity file for the top outer wall.
+Format [q(Angs-1) R(0-1)]    </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>DOreflect</TD>
+     <TD>DEFAULT : no file</TD>
+     <TD>@: (str)  Name of relfectivity file for the bottom outer wall.
+Format [q(Angs-1) R(0-1)] </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>RIreflect1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>LIreflect1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>UIreflect1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>DIreflect1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>ROreflect1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>LOreflect1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>UOreflect1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>DOreflect1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>RIreflect2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>LIreflect2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>UIreflect2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>DIreflect2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>ROreflect2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>LOreflect2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>UOreflect2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>DOreflect2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>RIreflect3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>LIreflect3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>UIreflect3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>DIreflect3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>ROreflect3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>LOreflect3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>UOreflect3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>DOreflect3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>RIreflect4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>LIreflect4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>UIreflect4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>DIreflect4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>ROreflect4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>LOreflect4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>UOreflect4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>DOreflect4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>RIreflect5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>LIreflect5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>UIreflect5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>DIreflect5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>ROreflect5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>LOreflect5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>UOreflect5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>DOreflect5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>RIreflect6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>LIreflect6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>UIreflect6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>DIreflect6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>ROreflect6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>LOreflect6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>UOreflect6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>DOreflect6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>RIreflect7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>LIreflect7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>UIreflect7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>DIreflect7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>ROreflect7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>LOreflect7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>UOreflect7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>DOreflect7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>RIreflect8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>LIreflect8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>UIreflect8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>DIreflect8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>ROreflect8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>LOreflect8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>UOreflect8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>DOreflect8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>RIreflect9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>LIreflect9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>UIreflect9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>DIreflect9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>ROreflect9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>LOreflect9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>UOreflect9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>DOreflect9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>RIreflect10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>LIreflect10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>UIreflect10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>DIreflect10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>ROreflect10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>LOreflect10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>UOreflect10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>DOreflect10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>w1l</TD>
+     <TD>DEFAULT = 2.000 + @*0.002</TD>
+     <TD>@:     [m]    Width at the left guide entry    (positive x-axis)
+</TD>
+<TD ALIGN=RIGHT>0.002</TD> </TR>
+<TR> <TD>w2l</TD>
+     <TD>DEFAULT = 2.000 + @*0.002</TD>
+     <TD>@:     [m]    Width at the left guide exit     (positive x-axis)
+</TD>
+<TD ALIGN=RIGHT>0.002</TD> </TR>
+<TR> <TD>linwl</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>@    [m]    left horizontal wall: distance of 1st focal point
+and guide entry </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>loutwl</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>@   [m]    left horizontal wall: distance of 2nd focal point
+and guide exit  </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>w1r</TD>
+     <TD>DEFAULT = 2.000 + @*0.002</TD>
+     <TD>@:     [m]    Width at the right guide entry   (negative x-axis)
+</TD>
+<TD ALIGN=RIGHT>0.002</TD> </TR>
+<TR> <TD>w2r</TD>
+     <TD>DEFAULT = 2.000 + @*0.002</TD>
+     <TD>@:     [m]    Width at the right guide exit    (negative x-axis)
+</TD>
+<TD ALIGN=RIGHT>0.002</TD> </TR>
+<TR> <TD>linwr</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>@     [m]   right horizontal wall: distance of 1st focal point
+and guide entry </TD>
+<TD ALIGN=RIGHT>0.0</TD> </TR>
+<TR> <TD>loutwr</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>@   [m]    right horizontal wall: distance of 2nd focal point
+and guide exit </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>h1u</TD>
+     <TD>DEFAULT = 2.000 + @*0.002</TD>
+     <TD>@:     [m]    Height at the top guide entry    (positive y-axis)
+</TD>
+<TD ALIGN=RIGHT>0.002</TD> </TR>
+<TR> <TD>h2u</TD>
+     <TD>DEFAULT = 2.000 + @*0.002</TD>
+     <TD>@:     [m]    Height at the top guide entry    (positive y-axis)
+</TD>
+<TD ALIGN=RIGHT>0.002</TD> </TR>
+<TR> <TD>linhu</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>@    [m]    upper vertical wall: distance of 1st focal point
+and guide entry </TD>
+<TD ALIGN=RIGHT>0.0</TD> </TR>
+<TR> <TD>louthu</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>@   [m]    upper vertical wall: distance of 2nd focal point
+and guide exit </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>h1d</TD>
+     <TD>DEFAULT = 2.000 + @*0.002</TD>
+     <TD>@:     [m]    Height at the bottom guide entry (negative y-axis)
+</TD>
+<TD ALIGN=RIGHT>0.002</TD> </TR>
+<TR> <TD>h2d</TD>
+     <TD>DEFAULT = 2.000 + @*0.002</TD>
+     <TD>@:     [m]    Height at the bottom guide entry (negative y-axis)
+</TD>
+<TD ALIGN=RIGHT>0.002</TD> </TR>
+<TR> <TD>linhd</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>@    [m]    lower vertical wall: distance of 1st focal point
+and guide entry </TD>
+<TD ALIGN=RIGHT>0.0</TD> </TR>
+<TR> <TD>louthd</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>@   [m]    lower vertical wall: distance of 2nd focal point
+and guide exit </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>l</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>[m]    length of guide </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>R0</TD>
+     <TD>DEFAULT = 0.99</TD>
+     <TD>[1]    Low-angle reflectivity </TD>
+<TD ALIGN=RIGHT>0.99</TD> </TR>
+<TR> <TD>Qcxl</TD>
+     <TD>DEFAULT = 0.0217</TD>
+     <TD>@:    [AA-1] Critical scattering vector for left vertical
+inner wall </TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcxr</TD>
+     <TD>DEFAULT = 0.0217</TD>
+     <TD>@:    [AA-1] Critical scattering vector for right vertical
+inner wall </TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcyu</TD>
+     <TD>DEFAULT = 0.0217</TD>
+     <TD>@:    [AA-1] Critical scattering vector for top inner wall
+</TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcyd</TD>
+     <TD>DEFAULT = 0.0217</TD>
+     <TD>@:    [AA-1] Critical scattering vector for bottom inner wall
+</TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>alphaxl</TD>
+     <TD>DEFAULT = 6.07</TD>
+     <TD>@: [AA]   Slope of reflectivity for left vertical
+inner wall </TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaxr</TD>
+     <TD>DEFAULT = 6.07</TD>
+     <TD>@: [AA]   Slope of reflectivity for right vertical
+inner wall </TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayu</TD>
+     <TD>DEFAULT = 6.07</TD>
+     <TD>@: [AA]   Slope of reflectivity for top inner wall
+</TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayd</TD>
+     <TD>DEFAULT = 6.07</TD>
+     <TD>@: [AA]   Slope of reflectivity for bottom inner wall
+</TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>Wxr</TD>
+     <TD>DEFAULT = 0.003</TD>
+     <TD>@:       [AA-1] Width of supermirror cut-off for right inner wall
+</TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wxl</TD>
+     <TD>DEFAULT = 0.003</TD>
+     <TD>@:       [AA-1] Width of supermirror cut-off for left inner wall
+</TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wyu</TD>
+     <TD>DEFAULT = 0.003</TD>
+     <TD>@:       [AA-1] Width of supermirror cut-off for top inner wall
+</TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wyd</TD>
+     <TD>DEFAULT = 0.003</TD>
+     <TD>@:       [AA-1] Width of supermirror cut-off for bottom inner wall
+</TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>mxr</TD>
+     <TD>DEFAULT = -1</TD>
+     <TD>@:     [1]    m-value of material for right vertical inner wall.
+0 means the wall is absorbing.
+-1 means the wall is transparent.
+</TD>
+<TD ALIGN=RIGHT>3.6</TD> </TR>
+<TR> <TD>mxl</TD>
+     <TD>DEFAULT = -1</TD>
+     <TD>@:     [1]    m-value of material for left vertical inner wall.
+0 means the wall is absorbing.
+-1 means the wall is transparent.
+</TD>
+<TD ALIGN=RIGHT>3.6</TD> </TR>
+<TR> <TD>myu</TD>
+     <TD>DEFAULT = -1</TD>
+     <TD>@:     [1]    m-value of material for top inner wall
+0 means the wall is absorbing.
+-1 means the wall is transparent.
+</TD>
+<TD ALIGN=RIGHT>3.6</TD> </TR>
+<TR> <TD>myd</TD>
+     <TD>DEFAULT = -1</TD>
+     <TD>@:     [1]    m-value of material for bottom inner wall
+0 means the wall is absorbing.
+-1 means the wall is transparent.
+</TD>
+<TD ALIGN=RIGHT>3.6</TD> </TR>
+<TR> <TD>QcxrOW</TD>
+     <TD>DEFAULT = 0.0217</TD>
+     <TD>@:    [AA-1] Critical scattering vector for right vertical
+outer wall </TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcxlOW</TD>
+     <TD>DEFAULT = 0.0217</TD>
+     <TD>@:    [AA-1] Critical scattering vector for left vertical
+outer wall </TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcyuOW</TD>
+     <TD>DEFAULT = 0.0217</TD>
+     <TD>@:    [AA-1] Critical scattering vector for top outer wall
+</TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcydOW</TD>
+     <TD>DEFAULT = 0.0217</TD>
+     <TD>@:    [AA-1] Critical scattering vector for bottom outer wall
+</TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>alphaxlOW</TD>
+     <TD>DEFAULT = 6.07</TD>
+     <TD>@: [AA]   Slope of reflectivity for left vertical
+outer wall </TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaxrOW</TD>
+     <TD>DEFAULT = 6.07</TD>
+     <TD>@: [AA]   Slope of reflectivity for right vertical
+outer wall </TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayuOW</TD>
+     <TD>DEFAULT = 6.07</TD>
+     <TD>@: [AA]   Slope of reflectivity for top outer wall
+</TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaydOW</TD>
+     <TD>DEFAULT = 6.07</TD>
+     <TD>@: [AA]   Slope of reflectivity for bottom outer wall
+</TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>WxrOW</TD>
+     <TD>DEFAULT = 0.003</TD>
+     <TD>@:       [AA-1] Width of supermirror cut-off for right outer wall
+</TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WxlOW</TD>
+     <TD>DEFAULT = 0.003</TD>
+     <TD>@:       [AA-1] Width of supermirror cut-off for left outer wall
+</TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WyuOW</TD>
+     <TD>DEFAULT = 0.003</TD>
+     <TD>@:       [AA-1] Width of supermirror cut-off for top outer wall
+</TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WydOW</TD>
+     <TD>DEFAULT = 0.003</TD>
+     <TD>@:       [AA-1] Width of supermirror cut-off for bottom outer wall
+</TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>mxrOW</TD>
+     <TD>DEFAULT = -1</TD>
+     <TD>@:     [1]   m-value of material for right vertical outer wall
+0 means the wall is absorbing. (DEFAULT)
+-1 means the wall is transparent.
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>mxlOW</TD>
+     <TD>DEFAULT = -1</TD>
+     <TD>@:     [1]   m-value of material for left vertical outer wall
+0 means the wall is absorbing.(DEFAULT)
+-1 means the wall is transparent.
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>myuOW</TD>
+     <TD>DEFAULT = -1</TD>
+     <TD>@:     [1]   m-value of material for top outer wall
+0 means the wall is absorbing. (DEFAULT)
+-1 means the wall is transparent.
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>mydOW</TD>
+     <TD>DEFAULT = -1</TD>
+     <TD>@:     [1]   m-value of material for bottom outer wall
+0 means the wall is absorbing. (DEFAULT)
+-1 means the wall is transparent.
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>rwallthick</TD>
+     <TD>DEFAULT = 0.001 m</TD>
+     <TD>[m]   thickness of the right wall </TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>lwallthick</TD>
+     <TD>DEFAULT = 0.001 m</TD>
+     <TD>[m]   thickness of the left wall  </TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>uwallthick</TD>
+     <TD>DEFAULT = 0.001 m</TD>
+     <TD>[m]   thickness of the top wall   </TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>dwallthick</TD>
+     <TD>DEFAULT = 0.001 m</TD>
+     <TD>[m]   thickness of the bottom wall</TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>w1l1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.002</TD> </TR>
+<TR> <TD>w2l1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.002</TD> </TR>
+<TR> <TD>linwl1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>loutwl1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>w1r1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.002</TD> </TR>
+<TR> <TD>w2r1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.002</TD> </TR>
+<TR> <TD>linwr1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>loutwr1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>h1u1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.002</TD> </TR>
+<TR> <TD>h2u1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.002</TD> </TR>
+<TR> <TD>linhu1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>louthu1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>h1d1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.002</TD> </TR>
+<TR> <TD>h2d1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.002</TD> </TR>
+<TR> <TD>linhd1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>louthd1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>Qcxl1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcxr1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcyu1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcyd1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>alphaxl1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaxr1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayu1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayd1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>Wxr1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wxl1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wyu1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wyd1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>mxr1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mxl1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myu1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myd1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>QcxrOW1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcxlOW1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcyuOW1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcydOW1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>alphaxlOW1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaxrOW1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayuOW1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaydOW1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>WxrOW1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WxlOW1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WyuOW1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WydOW1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>mxrOW1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mxlOW1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myuOW1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mydOW1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>rwallthick1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>lwallthick1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>uwallthick1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>dwallthick1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>w1l2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.004</TD> </TR>
+<TR> <TD>w2l2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.004</TD> </TR>
+<TR> <TD>linwl2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>loutwl2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>w1r2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.004</TD> </TR>
+<TR> <TD>w2r2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.004</TD> </TR>
+<TR> <TD>linwr2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>loutwr2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>h1u2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.004</TD> </TR>
+<TR> <TD>h2u2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.004</TD> </TR>
+<TR> <TD>linhu2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>louthu2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>h1d2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.004</TD> </TR>
+<TR> <TD>h2d2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.004</TD> </TR>
+<TR> <TD>linhd2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>louthd2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>Qcxl2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcxr2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcyu2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcyd2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>alphaxl2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaxr2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayu2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayd2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>Wxr2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wxl2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wyu2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wyd2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>mxr2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mxl2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myu2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myd2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>QcxrOW2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcxlOW2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcyuOW2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcydOW2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>alphaxlOW2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaxrOW2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayuOW2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaydOW2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>WxrOW2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WxlOW2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WyuOW2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WydOW2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>mxrOW2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mxlOW2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myuOW2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mydOW2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>rwallthick2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>lwallthick2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>uwallthick2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>dwallthick2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>w1l3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.006</TD> </TR>
+<TR> <TD>w2l3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.006</TD> </TR>
+<TR> <TD>linwl3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>loutwl3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>w1r3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.006</TD> </TR>
+<TR> <TD>w2r3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.006</TD> </TR>
+<TR> <TD>linwr3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>loutwr3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>h1u3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.006</TD> </TR>
+<TR> <TD>h2u3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.006</TD> </TR>
+<TR> <TD>linhu3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>louthu3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>h1d3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.006</TD> </TR>
+<TR> <TD>h2d3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.006</TD> </TR>
+<TR> <TD>linhd3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>louthd3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>Qcxl3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcxr3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcyu3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcyd3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>alphaxl3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaxr3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayu3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayd3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>Wxr3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wxl3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wyu3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wyd3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>mxr3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mxl3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myu3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myd3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>QcxrOW3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcxlOW3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcyuOW3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcydOW3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>alphaxlOW3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaxrOW3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayuOW3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaydOW3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>WxrOW3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WxlOW3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WyuOW3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WydOW3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>mxrOW3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mxlOW3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myuOW3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mydOW3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>rwallthick3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>lwallthick3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>uwallthick3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>dwallthick3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>w1l4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.008</TD> </TR>
+<TR> <TD>w2l4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.008</TD> </TR>
+<TR> <TD>linwl4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>loutwl4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>w1r4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.008</TD> </TR>
+<TR> <TD>w2r4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.008</TD> </TR>
+<TR> <TD>linwr4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>loutwr4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>h1u4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.008</TD> </TR>
+<TR> <TD>h2u4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.008</TD> </TR>
+<TR> <TD>linhu4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>louthu4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>h1d4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.008</TD> </TR>
+<TR> <TD>h2d4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.008</TD> </TR>
+<TR> <TD>linhd4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>louthd4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>Qcxl4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcxr4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcyu4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcyd4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>alphaxl4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaxr4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayu4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayd4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>Wxr4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wxl4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wyu4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wyd4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>mxr4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mxl4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myu4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myd4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>QcxrOW4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcxlOW4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcyuOW4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcydOW4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>alphaxlOW4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaxrOW4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayuOW4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaydOW4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>WxrOW4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WxlOW4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WyuOW4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WydOW4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>mxrOW4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mxlOW4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myuOW4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mydOW4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>rwallthick4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>lwallthick4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>uwallthick4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>dwallthick4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>w1l5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.01</TD> </TR>
+<TR> <TD>w2l5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.01</TD> </TR>
+<TR> <TD>linwl5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>loutwl5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>w1r5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.01</TD> </TR>
+<TR> <TD>w2r5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.01</TD> </TR>
+<TR> <TD>linwr5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>loutwr5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>h1u5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.01</TD> </TR>
+<TR> <TD>h2u5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.01</TD> </TR>
+<TR> <TD>linhu5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>louthu5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>h1d5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.01</TD> </TR>
+<TR> <TD>h2d5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.01</TD> </TR>
+<TR> <TD>linhd5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>louthd5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>Qcxl5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcxr5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcyu5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcyd5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>alphaxl5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaxr5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayu5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayd5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>Wxr5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wxl5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wyu5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wyd5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>mxr5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mxl5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myu5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myd5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>QcxrOW5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcxlOW5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcyuOW5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcydOW5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>alphaxlOW5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaxrOW5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayuOW5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaydOW5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>WxrOW5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WxlOW5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WyuOW5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WydOW5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>mxrOW5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mxlOW5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myuOW5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mydOW5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>rwallthick5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>lwallthick5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>uwallthick5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>dwallthick5</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>w1l6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.012</TD> </TR>
+<TR> <TD>w2l6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.012</TD> </TR>
+<TR> <TD>linwl6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>loutwl6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>w1r6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.012</TD> </TR>
+<TR> <TD>w2r6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.012</TD> </TR>
+<TR> <TD>linwr6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>loutwr6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>h1u6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.012</TD> </TR>
+<TR> <TD>h2u6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.012</TD> </TR>
+<TR> <TD>linhu6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>louthu6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>h1d6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.012</TD> </TR>
+<TR> <TD>h2d6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.012</TD> </TR>
+<TR> <TD>linhd6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>louthd6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>Qcxl6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcxr6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcyu6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcyd6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>alphaxl6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaxr6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayu6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayd6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>Wxr6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wxl6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wyu6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wyd6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>mxr6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mxl6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myu6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myd6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>QcxrOW6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcxlOW6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcyuOW6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcydOW6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>alphaxlOW6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaxrOW6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayuOW6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaydOW6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>WxrOW6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WxlOW6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WyuOW6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WydOW6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>mxrOW6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mxlOW6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myuOW6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mydOW6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>rwallthick6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>lwallthick6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>uwallthick6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>dwallthick6</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>w1l7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.014</TD> </TR>
+<TR> <TD>w2l7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.014</TD> </TR>
+<TR> <TD>linwl7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>loutwl7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>w1r7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.014</TD> </TR>
+<TR> <TD>w2r7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.014</TD> </TR>
+<TR> <TD>linwr7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>loutwr7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>h1u7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.014</TD> </TR>
+<TR> <TD>h2u7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.014</TD> </TR>
+<TR> <TD>linhu7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>louthu7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>h1d7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.014</TD> </TR>
+<TR> <TD>h2d7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.014</TD> </TR>
+<TR> <TD>linhd7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>louthd7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>Qcxl7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcxr7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcyu7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcyd7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>alphaxl7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaxr7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayu7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayd7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>Wxr7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wxl7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wyu7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wyd7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>mxr7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mxl7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myu7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myd7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>QcxrOW7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcxlOW7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcyuOW7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcydOW7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>alphaxlOW7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaxrOW7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayuOW7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaydOW7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>WxrOW7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WxlOW7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WyuOW7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WydOW7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>mxrOW7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mxlOW7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myuOW7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mydOW7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>rwallthick7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>lwallthick7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>uwallthick7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>dwallthick7</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>w1l8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.016</TD> </TR>
+<TR> <TD>w2l8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.016</TD> </TR>
+<TR> <TD>linwl8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>loutwl8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>w1r8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.016</TD> </TR>
+<TR> <TD>w2r8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.016</TD> </TR>
+<TR> <TD>linwr8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>loutwr8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>h1u8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.016</TD> </TR>
+<TR> <TD>h2u8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.016</TD> </TR>
+<TR> <TD>linhu8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>louthu8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>h1d8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.016</TD> </TR>
+<TR> <TD>h2d8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.016</TD> </TR>
+<TR> <TD>linhd8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>louthd8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>Qcxl8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcxr8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcyu8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcyd8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>alphaxl8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaxr8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayu8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayd8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>Wxr8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wxl8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wyu8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wyd8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>mxr8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mxl8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myu8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myd8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>QcxrOW8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcxlOW8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcyuOW8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcydOW8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>alphaxlOW8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaxrOW8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayuOW8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaydOW8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>WxrOW8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WxlOW8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WyuOW8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WydOW8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>mxrOW8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mxlOW8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myuOW8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mydOW8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>rwallthick8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>lwallthick8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>uwallthick8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>dwallthick8</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>w1l9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.018</TD> </TR>
+<TR> <TD>w2l9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.018</TD> </TR>
+<TR> <TD>linwl9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>loutwl9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>w1r9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.018</TD> </TR>
+<TR> <TD>w2r9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.018</TD> </TR>
+<TR> <TD>linwr9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>loutwr9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>h1u9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.018</TD> </TR>
+<TR> <TD>h2u9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.018</TD> </TR>
+<TR> <TD>linhu9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>louthu9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>h1d9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.018</TD> </TR>
+<TR> <TD>h2d9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.018</TD> </TR>
+<TR> <TD>linhd9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>louthd9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>Qcxl9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcxr9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcyu9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcyd9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>alphaxl9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaxr9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayu9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayd9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>Wxr9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wxl9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wyu9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wyd9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>mxr9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mxl9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myu9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myd9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>QcxrOW9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcxlOW9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcyuOW9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcydOW9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>alphaxlOW9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaxrOW9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayuOW9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaydOW9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>WxrOW9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WxlOW9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WyuOW9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WydOW9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>mxrOW9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mxlOW9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myuOW9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mydOW9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>rwallthick9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>lwallthick9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>uwallthick9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>dwallthick9</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>w1l10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.02</TD> </TR>
+<TR> <TD>w2l10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.02</TD> </TR>
+<TR> <TD>linwl10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>loutwl10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>w1r10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.02</TD> </TR>
+<TR> <TD>w2r10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.02</TD> </TR>
+<TR> <TD>linwr10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>loutwr10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>h1u10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.02</TD> </TR>
+<TR> <TD>h2u10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.02</TD> </TR>
+<TR> <TD>linhu10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>louthu10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>h1d10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.02</TD> </TR>
+<TR> <TD>h2d10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>2.02</TD> </TR>
+<TR> <TD>linhd10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>louthd10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>Qcxl10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcxr10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcyu10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcyd10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>alphaxl10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaxr10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayu10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayd10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>Wxr10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wxl10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wyu10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wyd10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>mxr10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mxl10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myu10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myd10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>QcxrOW10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcxlOW10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcyuOW10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcydOW10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>alphaxlOW10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaxrOW10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayuOW10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaydOW10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>WxrOW10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WxlOW10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WyuOW10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WydOW10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>mxrOW10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mxlOW10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>myuOW10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>mydOW10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>-1</TD> </TR>
+<TR> <TD>rwallthick10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>lwallthick10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>uwallthick10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>dwallthick10</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=opar></A>Output parameters</H2>
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD><B>w1rwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w1lwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h1uwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h1dwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w2rwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w2lwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h2uwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h2dwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawr</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawl</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwr</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwl</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahu</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahd</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhu</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhd</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awl</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwl</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awr</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwr</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahu</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhu</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahd</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhd</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awlwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwlwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awrwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwrwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahuwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhuwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahdwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhdwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawrwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawlwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwrwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwlwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahuwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahdwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhuwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhdwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1r</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1l</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1u</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1d</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1rwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1lwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1uwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1dwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wlwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wlwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wrwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wrwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2huwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2huwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hdwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hdwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wl</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wl</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wr</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wr</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hu</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hu</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hd</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hd</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mru1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mru2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nru1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nru2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mrd1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mrd2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nrd1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nrd2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mlu1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mlu2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nlu1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nlu2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mld1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mld2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nld1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nld2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0wr</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0wl</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0hu</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0hd</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawr</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawl</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahu</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahd</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawrwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawlwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahuwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahdwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>m</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>n</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nz</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nx</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ny</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>n2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pf</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>vxin</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>vyin</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>vzin</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>q</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>xtest</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ytest</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>riTable</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>liTable</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>uiTable</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>diTable</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>roTable</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>loTable</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>uoTable</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>doTable</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w1rwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w1lwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h1uwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h1dwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w2rwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w2lwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h2uwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h2dwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawr1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawl1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwr1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwl1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahu1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahd1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhu1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhd1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awl1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwl1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awr1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwr1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahu1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhu1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahd1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhd1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awlwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwlwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awrwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwrwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahuwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhuwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahdwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhdwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawrwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawlwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwrwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwlwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahuwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahdwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhuwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhdwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1r1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1l1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1u1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1d1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1rwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1lwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1uwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1dwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wlwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wlwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wrwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wrwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2huwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2huwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hdwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hdwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wl1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wl1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wr1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wr1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hu1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hu1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hd1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hd1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mru11</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mru21</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nru11</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nru21</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mrd11</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mrd21</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nrd11</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nrd21</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mlu11</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mlu21</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nlu11</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nlu21</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mld11</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mld21</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nld11</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nld21</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0wr1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0wl1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0hu1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0hd1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawr1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawl1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahu1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahd1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawrwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawlwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahuwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahdwt1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>riTable1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>liTable1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>uiTable1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>diTable1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>roTable1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>loTable1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>uoTable1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>doTable1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w1rwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w1lwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h1uwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h1dwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w2rwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w2lwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h2uwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h2dwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawr2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawl2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwr2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwl2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahu2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahd2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhu2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhd2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awl2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwl2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awr2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwr2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahu2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhu2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahd2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhd2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awlwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwlwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awrwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwrwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahuwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhuwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahdwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhdwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawrwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawlwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwrwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwlwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahuwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahdwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhuwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhdwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1r2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1l2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1u2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1d2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1rwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1lwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1uwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1dwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wlwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wlwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wrwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wrwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2huwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2huwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hdwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hdwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wl2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wl2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wr2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wr2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hu2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hu2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hd2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hd2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mru12</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mru22</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nru12</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nru22</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mrd12</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mrd22</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nrd12</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nrd22</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mlu12</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mlu22</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nlu12</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nlu22</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mld12</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mld22</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nld12</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nld22</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0wr2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0wl2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0hu2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0hd2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawr2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawl2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahu2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahd2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawrwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawlwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahuwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahdwt2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>riTable2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>liTable2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>uiTable2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>diTable2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>roTable2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>loTable2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>uoTable2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>doTable2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1r3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1l3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1u3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1d3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1rwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1lwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1uwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1dwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1r4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1l4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1u4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1d4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1rwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1lwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1uwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1dwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1r5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1l5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1u5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1d5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1rwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1lwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1uwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1dwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1r6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1l6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1u6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1d6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1rwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1lwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1uwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1dwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1r7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1l7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1u7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1d7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1rwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1lwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1uwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1dwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1r8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1l8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1u8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1d8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1rwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1lwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1uwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1dwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1r9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1l9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1u9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1d9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1rwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1lwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1uwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1dwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1r10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1l10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1u10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1d10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1rwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1lwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1uwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1dwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w1rwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w1lwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h1uwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h1dwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w2rwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w2lwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h2uwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h2dwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawr3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawl3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwr3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwl3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahu3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahd3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhu3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhd3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awl3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwl3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awr3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwr3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahu3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhu3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahd3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhd3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awlwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwlwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awrwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwrwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahuwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhuwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahdwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhdwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawrwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawlwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwrwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwlwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahuwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahdwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhuwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhdwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wlwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wlwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wrwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wrwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2huwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2huwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hdwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hdwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wl3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wl3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wr3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wr3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hu3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hu3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hd3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hd3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mru13</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mru23</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nru13</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nru23</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mrd13</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mrd23</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nrd13</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nrd23</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mlu13</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mlu23</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nlu13</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nlu23</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mld13</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mld23</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nld13</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nld23</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0wr3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0wl3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0hu3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0hd3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawr3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawl3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahu3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahd3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawrwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawlwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahuwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahdwt3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>riTable3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>liTable3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>uiTable3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>diTable3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>roTable3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>loTable3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>uoTable3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>doTable3</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w1rwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w1lwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h1uwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h1dwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w2rwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w2lwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h2uwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h2dwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawr4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawl4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwr4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwl4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahu4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahd4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhu4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhd4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awl4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwl4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awr4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwr4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahu4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhu4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahd4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhd4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awlwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwlwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awrwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwrwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahuwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhuwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahdwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhdwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawrwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawlwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwrwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwlwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahuwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahdwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhuwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhdwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wlwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wlwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wrwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wrwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2huwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2huwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hdwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hdwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wl4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wl4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wr4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wr4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hu4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hu4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hd4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hd4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mru14</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mru24</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nru14</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nru24</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mrd14</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mrd24</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nrd14</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nrd24</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mlu14</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mlu24</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nlu14</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nlu24</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mld14</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mld24</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nld14</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nld24</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0wr4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0wl4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0hu4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0hd4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawr4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawl4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahu4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahd4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawrwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawlwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahuwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahdwt4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>riTable4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>liTable4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>uiTable4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>diTable4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>roTable4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>loTable4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>uoTable4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>doTable4</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w1rwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w1lwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h1uwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h1dwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w2rwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w2lwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h2uwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h2dwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawr5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawl5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwr5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwl5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahu5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahd5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhu5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhd5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awl5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwl5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awr5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwr5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahu5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhu5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahd5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhd5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awlwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwlwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awrwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwrwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahuwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhuwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahdwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhdwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawrwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawlwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwrwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwlwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahuwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahdwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhuwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhdwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wlwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wlwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wrwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wrwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2huwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2huwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hdwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hdwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wl5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wl5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wr5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wr5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hu5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hu5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hd5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hd5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mru15</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mru25</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nru15</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nru25</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mrd15</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mrd25</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nrd15</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nrd25</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mlu15</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mlu25</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nlu15</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nlu25</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mld15</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mld25</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nld15</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nld25</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0wr5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0wl5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0hu5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0hd5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawr5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawl5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahu5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahd5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawrwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawlwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahuwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahdwt5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>riTable5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>liTable5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>uiTable5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>diTable5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>roTable5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>loTable5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>uoTable5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>doTable5</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w1rwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w1lwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h1uwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h1dwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w2rwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w2lwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h2uwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h2dwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawr6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawl6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwr6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwl6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahu6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahd6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhu6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhd6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awl6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwl6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awr6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwr6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahu6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhu6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahd6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhd6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awlwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwlwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awrwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwrwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahuwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhuwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahdwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhdwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawrwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawlwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwrwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwlwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahuwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahdwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhuwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhdwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wlwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wlwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wrwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wrwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2huwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2huwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hdwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hdwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wl6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wl6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wr6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wr6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hu6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hu6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hd6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hd6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mru16</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mru26</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nru16</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nru26</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mrd16</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mrd26</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nrd16</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nrd26</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mlu16</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mlu26</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nlu16</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nlu26</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mld16</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mld26</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nld16</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nld26</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0wr6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0wl6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0hu6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0hd6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawr6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawl6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahu6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahd6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawrwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawlwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahuwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahdwt6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>riTable6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>liTable6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>uiTable6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>diTable6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>roTable6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>loTable6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>uoTable6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>doTable6</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w1rwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w1lwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h1uwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h1dwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w2rwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w2lwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h2uwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h2dwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawr7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawl7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwr7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwl7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahu7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahd7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhu7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhd7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awl7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwl7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awr7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwr7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahu7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhu7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahd7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhd7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awlwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwlwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awrwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwrwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahuwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhuwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahdwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhdwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawrwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawlwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwrwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwlwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahuwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahdwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhuwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhdwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wlwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wlwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wrwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wrwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2huwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2huwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hdwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hdwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wl7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wl7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wr7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wr7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hu7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hu7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hd7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hd7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mru17</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mru27</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nru17</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nru27</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mrd17</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mrd27</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nrd17</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nrd27</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mlu17</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mlu27</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nlu17</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nlu27</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mld17</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mld27</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nld17</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nld27</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0wr7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0wl7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0hu7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0hd7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawr7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawl7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahu7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahd7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawrwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawlwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahuwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahdwt7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>riTable7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>liTable7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>uiTable7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>diTable7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>roTable7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>loTable7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>uoTable7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>doTable7</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w1rwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w1lwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h1uwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h1dwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w2rwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w2lwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h2uwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h2dwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawr8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawl8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwr8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwl8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahu8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahd8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhu8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhd8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awl8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwl8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awr8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwr8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahu8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhu8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahd8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhd8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awlwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwlwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awrwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwrwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahuwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhuwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahdwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhdwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawrwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawlwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwrwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwlwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahuwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahdwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhuwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhdwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wlwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wlwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wrwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wrwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2huwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2huwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hdwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hdwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wl8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wl8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wr8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wr8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hu8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hu8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hd8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hd8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mru18</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mru28</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nru18</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nru28</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mrd18</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mrd28</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nrd18</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nrd28</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mlu18</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mlu28</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nlu18</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nlu28</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mld18</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mld28</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nld18</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nld28</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0wr8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0wl8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0hu8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0hd8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawr8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawl8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahu8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahd8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawrwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawlwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahuwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahdwt8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>riTable8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>liTable8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>uiTable8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>diTable8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>roTable8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>loTable8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>uoTable8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>doTable8</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w1rwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w1lwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h1uwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h1dwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w2rwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w2lwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h2uwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h2dwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawr9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawl9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwr9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwl9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahu9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahd9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhu9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhd9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awl9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwl9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awr9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwr9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahu9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhu9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahd9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhd9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awlwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwlwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awrwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwrwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahuwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhuwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahdwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhdwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawrwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawlwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwrwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwlwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahuwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahdwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhuwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhdwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wlwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wlwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wrwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wrwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2huwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2huwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hdwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hdwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wl9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wl9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wr9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wr9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hu9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hu9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hd9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hd9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mru19</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mru29</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nru19</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nru29</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mrd19</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mrd29</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nrd19</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nrd29</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mlu19</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mlu29</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nlu19</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nlu29</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mld19</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mld29</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nld19</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nld29</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0wr9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0wl9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0hu9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0hd9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawr9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawl9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahu9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahd9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawrwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawlwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahuwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahdwt9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>riTable9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>liTable9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>uiTable9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>diTable9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>roTable9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>loTable9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>uoTable9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>doTable9</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w1rwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w1lwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h1uwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h1dwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w2rwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w2lwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h2uwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h2dwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawr10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawl10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwr10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwl10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahu10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahd10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhu10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhd10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awl10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwl10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awr10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwr10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahu10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhu10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahd10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhd10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awlwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwlwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awrwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwrwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahuwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhuwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahdwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhdwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawrwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawlwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwrwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwlwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahuwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahdwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhuwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhdwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wlwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wlwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wrwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wrwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2huwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2huwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hdwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hdwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wl10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wl10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wr10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wr10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hu10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hu10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hd10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hd10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mru110</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mru210</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nru110</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nru210</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mrd110</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mrd210</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nrd110</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nrd210</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mlu110</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mlu210</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nlu110</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nlu210</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mld110</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mld210</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nld110</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nld210</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0wr10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0wl10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0hu10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0hd10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawr10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawl10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahu10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahd10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawrwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawlwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahuwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahdwt10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>riTable10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>liTable10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>uiTable10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>diTable10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>roTable10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>loTable10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>uoTable10</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>doTable10
+</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=links></A>Links</H2>
+
+<UL>
+  <LI> <A HREF="Guide_four_side_10_shells.comp">Source code</A> for <CODE>Guide_four_side_10_shells.comp</CODE>.
+</UL>
+<HR>
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<ADDRESS>
+Generated automatically by McDoc, Peter Willendrup
+&lt;<A HREF="mailto:peter.willendrup@risoe.dk">peter.willendrup@risoe.dk</A>&gt; /
+Tue Sep  7 12:28:42 2010</ADDRESS>
+</BODY></HTML>

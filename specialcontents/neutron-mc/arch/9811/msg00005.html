@@ -1,0 +1,99 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: MCStas -->
+<!--X-From: Andrew Garrett <agarrett@ccbsf0.kek.jp> -->
+<!--X-Date: Tue, 10 Nov 1998 15:37:23 +0900 -->
+<!--X-Message-Id: 01J48MDP2CR88WWAUI@risoe.dk -->
+<!--X-ContentType: text/plain -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>MCStas</title>
+<link rev="made" href="mailto:agarrett@ccbsf0.kek.jp">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00012.html">Date Prev</A>][<A HREF="msg00006.html">Date Next</A>]
+<a href="index.html#00005">[Chronological]</a>
+<a href="threads.html#00005">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>MCStas</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>MCStas</strong></LI>
+<LI><strong>From</strong>: <strong>Andrew Garrett &lt;<A HREF="mailto:agarrett@ccbsf0.kek.jp">agarrett@ccbsf0.kek.jp</A>&gt;</strong></LI>
+<LI>Date: Tue, 10 Nov 1998 15:37:23 +0900</LI>
+<LI>Content-return: allowed</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Kristian,
+
+  As we'd discussed during the conference, I've been trying to get
+MCStas running under windows.  I'm having a problem...
+
+  The problem occurs in the yyparse function in instrume.c.  This is the
+bison parser, and I'm having some trouble isolating the problem.  My
+best guess at the moment is all the
+    #line x "/usr/share/misc/bison.simple"
+since that file doesn't actually exist on my machine (OK, it's not the
+most difficult guess in the world).  Do you know what that file is?  Or
+where I can find a copy, preferably windows compatible?
+
+  As to other changes that have been required, most have revolved around
+the file system, changing the separator '/' to '\'.  Also, I had to
+declare the variable read_components in mcstas.h as extern, or I got an
+error for this being declared in every file.  I'm not sure if that will
+cause problems down the road - was that defined anywhere else?
+
+  Thanks for your help,
+
+  Andrew Garrett
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00012.html">Re: First tries using McStas</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00006.html">Re: MCStas</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00005"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00005"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

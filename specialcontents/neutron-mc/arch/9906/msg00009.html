@@ -1,0 +1,3876 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: Mcstas 1.1 -->
+<!--X-From: Bertrand.Roessli@psi.ch -->
+<!--X-Date: Thu, 10 Jun 1999 13:53:56 +0200 -->
+<!--X-Message-Id: 99061013535629@psicl0.psi.ch -->
+<!--X-ContentType: multipart/mixed -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: Mcstas 1.1</title>
+<link rev="made" href="mailto:Bertrand.Roessli@psi.ch">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00007.html">Date Prev</A>][<A HREF="msg00010.html">Date Next</A>]
+<a href="index.html#00009">[Chronological]</a>
+<a href="threads.html#00009">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: Mcstas 1.1</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: Mcstas 1.1</strong></LI>
+<LI><strong>From</strong>: <strong><A HREF="mailto:Bertrand.Roessli@psi.ch">Bertrand.Roessli@psi.ch</A></strong></LI>
+<LI>Date: Thu, 10 Jun 1999 13:53:56 +0200</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Dear Kristian,
+
+please find below the linup-1.c file which
+has got undefined variables.
+
+regards,
+
+B. Roessli
+
+/* Automatically generated file. Do not edit. */
+
+#define MC_USE_DEFAULT_MAIN
+#define MC_EMBEDDED_RUNTIME
+
+#line 1 "mcstas-r.h"
+/*******************************************************************************
+* Runtime system for McStas.
+*
+*	Project: Monte Carlo Simulation of Triple Axis Spectrometers
+*	File name: mcstas-r.h
+*
+*	Author: K.N.			Aug 29, 1997
+*
+*	$Id: msg00009.html,v 1.1.1.1 2004-06-22 12:05:24 pkwi Exp $
+*
+*	$Log: msg00009.html,v $
+*	Revision 1.1.1.1  2004-06-22 12:05:24  pkwi
+*	Import of website
+*
+*	Revision 1.20  1998/10/09 07:53:48  kn
+*	Added some unit conversion constants.
+*
+*	Revision 1.19  1998/10/02 08:38:36  kn
+*	Added DETECTOR_OUT support.
+*	Fixed header comment.
+*
+*	Revision 1.18  1998/10/01 08:12:42  kn
+*	Support for embedding the file in the output from McStas.
+*	Added mcstas_main() function.
+*	Added support for command line arguments.
+*
+*	Revision 1.17  1998/09/24 13:01:39  kn
+*	Minor conversion factor additions.
+*
+*	Revision 1.16  1998/09/23 13:52:08  kn
+*	Added conversion factors.
+*	McStas now uses its own random() implementation (unless
+*	USE_SYSTEM_RANDOM is defined).
+*
+*	Revision 1.15  1998/05/19 07:59:45  kn
+*	Hack to make random number generation work with HP's CC C compiler.
+*
+*	Revision 1.14  1998/04/17 11:50:31  kn
+*	Added sphere_intersect.
+*
+*	Revision 1.13  1998/04/17 10:53:08  kn
+*	Added randvec_target_sphere.
+*
+*	Revision 1.12  1998/03/25 07:23:24  kn
+*	Fixed RAND_MAX #define for HPUX.
+*
+*	Revision 1.11  1998/03/24 13:59:26  lefmann
+*	Added #define for RAND_MAX, needed on HPUX.
+*
+*	Revision 1.10  1998/03/24 13:24:40  lefmann
+*	Added HBAR, MNEUTRON.
+*
+*	Revision 1.9  1998/03/24 07:42:35  kn
+*	Added definition for PI.
+*
+*	Revision 1.8  1998/03/24 07:36:20  kn
+*	Make ABSORB macro work better in control structures.
+*	Add test_printf().
+*	Add rand01(), randpm1(), rand0max(), and randminmax().
+*	Add PROP_X0, PROP_Y0, PROP_DT, vec_prod(), scalar_prod(), NORM(), and
+*	rotate().
+*	Fix typos.
+*
+*	Revision 1.7  1998/03/20 14:20:10  lefmann
+*	Added a few definitions.
+*
+*	Revision 1.6  1998/03/18 13:21:48  elu_krni
+*	Added definition of PROP_Z0 macro.
+*
+*	Revision 1.5  1998/03/16 08:04:16  kn
+*	Added normal distributed random number function randnorm().
+*
+*	Revision 1.4  1997/12/03 13:34:19  kn
+*	Added definition of ABSORB macro.
+*
+*	Revision 1.3  1997/10/16 14:27:28  kn
+*	Added debugging output used by the "display" graphical visualization
+*	tool.
+*
+*	Revision 1.2  1997/09/08 11:31:27  kn
+*	Added mcsetstate() function.
+*
+*	Revision 1.1  1997/09/08 10:39:44  kn
+*	Initial revision
+*
+*
+* Copyright (C) Risoe National Laboratory, 1997-1998, All rights reserved
+*******************************************************************************/
+
+#ifndef MCSTAS_R_H
+#define MCSTAS_R_H
+
+#include &lt;math.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+
+/* If the runtime is embedded in the simulation program, some definitions can
+   be made static. */
+
+#ifdef MC_EMBEDDED_RUNTIME
+#define mcstatic static
+#else
+#define mcstatic
+#endif
+
+typedef double MCNUM;
+typedef struct {MCNUM x, y, z;} Coords;
+typedef MCNUM Rotation[3][3];
+
+struct mcinputtable_struct {
+  char *name;
+  MCNUM *par;
+};
+extern struct mcinputtable_struct mcinputtable[];
+extern int mcnumipar;
+extern char mcinstrument_name[], mcinstrument_source[];
+extern int mctraceenabled, mcdefaultmain;
+void mcinit(void);
+void mcraytrace(void);
+void mcfinally(void);
+
+#define ABSORB do {mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz, \
+        mcnlt,mcnls1,mcnls2, mcnlp); mcDEBUG_ABSORB(); goto mcabsorb;} while(0)
+#define MC_GETPAR(comp, par) mcc ## comp ## _ ## par
+#define DETECTOR_OUT(p0,p1,p2) printf("Detector: %s_I=%g %s_ERR=%g\n", \
+	  mccompcurname, p1, mccompcurname, mcestimate_error(p0,p1,p2))
+
+#ifdef MC_TRACE_ENABLED
+#define DEBUG
+#endif
+
+#ifdef DEBUG
+#define mcDEBUG_INSTR() if(!mcdotrace); else printf("INSTRUMENT:\n");
+#define mcDEBUG_COMPONENT(name,c,t) if(!mcdotrace); else \
+  printf("COMPONENT: \"%s\"\n" \
+	 "POS: %g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g\n", \
+	 name, c.x, c.y, c.z, t[0][0], t[0][1], t[0][2], \
+	 t[1][0], t[1][1], t[1][2], t[2][0], t[2][1], t[2][2]);
+#define mcDEBUG_INSTR_END() if(!mcdotrace); else printf("INSTRUMENT END:\n");
+#define mcDEBUG_ENTER() if(!mcdotrace); else printf("ENTER:\n");
+#define mcDEBUG_COMP(c) if(!mcdotrace); else printf("COMP: \"%s\"\n", c);
+#define mcDEBUG_STATE(x,y,z,vx,vy,vz,t,s1,s2,p) if(!mcdotrace); else \
+  printf("STATE: %g, %g, %g, %g, %g, %g, %g, %g, %g, %g\n", \
+	 x,y,z,vx,vy,vz,t,s1,s2,p);
+#define mcDEBUG_LEAVE() if(!mcdotrace); else printf("LEAVE:\n");
+#define mcDEBUG_ABSORB() if(!mcdotrace); else printf("ABSORB:\n");
+#else
+#define mcDEBUG_INSTR()
+#define mcDEBUG_COMPONENT(name,c,t)
+#define mcDEBUG_INSTR_END()
+#define mcDEBUG_ENTER()
+#define mcDEBUG_COMP(c)
+#define mcDEBUG_STATE(x,y,z,vx,vy,vz,t,s1,s2,p)
+#define mcDEBUG_LEAVE()
+#define mcDEBUG_ABSORB()
+#endif
+
+#ifdef TEST
+#define test_printf printf
+#else
+#define test_printf while(0) printf
+#endif
+
+#define MIN2RAD  (PI/(180*60))
+#define DEG2RAD  (PI/180)
+#define RAD2DEG  (180/PI)
+#define AA2MS    629.719		/* Convert k[1/AA] to v[m/s] */
+#define MS2AA    1.58801E-3		/* Convert v[m/s] to k[1/AA] */
+#define K2V	 AA2MS
+#define V2K	 MS2AA
+#define Q2V	 AA2MS
+#define V2Q	 MS2AA
+#define SE2V	 437.3949		/* Convert sqrt(E)[meV] to v[m/s] */
+#define VS2E	 5.227e-6		/* Convert v[m/s] to sqrt(E)[meV] */
+#define HBAR     1.05459E-34
+#define MNEUTRON 1.67492E-27
+
+#ifndef PI
+# ifdef M_PI
+#  define PI M_PI
+# else
+#  define PI 3.14159265358979323846
+# endif
+#endif
+
+typedef int mc_int32_t;
+mc_int32_t mc_random(void);
+void mc_srandom (unsigned int x);
+
+#ifndef USE_SYSTEM_RANDOM
+#ifdef RAND_MAX
+# undef RAND_MAX
+#endif
+#define RAND_MAX 0x7fffffff
+#define random mc_random
+#define srandom mc_srandom
+#endif /* !USE_SYSTEM_RANDOM */
+
+#define rand01() ( ((double)random())/((double)RAND_MAX+1) )
+#define randpm1() ( ((double)random()) / (((double)RAND_MAX+1)/2) - 1 )
+#define rand0max(max) ( ((double)random()) / (((double)RAND_MAX+1)/(max)) )
+#define randminmax(min,max) ( rand0max((max)-(min)) - (min) )
+
+#define PROP_X0 \
+  { \
+    double mc_dt; \
+    if(mcnlvx == 0) ABSORB; \
+    mc_dt = -mcnlx/mcnlvx; \
+    if(mc_dt &lt; 0) ABSORB; \
+    mcnly += mcnlvy*mc_dt; \
+    mcnlz += mcnlvz*mc_dt; \
+    mcnlt += mc_dt; \
+    mcnlx = 0; \
+  }
+
+#define PROP_Y0 \
+  { \
+    double mc_dt; \
+    if(mcnlvy == 0) ABSORB; \
+    mc_dt = -mcnly/mcnlvy; \
+    if(mc_dt &lt; 0) ABSORB; \
+    mcnlx += mcnlvx*mc_dt; \
+    mcnlz += mcnlvz*mc_dt; \
+    mcnlt += mc_dt; \
+    mcnly = 0; \
+  }
+
+#define PROP_Z0 \
+  { \
+    double mc_dt; \
+    if(mcnlvz == 0) ABSORB; \
+    mc_dt = -mcnlz/mcnlvz; \
+    if(mc_dt &lt; 0) ABSORB; \
+    mcnlx += mcnlvx*mc_dt; \
+    mcnly += mcnlvy*mc_dt; \
+    mcnlt += mc_dt; \
+    mcnlz = 0; \
+  }
+
+#define PROP_DT(dt) \
+  { \
+    mcnlx += mcnlvx*(dt); \
+    mcnly += mcnlvy*(dt); \
+    mcnlz += mcnlvz*(dt); \
+    mcnlt += (dt); \
+  }
+
+#define vec_prod(x, y, z, x1, y1, z1, x2, y2, z2) \
+  { \
+    double mcvp_tmpx, mcvp_tmpy, mcvp_tmpz; \
+    mcvp_tmpx = (y1)*(z2) - (y2)*(z1); \
+    mcvp_tmpy = (z1)*(x2) - (z2)*(x1); \
+    mcvp_tmpz = (x1)*(y2) - (x2)*(y1); \
+    (x) = mcvp_tmpx; (y) = mcvp_tmpy; (z) = mcvp_tmpz; \
+  }
+
+#define scalar_prod(x1, y1, z1, x2, y2, z2) \
+  ((x1)*(x2) + (y1)*(y2) + (z1)*(z2))
+
+#define NORM(x,y,z) \
+  { \
+    double mcnm_tmp = sqrt((x)*(x) + (y)*(y) + (z)*(z)); \
+    if(mcnm_tmp != 0.0) \
+    { \
+      (x) /= mcnm_tmp; \
+      (y) /= mcnm_tmp; \
+      (z) /= mcnm_tmp; \
+    } \
+  }
+
+#define rotate(x, y, z, vx, vy, vz, phi, ax, ay, az) \
+  { \
+    double mcrt_tmpx = (ax), mcrt_tmpy = (ay), mcrt_tmpz = (az); \
+    double mcrt_vp, mcrt_vpx, mcrt_vpy, mcrt_vpz; \
+    double mcrt_vnx, mcrt_vny, mcrt_vnz, mcrt_vn1x, mcrt_vn1y, mcrt_vn1z; \
+    double mcrt_bx, mcrt_by, mcrt_bz, mcrt_v1x, mcrt_v1y, mcrt_v1z; \
+    double mcrt_cos, mcrt_sin; \
+    NORM(mcrt_tmpx, mcrt_tmpy, mcrt_tmpz); \
+    mcrt_vp = scalar_prod((vx), (vy), (vz), mcrt_tmpx, mcrt_tmpy, mcrt_tmpz); \
+    mcrt_vpx = mcrt_vp*mcrt_tmpx; \
+    mcrt_vpy = mcrt_vp*mcrt_tmpy; \
+    mcrt_vpz = mcrt_vp*mcrt_tmpz; \
+    mcrt_vnx = (vx) - mcrt_vpx; \
+    mcrt_vny = (vy) - mcrt_vpy; \
+    mcrt_vnz = (vz) - mcrt_vpz; \
+    vec_prod(mcrt_bx, mcrt_by, mcrt_bz, \
+	     mcrt_tmpx, mcrt_tmpy, mcrt_tmpz, mcrt_vnx, mcrt_vny, mcrt_vnz); \
+    mcrt_cos = cos((phi)); mcrt_sin = sin((phi)); \
+    mcrt_vn1x = mcrt_vnx*mcrt_cos + mcrt_bx*mcrt_sin; \
+    mcrt_vn1y = mcrt_vny*mcrt_cos + mcrt_by*mcrt_sin; \
+    mcrt_vn1z = mcrt_vnz*mcrt_cos + mcrt_bz*mcrt_sin; \
+    (x) = mcrt_vpx + mcrt_vn1x; \
+    (y) = mcrt_vpy + mcrt_vn1y; \
+    (z) = mcrt_vpz + mcrt_vn1z; \
+  }
+
+Coords coords_set(MCNUM x, MCNUM y, MCNUM z);
+Coords coords_add(Coords a, Coords b);
+Coords coords_sub(Coords a, Coords b);
+Coords coords_neg(Coords a);
+
+void rot_set_rotation(Rotation t, double phx, double phy, double phz);
+void rot_mul(Rotation t1, Rotation t2, Rotation t3);
+void rot_copy(Rotation dest, Rotation src);
+void rot_transpose(Rotation src, Rotation dst);
+Coords rot_apply(Rotation t, Coords a);
+void mccoordschange(Coords a, Rotation t, double *x, double *y, double *z,
+	       double *vx, double *vy, double *vz, double *time,
+	       double *s1, double *s2);
+double mcestimate_error(int N, double p1, double p2);
+void mcreadparams(void);
+
+void mcsetstate(double x, double y, double z, double vx, double vy, double vz,
+		double t, double s1, double s2, double p);
+void mcgenstate(void);
+double randnorm(void);
+int cylinder_intersect(double *t0, double *t1, double x, double y, double z,
+		       double vx, double vy, double vz, double r, double h);
+int sphere_intersect(double *t0, double *t1, double x, double y, double z,
+		 double vx, double vy, double vz, double r);
+void randvec_target_sphere(double *xo, double *yo, double *zo, double *solid_angle,
+			   double xi, double yi, double zi, double radius);
+
+void mcset_ncount(double count);
+int mcstas_main(int argc, char *argv[]);
+
+#endif /* MCSTAS_R_H */
+/* End of file "mcstas-r.h". */
+
+#line 335 "linup-1.c"
+
+#line 1 "mcstas-r.c"
+/*******************************************************************************
+* Runtime system for McStas.
+*
+* 	Project: Monte Carlo Simulation of Triple Axis Spectrometers
+* 	File name: mcstas-r.c
+*
+* 	Author: K.N.			Aug 27, 1997
+*
+* 	$Id: msg00009.html,v 1.1.1.1 2004-06-22 12:05:24 pkwi Exp $
+*
+* 	$Log: msg00009.html,v $
+* 	Revision 1.1.1.1  2004-06-22 12:05:24  pkwi
+* 	Import of website
+*
+* 	Revision 1.15  1998/10/02 08:38:27  kn
+* 	Added DETECTOR_OUT support.
+* 	Fixed header comment.
+*
+* 	Revision 1.14  1998/10/01 08:12:26  kn
+* 	Support for embedding the file in the output from McStas.
+* 	Added mcstas_main() function.
+* 	Added support for command line arguments.
+*
+* 	Revision 1.13  1998/09/23 13:51:35  kn
+* 	McStas now uses its own random() implementation (unless
+* 	USE_SYSTEM_RANDOM is defined).
+*
+* 	Revision 1.12  1998/05/19 07:54:05  kn
+* 	In randvec_target_sphere, accept radius=0 to mean that no focusing is to
+* 	be done (choose direction uniformly in full 4PI solid angle).
+*
+* 	Revision 1.11  1998/05/11 12:08:49  kn
+* 	Fix bug in cylinder_intersect that caused an infinite cylinder height in
+* 	some cases.
+*
+* 	Revision 1.10  1998/04/17 11:50:08  kn
+* 	Added sphere_intersect.
+*
+* 	Revision 1.9  1998/04/17 10:52:27  kn
+* 	Better names in randvec_target_sphere.
+*
+* 	Revision 1.8  1998/04/16 14:21:49  kn
+* 	Added randvec_target() function.
+*
+* 	Revision 1.7  1998/03/24 07:34:03  kn
+* 	Use rand01() in randnorm(). Fix typos.
+*
+* 	Revision 1.6  1998/03/20 14:19:52  lefmann
+* 	Added cylinder_intersect().
+*
+* 	Revision 1.5  1998/03/16 08:03:41  kn
+* 	Added normal distributed random number function randnorm().
+*
+* 	Revision 1.4  1997/10/16 14:27:05  kn
+* 	Add missing #include. Change in mcreadparams() to fit better with the
+* 	"display" visualization tool.
+*
+* 	Revision 1.3  1997/09/08 11:31:22  kn
+* 	Added mcsetstate() function.
+*
+* 	Revision 1.2  1997/09/08 11:16:43  kn
+* 	Bug fix in mccoordschange().
+*
+* 	Revision 1.1  1997/09/08 10:40:03  kn
+* 	Initial revision
+*
+*
+* Copyright (C) Risoe National Laboratory, 1997-1998, All rights reserved
+*******************************************************************************/
+
+#include &lt;math.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#ifndef MCSTAS_R_H
+#include "mcstas-r.h"
+#endif
+
+
+#ifdef MC_ANCIENT_COMPATIBILITY
+int mctraceenabled = 0;
+int mcdefaultmain = 0;
+#endif
+
+
+/* Assign coordinates. */
+Coords
+coords_set(MCNUM x, MCNUM y, MCNUM z)
+{
+  Coords a;
+
+  a.x = x;
+  a.y = y;
+  a.z = z;
+  return a;
+}
+
+/* Add two coordinates. */
+Coords
+coords_add(Coords a, Coords b)
+{
+  Coords c;
+
+  c.x = a.x + b.x;
+  c.y = a.y + b.y;
+  c.z = a.z + b.z;
+  return c;
+}
+
+/* Subtract two coordinates. */
+Coords
+coords_sub(Coords a, Coords b)
+{
+  Coords c;
+
+  c.x = a.x - b.x;
+  c.y = a.y - b.y;
+  c.z = a.z - b.z;
+  return c;
+}
+
+/* Negate coordinates. */
+Coords
+coords_neg(Coords a)
+{
+  Coords b;
+
+  b.x = -a.x;
+  b.y = -a.y;
+  b.z = -a.z;
+  return b;
+}
+
+/*******************************************************************************
+* Get transformation for rotation first phx around x axis, then phy around y,
+* then phz around z.
+*******************************************************************************/
+void
+rot_set_rotation(Rotation t, double phx, double phy, double phz)
+{
+  double cx = cos(phx);
+  double sx = sin(phx);
+  double cy = cos(phy);
+  double sy = sin(phy);
+  double cz = cos(phz);
+  double sz = sin(phz);
+
+  t[0][0] = cy*cz;
+  t[0][1] = sx*sy*cz + cx*sz;
+  t[0][2] = sx*sz - cx*sy*cz;
+  t[1][0] = -cy*sz;
+  t[1][1] = cx*cz - sx*sy*sz;
+  t[1][2] = sx*cz + cx*sy*sz;
+  t[2][0] = sy;
+  t[2][1] = -sx*cy;
+  t[2][2] = cx*cy;
+}
+
+/*******************************************************************************
+* Matrix multiplication of transformations (this corresponds to combining
+* transformations). After rot_mul(T1, T2, T3), doing T3 is equal to doing
+* first T2, then T1.
+* Note that T3 must not alias (use the same array as) T1 or T2.
+*******************************************************************************/
+void
+rot_mul(Rotation t1, Rotation t2, Rotation t3)
+{
+  int i,j, k;
+
+  for(i = 0; i &lt; 3; i++)
+    for(j = 0; j &lt; 3; j++)
+      t3[i][j] = t1[i][0]*t2[0][j] + t1[i][1]*t2[1][j] + t1[i][2]*t2[2][j];
+}
+
+/*******************************************************************************
+* Copy a rotation transformation (needed since arrays cannot be assigned in C).
+*******************************************************************************/
+void
+rot_copy(Rotation dest, Rotation src)
+{
+  dest[0][0] = src[0][0];
+  dest[0][1] = src[0][1];
+  dest[0][2] = src[0][2];
+  dest[1][0] = src[1][0];
+  dest[1][1] = src[1][1];
+  dest[1][2] = src[1][2];
+  dest[2][0] = src[2][0];
+  dest[2][1] = src[2][1];
+  dest[2][2] = src[2][2];
+}
+
+void
+rot_transpose(Rotation src, Rotation dst)
+{
+  dst[0][0] = src[0][0];
+  dst[0][1] = src[1][0];
+  dst[0][2] = src[2][0];
+  dst[1][0] = src[0][1];
+  dst[1][1] = src[1][1];
+  dst[1][2] = src[2][1];
+  dst[2][0] = src[0][2];
+  dst[2][1] = src[1][2];
+  dst[2][2] = src[2][2];
+}
+
+Coords
+rot_apply(Rotation t, Coords a)
+{
+  Coords b;
+
+  b.x = t[0][0]*a.x + t[0][1]*a.y + t[0][2]*a.z;
+  b.y = t[1][0]*a.x + t[1][1]*a.y + t[1][2]*a.z;
+  b.z = t[2][0]*a.x + t[2][1]*a.y + t[2][2]*a.z;
+  return b;
+}
+
+void
+mccoordschange(Coords a, Rotation t, double *x, double *y, double *z,
+	       double *vx, double *vy, double *vz, double *time,
+	       double *s1, double *s2)
+{
+  Coords b, c;
+
+  b.x = *x;
+  b.y = *y;
+  b.z = *z;
+  c = rot_apply(t, b);
+  b = coords_add(c, a);
+  *x = b.x;
+  *y = b.y;
+  *z = b.z;
+
+  b.x = *vx;
+  b.y = *vy;
+  b.z = *vz;
+  c = rot_apply(t, b);
+  *vx = c.x;
+  *vy = c.y;
+  *vz = c.z;
+  /* ToDo: What to do about the spin? */
+}
+
+
+double mcestimate_error(int N, double p1, double p2)
+{
+  double pmean, n1;
+  if(N &lt;= 1)
+    return 0;
+  pmean = p1 / N;
+  n1 = N - 1;
+  return sqrt((N/n1)*(p2 - pmean*pmean));
+}
+
+
+void
+mcreadparams(void)
+{
+  extern struct mcinputtable_struct mcinputtable[];
+  int i;
+
+  for(i = 0; mcinputtable[i].name != 0; i++)
+  {
+    printf("Set value of instrument parameter %s:\n", mcinputtable[i].name);
+    fflush(stdout);
+    scanf("%lf", mcinputtable[i].par);
+  }
+}
+
+
+
+void
+mcsetstate(double x, double y, double z, double vx, double vy, double vz,
+	   double t, double s1, double s2, double p)
+{
+  extern double mcnx, mcny, mcnz, mcnvx, mcnvy, mcnvz;
+  extern double mcnt, mcns1, mcns2, mcnp;
+  
+  mcnx = x;
+  mcny = y;
+  mcnz = z;
+  mcnvx = vx;
+  mcnvy = vy;
+  mcnvz = vz;
+  mcnt = t;
+  mcns1 = s1;
+  mcns2 = s2;
+  mcnp = p;
+}
+
+void
+mcgenstate(void)
+{
+  mcsetstate(0, 0, 0, 0, 0, 1, 0, 0, 0, 1);
+}
+
+/* McStas random number routine. */
+
+/*
+ * Copyright (c) 1983 Regents of the University of California.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms are permitted
+ * provided that the above copyright notice and this paragraph are
+ * duplicated in all such forms and that any documentation,
+ * advertising materials, and other materials related to such
+ * distribution and use acknowledge that the software was developed
+ * by the University of California, Berkeley.  The name of the
+ * University may not be used to endorse or promote products derived
+ * from this software without specific prior written permission.
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+ * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ */
+
+/*
+ * This is derived from the Berkeley source:
+ *	@(#)random.c	5.5 (Berkeley) 7/6/88
+ * It was reworked for the GNU C Library by Roland McGrath.
+ * Rewritten to use reentrant functions by Ulrich Drepper, 1995.
+ */
+
+/*******************************************************************************
+* Modified for McStas from glibc 2.0.7pre1 stdlib/random.c and
+* stdlib/random_r.c.
+*
+* This way random() is more than four times faster compared to calling
+* standard glibc random() on ix86 Linux, probably due to multithread support,
+* ELF shared library overhead, etc. It also makes McStas generated
+* simulations more portable (more likely to behave identically across
+* platforms, important for parrallel computations).
+*******************************************************************************/
+
+
+#define	TYPE_3		3
+#define	BREAK_3		128
+#define	DEG_3		31
+#define	SEP_3		3
+
+static mc_int32_t randtbl[DEG_3 + 1] =
+  {
+    TYPE_3,
+
+    -1726662223, 379960547, 1735697613, 1040273694, 1313901226,
+    1627687941, -179304937, -2073333483, 1780058412, -1989503057,
+    -615974602, 344556628, 939512070, -1249116260, 1507946756,
+    -812545463, 154635395, 1388815473, -1926676823, 525320961,
+    -1009028674, 968117788, -123449607, 1284210865, 435012392,
+    -2017506339, -911064859, -370259173, 1132637927, 1398500161,
+    -205601318,
+  };
+
+static mc_int32_t *fptr = &amp;randtbl[SEP_3 + 1];
+static mc_int32_t *rptr = &amp;randtbl[1];
+static mc_int32_t *state = &amp;randtbl[1];
+#define rand_deg DEG_3
+#define rand_sep SEP_3
+static mc_int32_t *end_ptr = &amp;randtbl[sizeof (randtbl) / sizeof (randtbl[0])];
+
+mc_int32_t
+mc_random (void)
+{
+  mc_int32_t result;
+
+  *fptr += *rptr;
+  /* Chucking least random bit.  */
+  result = (*fptr &gt;&gt; 1) &amp; 0x7fffffff;
+  ++fptr;
+  if (fptr &gt;= end_ptr)
+  {
+    fptr = state;
+    ++rptr;
+  }
+  else
+  {
+    ++rptr;
+    if (rptr &gt;= end_ptr)
+      rptr = state;
+  }
+  return result;
+}
+
+void
+mc_srandom (unsigned int x)
+{
+  /* We must make sure the seed is not 0.  Take arbitrarily 1 in this case.  */
+  state[0] = x ? x : 1;
+  {
+    long int i;
+    for (i = 1; i &lt; rand_deg; ++i)
+    {
+      /* This does:
+	 state[i] = (16807 * state[i - 1]) % 2147483647;
+	 but avoids overflowing 31 bits.  */
+      long int hi = state[i - 1] / 127773;
+      long int lo = state[i - 1] % 127773;
+      long int test = 16807 * lo - 2836 * hi;
+      state[i] = test + (test &lt; 0 ? 2147483647 : 0);
+    }
+    fptr = &amp;state[rand_sep];
+    rptr = &amp;state[0];
+    for (i = 0; i &lt; 10 * rand_deg; ++i)
+      random ();
+  }
+}
+
+/* End of McStas random number routine. */
+
+double
+randnorm(void)
+{
+  static double v1, v2, s;
+  static int phase = 0;
+  double X, u1, u2;
+
+  if(phase == 0)
+  {
+    do
+    {
+      u1 = rand01();
+      u2 = rand01();
+      v1 = 2*u1 - 1;
+      v2 = 2*u2 - 1;
+      s = v1*v1 + v2*v2;
+    } while(s &gt;= 1 || s == 0);
+
+    X = v1*sqrt(-2*log(s)/s);
+  }
+  else
+  {
+    X = v2*sqrt(-2*log(s)/s);
+  }
+
+  phase = 1 - phase;
+  return X;
+}
+
+/* Written by: EM,NB,ABA 4.2.98 */
+int
+cylinder_intersect(double *t0, double *t1, double x, double y, double z,
+		   double vx, double vy, double vz, double r, double h)
+{
+  double v, D, t_in, t_out, y_in, y_out;
+
+  v = sqrt(vx*vx+vy*vy+vz*vz); 
+
+  D = (2*vx*x + 2*vz*z)*(2*vx*x + 2*vz*z) 
+    - 4*(vx*vx + vz*vz)*(x*x + z*z - r*r);
+
+  if (D&gt;=0) 
+  {   
+    t_in  = (-(2*vz*z + 2*vx*x) - sqrt(D))/(2*(vz*vz + vx*vx));
+    t_out = (-(2*vz*z + 2*vx*x) + sqrt(D))/(2*(vz*vz + vx*vx));
+    y_in = vy*t_in + y;
+    y_out =vy*t_out + y;
+
+    if ( (y_in &gt; h/2 &amp;&amp; y_out &gt; h/2) || (y_in &lt; -h/2 &amp;&amp; y_out &lt; -h/2) )
+      return 0;
+    else
+    {
+      if (y_in &gt; h/2)
+	t_in = ((h/2)-y)/vy;
+      if (y_in &lt; -h/2)
+	t_in = ((-h/2)-y)/vy;
+      if (y_out &gt; h/2)
+	t_out = ((h/2)-y)/vy;
+      if (y_out &lt; -h/2)
+	t_out = ((-h/2)-y)/vy;
+    }
+    *t0 = t_in;
+    *t1 = t_out;
+    return 1;
+  }
+  else
+  {
+    *t0 = *t1 = 0;
+    return 0;
+  }
+}
+
+
+/* Calculate intersection between line and sphere. */
+int
+sphere_intersect(double *t0, double *t1, double x, double y, double z,
+		 double vx, double vy, double vz, double r)
+{
+  double A, B, C, D, v;
+
+  v = sqrt(vx*vx + vy*vy + vz*vz);
+  A = v*v;
+  B = 2*(x*vx + y*vy + z*vz);
+  C = x*x + y*y + z*z - r*r;
+  D = B*B - 4*A*C;
+  if(D &lt; 0)
+    return 0;
+  D = sqrt(D);
+  *t0 = (-B - D) / (2*A);
+  *t1 = (-B + D) / (2*A);
+  return 1;
+}
+
+
+/* Choose random direction towards target at (x,y,z) with given radius. */
+/* If radius is zero, choose random direction in full 4PI, no target. */
+/* ToDo: It should be possible to optimize this to avoid computing angles. */
+void
+randvec_target_sphere(double *xo, double *yo, double *zo, double *solid_angle,
+	       double xi, double yi, double zi, double radius)
+{
+  double l, theta0, phi, theta, nx, ny, nz, xt, yt, zt;
+  
+  if(radius == 0.0)
+  {
+    /* No target, choose uniformly a direction in full 4PI solid angle. */
+    theta = acos (1 - rand0max(2));
+    phi = rand0max(2 * PI);
+    if(solid_angle)
+      *solid_angle = 4*PI;
+    nx = 1;
+    ny = 0;
+    nz = 0;
+    xi = 0;
+    yi = 1;
+    zi = 0;
+  }
+  else
+  {
+    l = sqrt(xi*xi + yi*yi + zi*zi); /* Distance to target. */
+    theta0 = asin(radius / l);	/* Target size as seen from origin */
+    if(solid_angle)
+    {
+      /* Compute solid angle of target as seen from origin. */
+      *solid_angle = 2*PI*(1 - cos(theta0));
+    }
+  
+    /* Now choose point uniformly on sphere surface within angle theta0 */
+    theta = acos (1 - rand0max(1 - cos(theta0)));
+    phi = rand0max(2 * PI);
+    /* Now, to obtain the desired vector rotate (x,y,z) angle theta around a
+       perpendicular axis (nx,ny,nz) and then angle phi around (x,y,z). */
+    if(xi == 0 &amp;&amp; yi == 0)
+    {
+      nx = 1;
+      ny = 0;
+      nz = 0;
+    }
+    else
+    {
+      nx = -yi;
+      ny = xi;
+      nz = 0;
+    }
+  }
+  rotate(xt, yt, zt, xi, yi, zi, theta, nx, ny, nz);
+  rotate(*xo, *yo, *zo, xt, yt, zt, phi, xi, yi, zi);
+}
+
+/* Number of neutron histories to simulate. */
+static double mcncount = 1e6;
+
+void
+mcset_ncount(double count)
+{
+  mcncount = count;
+}
+
+mcstatic int mcdotrace = 0;
+
+static void
+mcsetn_arg(char *arg)
+{
+  mcset_ncount(strtod(arg, NULL));
+}
+
+static void
+mcsetseed(char *arg)
+{
+  srandom(atol(arg));
+}
+
+static void
+mchelp(char *pgmname)
+{
+  int i;
+  
+  fprintf(stderr, "Usage: %s [options] [parm=value ...]\n", pgmname);
+  fprintf(stderr,
+"Options are:\n"
+"  -s seed   --seed=seed      Set random seed\n"
+"  -n count  --ncount=count   Set number of neutrons to simulate.\n"
+"  -t        --trace          Enable trace of neutron through instrument\n"
+"  -h        --help           Show help message\n"
+"  -i        --info           Detailed instrument information\n"
+"Instrument parameters are:\n");
+  for(i = 0; i &lt; mcnumipar; i++)
+    fprintf(stderr, "  %s\n", mcinputtable[i].name);
+}
+
+static void
+mcshowhelp(char *pgmname)
+{
+  mchelp(pgmname);
+  exit(0);
+}
+
+static void
+mcusage(char *pgmname)
+{
+  fprintf(stderr, "Error: incorrect commad line arguments\n");
+  mchelp(pgmname);
+  exit(1);
+}
+
+static void
+mcinfo(void)
+{
+  int i;
+  
+  printf("Name: %s\n", mcinstrument_name);
+  printf("Parameters:");
+  for(i = 0; i &lt; mcnumipar; i++)
+    printf(" %s", mcinputtable[i].name);
+  printf("\n");
+  printf("Instrument-source: %s\n", mcinstrument_source);
+  printf("Trace-enabled: %s\n", mctraceenabled ? "yes" : "no");
+  printf("Default-main: %s\n", mcdefaultmain ? "yes" : "no");
+  printf("Embedded-runtime: %s\n",
+#ifdef MC_EMBEDDED_RUNTIME
+	 "yes"
+#else
+	 "no"
+#endif
+	 );
+  exit(0);
+}
+
+static void
+mcenabletrace(void)
+{
+ if(mctraceenabled)
+  mcdotrace = 1;
+ else
+ {
+   fprintf(stderr,
+	   "Error: trace not enabled.\n"
+	   "Please re-run the McStas compiler with the --trace option\n");
+   exit(1);
+ }
+}
+
+void
+mcparseoptions(int argc, char *argv[])
+{
+  int i, j, pos;
+  char *p;
+  int paramset = 0, *paramsetarray;
+
+  paramsetarray = malloc(mcnumipar*sizeof(*paramsetarray));
+  if(paramsetarray == NULL)
+  {
+    fprintf(stderr, "Error: insufficient memory\n");
+    exit(1);
+  }
+  for(j = 0; j &lt; mcnumipar; j++)
+    paramsetarray[j] = 0;
+  
+  for(i = 1; i &lt; argc; i++)
+  {
+    if(!strcmp("-s", argv[i]) &amp;&amp; (i + 1) &lt; argc)
+      mcsetseed(argv[++i]);
+    else if(!strncmp("-s", argv[i], 2))
+      mcsetseed(&amp;argv[i][2]);
+    else if(!strcmp("--seed", argv[i]) &amp;&amp; (i + 1) &lt; argc)
+      mcsetseed(argv[++i]);
+    else if(!strncmp("--seed=", argv[i], 7))
+      mcsetseed(&amp;argv[i][7]);
+    else if(!strcmp("-n", argv[i]) &amp;&amp; (i + 1) &lt; argc)
+      mcsetn_arg(argv[++i]);
+    else if(!strncmp("-n", argv[i], 2))
+      mcsetn_arg(&amp;argv[i][2]);
+    else if(!strcmp("--ncount", argv[i]) &amp;&amp; (i + 1) &lt; argc)
+      mcsetn_arg(argv[++i]);
+    else if(!strncmp("--ncount=", argv[i], 9))
+      mcsetn_arg(&amp;argv[i][9]);
+    else if(!strcmp("-h", argv[i]))
+      mcshowhelp(argv[0]);
+    else if(!strcmp("--help", argv[i]))
+      mcshowhelp(argv[0]);
+    else if(!strcmp("-i", argv[i]))
+      mcinfo();
+    else if(!strcmp("--info", argv[i]))
+      mcinfo();
+    else if(!strcmp("-t", argv[i]))
+      mcenabletrace();
+    else if(!strcmp("--trace", argv[i]))
+      mcenabletrace();
+    else if(argv[i][0] != '-' &amp;&amp; (p = strchr(argv[i], '=')) != NULL)
+    {
+      *p++ = '\0';
+      for(j = 0; j &lt; mcnumipar; j++)
+	if(!strcmp(mcinputtable[j].name, argv[i]))
+	{
+	  *(mcinputtable[j].par) = strtod(p, NULL);
+	  paramsetarray[j] = 1;
+	  paramset = 1;
+	  break;
+	}
+      if(j == mcnumipar)
+      {				/* Unrecognized parameter name */
+	fprintf(stderr, "Error: unrecognized parameter %s\n", argv[i]);
+	exit(1);
+      }
+    }
+    else
+      mcusage(argv[0]);
+  }
+  if(!paramset)
+    mcreadparams();		/* Prompt for parameters if not specified. */
+  else
+  {
+    for(j = 0; j &lt; mcnumipar; j++)
+      if(!paramsetarray[j])
+      {
+	fprintf(stderr, "Error: Instrument parameter %s left unset\n",
+		mcinputtable[j].name);
+	exit(1);
+      }
+  }    
+}
+
+/* McStas main() function. */
+int
+mcstas_main(int argc, char *argv[])
+{
+  int run_num = 0;
+
+  srandom(time(NULL));
+  mcparseoptions(argc, argv);
+  mcinit();
+  while(run_num &lt; mcncount)
+  {
+    mcsetstate(0, 0, 0, 0, 0, 1, 0, 0, 0, 1);
+    mcraytrace();
+    run_num++;
+  }
+  mcfinally();
+  return 0;
+}
+/* End of file "mcstas-r.c". */
+
+#line 1084 "linup-1.c"
+#ifdef MC_TRACE_ENABLED
+int mctraceenabled = 1;
+#else
+int mctraceenabled = 0;
+#endif
+int mcdefaultmain = 1;
+char mcinstrument_name[] = "TAS1";
+char mcinstrument_source[] = "linup-1.instr";
+int main(int argc, char *argv[]){return mcstas_main(argc, argv);}
+void mcinit(void);
+void mcraytrace(void);
+void mcfinally(void);
+void mcdisplay(void);
+
+/* Instrument parameters. */
+MCNUM mcipPHM;
+MCNUM mcipTTM;
+MCNUM mcipC1;
+
+#define mcNUMIPAR 3
+int mcnumipar = 3;
+struct mcinputtable_struct mcinputtable[mcNUMIPAR+1] = {
+  "PHM", &amp;mcipPHM,
+  "TTM", &amp;mcipTTM,
+  "C1", &amp;mcipC1,
+  NULL, NULL
+};
+
+/* User declarations from instrument definition. */
+#define PHM mcipPHM
+#define TTM mcipTTM
+#define C1 mcipC1
+#line 5 "linup-1.instr"
+/* Mosaicity used on monochromator and analysator */
+double tas1_mono_mosaic = 45;	/* Measurements indicate its really 45' */
+/* Q vector for bragg scattering with monochromator and analysator */
+double tas1_mono_q = 3.354;	/* Fake 2nd order scattering for 20meV */
+double tas1_mono_r0 = 0.6;
+
+double mpos0, mpos1, mpos2, mpos3, mpos4, mpos5, mpos6, mpos7;
+double mrot0, mrot1, mrot2, mrot3, mrot4, mrot5, mrot6, mrot7;
+#line 1126 "linup-1.c"
+#undef C1
+#undef TTM
+#undef PHM
+
+/* Declarations of component definition and setting parameters. */
+
+/* Definition parameters for component 'source'. */
+#define mccsource_radius 0.06
+#define mccsource_dist 3.288
+#define mccsource_xw 0.042
+#define mccsource_yh 0.082
+#define mccsource_E0 20
+#define mccsource_dE 0.82
+
+/* Definition parameters for component 'slit1'. */
+#define mccslit1_xmin -0.02
+#define mccslit1_xmax 0.065
+#define mccslit1_ymin -0.075
+#define mccslit1_ymax 0.075
+
+/* Definition parameters for component 'slit2'. */
+#define mccslit2_xmin -0.02
+#define mccslit2_xmax 0.02
+#define mccslit2_ymin -0.04
+#define mccslit2_ymax 0.04
+
+/* Definition parameters for component 'slit3'. */
+#define mccslit3_xmin -0.021
+#define mccslit3_xmax 0.021
+#define mccslit3_ymin -0.041
+#define mccslit3_ymax 0.041
+
+/* Definition parameters for component 'm0'. */
+#define mccm0_zmin -0.0375
+#define mccm0_zmax 0.0375
+#define mccm0_ymin -0.006
+#define mccm0_ymax 0.006
+#define mccm0_mosaich tas1_mono_mosaic
+#define mccm0_mosaicv tas1_mono_mosaic
+#define mccm0_r0 tas1_mono_r0
+#define mccm0_Q tas1_mono_q
+
+/* Definition parameters for component 'm1'. */
+#define mccm1_zmin -0.0375
+#define mccm1_zmax 0.0375
+#define mccm1_ymin -0.006
+#define mccm1_ymax 0.006
+#define mccm1_mosaich tas1_mono_mosaic
+#define mccm1_mosaicv tas1_mono_mosaic
+#define mccm1_r0 tas1_mono_r0
+#define mccm1_Q tas1_mono_q
+
+/* Definition parameters for component 'm2'. */
+#define mccm2_zmin -0.0375
+#define mccm2_zmax 0.0375
+#define mccm2_ymin -0.006
+#define mccm2_ymax 0.006
+#define mccm2_mosaich tas1_mono_mosaic
+#define mccm2_mosaicv tas1_mono_mosaic
+#define mccm2_r0 tas1_mono_r0
+#define mccm2_Q tas1_mono_q
+
+/* Definition parameters for component 'm3'. */
+#define mccm3_zmin -0.0375
+#define mccm3_zmax 0.0375
+#define mccm3_ymin -0.006
+#define mccm3_ymax 0.006
+#define mccm3_mosaich tas1_mono_mosaic
+#define mccm3_mosaicv tas1_mono_mosaic
+#define mccm3_r0 tas1_mono_r0
+#define mccm3_Q tas1_mono_q
+
+/* Definition parameters for component 'm4'. */
+#define mccm4_zmin -0.0375
+#define mccm4_zmax 0.0375
+#define mccm4_ymin -0.006
+#define mccm4_ymax 0.006
+#define mccm4_mosaich tas1_mono_mosaic
+#define mccm4_mosaicv tas1_mono_mosaic
+#define mccm4_r0 tas1_mono_r0
+#define mccm4_Q tas1_mono_q
+
+/* Definition parameters for component 'm5'. */
+#define mccm5_zmin -0.0375
+#define mccm5_zmax 0.0375
+#define mccm5_ymin -0.006
+#define mccm5_ymax 0.006
+#define mccm5_mosaich tas1_mono_mosaic
+#define mccm5_mosaicv tas1_mono_mosaic
+#define mccm5_r0 tas1_mono_r0
+#define mccm5_Q tas1_mono_q
+
+/* Definition parameters for component 'm6'. */
+#define mccm6_zmin -0.0375
+#define mccm6_zmax 0.0375
+#define mccm6_ymin -0.006
+#define mccm6_ymax 0.006
+#define mccm6_mosaich tas1_mono_mosaic
+#define mccm6_mosaicv tas1_mono_mosaic
+#define mccm6_r0 tas1_mono_r0
+#define mccm6_Q tas1_mono_q
+
+/* Definition parameters for component 'm7'. */
+#define mccm7_zmin -0.0375
+#define mccm7_zmax 0.0375
+#define mccm7_ymin -0.006
+#define mccm7_ymax 0.006
+#define mccm7_mosaich tas1_mono_mosaic
+#define mccm7_mosaicv tas1_mono_mosaic
+#define mccm7_r0 tas1_mono_r0
+#define mccm7_Q tas1_mono_q
+
+/* Definition parameters for component 'slitMS1'. */
+#define mccslitMS1_xmin -0.0105
+#define mccslitMS1_xmax 0.0105
+#define mccslitMS1_ymin -0.035
+#define mccslitMS1_ymax 0.035
+
+/* Definition parameters for component 'slitMS2'. */
+#define mccslitMS2_xmin -0.0105
+#define mccslitMS2_xmax 0.0105
+#define mccslitMS2_ymin -0.035
+#define mccslitMS2_ymax 0.035
+
+/* Definition parameters for component 'c1'. */
+#define mccc1_xmin -0.02
+#define mccc1_xmax 0.02
+#define mccc1_ymin -0.0375
+#define mccc1_ymax 0.0375
+#define mccc1_len 0.25
+#define mccc1_divergence mcipC1
+
+/* Definition parameters for component 'slitMS3'. */
+#define mccslitMS3_radius 0.025
+
+/* Definition parameters for component 'slitMS4'. */
+#define mccslitMS4_radius 0.025
+
+/* Definition parameters for component 'slitMS5'. */
+#define mccslitMS5_radius 0.0275
+
+/* Definition parameters for component 'emon1'. */
+#define mccemon1_xmin -0.01
+#define mccemon1_xmax 0.01
+#define mccemon1_ymin -0.1
+#define mccemon1_ymax 0.1
+#define mccemon1_Emin 19.25
+#define mccemon1_Emax 20.75
+#define mccemon1_nchan 35
+#define mccemon1_filename "sim/linup_1_1.emon"
+
+/* Definition parameters for component 'slitS'. */
+#define mccslitS_xmin -0.00525
+#define mccslitS_xmax 0.00525
+#define mccslitS_ymin -0.02025
+#define mccslitS_ymax 0.02025
+
+/* Definition parameters for component 'sng'. */
+#define mccsng_xmin -0.025
+#define mccsng_xmax 0.025
+#define mccsng_ymin -0.0375
+#define mccsng_ymax 0.0375
+
+/* User component declarations. */
+
+/* User declarations for component 'source'. */
+#define mccompcurname "source"
+#define radius mccsource_radius
+#define dist mccsource_dist
+#define xw mccsource_xw
+#define yh mccsource_yh
+#define E0 mccsource_E0
+#define dE mccsource_dE
+#define hdiv mccsource_hdiv
+#define vdiv mccsource_vdiv
+#define p_in mccsource_p_in
+#line 36 "/data/lnslib/lib/mcstas/Source_flat.comp"
+ double hdiv,vdiv;
+ double p_in;
+#line 1306 "linup-1.c"
+#undef p_in
+#undef vdiv
+#undef hdiv
+#undef dE
+#undef E0
+#undef yh
+#undef xw
+#undef dist
+#undef radius
+#undef mccompcurname
+
+/* User declarations for component 'm0'. */
+#define mccompcurname "m0"
+#define zmin mccm0_zmin
+#define zmax mccm0_zmax
+#define ymin mccm0_ymin
+#define ymax mccm0_ymax
+#define mosaich mccm0_mosaich
+#define mosaicv mccm0_mosaicv
+#define r0 mccm0_r0
+#define Q mccm0_Q
+#line 37 "/data/lnslib/lib/mcstas/Monochromator.comp"
+#define DIV_CUTOFF 2            /* ~ 10^-5 cutoff. */
+#line 1330 "linup-1.c"
+#undef Q
+#undef r0
+#undef mosaicv
+#undef mosaich
+#undef ymax
+#undef ymin
+#undef zmax
+#undef zmin
+#undef mccompcurname
+
+/* User declarations for component 'm1'. */
+#define mccompcurname "m1"
+#define zmin mccm1_zmin
+#define zmax mccm1_zmax
+#define ymin mccm1_ymin
+#define ymax mccm1_ymax
+#define mosaich mccm1_mosaich
+#define mosaicv mccm1_mosaicv
+#define r0 mccm1_r0
+#define Q mccm1_Q
+#line 37 "/data/lnslib/lib/mcstas/Monochromator.comp"
+#define DIV_CUTOFF 2            /* ~ 10^-5 cutoff. */
+#line 1353 "linup-1.c"
+#undef Q
+#undef r0
+#undef mosaicv
+#undef mosaich
+#undef ymax
+#undef ymin
+#undef zmax
+#undef zmin
+#undef mccompcurname
+
+/* User declarations for component 'm2'. */
+#define mccompcurname "m2"
+#define zmin mccm2_zmin
+#define zmax mccm2_zmax
+#define ymin mccm2_ymin
+#define ymax mccm2_ymax
+#define mosaich mccm2_mosaich
+#define mosaicv mccm2_mosaicv
+#define r0 mccm2_r0
+#define Q mccm2_Q
+#line 37 "/data/lnslib/lib/mcstas/Monochromator.comp"
+#define DIV_CUTOFF 2            /* ~ 10^-5 cutoff. */
+#line 1376 "linup-1.c"
+#undef Q
+#undef r0
+#undef mosaicv
+#undef mosaich
+#undef ymax
+#undef ymin
+#undef zmax
+#undef zmin
+#undef mccompcurname
+
+/* User declarations for component 'm3'. */
+#define mccompcurname "m3"
+#define zmin mccm3_zmin
+#define zmax mccm3_zmax
+#define ymin mccm3_ymin
+#define ymax mccm3_ymax
+#define mosaich mccm3_mosaich
+#define mosaicv mccm3_mosaicv
+#define r0 mccm3_r0
+#define Q mccm3_Q
+#line 37 "/data/lnslib/lib/mcstas/Monochromator.comp"
+#define DIV_CUTOFF 2            /* ~ 10^-5 cutoff. */
+#line 1399 "linup-1.c"
+#undef Q
+#undef r0
+#undef mosaicv
+#undef mosaich
+#undef ymax
+#undef ymin
+#undef zmax
+#undef zmin
+#undef mccompcurname
+
+/* User declarations for component 'm4'. */
+#define mccompcurname "m4"
+#define zmin mccm4_zmin
+#define zmax mccm4_zmax
+#define ymin mccm4_ymin
+#define ymax mccm4_ymax
+#define mosaich mccm4_mosaich
+#define mosaicv mccm4_mosaicv
+#define r0 mccm4_r0
+#define Q mccm4_Q
+#line 37 "/data/lnslib/lib/mcstas/Monochromator.comp"
+#define DIV_CUTOFF 2            /* ~ 10^-5 cutoff. */
+#line 1422 "linup-1.c"
+#undef Q
+#undef r0
+#undef mosaicv
+#undef mosaich
+#undef ymax
+#undef ymin
+#undef zmax
+#undef zmin
+#undef mccompcurname
+
+/* User declarations for component 'm5'. */
+#define mccompcurname "m5"
+#define zmin mccm5_zmin
+#define zmax mccm5_zmax
+#define ymin mccm5_ymin
+#define ymax mccm5_ymax
+#define mosaich mccm5_mosaich
+#define mosaicv mccm5_mosaicv
+#define r0 mccm5_r0
+#define Q mccm5_Q
+#line 37 "/data/lnslib/lib/mcstas/Monochromator.comp"
+#define DIV_CUTOFF 2            /* ~ 10^-5 cutoff. */
+#line 1445 "linup-1.c"
+#undef Q
+#undef r0
+#undef mosaicv
+#undef mosaich
+#undef ymax
+#undef ymin
+#undef zmax
+#undef zmin
+#undef mccompcurname
+
+/* User declarations for component 'm6'. */
+#define mccompcurname "m6"
+#define zmin mccm6_zmin
+#define zmax mccm6_zmax
+#define ymin mccm6_ymin
+#define ymax mccm6_ymax
+#define mosaich mccm6_mosaich
+#define mosaicv mccm6_mosaicv
+#define r0 mccm6_r0
+#define Q mccm6_Q
+#line 37 "/data/lnslib/lib/mcstas/Monochromator.comp"
+#define DIV_CUTOFF 2            /* ~ 10^-5 cutoff. */
+#line 1468 "linup-1.c"
+#undef Q
+#undef r0
+#undef mosaicv
+#undef mosaich
+#undef ymax
+#undef ymin
+#undef zmax
+#undef zmin
+#undef mccompcurname
+
+/* User declarations for component 'm7'. */
+#define mccompcurname "m7"
+#define zmin mccm7_zmin
+#define zmax mccm7_zmax
+#define ymin mccm7_ymin
+#define ymax mccm7_ymax
+#define mosaich mccm7_mosaich
+#define mosaicv mccm7_mosaicv
+#define r0 mccm7_r0
+#define Q mccm7_Q
+#line 37 "/data/lnslib/lib/mcstas/Monochromator.comp"
+#define DIV_CUTOFF 2            /* ~ 10^-5 cutoff. */
+#line 1491 "linup-1.c"
+#undef Q
+#undef r0
+#undef mosaicv
+#undef mosaich
+#undef ymax
+#undef ymin
+#undef zmax
+#undef zmin
+#undef mccompcurname
+
+/* User declarations for component 'c1'. */
+#define mccompcurname "c1"
+#define xmin mccc1_xmin
+#define xmax mccc1_xmax
+#define ymin mccc1_ymin
+#define ymax mccc1_ymax
+#define len mccc1_len
+#define divergence mccc1_divergence
+#define slope mccc1_slope
+#line 36 "/data/lnslib/lib/mcstas/Soller.comp"
+  double slope;
+#line 1513 "linup-1.c"
+#undef slope
+#undef divergence
+#undef len
+#undef ymax
+#undef ymin
+#undef xmax
+#undef xmin
+#undef mccompcurname
+
+/* User declarations for component 'emon1'. */
+#define mccompcurname "emon1"
+#define xmin mccemon1_xmin
+#define xmax mccemon1_xmax
+#define ymin mccemon1_ymin
+#define ymax mccemon1_ymax
+#define Emin mccemon1_Emin
+#define Emax mccemon1_Emax
+#define nchan mccemon1_nchan
+#define filename mccemon1_filename
+#define E_N mccemon1_E_N
+#define E_p mccemon1_E_p
+#define E_p2 mccemon1_E_p2
+#line 40 "/data/lnslib/lib/mcstas/E_monitor.comp"
+    int E_N[nchan];
+    double E_p[nchan], E_p2[nchan];
+#line 1539 "linup-1.c"
+#undef E_p2
+#undef E_p
+#undef E_N
+#undef filename
+#undef nchan
+#undef Emax
+#undef Emin
+#undef ymax
+#undef ymin
+#undef xmax
+#undef xmin
+#undef mccompcurname
+
+/* User declarations for component 'sng'. */
+#define mccompcurname "sng"
+#define xmin mccsng_xmin
+#define xmax mccsng_xmax
+#define ymin mccsng_ymin
+#define ymax mccsng_ymax
+#define Nsum mccsng_Nsum
+#define psum mccsng_psum
+#define p2sum mccsng_p2sum
+#line 36 "/data/lnslib/lib/mcstas/Monitor.comp"
+    int Nsum;
+    double psum, p2sum;
+#line 1565 "linup-1.c"
+#undef p2sum
+#undef psum
+#undef Nsum
+#undef ymax
+#undef ymin
+#undef xmax
+#undef xmin
+#undef mccompcurname
+
+Coords mcposaa1, mcposra1;
+Rotation mcrotaa1, mcrotra1;
+Coords mcposasource, mcposrsource;
+Rotation mcrotasource, mcrotrsource;
+Coords mcposaslit1, mcposrslit1;
+Rotation mcrotaslit1, mcrotrslit1;
+Coords mcposaslit2, mcposrslit2;
+Rotation mcrotaslit2, mcrotrslit2;
+Coords mcposaslit3, mcposrslit3;
+Rotation mcrotaslit3, mcrotrslit3;
+Coords mcposafocus_mono, mcposrfocus_mono;
+Rotation mcrotafocus_mono, mcrotrfocus_mono;
+Coords mcposam0, mcposrm0;
+Rotation mcrotam0, mcrotrm0;
+Coords mcposam1, mcposrm1;
+Rotation mcrotam1, mcrotrm1;
+Coords mcposam2, mcposrm2;
+Rotation mcrotam2, mcrotrm2;
+Coords mcposam3, mcposrm3;
+Rotation mcrotam3, mcrotrm3;
+Coords mcposam4, mcposrm4;
+Rotation mcrotam4, mcrotrm4;
+Coords mcposam5, mcposrm5;
+Rotation mcrotam5, mcrotrm5;
+Coords mcposam6, mcposrm6;
+Rotation mcrotam6, mcrotrm6;
+Coords mcposam7, mcposrm7;
+Rotation mcrotam7, mcrotrm7;
+Coords mcposaa2, mcposra2;
+Rotation mcrotaa2, mcrotra2;
+Coords mcposaslitMS1, mcposrslitMS1;
+Rotation mcrotaslitMS1, mcrotrslitMS1;
+Coords mcposaslitMS2, mcposrslitMS2;
+Rotation mcrotaslitMS2, mcrotrslitMS2;
+Coords mcposac1, mcposrc1;
+Rotation mcrotac1, mcrotrc1;
+Coords mcposaslitMS3, mcposrslitMS3;
+Rotation mcrotaslitMS3, mcrotrslitMS3;
+Coords mcposaslitMS4, mcposrslitMS4;
+Rotation mcrotaslitMS4, mcrotrslitMS4;
+Coords mcposaslitMS5, mcposrslitMS5;
+Rotation mcrotaslitMS5, mcrotrslitMS5;
+Coords mcposaemon1, mcposremon1;
+Rotation mcrotaemon1, mcrotremon1;
+Coords mcposaa3, mcposra3;
+Rotation mcrotaa3, mcrotra3;
+Coords mcposaslitS, mcposrslitS;
+Rotation mcrotaslitS, mcrotrslitS;
+Coords mcposasng, mcposrsng;
+Rotation mcrotasng, mcrotrsng;
+
+MCNUM mcnx, mcny, mcnz, mcnvx, mcnvy, mcnvz, mcnt, mcnsx, mcnsy, mcnsz, mcnp;
+
+void mcinit(void) {
+#define PHM mcipPHM
+#define TTM mcipTTM
+#define C1 mcipC1
+#line 16 "linup-1.instr"
+{
+  double d = 0.0125;		/* 12.5 mm between slab centers. */
+  double phi = 0.5443;		/* Rotation between adjacent slabs. */
+  mpos0 = -3.5*d; mrot0 = -3.5*phi;
+  mpos1 = -2.5*d; mrot1 = -2.5*phi;
+  mpos2 = -1.5*d; mrot2 = -1.5*phi;
+  mpos3 = -0.5*d; mrot3 = -0.5*phi;
+  mpos4 =  0.5*d; mrot4 =  0.5*phi;
+  mpos5 =  1.5*d; mrot5 =  1.5*phi;
+  mpos6 =  2.5*d; mrot6 =  2.5*phi;
+  mpos7 =  3.5*d; mrot7 =  3.5*phi;
+}
+#line 1645 "linup-1.c"
+#undef C1
+#undef TTM
+#undef PHM
+  /* Component initializations. */
+  /* Initializations for component a1. */
+
+
+  /* Initializations for component source. */
+
+#define mccompcurname "source"
+#define radius mccsource_radius
+#define dist mccsource_dist
+#define xw mccsource_xw
+#define yh mccsource_yh
+#define E0 mccsource_E0
+#define dE mccsource_dE
+#define hdiv mccsource_hdiv
+#define vdiv mccsource_vdiv
+#define p_in mccsource_p_in
+#line 40 "/data/lnslib/lib/mcstas/Source_flat.comp"
+{
+ hdiv = atan(xw/(2.0*dist));
+ vdiv = atan(yh/(2.0*dist));
+ p_in = (4*hdiv*vdiv)/(4*PI); /* Small angle approx. */
+}
+#line 1671 "linup-1.c"
+#undef p_in
+#undef vdiv
+#undef hdiv
+#undef dE
+#undef E0
+#undef yh
+#undef xw
+#undef dist
+#undef radius
+#undef mccompcurname
+
+  /* Initializations for component slit1. */
+
+
+  /* Initializations for component slit2. */
+
+
+  /* Initializations for component slit3. */
+
+
+  /* Initializations for component focus_mono. */
+
+
+  /* Initializations for component m0. */
+
+
+  /* Initializations for component m1. */
+
+
+  /* Initializations for component m2. */
+
+
+  /* Initializations for component m3. */
+
+
+  /* Initializations for component m4. */
+
+
+  /* Initializations for component m5. */
+
+
+  /* Initializations for component m6. */
+
+
+  /* Initializations for component m7. */
+
+
+  /* Initializations for component a2. */
+
+
+  /* Initializations for component slitMS1. */
+
+
+  /* Initializations for component slitMS2. */
+
+
+  /* Initializations for component c1. */
+
+#define mccompcurname "c1"
+#define xmin mccc1_xmin
+#define xmax mccc1_xmax
+#define ymin mccc1_ymin
+#define ymax mccc1_ymax
+#define len mccc1_len
+#define divergence mccc1_divergence
+#define slope mccc1_slope
+#line 39 "/data/lnslib/lib/mcstas/Soller.comp"
+{
+  slope = tan(MIN2RAD*divergence);
+}
+#line 1742 "linup-1.c"
+#undef slope
+#undef divergence
+#undef len
+#undef ymax
+#undef ymin
+#undef xmax
+#undef xmin
+#undef mccompcurname
+
+  /* Initializations for component slitMS3. */
+
+
+  /* Initializations for component slitMS4. */
+
+
+  /* Initializations for component slitMS5. */
+
+
+  /* Initializations for component emon1. */
+
+#define mccompcurname "emon1"
+#define xmin mccemon1_xmin
+#define xmax mccemon1_xmax
+#define ymin mccemon1_ymin
+#define ymax mccemon1_ymax
+#define Emin mccemon1_Emin
+#define Emax mccemon1_Emax
+#define nchan mccemon1_nchan
+#define filename mccemon1_filename
+#define E_N mccemon1_E_N
+#define E_p mccemon1_E_p
+#define E_p2 mccemon1_E_p2
+#line 44 "/data/lnslib/lib/mcstas/E_monitor.comp"
+{
+    int i;
+
+    for (i=0; i&lt;nchan; i++)
+    {
+      E_N[i] = 0;
+      E_p[i] = 0;
+      E_p2[i] = 0;
+    }
+}
+#line 1786 "linup-1.c"
+#undef E_p2
+#undef E_p
+#undef E_N
+#undef filename
+#undef nchan
+#undef Emax
+#undef Emin
+#undef ymax
+#undef ymin
+#undef xmax
+#undef xmin
+#undef mccompcurname
+
+  /* Initializations for component a3. */
+
+
+  /* Initializations for component slitS. */
+
+
+  /* Initializations for component sng. */
+
+#define mccompcurname "sng"
+#define xmin mccsng_xmin
+#define xmax mccsng_xmax
+#define ymin mccsng_ymin
+#define ymax mccsng_ymax
+#define Nsum mccsng_Nsum
+#define psum mccsng_psum
+#define p2sum mccsng_p2sum
+#line 40 "/data/lnslib/lib/mcstas/Monitor.comp"
+{
+    psum = 0;
+    p2sum = 0;
+    Nsum = 0;
+}
+#line 1822 "linup-1.c"
+#undef p2sum
+#undef psum
+#undef Nsum
+#undef ymax
+#undef ymin
+#undef xmax
+#undef xmin
+#undef mccompcurname
+
+  /* Computation of coordinate transformations. */
+  {
+    Coords mctc1, mctc2;
+    Rotation mctr1, mctr2;
+
+    mcDEBUG_INSTR()
+    /* Component a1. */
+    rot_set_rotation(mcrotaa1, (0)*DEG2RAD, (0)*DEG2RAD, (0)*DEG2RAD);
+    rot_copy(mcrotra1, mcrotaa1);
+    mcposaa1 = coords_set(0, 0, 0);
+    mctc1 = coords_neg(mcposaa1);
+    mcposra1 = rot_apply(mcrotaa1, mctc1);
+    mcDEBUG_COMPONENT("a1", mcposaa1, mcrotaa1)
+    /* Component source. */
+    rot_set_rotation(mctr1, (0)*DEG2RAD, (0)*DEG2RAD, (0)*DEG2RAD);
+    rot_mul(mctr1, mcrotaa1, mcrotasource);
+    rot_transpose(mcrotaa1, mctr1);
+    rot_mul(mcrotasource, mctr1, mcrotrsource);
+    mctc1 = coords_set(0, 0, 0);
+    rot_transpose(mcrotaa1, mctr1);
+    mctc2 = rot_apply(mctr1, mctc1);
+    mcposasource = coords_add(mcposaa1, mctc2);
+    mctc1 = coords_sub(mcposaa1, mcposasource);
+    mcposrsource = rot_apply(mcrotasource, mctc1);
+    mcDEBUG_COMPONENT("source", mcposasource, mcrotasource)
+    /* Component slit1. */
+    rot_set_rotation(mctr1, (0)*DEG2RAD, (0)*DEG2RAD, (0)*DEG2RAD);
+    rot_mul(mctr1, mcrotaa1, mcrotaslit1);
+    rot_transpose(mcrotasource, mctr1);
+    rot_mul(mcrotaslit1, mctr1, mcrotrslit1);
+    mctc1 = coords_set(0, 0, 1.1215);
+    rot_transpose(mcrotaa1, mctr1);
+    mctc2 = rot_apply(mctr1, mctc1);
+    mcposaslit1 = coords_add(mcposaa1, mctc2);
+    mctc1 = coords_sub(mcposasource, mcposaslit1);
+    mcposrslit1 = rot_apply(mcrotaslit1, mctc1);
+    mcDEBUG_COMPONENT("slit1", mcposaslit1, mcrotaslit1)
+    /* Component slit2. */
+    rot_set_rotation(mctr1, (0)*DEG2RAD, (0)*DEG2RAD, (0)*DEG2RAD);
+    rot_mul(mctr1, mcrotaa1, mcrotaslit2);
+    rot_transpose(mcrotaslit1, mctr1);
+    rot_mul(mcrotaslit2, mctr1, mcrotrslit2);
+    mctc1 = coords_set(0, 0, 1.9);
+    rot_transpose(mcrotaa1, mctr1);
+    mctc2 = rot_apply(mctr1, mctc1);
+    mcposaslit2 = coords_add(mcposaa1, mctc2);
+    mctc1 = coords_sub(mcposaslit1, mcposaslit2);
+    mcposrslit2 = rot_apply(mcrotaslit2, mctc1);
+    mcDEBUG_COMPONENT("slit2", mcposaslit2, mcrotaslit2)
+    /* Component slit3. */
+    rot_set_rotation(mctr1, (0)*DEG2RAD, (0)*DEG2RAD, (0)*DEG2RAD);
+    rot_mul(mctr1, mcrotaa1, mcrotaslit3);
+    rot_transpose(mcrotaslit2, mctr1);
+    rot_mul(mcrotaslit3, mctr1, mcrotrslit3);
+    mctc1 = coords_set(0, 0, 3.288);
+    rot_transpose(mcrotaa1, mctr1);
+    mctc2 = rot_apply(mctr1, mctc1);
+    mcposaslit3 = coords_add(mcposaa1, mctc2);
+    mctc1 = coords_sub(mcposaslit2, mcposaslit3);
+    mcposrslit3 = rot_apply(mcrotaslit3, mctc1);
+    mcDEBUG_COMPONENT("slit3", mcposaslit3, mcrotaslit3)
+    /* Component focus_mono. */
+    rot_set_rotation(mctr1, (0)*DEG2RAD, (mcipPHM)*DEG2RAD, (0)*DEG2RAD);
+    rot_mul(mctr1, mcrotaa1, mcrotafocus_mono);
+    rot_transpose(mcrotaslit3, mctr1);
+    rot_mul(mcrotafocus_mono, mctr1, mcrotrfocus_mono);
+    mctc1 = coords_set(0, 0, 3.56);
+    rot_transpose(mcrotaa1, mctr1);
+    mctc2 = rot_apply(mctr1, mctc1);
+    mcposafocus_mono = coords_add(mcposaa1, mctc2);
+    mctc1 = coords_sub(mcposaslit3, mcposafocus_mono);
+    mcposrfocus_mono = rot_apply(mcrotafocus_mono, mctc1);
+    mcDEBUG_COMPONENT("focus_mono", mcposafocus_mono, mcrotafocus_mono)
+    /* Component m0. */
+    rot_set_rotation(mctr1, (0)*DEG2RAD, (0)*DEG2RAD, (mrot0)*DEG2RAD);
+    rot_mul(mctr1, mcrotafocus_mono, mcrotam0);
+    rot_transpose(mcrotafocus_mono, mctr1);
+    rot_mul(mcrotam0, mctr1, mcrotrm0);
+    mctc1 = coords_set(0, mpos0, 0);
+    rot_transpose(mcrotafocus_mono, mctr1);
+    mctc2 = rot_apply(mctr1, mctc1);
+    mcposam0 = coords_add(mcposafocus_mono, mctc2);
+    mctc1 = coords_sub(mcposafocus_mono, mcposam0);
+    mcposrm0 = rot_apply(mcrotam0, mctc1);
+    mcDEBUG_COMPONENT("m0", mcposam0, mcrotam0)
+    /* Component m1. */
+    rot_set_rotation(mctr1, (0)*DEG2RAD, (0)*DEG2RAD, (mrot1)*DEG2RAD);
+    rot_mul(mctr1, mcrotafocus_mono, mcrotam1);
+    rot_transpose(mcrotam0, mctr1);
+    rot_mul(mcrotam1, mctr1, mcrotrm1);
+    mctc1 = coords_set(0, mpos1, 0);
+    rot_transpose(mcrotafocus_mono, mctr1);
+    mctc2 = rot_apply(mctr1, mctc1);
+    mcposam1 = coords_add(mcposafocus_mono, mctc2);
+    mctc1 = coords_sub(mcposam0, mcposam1);
+    mcposrm1 = rot_apply(mcrotam1, mctc1);
+    mcDEBUG_COMPONENT("m1", mcposam1, mcrotam1)
+    /* Component m2. */
+    rot_set_rotation(mctr1, (0)*DEG2RAD, (0)*DEG2RAD, (mrot2)*DEG2RAD);
+    rot_mul(mctr1, mcrotafocus_mono, mcrotam2);
+    rot_transpose(mcrotam1, mctr1);
+    rot_mul(mcrotam2, mctr1, mcrotrm2);
+    mctc1 = coords_set(0, mpos2, 0);
+    rot_transpose(mcrotafocus_mono, mctr1);
+    mctc2 = rot_apply(mctr1, mctc1);
+    mcposam2 = coords_add(mcposafocus_mono, mctc2);
+    mctc1 = coords_sub(mcposam1, mcposam2);
+    mcposrm2 = rot_apply(mcrotam2, mctc1);
+    mcDEBUG_COMPONENT("m2", mcposam2, mcrotam2)
+    /* Component m3. */
+    rot_set_rotation(mctr1, (0)*DEG2RAD, (0)*DEG2RAD, (mrot3)*DEG2RAD);
+    rot_mul(mctr1, mcrotafocus_mono, mcrotam3);
+    rot_transpose(mcrotam2, mctr1);
+    rot_mul(mcrotam3, mctr1, mcrotrm3);
+    mctc1 = coords_set(0, mpos3, 0);
+    rot_transpose(mcrotafocus_mono, mctr1);
+    mctc2 = rot_apply(mctr1, mctc1);
+    mcposam3 = coords_add(mcposafocus_mono, mctc2);
+    mctc1 = coords_sub(mcposam2, mcposam3);
+    mcposrm3 = rot_apply(mcrotam3, mctc1);
+    mcDEBUG_COMPONENT("m3", mcposam3, mcrotam3)
+    /* Component m4. */
+    rot_set_rotation(mctr1, (0)*DEG2RAD, (0)*DEG2RAD, (mrot4)*DEG2RAD);
+    rot_mul(mctr1, mcrotafocus_mono, mcrotam4);
+    rot_transpose(mcrotam3, mctr1);
+    rot_mul(mcrotam4, mctr1, mcrotrm4);
+    mctc1 = coords_set(0, mpos4, 0);
+    rot_transpose(mcrotafocus_mono, mctr1);
+    mctc2 = rot_apply(mctr1, mctc1);
+    mcposam4 = coords_add(mcposafocus_mono, mctc2);
+    mctc1 = coords_sub(mcposam3, mcposam4);
+    mcposrm4 = rot_apply(mcrotam4, mctc1);
+    mcDEBUG_COMPONENT("m4", mcposam4, mcrotam4)
+    /* Component m5. */
+    rot_set_rotation(mctr1, (0)*DEG2RAD, (0)*DEG2RAD, (mrot5)*DEG2RAD);
+    rot_mul(mctr1, mcrotafocus_mono, mcrotam5);
+    rot_transpose(mcrotam4, mctr1);
+    rot_mul(mcrotam5, mctr1, mcrotrm5);
+    mctc1 = coords_set(0, mpos5, 0);
+    rot_transpose(mcrotafocus_mono, mctr1);
+    mctc2 = rot_apply(mctr1, mctc1);
+    mcposam5 = coords_add(mcposafocus_mono, mctc2);
+    mctc1 = coords_sub(mcposam4, mcposam5);
+    mcposrm5 = rot_apply(mcrotam5, mctc1);
+    mcDEBUG_COMPONENT("m5", mcposam5, mcrotam5)
+    /* Component m6. */
+    rot_set_rotation(mctr1, (0)*DEG2RAD, (0)*DEG2RAD, (mrot6)*DEG2RAD);
+    rot_mul(mctr1, mcrotafocus_mono, mcrotam6);
+    rot_transpose(mcrotam5, mctr1);
+    rot_mul(mcrotam6, mctr1, mcrotrm6);
+    mctc1 = coords_set(0, mpos6, 0);
+    rot_transpose(mcrotafocus_mono, mctr1);
+    mctc2 = rot_apply(mctr1, mctc1);
+    mcposam6 = coords_add(mcposafocus_mono, mctc2);
+    mctc1 = coords_sub(mcposam5, mcposam6);
+    mcposrm6 = rot_apply(mcrotam6, mctc1);
+    mcDEBUG_COMPONENT("m6", mcposam6, mcrotam6)
+    /* Component m7. */
+    rot_set_rotation(mctr1, (0)*DEG2RAD, (0)*DEG2RAD, (mrot7)*DEG2RAD);
+    rot_mul(mctr1, mcrotafocus_mono, mcrotam7);
+    rot_transpose(mcrotam6, mctr1);
+    rot_mul(mcrotam7, mctr1, mcrotrm7);
+    mctc1 = coords_set(0, mpos7, 0);
+    rot_transpose(mcrotafocus_mono, mctr1);
+    mctc2 = rot_apply(mctr1, mctc1);
+    mcposam7 = coords_add(mcposafocus_mono, mctc2);
+    mctc1 = coords_sub(mcposam6, mcposam7);
+    mcposrm7 = rot_apply(mcrotam7, mctc1);
+    mcDEBUG_COMPONENT("m7", mcposam7, mcrotam7)
+    /* Component a2. */
+    rot_set_rotation(mctr1, (0)*DEG2RAD, (mcipTTM)*DEG2RAD, (0)*DEG2RAD);
+    rot_mul(mctr1, mcrotaa1, mcrotaa2);
+    rot_transpose(mcrotam7, mctr1);
+    rot_mul(mcrotaa2, mctr1, mcrotra2);
+    mctc1 = coords_set(0, 0, 0);
+    rot_transpose(mcrotafocus_mono, mctr1);
+    mctc2 = rot_apply(mctr1, mctc1);
+    mcposaa2 = coords_add(mcposafocus_mono, mctc2);
+    mctc1 = coords_sub(mcposam7, mcposaa2);
+    mcposra2 = rot_apply(mcrotaa2, mctc1);
+    mcDEBUG_COMPONENT("a2", mcposaa2, mcrotaa2)
+    /* Component slitMS1. */
+    rot_set_rotation(mctr1, (0)*DEG2RAD, (0)*DEG2RAD, (0)*DEG2RAD);
+    rot_mul(mctr1, mcrotaa2, mcrotaslitMS1);
+    rot_transpose(mcrotaa2, mctr1);
+    rot_mul(mcrotaslitMS1, mctr1, mcrotrslitMS1);
+    mctc1 = coords_set(0, 0, 0.565);
+    rot_transpose(mcrotaa2, mctr1);
+    mctc2 = rot_apply(mctr1, mctc1);
+    mcposaslitMS1 = coords_add(mcposaa2, mctc2);
+    mctc1 = coords_sub(mcposaa2, mcposaslitMS1);
+    mcposrslitMS1 = rot_apply(mcrotaslitMS1, mctc1);
+    mcDEBUG_COMPONENT("slitMS1", mcposaslitMS1, mcrotaslitMS1)
+    /* Component slitMS2. */
+    rot_set_rotation(mctr1, (0)*DEG2RAD, (0)*DEG2RAD, (0)*DEG2RAD);
+    rot_mul(mctr1, mcrotaa2, mcrotaslitMS2);
+    rot_transpose(mcrotaslitMS1, mctr1);
+    rot_mul(mcrotaslitMS2, mctr1, mcrotrslitMS2);
+    mctc1 = coords_set(0, 0, 0.855);
+    rot_transpose(mcrotaa2, mctr1);
+    mctc2 = rot_apply(mctr1, mctc1);
+    mcposaslitMS2 = coords_add(mcposaa2, mctc2);
+    mctc1 = coords_sub(mcposaslitMS1, mcposaslitMS2);
+    mcposrslitMS2 = rot_apply(mcrotaslitMS2, mctc1);
+    mcDEBUG_COMPONENT("slitMS2", mcposaslitMS2, mcrotaslitMS2)
+    /* Component c1. */
+    rot_set_rotation(mctr1, (0)*DEG2RAD, (0)*DEG2RAD, (0)*DEG2RAD);
+    rot_mul(mctr1, mcrotaa2, mcrotac1);
+    rot_transpose(mcrotaslitMS2, mctr1);
+    rot_mul(mcrotac1, mctr1, mcrotrc1);
+    mctc1 = coords_set(0, 0, 0.87);
+    rot_transpose(mcrotaa2, mctr1);
+    mctc2 = rot_apply(mctr1, mctc1);
+    mcposac1 = coords_add(mcposaa2, mctc2);
+    mctc1 = coords_sub(mcposaslitMS2, mcposac1);
+    mcposrc1 = rot_apply(mcrotac1, mctc1);
+    mcDEBUG_COMPONENT("c1", mcposac1, mcrotac1)
+    /* Component slitMS3. */
+    rot_set_rotation(mctr1, (0)*DEG2RAD, (0)*DEG2RAD, (0)*DEG2RAD);
+    rot_mul(mctr1, mcrotaa2, mcrotaslitMS3);
+    rot_transpose(mcrotac1, mctr1);
+    rot_mul(mcrotaslitMS3, mctr1, mcrotrslitMS3);
+    mctc1 = coords_set(0, 0, 1.13);
+    rot_transpose(mcrotaa2, mctr1);
+    mctc2 = rot_apply(mctr1, mctc1);
+    mcposaslitMS3 = coords_add(mcposaa2, mctc2);
+    mctc1 = coords_sub(mcposac1, mcposaslitMS3);
+    mcposrslitMS3 = rot_apply(mcrotaslitMS3, mctc1);
+    mcDEBUG_COMPONENT("slitMS3", mcposaslitMS3, mcrotaslitMS3)
+    /* Component slitMS4. */
+    rot_set_rotation(mctr1, (0)*DEG2RAD, (0)*DEG2RAD, (0)*DEG2RAD);
+    rot_mul(mctr1, mcrotaa2, mcrotaslitMS4);
+    rot_transpose(mcrotaslitMS3, mctr1);
+    rot_mul(mcrotaslitMS4, mctr1, mcrotrslitMS4);
+    mctc1 = coords_set(0, 0, 1.18);
+    rot_transpose(mcrotaa2, mctr1);
+    mctc2 = rot_apply(mctr1, mctc1);
+    mcposaslitMS4 = coords_add(mcposaa2, mctc2);
+    mctc1 = coords_sub(mcposaslitMS3, mcposaslitMS4);
+    mcposrslitMS4 = rot_apply(mcrotaslitMS4, mctc1);
+    mcDEBUG_COMPONENT("slitMS4", mcposaslitMS4, mcrotaslitMS4)
+    /* Component slitMS5. */
+    rot_set_rotation(mctr1, (0)*DEG2RAD, (0)*DEG2RAD, (0)*DEG2RAD);
+    rot_mul(mctr1, mcrotaa2, mcrotaslitMS5);
+    rot_transpose(mcrotaslitMS4, mctr1);
+    rot_mul(mcrotaslitMS5, mctr1, mcrotrslitMS5);
+    mctc1 = coords_set(0, 0, 1.23);
+    rot_transpose(mcrotaa2, mctr1);
+    mctc2 = rot_apply(mctr1, mctc1);
+    mcposaslitMS5 = coords_add(mcposaa2, mctc2);
+    mctc1 = coords_sub(mcposaslitMS4, mcposaslitMS5);
+    mcposrslitMS5 = rot_apply(mcrotaslitMS5, mctc1);
+    mcDEBUG_COMPONENT("slitMS5", mcposaslitMS5, mcrotaslitMS5)
+    /* Component emon1. */
+    rot_set_rotation(mctr1, (0)*DEG2RAD, (0)*DEG2RAD, (0)*DEG2RAD);
+    rot_mul(mctr1, mcrotaa2, mcrotaemon1);
+    rot_transpose(mcrotaslitMS5, mctr1);
+    rot_mul(mcrotaemon1, mctr1, mcrotremon1);
+    mctc1 = coords_set(0, 0, 1.5);
+    rot_transpose(mcrotaa2, mctr1);
+    mctc2 = rot_apply(mctr1, mctc1);
+    mcposaemon1 = coords_add(mcposaa2, mctc2);
+    mctc1 = coords_sub(mcposaslitMS5, mcposaemon1);
+    mcposremon1 = rot_apply(mcrotaemon1, mctc1);
+    mcDEBUG_COMPONENT("emon1", mcposaemon1, mcrotaemon1)
+    /* Component a3. */
+    rot_set_rotation(mctr1, (0)*DEG2RAD, (0)*DEG2RAD, (0)*DEG2RAD);
+    rot_mul(mctr1, mcrotaa2, mcrotaa3);
+    rot_transpose(mcrotaemon1, mctr1);
+    rot_mul(mcrotaa3, mctr1, mcrotra3);
+    mctc1 = coords_set(0, 0, 1.565);
+    rot_transpose(mcrotaa2, mctr1);
+    mctc2 = rot_apply(mctr1, mctc1);
+    mcposaa3 = coords_add(mcposaa2, mctc2);
+    mctc1 = coords_sub(mcposaemon1, mcposaa3);
+    mcposra3 = rot_apply(mcrotaa3, mctc1);
+    mcDEBUG_COMPONENT("a3", mcposaa3, mcrotaa3)
+    /* Component slitS. */
+    rot_set_rotation(mctr1, (0)*DEG2RAD, (0)*DEG2RAD, (0)*DEG2RAD);
+    rot_mul(mctr1, mcrotaa3, mcrotaslitS);
+    rot_transpose(mcrotaa3, mctr1);
+    rot_mul(mcrotaslitS, mctr1, mcrotrslitS);
+    mctc1 = coords_set(0, 0, 0);
+    rot_transpose(mcrotaa3, mctr1);
+    mctc2 = rot_apply(mctr1, mctc1);
+    mcposaslitS = coords_add(mcposaa3, mctc2);
+    mctc1 = coords_sub(mcposaa3, mcposaslitS);
+    mcposrslitS = rot_apply(mcrotaslitS, mctc1);
+    mcDEBUG_COMPONENT("slitS", mcposaslitS, mcrotaslitS)
+    /* Component sng. */
+    rot_set_rotation(mctr1, (0)*DEG2RAD, (0)*DEG2RAD, (0)*DEG2RAD);
+    rot_mul(mctr1, mcrotaa3, mcrotasng);
+    rot_transpose(mcrotaslitS, mctr1);
+    rot_mul(mcrotasng, mctr1, mcrotrsng);
+    mctc1 = coords_set(0, 0, 0.02);
+    rot_transpose(mcrotaa3, mctr1);
+    mctc2 = rot_apply(mctr1, mctc1);
+    mcposasng = coords_add(mcposaa3, mctc2);
+    mctc1 = coords_sub(mcposaslitS, mcposasng);
+    mcposrsng = rot_apply(mcrotasng, mctc1);
+    mcDEBUG_COMPONENT("sng", mcposasng, mcrotasng)
+    if(mcdotrace) mcdisplay();
+    mcDEBUG_INSTR_END()
+  }
+
+}
+
+void mcraytrace(void) {
+  /* Copy neutron state to local variables. */
+  MCNUM mcnlx = mcnx;
+  MCNUM mcnly = mcny;
+  MCNUM mcnlz = mcnz;
+  MCNUM mcnlvx = mcnvx;
+  MCNUM mcnlvy = mcnvy;
+  MCNUM mcnlvz = mcnvz;
+  MCNUM mcnlt = mcnt;
+  MCNUM mcnlsx = mcnsx;
+  MCNUM mcnlsy = mcnsy;
+  MCNUM mcnlsz = mcnsz;
+  MCNUM mcnlp = mcnp;
+
+  mcDEBUG_ENTER()
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+  /* Component a1. */
+  mcDEBUG_COMP("a1")
+  mccoordschange(mcposra1, mcrotra1,
+    &amp;mcnlx, &amp;mcnly, &amp;mcnlz,
+    &amp;mcnlvx, &amp;mcnlvy, &amp;mcnlvz,
+    &amp;mcnlt, &amp;mcnlsx, &amp;mcnlsy);
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+#define mccompcurname "a1"
+#undef mccompcurname
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+
+  /* Component source. */
+  mcDEBUG_COMP("source")
+  mccoordschange(mcposrsource, mcrotrsource,
+    &amp;mcnlx, &amp;mcnly, &amp;mcnlz,
+    &amp;mcnlvx, &amp;mcnlvy, &amp;mcnlvz,
+    &amp;mcnlt, &amp;mcnlsx, &amp;mcnlsy);
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+#define x mcnlx
+#define y mcnly
+#define z mcnlz
+#define vx mcnlvx
+#define vy mcnlvy
+#define vz mcnlvz
+#define t mcnlt
+#define s1 mcnlsx
+#define s2 mcnlsy
+#define p mcnlp
+#define mccompcurname "source"
+#define radius mccsource_radius
+#define dist mccsource_dist
+#define xw mccsource_xw
+#define yh mccsource_yh
+#define E0 mccsource_E0
+#define dE mccsource_dE
+#define hdiv mccsource_hdiv
+#define vdiv mccsource_vdiv
+#define p_in mccsource_p_in
+#line 46 "/data/lnslib/lib/mcstas/Source_flat.comp"
+{
+ double theta0,phi0,chi,theta,phi,E,v,r;
+
+ p=p_in;
+ z=0;
+
+ chi=2*PI*rand01();                          /* Choose point on source */
+ r=sqrt(rand01())*radius;                    /* with uniform distribution. */
+ x=r*cos(chi);
+ y=r*sin(chi);
+
+ theta0= -atan(x/dist);              /* Angles to aim at target centre */
+ phi0= -atan(y/dist);
+
+ theta=theta0+hdiv*randpm1();        /* Small angle approx. */ 
+ phi=phi0+vdiv*randpm1();
+
+ E=E0+dE*randpm1();                  /* Assume linear distribution */
+ v=sqrt(E)*SE2V;
+
+ vz=v*cos(phi)*cos(theta);
+ vy=v*sin(phi);
+ vx=v*cos(phi)*sin(theta); 
+}
+#line 2218 "linup-1.c"
+#undef p_in
+#undef vdiv
+#undef hdiv
+#undef dE
+#undef E0
+#undef yh
+#undef xw
+#undef dist
+#undef radius
+#undef mccompcurname
+#undef p
+#undef s2
+#undef s1
+#undef t
+#undef vz
+#undef vy
+#undef vx
+#undef z
+#undef y
+#undef x
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+
+  /* Component slit1. */
+  mcDEBUG_COMP("slit1")
+  mccoordschange(mcposrslit1, mcrotrslit1,
+    &amp;mcnlx, &amp;mcnly, &amp;mcnlz,
+    &amp;mcnlvx, &amp;mcnlvy, &amp;mcnlvz,
+    &amp;mcnlt, &amp;mcnlsx, &amp;mcnlsy);
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+#define x mcnlx
+#define y mcnly
+#define z mcnlz
+#define vx mcnlvx
+#define vy mcnlvy
+#define vz mcnlvz
+#define t mcnlt
+#define s1 mcnlsx
+#define s2 mcnlsy
+#define p mcnlp
+#define mccompcurname "slit1"
+#define xmin mccslit1_xmin
+#define xmax mccslit1_xmax
+#define ymin mccslit1_ymin
+#define ymax mccslit1_ymax
+#line 28 "/data/lnslib/lib/mcstas/Slit.comp"
+{
+    PROP_Z0;
+    if (x&lt;xmin || x&gt;xmax || y&lt;ymin || y&gt;ymax)
+      ABSORB;
+}
+#line 2269 "linup-1.c"
+#undef ymax
+#undef ymin
+#undef xmax
+#undef xmin
+#undef mccompcurname
+#undef p
+#undef s2
+#undef s1
+#undef t
+#undef vz
+#undef vy
+#undef vx
+#undef z
+#undef y
+#undef x
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+
+  /* Component slit2. */
+  mcDEBUG_COMP("slit2")
+  mccoordschange(mcposrslit2, mcrotrslit2,
+    &amp;mcnlx, &amp;mcnly, &amp;mcnlz,
+    &amp;mcnlvx, &amp;mcnlvy, &amp;mcnlvz,
+    &amp;mcnlt, &amp;mcnlsx, &amp;mcnlsy);
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+#define x mcnlx
+#define y mcnly
+#define z mcnlz
+#define vx mcnlvx
+#define vy mcnlvy
+#define vz mcnlvz
+#define t mcnlt
+#define s1 mcnlsx
+#define s2 mcnlsy
+#define p mcnlp
+#define mccompcurname "slit2"
+#define xmin mccslit2_xmin
+#define xmax mccslit2_xmax
+#define ymin mccslit2_ymin
+#define ymax mccslit2_ymax
+#line 28 "/data/lnslib/lib/mcstas/Slit.comp"
+{
+    PROP_Z0;
+    if (x&lt;xmin || x&gt;xmax || y&lt;ymin || y&gt;ymax)
+      ABSORB;
+}
+#line 2315 "linup-1.c"
+#undef ymax
+#undef ymin
+#undef xmax
+#undef xmin
+#undef mccompcurname
+#undef p
+#undef s2
+#undef s1
+#undef t
+#undef vz
+#undef vy
+#undef vx
+#undef z
+#undef y
+#undef x
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+
+  /* Component slit3. */
+  mcDEBUG_COMP("slit3")
+  mccoordschange(mcposrslit3, mcrotrslit3,
+    &amp;mcnlx, &amp;mcnly, &amp;mcnlz,
+    &amp;mcnlvx, &amp;mcnlvy, &amp;mcnlvz,
+    &amp;mcnlt, &amp;mcnlsx, &amp;mcnlsy);
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+#define x mcnlx
+#define y mcnly
+#define z mcnlz
+#define vx mcnlvx
+#define vy mcnlvy
+#define vz mcnlvz
+#define t mcnlt
+#define s1 mcnlsx
+#define s2 mcnlsy
+#define p mcnlp
+#define mccompcurname "slit3"
+#define xmin mccslit3_xmin
+#define xmax mccslit3_xmax
+#define ymin mccslit3_ymin
+#define ymax mccslit3_ymax
+#line 28 "/data/lnslib/lib/mcstas/Slit.comp"
+{
+    PROP_Z0;
+    if (x&lt;xmin || x&gt;xmax || y&lt;ymin || y&gt;ymax)
+      ABSORB;
+}
+#line 2361 "linup-1.c"
+#undef ymax
+#undef ymin
+#undef xmax
+#undef xmin
+#undef mccompcurname
+#undef p
+#undef s2
+#undef s1
+#undef t
+#undef vz
+#undef vy
+#undef vx
+#undef z
+#undef y
+#undef x
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+
+  /* Component focus_mono. */
+  mcDEBUG_COMP("focus_mono")
+  mccoordschange(mcposrfocus_mono, mcrotrfocus_mono,
+    &amp;mcnlx, &amp;mcnly, &amp;mcnlz,
+    &amp;mcnlvx, &amp;mcnlvy, &amp;mcnlvz,
+    &amp;mcnlt, &amp;mcnlsx, &amp;mcnlsy);
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+#define mccompcurname "focus_mono"
+#undef mccompcurname
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+
+  /* Component m0. */
+  mcDEBUG_COMP("m0")
+  mccoordschange(mcposrm0, mcrotrm0,
+    &amp;mcnlx, &amp;mcnly, &amp;mcnlz,
+    &amp;mcnlvx, &amp;mcnlvy, &amp;mcnlvz,
+    &amp;mcnlt, &amp;mcnlsx, &amp;mcnlsy);
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+#define x mcnlx
+#define y mcnly
+#define z mcnlz
+#define vx mcnlvx
+#define vy mcnlvy
+#define vz mcnlvz
+#define t mcnlt
+#define s1 mcnlsx
+#define s2 mcnlsy
+#define p mcnlp
+#define mccompcurname "m0"
+#define zmin mccm0_zmin
+#define zmax mccm0_zmax
+#define ymin mccm0_ymin
+#define ymax mccm0_ymax
+#define mosaich mccm0_mosaich
+#define mosaicv mccm0_mosaicv
+#define r0 mccm0_r0
+#define Q mccm0_Q
+#line 41 "/data/lnslib/lib/mcstas/Monochromator.comp"
+{
+    double dphi,tmp1,tmp2,tmp3,vratio,phi,theta0,theta,v,cs,sn;
+    double old_x = x, old_y = y, old_z = z, old_t = t;
+    double dt;
+
+    if(vx != 0.0 &amp;&amp; (dt = -x/vx) &gt;= 0.0)
+    {
+      y += vy*dt; z += vz*dt; t += dt; x = 0.0;
+
+    if (z&gt;zmin &amp;&amp; z&lt;zmax &amp;&amp; y&gt;ymin &amp;&amp; y&lt;ymax)
+    {
+      /* First: scattering in plane */
+
+      theta0 = atan2(vx,vz);           /* neutron angle to slab */
+      v = sqrt(vx*vx+vy*vy+vz*vz);
+      theta = asin(Q2V*Q/(2.0*v));               /* Bragg's law */
+      if(theta0 &lt; 0)
+        theta = -theta;
+      tmp3 = (theta-theta0)/(MIN2RAD*mosaich);
+      if(tmp3 &gt; DIV_CUTOFF)
+      {
+        x = old_x; y = old_y; z = old_z; t = old_t;
+      }
+      else
+      {
+        p *= r0*exp(-tmp3*tmp3*4*log(2)); /* Use mosaics */
+        tmp1 = 2*theta;
+        cs = cos(tmp1);
+        sn = sin(tmp1);
+        tmp2 = cs*vx - sn*vz; 
+        vy = vy;
+        vz = cs*vz + sn*vx; 
+        vx = tmp2;
+
+        /* Second: scatering out of plane. 
+           Approximation is that Debye-Scherrer cone is a plane */
+
+        phi = atan2(vy,vz);                            /* out-of plane angle */
+        dphi = (MIN2RAD*mosaicv)/(2*sqrt(2*log(2)))*randnorm();  /* MC choice: */
+        /* Vertical angle of the crystallite */
+        vy = vz*tan(phi+2*dphi*sin(theta));
+        vratio = v/sqrt(vx*vx+vy*vy+vz*vz);
+        vz = vz*vratio;
+        vy = vy*vratio;                             /* Renormalize v */
+        vx = vx*vratio;
+      }
+    }
+    else
+    {
+      x = old_x; y = old_y; z = old_z; t = old_t;
+    }
+    }
+}
+#line 2470 "linup-1.c"
+#undef Q
+#undef r0
+#undef mosaicv
+#undef mosaich
+#undef ymax
+#undef ymin
+#undef zmax
+#undef zmin
+#undef mccompcurname
+#undef p
+#undef s2
+#undef s1
+#undef t
+#undef vz
+#undef vy
+#undef vx
+#undef z
+#undef y
+#undef x
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+
+  /* Component m1. */
+  mcDEBUG_COMP("m1")
+  mccoordschange(mcposrm1, mcrotrm1,
+    &amp;mcnlx, &amp;mcnly, &amp;mcnlz,
+    &amp;mcnlvx, &amp;mcnlvy, &amp;mcnlvz,
+    &amp;mcnlt, &amp;mcnlsx, &amp;mcnlsy);
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+#define x mcnlx
+#define y mcnly
+#define z mcnlz
+#define vx mcnlvx
+#define vy mcnlvy
+#define vz mcnlvz
+#define t mcnlt
+#define s1 mcnlsx
+#define s2 mcnlsy
+#define p mcnlp
+#define mccompcurname "m1"
+#define zmin mccm1_zmin
+#define zmax mccm1_zmax
+#define ymin mccm1_ymin
+#define ymax mccm1_ymax
+#define mosaich mccm1_mosaich
+#define mosaicv mccm1_mosaicv
+#define r0 mccm1_r0
+#define Q mccm1_Q
+#line 41 "/data/lnslib/lib/mcstas/Monochromator.comp"
+{
+    double dphi,tmp1,tmp2,tmp3,vratio,phi,theta0,theta,v,cs,sn;
+    double old_x = x, old_y = y, old_z = z, old_t = t;
+    double dt;
+
+    if(vx != 0.0 &amp;&amp; (dt = -x/vx) &gt;= 0.0)
+    {
+      y += vy*dt; z += vz*dt; t += dt; x = 0.0;
+
+    if (z&gt;zmin &amp;&amp; z&lt;zmax &amp;&amp; y&gt;ymin &amp;&amp; y&lt;ymax)
+    {
+      /* First: scattering in plane */
+
+      theta0 = atan2(vx,vz);           /* neutron angle to slab */
+      v = sqrt(vx*vx+vy*vy+vz*vz);
+      theta = asin(Q2V*Q/(2.0*v));               /* Bragg's law */
+      if(theta0 &lt; 0)
+        theta = -theta;
+      tmp3 = (theta-theta0)/(MIN2RAD*mosaich);
+      if(tmp3 &gt; DIV_CUTOFF)
+      {
+        x = old_x; y = old_y; z = old_z; t = old_t;
+      }
+      else
+      {
+        p *= r0*exp(-tmp3*tmp3*4*log(2)); /* Use mosaics */
+        tmp1 = 2*theta;
+        cs = cos(tmp1);
+        sn = sin(tmp1);
+        tmp2 = cs*vx - sn*vz; 
+        vy = vy;
+        vz = cs*vz + sn*vx; 
+        vx = tmp2;
+
+        /* Second: scatering out of plane. 
+           Approximation is that Debye-Scherrer cone is a plane */
+
+        phi = atan2(vy,vz);                            /* out-of plane angle */
+        dphi = (MIN2RAD*mosaicv)/(2*sqrt(2*log(2)))*randnorm();  /* MC choice: */
+        /* Vertical angle of the crystallite */
+        vy = vz*tan(phi+2*dphi*sin(theta));
+        vratio = v/sqrt(vx*vx+vy*vy+vz*vz);
+        vz = vz*vratio;
+        vy = vy*vratio;                             /* Renormalize v */
+        vx = vx*vratio;
+      }
+    }
+    else
+    {
+      x = old_x; y = old_y; z = old_z; t = old_t;
+    }
+    }
+}
+#line 2572 "linup-1.c"
+#undef Q
+#undef r0
+#undef mosaicv
+#undef mosaich
+#undef ymax
+#undef ymin
+#undef zmax
+#undef zmin
+#undef mccompcurname
+#undef p
+#undef s2
+#undef s1
+#undef t
+#undef vz
+#undef vy
+#undef vx
+#undef z
+#undef y
+#undef x
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+
+  /* Component m2. */
+  mcDEBUG_COMP("m2")
+  mccoordschange(mcposrm2, mcrotrm2,
+    &amp;mcnlx, &amp;mcnly, &amp;mcnlz,
+    &amp;mcnlvx, &amp;mcnlvy, &amp;mcnlvz,
+    &amp;mcnlt, &amp;mcnlsx, &amp;mcnlsy);
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+#define x mcnlx
+#define y mcnly
+#define z mcnlz
+#define vx mcnlvx
+#define vy mcnlvy
+#define vz mcnlvz
+#define t mcnlt
+#define s1 mcnlsx
+#define s2 mcnlsy
+#define p mcnlp
+#define mccompcurname "m2"
+#define zmin mccm2_zmin
+#define zmax mccm2_zmax
+#define ymin mccm2_ymin
+#define ymax mccm2_ymax
+#define mosaich mccm2_mosaich
+#define mosaicv mccm2_mosaicv
+#define r0 mccm2_r0
+#define Q mccm2_Q
+#line 41 "/data/lnslib/lib/mcstas/Monochromator.comp"
+{
+    double dphi,tmp1,tmp2,tmp3,vratio,phi,theta0,theta,v,cs,sn;
+    double old_x = x, old_y = y, old_z = z, old_t = t;
+    double dt;
+
+    if(vx != 0.0 &amp;&amp; (dt = -x/vx) &gt;= 0.0)
+    {
+      y += vy*dt; z += vz*dt; t += dt; x = 0.0;
+
+    if (z&gt;zmin &amp;&amp; z&lt;zmax &amp;&amp; y&gt;ymin &amp;&amp; y&lt;ymax)
+    {
+      /* First: scattering in plane */
+
+      theta0 = atan2(vx,vz);           /* neutron angle to slab */
+      v = sqrt(vx*vx+vy*vy+vz*vz);
+      theta = asin(Q2V*Q/(2.0*v));               /* Bragg's law */
+      if(theta0 &lt; 0)
+        theta = -theta;
+      tmp3 = (theta-theta0)/(MIN2RAD*mosaich);
+      if(tmp3 &gt; DIV_CUTOFF)
+      {
+        x = old_x; y = old_y; z = old_z; t = old_t;
+      }
+      else
+      {
+        p *= r0*exp(-tmp3*tmp3*4*log(2)); /* Use mosaics */
+        tmp1 = 2*theta;
+        cs = cos(tmp1);
+        sn = sin(tmp1);
+        tmp2 = cs*vx - sn*vz; 
+        vy = vy;
+        vz = cs*vz + sn*vx; 
+        vx = tmp2;
+
+        /* Second: scatering out of plane. 
+           Approximation is that Debye-Scherrer cone is a plane */
+
+        phi = atan2(vy,vz);                            /* out-of plane angle */
+        dphi = (MIN2RAD*mosaicv)/(2*sqrt(2*log(2)))*randnorm();  /* MC choice: */
+        /* Vertical angle of the crystallite */
+        vy = vz*tan(phi+2*dphi*sin(theta));
+        vratio = v/sqrt(vx*vx+vy*vy+vz*vz);
+        vz = vz*vratio;
+        vy = vy*vratio;                             /* Renormalize v */
+        vx = vx*vratio;
+      }
+    }
+    else
+    {
+      x = old_x; y = old_y; z = old_z; t = old_t;
+    }
+    }
+}
+#line 2674 "linup-1.c"
+#undef Q
+#undef r0
+#undef mosaicv
+#undef mosaich
+#undef ymax
+#undef ymin
+#undef zmax
+#undef zmin
+#undef mccompcurname
+#undef p
+#undef s2
+#undef s1
+#undef t
+#undef vz
+#undef vy
+#undef vx
+#undef z
+#undef y
+#undef x
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+
+  /* Component m3. */
+  mcDEBUG_COMP("m3")
+  mccoordschange(mcposrm3, mcrotrm3,
+    &amp;mcnlx, &amp;mcnly, &amp;mcnlz,
+    &amp;mcnlvx, &amp;mcnlvy, &amp;mcnlvz,
+    &amp;mcnlt, &amp;mcnlsx, &amp;mcnlsy);
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+#define x mcnlx
+#define y mcnly
+#define z mcnlz
+#define vx mcnlvx
+#define vy mcnlvy
+#define vz mcnlvz
+#define t mcnlt
+#define s1 mcnlsx
+#define s2 mcnlsy
+#define p mcnlp
+#define mccompcurname "m3"
+#define zmin mccm3_zmin
+#define zmax mccm3_zmax
+#define ymin mccm3_ymin
+#define ymax mccm3_ymax
+#define mosaich mccm3_mosaich
+#define mosaicv mccm3_mosaicv
+#define r0 mccm3_r0
+#define Q mccm3_Q
+#line 41 "/data/lnslib/lib/mcstas/Monochromator.comp"
+{
+    double dphi,tmp1,tmp2,tmp3,vratio,phi,theta0,theta,v,cs,sn;
+    double old_x = x, old_y = y, old_z = z, old_t = t;
+    double dt;
+
+    if(vx != 0.0 &amp;&amp; (dt = -x/vx) &gt;= 0.0)
+    {
+      y += vy*dt; z += vz*dt; t += dt; x = 0.0;
+
+    if (z&gt;zmin &amp;&amp; z&lt;zmax &amp;&amp; y&gt;ymin &amp;&amp; y&lt;ymax)
+    {
+      /* First: scattering in plane */
+
+      theta0 = atan2(vx,vz);           /* neutron angle to slab */
+      v = sqrt(vx*vx+vy*vy+vz*vz);
+      theta = asin(Q2V*Q/(2.0*v));               /* Bragg's law */
+      if(theta0 &lt; 0)
+        theta = -theta;
+      tmp3 = (theta-theta0)/(MIN2RAD*mosaich);
+      if(tmp3 &gt; DIV_CUTOFF)
+      {
+        x = old_x; y = old_y; z = old_z; t = old_t;
+      }
+      else
+      {
+        p *= r0*exp(-tmp3*tmp3*4*log(2)); /* Use mosaics */
+        tmp1 = 2*theta;
+        cs = cos(tmp1);
+        sn = sin(tmp1);
+        tmp2 = cs*vx - sn*vz; 
+        vy = vy;
+        vz = cs*vz + sn*vx; 
+        vx = tmp2;
+
+        /* Second: scatering out of plane. 
+           Approximation is that Debye-Scherrer cone is a plane */
+
+        phi = atan2(vy,vz);                            /* out-of plane angle */
+        dphi = (MIN2RAD*mosaicv)/(2*sqrt(2*log(2)))*randnorm();  /* MC choice: */
+        /* Vertical angle of the crystallite */
+        vy = vz*tan(phi+2*dphi*sin(theta));
+        vratio = v/sqrt(vx*vx+vy*vy+vz*vz);
+        vz = vz*vratio;
+        vy = vy*vratio;                             /* Renormalize v */
+        vx = vx*vratio;
+      }
+    }
+    else
+    {
+      x = old_x; y = old_y; z = old_z; t = old_t;
+    }
+    }
+}
+#line 2776 "linup-1.c"
+#undef Q
+#undef r0
+#undef mosaicv
+#undef mosaich
+#undef ymax
+#undef ymin
+#undef zmax
+#undef zmin
+#undef mccompcurname
+#undef p
+#undef s2
+#undef s1
+#undef t
+#undef vz
+#undef vy
+#undef vx
+#undef z
+#undef y
+#undef x
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+
+  /* Component m4. */
+  mcDEBUG_COMP("m4")
+  mccoordschange(mcposrm4, mcrotrm4,
+    &amp;mcnlx, &amp;mcnly, &amp;mcnlz,
+    &amp;mcnlvx, &amp;mcnlvy, &amp;mcnlvz,
+    &amp;mcnlt, &amp;mcnlsx, &amp;mcnlsy);
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+#define x mcnlx
+#define y mcnly
+#define z mcnlz
+#define vx mcnlvx
+#define vy mcnlvy
+#define vz mcnlvz
+#define t mcnlt
+#define s1 mcnlsx
+#define s2 mcnlsy
+#define p mcnlp
+#define mccompcurname "m4"
+#define zmin mccm4_zmin
+#define zmax mccm4_zmax
+#define ymin mccm4_ymin
+#define ymax mccm4_ymax
+#define mosaich mccm4_mosaich
+#define mosaicv mccm4_mosaicv
+#define r0 mccm4_r0
+#define Q mccm4_Q
+#line 41 "/data/lnslib/lib/mcstas/Monochromator.comp"
+{
+    double dphi,tmp1,tmp2,tmp3,vratio,phi,theta0,theta,v,cs,sn;
+    double old_x = x, old_y = y, old_z = z, old_t = t;
+    double dt;
+
+    if(vx != 0.0 &amp;&amp; (dt = -x/vx) &gt;= 0.0)
+    {
+      y += vy*dt; z += vz*dt; t += dt; x = 0.0;
+
+    if (z&gt;zmin &amp;&amp; z&lt;zmax &amp;&amp; y&gt;ymin &amp;&amp; y&lt;ymax)
+    {
+      /* First: scattering in plane */
+
+      theta0 = atan2(vx,vz);           /* neutron angle to slab */
+      v = sqrt(vx*vx+vy*vy+vz*vz);
+      theta = asin(Q2V*Q/(2.0*v));               /* Bragg's law */
+      if(theta0 &lt; 0)
+        theta = -theta;
+      tmp3 = (theta-theta0)/(MIN2RAD*mosaich);
+      if(tmp3 &gt; DIV_CUTOFF)
+      {
+        x = old_x; y = old_y; z = old_z; t = old_t;
+      }
+      else
+      {
+        p *= r0*exp(-tmp3*tmp3*4*log(2)); /* Use mosaics */
+        tmp1 = 2*theta;
+        cs = cos(tmp1);
+        sn = sin(tmp1);
+        tmp2 = cs*vx - sn*vz; 
+        vy = vy;
+        vz = cs*vz + sn*vx; 
+        vx = tmp2;
+
+        /* Second: scatering out of plane. 
+           Approximation is that Debye-Scherrer cone is a plane */
+
+        phi = atan2(vy,vz);                            /* out-of plane angle */
+        dphi = (MIN2RAD*mosaicv)/(2*sqrt(2*log(2)))*randnorm();  /* MC choice: */
+        /* Vertical angle of the crystallite */
+        vy = vz*tan(phi+2*dphi*sin(theta));
+        vratio = v/sqrt(vx*vx+vy*vy+vz*vz);
+        vz = vz*vratio;
+        vy = vy*vratio;                             /* Renormalize v */
+        vx = vx*vratio;
+      }
+    }
+    else
+    {
+      x = old_x; y = old_y; z = old_z; t = old_t;
+    }
+    }
+}
+#line 2878 "linup-1.c"
+#undef Q
+#undef r0
+#undef mosaicv
+#undef mosaich
+#undef ymax
+#undef ymin
+#undef zmax
+#undef zmin
+#undef mccompcurname
+#undef p
+#undef s2
+#undef s1
+#undef t
+#undef vz
+#undef vy
+#undef vx
+#undef z
+#undef y
+#undef x
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+
+  /* Component m5. */
+  mcDEBUG_COMP("m5")
+  mccoordschange(mcposrm5, mcrotrm5,
+    &amp;mcnlx, &amp;mcnly, &amp;mcnlz,
+    &amp;mcnlvx, &amp;mcnlvy, &amp;mcnlvz,
+    &amp;mcnlt, &amp;mcnlsx, &amp;mcnlsy);
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+#define x mcnlx
+#define y mcnly
+#define z mcnlz
+#define vx mcnlvx
+#define vy mcnlvy
+#define vz mcnlvz
+#define t mcnlt
+#define s1 mcnlsx
+#define s2 mcnlsy
+#define p mcnlp
+#define mccompcurname "m5"
+#define zmin mccm5_zmin
+#define zmax mccm5_zmax
+#define ymin mccm5_ymin
+#define ymax mccm5_ymax
+#define mosaich mccm5_mosaich
+#define mosaicv mccm5_mosaicv
+#define r0 mccm5_r0
+#define Q mccm5_Q
+#line 41 "/data/lnslib/lib/mcstas/Monochromator.comp"
+{
+    double dphi,tmp1,tmp2,tmp3,vratio,phi,theta0,theta,v,cs,sn;
+    double old_x = x, old_y = y, old_z = z, old_t = t;
+    double dt;
+
+    if(vx != 0.0 &amp;&amp; (dt = -x/vx) &gt;= 0.0)
+    {
+      y += vy*dt; z += vz*dt; t += dt; x = 0.0;
+
+    if (z&gt;zmin &amp;&amp; z&lt;zmax &amp;&amp; y&gt;ymin &amp;&amp; y&lt;ymax)
+    {
+      /* First: scattering in plane */
+
+      theta0 = atan2(vx,vz);           /* neutron angle to slab */
+      v = sqrt(vx*vx+vy*vy+vz*vz);
+      theta = asin(Q2V*Q/(2.0*v));               /* Bragg's law */
+      if(theta0 &lt; 0)
+        theta = -theta;
+      tmp3 = (theta-theta0)/(MIN2RAD*mosaich);
+      if(tmp3 &gt; DIV_CUTOFF)
+      {
+        x = old_x; y = old_y; z = old_z; t = old_t;
+      }
+      else
+      {
+        p *= r0*exp(-tmp3*tmp3*4*log(2)); /* Use mosaics */
+        tmp1 = 2*theta;
+        cs = cos(tmp1);
+        sn = sin(tmp1);
+        tmp2 = cs*vx - sn*vz; 
+        vy = vy;
+        vz = cs*vz + sn*vx; 
+        vx = tmp2;
+
+        /* Second: scatering out of plane. 
+           Approximation is that Debye-Scherrer cone is a plane */
+
+        phi = atan2(vy,vz);                            /* out-of plane angle */
+        dphi = (MIN2RAD*mosaicv)/(2*sqrt(2*log(2)))*randnorm();  /* MC choice: */
+        /* Vertical angle of the crystallite */
+        vy = vz*tan(phi+2*dphi*sin(theta));
+        vratio = v/sqrt(vx*vx+vy*vy+vz*vz);
+        vz = vz*vratio;
+        vy = vy*vratio;                             /* Renormalize v */
+        vx = vx*vratio;
+      }
+    }
+    else
+    {
+      x = old_x; y = old_y; z = old_z; t = old_t;
+    }
+    }
+}
+#line 2980 "linup-1.c"
+#undef Q
+#undef r0
+#undef mosaicv
+#undef mosaich
+#undef ymax
+#undef ymin
+#undef zmax
+#undef zmin
+#undef mccompcurname
+#undef p
+#undef s2
+#undef s1
+#undef t
+#undef vz
+#undef vy
+#undef vx
+#undef z
+#undef y
+#undef x
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+
+  /* Component m6. */
+  mcDEBUG_COMP("m6")
+  mccoordschange(mcposrm6, mcrotrm6,
+    &amp;mcnlx, &amp;mcnly, &amp;mcnlz,
+    &amp;mcnlvx, &amp;mcnlvy, &amp;mcnlvz,
+    &amp;mcnlt, &amp;mcnlsx, &amp;mcnlsy);
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+#define x mcnlx
+#define y mcnly
+#define z mcnlz
+#define vx mcnlvx
+#define vy mcnlvy
+#define vz mcnlvz
+#define t mcnlt
+#define s1 mcnlsx
+#define s2 mcnlsy
+#define p mcnlp
+#define mccompcurname "m6"
+#define zmin mccm6_zmin
+#define zmax mccm6_zmax
+#define ymin mccm6_ymin
+#define ymax mccm6_ymax
+#define mosaich mccm6_mosaich
+#define mosaicv mccm6_mosaicv
+#define r0 mccm6_r0
+#define Q mccm6_Q
+#line 41 "/data/lnslib/lib/mcstas/Monochromator.comp"
+{
+    double dphi,tmp1,tmp2,tmp3,vratio,phi,theta0,theta,v,cs,sn;
+    double old_x = x, old_y = y, old_z = z, old_t = t;
+    double dt;
+
+    if(vx != 0.0 &amp;&amp; (dt = -x/vx) &gt;= 0.0)
+    {
+      y += vy*dt; z += vz*dt; t += dt; x = 0.0;
+
+    if (z&gt;zmin &amp;&amp; z&lt;zmax &amp;&amp; y&gt;ymin &amp;&amp; y&lt;ymax)
+    {
+      /* First: scattering in plane */
+
+      theta0 = atan2(vx,vz);           /* neutron angle to slab */
+      v = sqrt(vx*vx+vy*vy+vz*vz);
+      theta = asin(Q2V*Q/(2.0*v));               /* Bragg's law */
+      if(theta0 &lt; 0)
+        theta = -theta;
+      tmp3 = (theta-theta0)/(MIN2RAD*mosaich);
+      if(tmp3 &gt; DIV_CUTOFF)
+      {
+        x = old_x; y = old_y; z = old_z; t = old_t;
+      }
+      else
+      {
+        p *= r0*exp(-tmp3*tmp3*4*log(2)); /* Use mosaics */
+        tmp1 = 2*theta;
+        cs = cos(tmp1);
+        sn = sin(tmp1);
+        tmp2 = cs*vx - sn*vz; 
+        vy = vy;
+        vz = cs*vz + sn*vx; 
+        vx = tmp2;
+
+        /* Second: scatering out of plane. 
+           Approximation is that Debye-Scherrer cone is a plane */
+
+        phi = atan2(vy,vz);                            /* out-of plane angle */
+        dphi = (MIN2RAD*mosaicv)/(2*sqrt(2*log(2)))*randnorm();  /* MC choice: */
+        /* Vertical angle of the crystallite */
+        vy = vz*tan(phi+2*dphi*sin(theta));
+        vratio = v/sqrt(vx*vx+vy*vy+vz*vz);
+        vz = vz*vratio;
+        vy = vy*vratio;                             /* Renormalize v */
+        vx = vx*vratio;
+      }
+    }
+    else
+    {
+      x = old_x; y = old_y; z = old_z; t = old_t;
+    }
+    }
+}
+#line 3082 "linup-1.c"
+#undef Q
+#undef r0
+#undef mosaicv
+#undef mosaich
+#undef ymax
+#undef ymin
+#undef zmax
+#undef zmin
+#undef mccompcurname
+#undef p
+#undef s2
+#undef s1
+#undef t
+#undef vz
+#undef vy
+#undef vx
+#undef z
+#undef y
+#undef x
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+
+  /* Component m7. */
+  mcDEBUG_COMP("m7")
+  mccoordschange(mcposrm7, mcrotrm7,
+    &amp;mcnlx, &amp;mcnly, &amp;mcnlz,
+    &amp;mcnlvx, &amp;mcnlvy, &amp;mcnlvz,
+    &amp;mcnlt, &amp;mcnlsx, &amp;mcnlsy);
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+#define x mcnlx
+#define y mcnly
+#define z mcnlz
+#define vx mcnlvx
+#define vy mcnlvy
+#define vz mcnlvz
+#define t mcnlt
+#define s1 mcnlsx
+#define s2 mcnlsy
+#define p mcnlp
+#define mccompcurname "m7"
+#define zmin mccm7_zmin
+#define zmax mccm7_zmax
+#define ymin mccm7_ymin
+#define ymax mccm7_ymax
+#define mosaich mccm7_mosaich
+#define mosaicv mccm7_mosaicv
+#define r0 mccm7_r0
+#define Q mccm7_Q
+#line 41 "/data/lnslib/lib/mcstas/Monochromator.comp"
+{
+    double dphi,tmp1,tmp2,tmp3,vratio,phi,theta0,theta,v,cs,sn;
+    double old_x = x, old_y = y, old_z = z, old_t = t;
+    double dt;
+
+    if(vx != 0.0 &amp;&amp; (dt = -x/vx) &gt;= 0.0)
+    {
+      y += vy*dt; z += vz*dt; t += dt; x = 0.0;
+
+    if (z&gt;zmin &amp;&amp; z&lt;zmax &amp;&amp; y&gt;ymin &amp;&amp; y&lt;ymax)
+    {
+      /* First: scattering in plane */
+
+      theta0 = atan2(vx,vz);           /* neutron angle to slab */
+      v = sqrt(vx*vx+vy*vy+vz*vz);
+      theta = asin(Q2V*Q/(2.0*v));               /* Bragg's law */
+      if(theta0 &lt; 0)
+        theta = -theta;
+      tmp3 = (theta-theta0)/(MIN2RAD*mosaich);
+      if(tmp3 &gt; DIV_CUTOFF)
+      {
+        x = old_x; y = old_y; z = old_z; t = old_t;
+      }
+      else
+      {
+        p *= r0*exp(-tmp3*tmp3*4*log(2)); /* Use mosaics */
+        tmp1 = 2*theta;
+        cs = cos(tmp1);
+        sn = sin(tmp1);
+        tmp2 = cs*vx - sn*vz; 
+        vy = vy;
+        vz = cs*vz + sn*vx; 
+        vx = tmp2;
+
+        /* Second: scatering out of plane. 
+           Approximation is that Debye-Scherrer cone is a plane */
+
+        phi = atan2(vy,vz);                            /* out-of plane angle */
+        dphi = (MIN2RAD*mosaicv)/(2*sqrt(2*log(2)))*randnorm();  /* MC choice: */
+        /* Vertical angle of the crystallite */
+        vy = vz*tan(phi+2*dphi*sin(theta));
+        vratio = v/sqrt(vx*vx+vy*vy+vz*vz);
+        vz = vz*vratio;
+        vy = vy*vratio;                             /* Renormalize v */
+        vx = vx*vratio;
+      }
+    }
+    else
+    {
+      x = old_x; y = old_y; z = old_z; t = old_t;
+    }
+    }
+}
+#line 3184 "linup-1.c"
+#undef Q
+#undef r0
+#undef mosaicv
+#undef mosaich
+#undef ymax
+#undef ymin
+#undef zmax
+#undef zmin
+#undef mccompcurname
+#undef p
+#undef s2
+#undef s1
+#undef t
+#undef vz
+#undef vy
+#undef vx
+#undef z
+#undef y
+#undef x
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+
+  /* Component a2. */
+  mcDEBUG_COMP("a2")
+  mccoordschange(mcposra2, mcrotra2,
+    &amp;mcnlx, &amp;mcnly, &amp;mcnlz,
+    &amp;mcnlvx, &amp;mcnlvy, &amp;mcnlvz,
+    &amp;mcnlt, &amp;mcnlsx, &amp;mcnlsy);
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+#define mccompcurname "a2"
+#undef mccompcurname
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+
+  /* Component slitMS1. */
+  mcDEBUG_COMP("slitMS1")
+  mccoordschange(mcposrslitMS1, mcrotrslitMS1,
+    &amp;mcnlx, &amp;mcnly, &amp;mcnlz,
+    &amp;mcnlvx, &amp;mcnlvy, &amp;mcnlvz,
+    &amp;mcnlt, &amp;mcnlsx, &amp;mcnlsy);
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+#define x mcnlx
+#define y mcnly
+#define z mcnlz
+#define vx mcnlvx
+#define vy mcnlvy
+#define vz mcnlvz
+#define t mcnlt
+#define s1 mcnlsx
+#define s2 mcnlsy
+#define p mcnlp
+#define mccompcurname "slitMS1"
+#define xmin mccslitMS1_xmin
+#define xmax mccslitMS1_xmax
+#define ymin mccslitMS1_ymin
+#define ymax mccslitMS1_ymax
+#line 28 "/data/lnslib/lib/mcstas/Slit.comp"
+{
+    PROP_Z0;
+    if (x&lt;xmin || x&gt;xmax || y&lt;ymin || y&gt;ymax)
+      ABSORB;
+}
+#line 3245 "linup-1.c"
+#undef ymax
+#undef ymin
+#undef xmax
+#undef xmin
+#undef mccompcurname
+#undef p
+#undef s2
+#undef s1
+#undef t
+#undef vz
+#undef vy
+#undef vx
+#undef z
+#undef y
+#undef x
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+
+  /* Component slitMS2. */
+  mcDEBUG_COMP("slitMS2")
+  mccoordschange(mcposrslitMS2, mcrotrslitMS2,
+    &amp;mcnlx, &amp;mcnly, &amp;mcnlz,
+    &amp;mcnlvx, &amp;mcnlvy, &amp;mcnlvz,
+    &amp;mcnlt, &amp;mcnlsx, &amp;mcnlsy);
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+#define x mcnlx
+#define y mcnly
+#define z mcnlz
+#define vx mcnlvx
+#define vy mcnlvy
+#define vz mcnlvz
+#define t mcnlt
+#define s1 mcnlsx
+#define s2 mcnlsy
+#define p mcnlp
+#define mccompcurname "slitMS2"
+#define xmin mccslitMS2_xmin
+#define xmax mccslitMS2_xmax
+#define ymin mccslitMS2_ymin
+#define ymax mccslitMS2_ymax
+#line 28 "/data/lnslib/lib/mcstas/Slit.comp"
+{
+    PROP_Z0;
+    if (x&lt;xmin || x&gt;xmax || y&lt;ymin || y&gt;ymax)
+      ABSORB;
+}
+#line 3291 "linup-1.c"
+#undef ymax
+#undef ymin
+#undef xmax
+#undef xmin
+#undef mccompcurname
+#undef p
+#undef s2
+#undef s1
+#undef t
+#undef vz
+#undef vy
+#undef vx
+#undef z
+#undef y
+#undef x
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+
+  /* Component c1. */
+  mcDEBUG_COMP("c1")
+  mccoordschange(mcposrc1, mcrotrc1,
+    &amp;mcnlx, &amp;mcnly, &amp;mcnlz,
+    &amp;mcnlvx, &amp;mcnlvy, &amp;mcnlvz,
+    &amp;mcnlt, &amp;mcnlsx, &amp;mcnlsy);
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+#define x mcnlx
+#define y mcnly
+#define z mcnlz
+#define vx mcnlvx
+#define vy mcnlvy
+#define vz mcnlvz
+#define t mcnlt
+#define s1 mcnlsx
+#define s2 mcnlsy
+#define p mcnlp
+#define mccompcurname "c1"
+#define xmin mccc1_xmin
+#define xmax mccc1_xmax
+#define ymin mccc1_ymin
+#define ymax mccc1_ymax
+#define len mccc1_len
+#define divergence mccc1_divergence
+#define slope mccc1_slope
+#line 43 "/data/lnslib/lib/mcstas/Soller.comp"
+{
+    double phi, dt;
+    
+    PROP_Z0;
+    if (x&lt;xmin || x&gt;xmax || y&lt;ymin || y&gt;ymax)
+      ABSORB;
+    dt = len/vz;
+    PROP_DT(dt);
+    if (x&lt;xmin || x&gt;xmax || y&lt;ymin || y&gt;ymax)
+      ABSORB;
+
+    if(slope &gt; 0.0)
+    {
+      phi = fabs(vx/vz);  
+      if (phi &gt; slope)   
+        ABSORB;
+      else
+        p *= 1.0 - phi/slope;
+    }
+}
+#line 3355 "linup-1.c"
+#undef slope
+#undef divergence
+#undef len
+#undef ymax
+#undef ymin
+#undef xmax
+#undef xmin
+#undef mccompcurname
+#undef p
+#undef s2
+#undef s1
+#undef t
+#undef vz
+#undef vy
+#undef vx
+#undef z
+#undef y
+#undef x
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+
+  /* Component slitMS3. */
+  mcDEBUG_COMP("slitMS3")
+  mccoordschange(mcposrslitMS3, mcrotrslitMS3,
+    &amp;mcnlx, &amp;mcnly, &amp;mcnlz,
+    &amp;mcnlvx, &amp;mcnlvy, &amp;mcnlvz,
+    &amp;mcnlt, &amp;mcnlsx, &amp;mcnlsy);
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+#define x mcnlx
+#define y mcnly
+#define z mcnlz
+#define vx mcnlvx
+#define vy mcnlvy
+#define vz mcnlvz
+#define t mcnlt
+#define s1 mcnlsx
+#define s2 mcnlsy
+#define p mcnlp
+#define mccompcurname "slitMS3"
+#define radius mccslitMS3_radius
+#line 22 "/data/lnslib/lib/mcstas/Circular_slit.comp"
+{
+  PROP_Z0;
+  if(x*x + y*y &gt; radius*radius)
+    ABSORB;
+}
+#line 3401 "linup-1.c"
+#undef radius
+#undef mccompcurname
+#undef p
+#undef s2
+#undef s1
+#undef t
+#undef vz
+#undef vy
+#undef vx
+#undef z
+#undef y
+#undef x
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+
+  /* Component slitMS4. */
+  mcDEBUG_COMP("slitMS4")
+  mccoordschange(mcposrslitMS4, mcrotrslitMS4,
+    &amp;mcnlx, &amp;mcnly, &amp;mcnlz,
+    &amp;mcnlvx, &amp;mcnlvy, &amp;mcnlvz,
+    &amp;mcnlt, &amp;mcnlsx, &amp;mcnlsy);
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+#define x mcnlx
+#define y mcnly
+#define z mcnlz
+#define vx mcnlvx
+#define vy mcnlvy
+#define vz mcnlvz
+#define t mcnlt
+#define s1 mcnlsx
+#define s2 mcnlsy
+#define p mcnlp
+#define mccompcurname "slitMS4"
+#define radius mccslitMS4_radius
+#line 22 "/data/lnslib/lib/mcstas/Circular_slit.comp"
+{
+  PROP_Z0;
+  if(x*x + y*y &gt; radius*radius)
+    ABSORB;
+}
+#line 3441 "linup-1.c"
+#undef radius
+#undef mccompcurname
+#undef p
+#undef s2
+#undef s1
+#undef t
+#undef vz
+#undef vy
+#undef vx
+#undef z
+#undef y
+#undef x
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+
+  /* Component slitMS5. */
+  mcDEBUG_COMP("slitMS5")
+  mccoordschange(mcposrslitMS5, mcrotrslitMS5,
+    &amp;mcnlx, &amp;mcnly, &amp;mcnlz,
+    &amp;mcnlvx, &amp;mcnlvy, &amp;mcnlvz,
+    &amp;mcnlt, &amp;mcnlsx, &amp;mcnlsy);
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+#define x mcnlx
+#define y mcnly
+#define z mcnlz
+#define vx mcnlvx
+#define vy mcnlvy
+#define vz mcnlvz
+#define t mcnlt
+#define s1 mcnlsx
+#define s2 mcnlsy
+#define p mcnlp
+#define mccompcurname "slitMS5"
+#define radius mccslitMS5_radius
+#line 22 "/data/lnslib/lib/mcstas/Circular_slit.comp"
+{
+  PROP_Z0;
+  if(x*x + y*y &gt; radius*radius)
+    ABSORB;
+}
+#line 3481 "linup-1.c"
+#undef radius
+#undef mccompcurname
+#undef p
+#undef s2
+#undef s1
+#undef t
+#undef vz
+#undef vy
+#undef vx
+#undef z
+#undef y
+#undef x
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+
+  /* Component emon1. */
+  mcDEBUG_COMP("emon1")
+  mccoordschange(mcposremon1, mcrotremon1,
+    &amp;mcnlx, &amp;mcnly, &amp;mcnlz,
+    &amp;mcnlvx, &amp;mcnlvy, &amp;mcnlvz,
+    &amp;mcnlt, &amp;mcnlsx, &amp;mcnlsy);
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+#define x mcnlx
+#define y mcnly
+#define z mcnlz
+#define vx mcnlvx
+#define vy mcnlvy
+#define vz mcnlvz
+#define t mcnlt
+#define s1 mcnlsx
+#define s2 mcnlsy
+#define p mcnlp
+#define mccompcurname "emon1"
+#define xmin mccemon1_xmin
+#define xmax mccemon1_xmax
+#define ymin mccemon1_ymin
+#define ymax mccemon1_ymax
+#define Emin mccemon1_Emin
+#define Emax mccemon1_Emax
+#define nchan mccemon1_nchan
+#define filename mccemon1_filename
+#define E_N mccemon1_E_N
+#define E_p mccemon1_E_p
+#define E_p2 mccemon1_E_p2
+#line 55 "/data/lnslib/lib/mcstas/E_monitor.comp"
+{
+    int i;
+    double E;
+
+    PROP_Z0;
+    if (x&gt;xmin &amp;&amp; x&lt;xmax &amp;&amp; y&gt;ymin &amp;&amp; y&lt;ymax)
+    {
+      E = VS2E*(vx*vx + vy*vy + vz*vz);
+
+      i = floor((E-Emin)*nchan/(Emax-Emin));
+      if(i &gt;= 0 &amp;&amp; i &lt; nchan)
+      {
+        E_N[i]++;
+        E_p[i] += p;
+        E_p2[i] += p*p;
+      }
+    }
+}
+#line 3544 "linup-1.c"
+#undef E_p2
+#undef E_p
+#undef E_N
+#undef filename
+#undef nchan
+#undef Emax
+#undef Emin
+#undef ymax
+#undef ymin
+#undef xmax
+#undef xmin
+#undef mccompcurname
+#undef p
+#undef s2
+#undef s1
+#undef t
+#undef vz
+#undef vy
+#undef vx
+#undef z
+#undef y
+#undef x
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+
+  /* Component a3. */
+  mcDEBUG_COMP("a3")
+  mccoordschange(mcposra3, mcrotra3,
+    &amp;mcnlx, &amp;mcnly, &amp;mcnlz,
+    &amp;mcnlvx, &amp;mcnlvy, &amp;mcnlvz,
+    &amp;mcnlt, &amp;mcnlsx, &amp;mcnlsy);
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+#define mccompcurname "a3"
+#undef mccompcurname
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+
+  /* Component slitS. */
+  mcDEBUG_COMP("slitS")
+  mccoordschange(mcposrslitS, mcrotrslitS,
+    &amp;mcnlx, &amp;mcnly, &amp;mcnlz,
+    &amp;mcnlvx, &amp;mcnlvy, &amp;mcnlvz,
+    &amp;mcnlt, &amp;mcnlsx, &amp;mcnlsy);
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+#define x mcnlx
+#define y mcnly
+#define z mcnlz
+#define vx mcnlvx
+#define vy mcnlvy
+#define vz mcnlvz
+#define t mcnlt
+#define s1 mcnlsx
+#define s2 mcnlsy
+#define p mcnlp
+#define mccompcurname "slitS"
+#define xmin mccslitS_xmin
+#define xmax mccslitS_xmax
+#define ymin mccslitS_ymin
+#define ymax mccslitS_ymax
+#line 28 "/data/lnslib/lib/mcstas/Slit.comp"
+{
+    PROP_Z0;
+    if (x&lt;xmin || x&gt;xmax || y&lt;ymin || y&gt;ymax)
+      ABSORB;
+}
+#line 3608 "linup-1.c"
+#undef ymax
+#undef ymin
+#undef xmax
+#undef xmin
+#undef mccompcurname
+#undef p
+#undef s2
+#undef s1
+#undef t
+#undef vz
+#undef vy
+#undef vx
+#undef z
+#undef y
+#undef x
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+
+  /* Component sng. */
+  mcDEBUG_COMP("sng")
+  mccoordschange(mcposrsng, mcrotrsng,
+    &amp;mcnlx, &amp;mcnly, &amp;mcnlz,
+    &amp;mcnlvx, &amp;mcnlvy, &amp;mcnlvz,
+    &amp;mcnlt, &amp;mcnlsx, &amp;mcnlsy);
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+#define x mcnlx
+#define y mcnly
+#define z mcnlz
+#define vx mcnlvx
+#define vy mcnlvy
+#define vz mcnlvz
+#define t mcnlt
+#define s1 mcnlsx
+#define s2 mcnlsy
+#define p mcnlp
+#define mccompcurname "sng"
+#define xmin mccsng_xmin
+#define xmax mccsng_xmax
+#define ymin mccsng_ymin
+#define ymax mccsng_ymax
+#define Nsum mccsng_Nsum
+#define psum mccsng_psum
+#define p2sum mccsng_p2sum
+#line 46 "/data/lnslib/lib/mcstas/Monitor.comp"
+{
+    PROP_Z0;
+    if (x&gt;xmin &amp;&amp; x&lt;xmax &amp;&amp; y&gt;ymin &amp;&amp; y&lt;ymax)
+    {
+      Nsum++;
+      psum += p;
+      p2sum += p*p;
+    }
+}
+#line 3661 "linup-1.c"
+#undef p2sum
+#undef psum
+#undef Nsum
+#undef ymax
+#undef ymin
+#undef xmax
+#undef xmin
+#undef mccompcurname
+#undef p
+#undef s2
+#undef s1
+#undef t
+#undef vz
+#undef vy
+#undef vx
+#undef z
+#undef y
+#undef x
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+
+ mcabsorb:
+  mcDEBUG_LEAVE()
+  mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz,mcnlt,mcnlsx,mcnlsy, mcnlp)
+  /* Copy neutron state to global variables. */
+  mcnx = mcnlx;
+  mcny = mcnly;
+  mcnz = mcnlz;
+  mcnvx = mcnlvx;
+  mcnvy = mcnlvy;
+  mcnvz = mcnlvz;
+  mcnt = mcnlt;
+  mcnsx = mcnlsx;
+  mcnsy = mcnlsy;
+  mcnsz = mcnlsz;
+  mcnp = mcnlp;
+}
+
+void mcfinally(void) {
+  /* User component FINALLY code. */
+
+  /* User FINALLY code for component 'emon1'. */
+#define mccompcurname "emon1"
+#define xmin mccemon1_xmin
+#define xmax mccemon1_xmax
+#define ymin mccemon1_ymin
+#define ymax mccemon1_ymax
+#define Emin mccemon1_Emin
+#define Emax mccemon1_Emax
+#define nchan mccemon1_nchan
+#define filename mccemon1_filename
+#define E_N mccemon1_E_N
+#define E_p mccemon1_E_p
+#define E_p2 mccemon1_E_p2
+#line 74 "/data/lnslib/lib/mcstas/E_monitor.comp"
+{
+    int i;
+    FILE *outfile;
+
+    outfile=fopen(filename,"w");
+    if(outfile == NULL)
+      fprintf(stderr, "Error: could not open output file '%s'\n", filename);
+    else
+    {
+      for (i=0; i&lt;nchan; i++)
+        fprintf(outfile,"%g %d %g %g\n", 
+                Emin + (double)i/nchan*(Emax-Emin), E_N[i], E_p[i], E_p2[i]);
+      fclose(outfile);
+    }
+}
+#line 3731 "linup-1.c"
+#undef E_p2
+#undef E_p
+#undef E_N
+#undef filename
+#undef nchan
+#undef Emax
+#undef Emin
+#undef ymax
+#undef ymin
+#undef xmax
+#undef xmin
+#undef mccompcurname
+
+  /* User FINALLY code for component 'sng'. */
+#define mccompcurname "sng"
+#define xmin mccsng_xmin
+#define xmax mccsng_xmax
+#define ymin mccsng_ymin
+#define ymax mccsng_ymax
+#define Nsum mccsng_Nsum
+#define psum mccsng_psum
+#define p2sum mccsng_p2sum
+#line 56 "/data/lnslib/lib/mcstas/Monitor.comp"
+{
+    DETECTOR_OUT(Nsum, psum, p2sum);
+}
+#line 3758 "linup-1.c"
+#undef p2sum
+#undef psum
+#undef Nsum
+#undef ymax
+#undef ymin
+#undef xmax
+#undef xmin
+#undef mccompcurname
+
+}
+#define magnify mcdis_magnify
+#define line mcdis_line
+#define multiline mcdis_multiline
+#define circle mcdis_circle
+void mcdisplay(void) {
+  printf("MCDISPLAY: start\n");
+  /* Component MCDISPLAY code. */
+
+  printf("MCDISPLAY: end\n");
+}
+#undef magnify
+#undef line
+#undef multiline
+#undef circle
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<UL><LI><STRONG>Follow-Ups</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00010" HREF="msg00010.html">Re: Mcstas 1.1</A></STRONG>
+<UL><LI><EM>From:</EM> Kristian Nielsen &lt;kristian.nielsen@risoe.dk&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00007.html">Mcstas 1.1</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00010.html">Re: Mcstas 1.1</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00009"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00009"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

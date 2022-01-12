@@ -1,0 +1,98 @@
+/*******************************************************************************
+*
+* McStas, the neutron ray-tracing package
+*         Maintained by Kristian Nielsen and Kim Lefmann,
+*         Copyright 1997-2000 Risoe National Laboratory, Roskilde, Denmark
+*
+* %I
+* Written by:  KN, M. Hagan
+* Date: August 1998
+* Version: $Revision: 1.1.1.1 $
+* Origin: McStas release
+* Modified by: KL, October 7, 1998
+*
+* Rectangular Time-of-flight monitor.
+*
+* %P
+* INPUT PARAMETERS:
+*
+* xmin:     Lower x bound of detector opening (m)
+* xmax:     Upper x bound of detector opening (m)
+* ymin:     Lower y bound of detector opening (m)
+* ymax:     Upper y bound of detector opening (m)
+* nchan:    Number of time bins (1)
+* dt:       Length of each time bin (mu-s)
+* filename: Name of file in which to store the detector image (text)
+*
+* OUTPUT PARAMETERS:
+*
+* TOF_N:    Array of neutron counts
+* TOF_p:    Array of neutron weight counts
+* TOF_p2:   Array of second moments
+*
+* %E
+*******************************************************************************/
+
+DEFINE COMPONENT TOF_monitor
+DEFINITION PARAMETERS (xmin, xmax, ymin, ymax, nchan, dt, filename) 
+SETTING PARAMETERS ()
+OUTPUT PARAMETERS (TOF_N, TOF_p, TOF_p2)
+STATE PARAMETERS (x,y,z,vx,vy,vz,t,s1,s2,p)
+DECLARE
+  %{
+    int TOF_N[nchan];
+    double TOF_p[nchan];
+    double TOF_p2[nchan];
+  %}
+INITIALIZE
+  %{
+    int i;
+
+    for (i=0; i<nchan; i++)
+    {
+      TOF_N[i] = 0;
+      TOF_p[i] = 0;
+      TOF_p2[i] = 0;
+    }
+  %}
+TRACE
+  %{
+    int i;
+
+    PROP_Z0;
+    if (x>xmin && x<xmax && y>ymin && y<ymax)
+    {
+      i = floor(1E6*t/dt);              /* Bin number */
+      if(i >= nchan) i = nchan - 1;
+      if(i < 0)
+      {
+        printf("FATAL ERROR: negative time-of-flight.\n");
+        exit(1);
+      }
+      TOF_N[i]++;
+      TOF_p[i] += p;
+      TOF_p2[i] += p*p;
+    }
+  %}
+FINALLY
+  %{
+    DETECTOR_OUT_1D(
+        "Time-of-flight monitor",
+        "Time-of-flight [\\gms]",
+        "Intensity",
+        "t", 0.0, nchan*(double)dt, nchan,
+        &TOF_N[0],&TOF_p[0],&TOF_p2[0],
+        filename);
+  %}
+
+MCDISPLAY
+%{
+  magnify("xy");
+  multiline(5, (double)xmin, (double)ymin, 0.0,
+               (double)xmax, (double)ymin, 0.0,
+               (double)xmax, (double)ymax, 0.0,
+               (double)xmin, (double)ymax, 0.0,
+               (double)xmin, (double)ymin, 0.0);
+%}
+
+END

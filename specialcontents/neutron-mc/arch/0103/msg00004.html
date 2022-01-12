@@ -1,0 +1,2366 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: Again: maximum number of events -->
+<!--X-From: Emmanuel Farhi <farhi@ill.fr> -->
+<!--X-Date: Tue, 06 Mar 2001 10:26:14 +0100 -->
+<!--X-Message-Id: 3AA4AD36.67E8EED5@ill.fr -->
+<!--X-ContentType: multipart/mixed -->
+<!--X-Reference-Id: Pine.LNX.3.96.1010306093845.4923C&#45;100000@fys&#45;lin&#45;1.risoe.dk -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: Again: maximum number of events</title>
+<link rev="made" href="mailto:farhi@ill.fr">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00003.html">Date Prev</A>][<A HREF="msg00005.html">Date Next</A>]
+<a href="index.html#00004">[Chronological]</a>
+<a href="threads.html#00004">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: Again: maximum number of events</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>Kim Lefmann &lt;<A HREF="mailto:kim.lefmann@risoe.dk">kim.lefmann@risoe.dk</A>&gt;,"<A HREF="mailto:neutron-mc@risoe.dk">neutron-mc@risoe.dk</A>" &lt;<A HREF="mailto:neutron-mc@risoe.dk">neutron-mc@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: Again: maximum number of events</strong></LI>
+<LI><strong>From</strong>: <strong>Emmanuel Farhi &lt;<A HREF="mailto:farhi@ill.fr">farhi@ill.fr</A>&gt;</strong></LI>
+<LI>Date: Tue, 06 Mar 2001 10:26:14 +0100</LI>
+<LI>Organization: ILL</LI>
+<LI>References: &lt;<A HREF="msg00003.html">Pine.LNX.3.96.1010306093845.4923C-100000@fys-lin-1.risoe.dk</A>&gt;</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+
+
+Hello McStas users,
+<p>I sent an e-mail yesterday to Per-Olof, proposing a new version of mcstas-r.c
+and .h so that the counter is a double, and global variable:
+<p>----------
+<br>You will find in this mail two new versions of mcstas-r.c and mcstas-r.h
+files in 'lib/mcstas/' in order to make two things:
+<br>1- It is now possible to know (in the code) the simulation precentage
+ellapsed with the
+<br><tt>mcget_run_num()/mcget_ncount()</tt> .
+<br>I thus added the function <tt>mcget_run_num</tt> in <tt>mctas-r.c</tt>,
+and passed the '<tt>run_num</tt>' variable from '<tt>mcstas_main</tt>'
+to global '<tt>mcrun_num</tt>' as a double (not int as before !! I think
+int are 32 bits on DEC machines).&nbsp; This should solve the never ending
+simulations...
+<br>2- A signal handler is added in <tt>mcstas-r.c </tt>and <tt>h</tt>
+<br>It is included for non-MAC and non-WIN32 systems. It can handle USR1
+signal, that tells simulation degree (%), and other signals (such as Ctrl-C=SIGINT)
+will cause simulation to end, saving results...
+<br>examples:
+<br>To get information
+<br><tt>kill -USR1 &lt;McStas simulation Pid></tt>
+<br><tt># McStas: Signal 30 detected in simulation H8 (h8.instr):&nbsp;
+SIGUSR1</tt>
+<br><tt># Date Mon Mar&nbsp; 5 15:05:15 2001</tt>
+<br><tt># McStas: simulation now at 2.17 % ( 2171334.0/100000000.0)</tt>
+<p>To end simulation
+<br><tt>kill &lt;McStas simulation Pid></tt>
+<br><tt># McStas: Signal 15 detected in simulation H8 (h8.instr):&nbsp;
+SIGTERM</tt>
+<br><tt># Date Mon Mar&nbsp; 5 15:06:01 2001</tt>
+<br><tt># McStas: finishing simulation at at 8.34 % ( 8341648.0/100000000.0)</tt>
+<br><tt>Detector: D0_Source_I=5.84579e+08 D0_Source_ERR=507190 D0_Source_N=1....</tt>
+<br>(saving results with <tt>mcfinally</tt>)
+<br>Big system error (core dumps...) will not save results
+<br>Ctrl-Z works as usual, enabling to put process in background (does
+not stop the simulation).
+<p>Cheers. Emmanuel.
+<p>Kim Lefmann wrote:
+<blockquote TYPE=CITE>------------------------------
+<br>From: Kristian Nielsen &lt;kristian@edlund.dk>
+<br>Subject: Re: Again: maximum number of events...
+<br>In-reply-to: "Ulrich C. Wildgruber MPI fuer Metallforschung Stuttgart"'s
+<br>&nbsp;message of "Mon, 05 Mar 2001 14:06:27 +0100"
+<br>To: neutron-mc@risoe.dk
+<br>Message-id: &lt;uofvfmj8k.fsf@edlund.dk>
+<br>MIME-version: 1.0
+<br>Content-type: text/plain; charset=us-ascii
+<br>User-Agent: Gnus/5.0807 (Gnus v5.8.7) Emacs/20.7
+<br>Lines: 42
+<br>References: &lt;<A HREF="msg00000.html">3AA34FFE.E3B2B252@dxray.mpi-stuttgart.mpg.de</A>>
+<br>&nbsp;&lt;3AA36A49.282C40B@phys.keele.ac.uk>
+<br>&nbsp;&lt;<A HREF="msg00002.html">3AA38F53.22411C9@dxray.mpi-stuttgart.mpg.de</A>>
+<p>"Ulrich C. Wildgruber MPI fuer Metallforschung Stuttgart" &lt;wildgrub@dxray.mpi-stuttgart.mpg.de>
+writes:
+<p>> Maybe I misunderstood Kristian's email (I'll look for it and forward
+it to
+<br>> you) or there is something wrong with the way McStas is set up on
+my
+<br>> machine. The behaviour of McStas seems to be compatible with an "long
+int"
+<br>> counting variable being 32bits on a PC and 64 bits on the ALPHA...
+<br>> I guess I'll try to look into the code...
+<p>I decided to re-check the source code. The relevant code is in the file
+<br>"lib/mcstas-r.c" (some parts deleted for clarity):
+<p>&nbsp;&nbsp;&nbsp; /* Number of neutron histories to simulate. */
+<br>&nbsp;&nbsp;&nbsp; static double mcncount = 1e6;
+<p>&nbsp;&nbsp;&nbsp; /* McStas main() function. */
+<br>&nbsp;&nbsp;&nbsp; int
+<br>&nbsp;&nbsp;&nbsp; mcstas_main(int argc, char *argv[])
+<br>&nbsp;&nbsp;&nbsp; {
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int run_num = 0;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ^^^
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; while(run_num &lt; mcncount)
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mcsetstate(0, 0, 0, 0, 0,
+1, 0, 0, 1, 0, 1);
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mcraytrace();
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; run_num++;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return 0;
+<br>&nbsp;&nbsp;&nbsp; }
+<p>So "mcncount" is a double, as I said before, but the loop counter
+<br>"run_num" is an int. This is a bug, the declaration should be changed
+to
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; double run_num = 0;
+<p>Without this change, McStas is clearly limited to about 2*10**9
+<br>neutrons/run on 32 bit machines. I am mystified as to why this is not
+<br>the case on the Alpha (I thought that on Alpha, int was 32 bit and
+long
+<br>was 64, but maybe my memory deceives me).
+<p>&nbsp;- Kristian.</blockquote>
+
+<pre>--&nbsp;
+What's up Doc ?
+--------------------------------------------
+Emmanuel FARHI, <A HREF="http://www.ill.fr/tas/people/Farhi.html">http://www.ill.fr/tas/people/Farhi.html</A>&nbsp;&nbsp; \|/ ____ \|/
+CS-Group ILL4/156, Institut Laue-Langevin (ILL) Grenoble&nbsp; ~@-/ oO \-@~
+6 rue J. Horowitz, BP 156, 38042 Grenoble Cedex 9,France&nbsp; /_( \__/ )_\
+Work :Tel (33/0) 4 76 20 71 35. Fax (33/0) 4 76 48 39 06&nbsp;&nbsp;&nbsp;&nbsp; \__U_/</pre>
+&nbsp;
+<PRE>
+/*******************************************************************************
+* Runtime system for McStas.
+*
+* 	Project: Monte Carlo Simulation of Triple Axis Spectrometers
+* 	File name: mcstas-r.c
+*
+* 	Author: K.N.			Aug 27, 1997
+*
+* Copyright (C) Risoe National Laboratory, 1997-1999, All rights reserved
+*******************************************************************************/
+
+#include &lt;stdarg.h&gt;
+#include &lt;limits.h&gt;
+#include &lt;math.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;time.h&gt;
+
+#ifndef MCSTAS_R_H
+#include "mcstas-r.h"
+#endif
+
+
+#ifdef MC_ANCIENT_COMPATIBILITY
+int mctraceenabled = 0;
+int mcdefaultmain = 0;
+#endif
+
+static long mcseed = 0;
+mcstatic int mcdotrace = 0;
+static int mcascii_only = 0;
+static int mcdisable_output_files = 0;
+static int mcsingle_file = 0;
+
+static FILE *mcsiminfo_file = NULL;
+static char *mcdirname = NULL;
+static char *mcsiminfo_name = "mcstas.sim";
+
+/* MCDISPLAY support. */
+
+void mcdis_magnify(char *what){
+  printf("MCDISPLAY: magnify('%s')\n", what);
+}
+
+void mcdis_line(double x1, double y1, double z1,
+		double x2, double y2, double z2){
+  printf("MCDISPLAY: multiline(2,%g,%g,%g,%g,%g,%g)\n",
+	 x1,y1,z1,x2,y2,z2);
+}
+
+void mcdis_multiline(int count, ...){
+  va_list ap;
+  double x,y,z;
+
+  printf("MCDISPLAY: multiline(%d", count);
+  va_start(ap, count);
+  while(count--)
+  {
+    x = va_arg(ap, double);
+    y = va_arg(ap, double);
+    z = va_arg(ap, double);
+    printf(",%g,%g,%g", x, y, z);
+  }
+  va_end(ap);
+  printf(")\n");
+}
+
+void mcdis_circle(char *plane, double x, double y, double z, double r){
+  printf("MCDISPLAY: circle('%s',%g,%g,%g,%g)\n", plane, x, y, z, r);
+}
+
+
+/* Assign coordinates. */
+Coords
+coords_set(MCNUM x, MCNUM y, MCNUM z)
+{
+  Coords a;
+
+  a.x = x;
+  a.y = y;
+  a.z = z;
+  return a;
+}
+
+/* Add two coordinates. */
+Coords
+coords_add(Coords a, Coords b)
+{
+  Coords c;
+
+  c.x = a.x + b.x;
+  c.y = a.y + b.y;
+  c.z = a.z + b.z;
+  return c;
+}
+
+/* Subtract two coordinates. */
+Coords
+coords_sub(Coords a, Coords b)
+{
+  Coords c;
+
+  c.x = a.x - b.x;
+  c.y = a.y - b.y;
+  c.z = a.z - b.z;
+  return c;
+}
+
+/* Negate coordinates. */
+Coords
+coords_neg(Coords a)
+{
+  Coords b;
+
+  b.x = -a.x;
+  b.y = -a.y;
+  b.z = -a.z;
+  return b;
+}
+
+/*******************************************************************************
+* Get transformation for rotation first phx around x axis, then phy around y,
+* then phz around z.
+*******************************************************************************/
+void
+rot_set_rotation(Rotation t, double phx, double phy, double phz)
+{
+  double cx = cos(phx);
+  double sx = sin(phx);
+  double cy = cos(phy);
+  double sy = sin(phy);
+  double cz = cos(phz);
+  double sz = sin(phz);
+
+  t[0][0] = cy*cz;
+  t[0][1] = sx*sy*cz + cx*sz;
+  t[0][2] = sx*sz - cx*sy*cz;
+  t[1][0] = -cy*sz;
+  t[1][1] = cx*cz - sx*sy*sz;
+  t[1][2] = sx*cz + cx*sy*sz;
+  t[2][0] = sy;
+  t[2][1] = -sx*cy;
+  t[2][2] = cx*cy;
+}
+
+/*******************************************************************************
+* Matrix multiplication of transformations (this corresponds to combining
+* transformations). After rot_mul(T1, T2, T3), doing T3 is equal to doing
+* first T2, then T1.
+* Note that T3 must not alias (use the same array as) T1 or T2.
+*******************************************************************************/
+void
+rot_mul(Rotation t1, Rotation t2, Rotation t3)
+{
+  int i,j, k;
+
+  for(i = 0; i &lt; 3; i++)
+    for(j = 0; j &lt; 3; j++)
+      t3[i][j] = t1[i][0]*t2[0][j] + t1[i][1]*t2[1][j] + t1[i][2]*t2[2][j];
+}
+
+/*******************************************************************************
+* Copy a rotation transformation (needed since arrays cannot be assigned in C).
+*******************************************************************************/
+void
+rot_copy(Rotation dest, Rotation src)
+{
+  dest[0][0] = src[0][0];
+  dest[0][1] = src[0][1];
+  dest[0][2] = src[0][2];
+  dest[1][0] = src[1][0];
+  dest[1][1] = src[1][1];
+  dest[1][2] = src[1][2];
+  dest[2][0] = src[2][0];
+  dest[2][1] = src[2][1];
+  dest[2][2] = src[2][2];
+}
+
+void
+rot_transpose(Rotation src, Rotation dst)
+{
+  dst[0][0] = src[0][0];
+  dst[0][1] = src[1][0];
+  dst[0][2] = src[2][0];
+  dst[1][0] = src[0][1];
+  dst[1][1] = src[1][1];
+  dst[1][2] = src[2][1];
+  dst[2][0] = src[0][2];
+  dst[2][1] = src[1][2];
+  dst[2][2] = src[2][2];
+}
+
+Coords
+rot_apply(Rotation t, Coords a)
+{
+  Coords b;
+
+  b.x = t[0][0]*a.x + t[0][1]*a.y + t[0][2]*a.z;
+  b.y = t[1][0]*a.x + t[1][1]*a.y + t[1][2]*a.z;
+  b.z = t[2][0]*a.x + t[2][1]*a.y + t[2][2]*a.z;
+  return b;
+}
+
+void
+mccoordschange(Coords a, Rotation t, double *x, double *y, double *z,
+	       double *vx, double *vy, double *vz, double *time,
+	       double *s1, double *s2)
+{
+  Coords b, c;
+
+  b.x = *x;
+  b.y = *y;
+  b.z = *z;
+  c = rot_apply(t, b);
+  b = coords_add(c, a);
+  *x = b.x;
+  *y = b.y;
+  *z = b.z;
+
+  b.x = *vx;
+  b.y = *vy;
+  b.z = *vz;
+  c = rot_apply(t, b);
+  *vx = c.x;
+  *vy = c.y;
+  *vz = c.z;
+  /* ToDo: What to do about the spin? */
+}
+
+
+void
+mccoordschange_polarisation(Rotation t, double *sx, double *sy, double *sz)
+{
+  Coords b, c;
+
+  b.x = *sx;
+  b.y = *sy;
+  b.z = *sz;
+  c = rot_apply(t, b);
+  *sx = c.x;
+  *sy = c.y;
+  *sz = c.z;
+}
+
+
+/*******************************************************************************
+* Find i in adaptive search tree t s.t. v(i) &lt;= v &lt; v(i+1).
+*******************************************************************************/
+int
+adapt_tree_search(struct adapt_tree *t, adapt_t v)
+{
+  adapt_t F = 0;		/* Current value. */
+  int i = 0;			/* Current candidate. */
+  int step = t-&gt;initstep;
+  adapt_t *s = t-&gt;s;
+  int j;
+  for(j = t-&gt;root; step &gt; 0; step &gt;&gt;= 1)
+  {
+    F += s[j];			/* Cumulative value in current node */
+    if(v &lt; F)
+      j -= step;		/* Value is to the left or above. */
+    else
+      i = j, j += step;		/* Value is current or to the right. */
+  }
+  /* Now j is at the bottom of a tree (a leaf node). */
+  if(v &lt; F + s[j])
+    return i;
+  else
+    return j;
+}
+
+/*******************************************************************************
+* Add v to v[i], updating the cumulative sums appropriately.
+*******************************************************************************/
+void
+adapt_tree_add(struct adapt_tree *t, int i, adapt_t v)
+{
+  int j = t-&gt;root;
+  int step = t-&gt;initstep;
+  adapt_t *s = t-&gt;s;
+  t-&gt;total += v;
+  t-&gt;v[i++] += v;
+  for(;;)
+  {
+    while(j &lt; i)
+      j += step, step &gt;&gt;= 1;
+    s[j] += v;
+    while(j &gt; i)
+      j -= step, step &gt;&gt;= 1;
+    if(j == i)
+      break;
+    s[j] -= v;
+  }
+  if(step)
+    s[j - step] -= v;
+}
+
+/*******************************************************************************
+* Initialise an adaptive search tree. The tree has N nodes, and all nodes are
+* initialized to zero. Any N &gt; 0 is allowed, but is rounded up to the nearest
+* value of the form N = 2**k - 2.
+*******************************************************************************/
+struct adapt_tree *
+adapt_tree_init(int N)
+{
+  struct adapt_tree *t;
+  int i;
+  int depth;
+
+  /* Round up to nearest 2**k - 2 */
+  for(depth = 0; ((1 &lt;&lt; (depth + 1)) - 2) &lt; N; depth++);
+  N = (1 &lt;&lt; (depth + 1)) - 2;
+
+  t = malloc(sizeof(*t));
+  if(t)
+  {
+    t-&gt;s = malloc((N + 1) * sizeof(*(t-&gt;s)));
+    t-&gt;v = malloc(N * sizeof(*(t-&gt;v)));
+  }
+  if(!(t &amp;&amp; t-&gt;s &amp;&amp; t-&gt;v))
+  {
+    fprintf(stderr, "Fatal error: out of memory\n");
+    exit(1);
+  }
+  t-&gt;N = N;
+  t-&gt;depth = depth;
+  t-&gt;root = (1 &lt;&lt; t-&gt;depth) - 1;
+  t-&gt;initstep = (1 &lt;&lt; (t-&gt;depth - 1));
+  for(i = 0; i &lt; t-&gt;N; i++)
+  {
+    t-&gt;s[i] = 0.0;
+    t-&gt;v[i] = 0.0;
+  }
+  t-&gt;s[i] = 0.0;
+  t-&gt;total = 0.0;
+  return t;
+}
+
+/*******************************************************************************
+* Free memory allocated to an adaptive search tree.
+*******************************************************************************/
+void
+adapt_tree_free(struct adapt_tree *t)
+{
+  free(t-&gt;v);
+  free(t-&gt;s);
+  free(t);
+}
+
+
+double
+mcestimate_error(int N, double p1, double p2)
+{
+  double pmean, n1;
+  if(N &lt;= 1)
+    return p1;
+  pmean = p1 / N;
+  n1 = N - 1;
+  /* Note: underflow may cause p2 to become zero; the fabs() below guards
+     against this. */
+  return sqrt((N/n1)*fabs(p2 - pmean*pmean));
+}
+
+
+/* Instrument input parameter type handling. */
+static int
+mcparm_double(char *s, void *vptr)
+{
+  char *p;
+  double *v = vptr;
+
+  *v = strtod(s, &amp;p);
+  if(*s == '\0' || (p != NULL &amp;&amp; *p != '\0') || errno == ERANGE)
+    return 0;			/* Failed */
+  else
+    return 1;			/* Success */
+}
+
+
+static char *
+mcparminfo_double(char *parmname)
+{
+  return "double";
+}
+
+
+static void
+mcparmerror_double(char *parm, char *val)
+{
+  fprintf(stderr, "Error: Invalid value '%s' for floating point parameter %s\n",
+	  val, parm);
+}
+
+
+static void
+mcparmprinter_double(FILE *f, void *vptr)
+{
+  double *v = vptr;
+  fprintf(f, "%g", *v);
+}
+
+
+static int
+mcparm_int(char *s, void *vptr)
+{
+  char *p;
+  int *v = vptr;
+  long x;
+
+  *v = 0;
+  x = strtol(s, &amp;p, 10);
+  if(x &lt; INT_MIN || x &gt; INT_MAX)
+    return 0;			/* Under/overflow */
+  *v = x;
+  if(*s == '\0' || (p != NULL &amp;&amp; *p != '\0') || errno == ERANGE)
+    return 0;			/* Failed */
+  else
+    return 1;			/* Success */
+}
+
+
+static char *
+mcparminfo_int(char *parmname)
+{
+  return "int";
+}
+
+
+static void
+mcparmerror_int(char *parm, char *val)
+{
+  fprintf(stderr, "Error: Invalid value '%s' for integer parameter %s\n",
+	  val, parm);
+}
+
+
+static void
+mcparmprinter_int(FILE *f, void *vptr)
+{
+  int *v = vptr;
+  fprintf(f, "%d", *v);
+}
+
+
+static int
+mcparm_string(char *s, void *vptr)
+{
+  char **v = vptr;
+  *v = malloc(strlen(s) + 1);
+  if(*v == NULL)
+  {
+    fprintf(stderr, "mcparm_string: Out of memory.\n");
+    exit(1);
+  }
+  strcpy(*v, s);
+  return 1;			/* Success */
+}
+
+
+static char *
+mcparminfo_string(char *parmname)
+{
+  return "string";
+}
+
+
+static void
+mcparmerror_string(char *parm, char *val)
+{
+  fprintf(stderr, "Error: Invalid value '%s' for string parameter %s\n",
+	  val, parm);
+}
+
+
+static void
+mcparmprinter_string(FILE *f, void *vptr)
+{
+  char **v = vptr;
+  char *p;
+  fprintf(f, "\"");
+  for(p = *v; *p != '\0'; p++)
+  {
+    switch(*p)
+    {
+      case '\n':
+	fprintf(f, "\\n");
+	break;
+      case '\r':
+	fprintf(f, "\\r");
+	break;
+      case '"':
+	fprintf(f, "\\\"");
+	break;
+      case '\\':
+	fprintf(f, "\\\\");
+	break;
+      default:
+	fprintf(f, "%c", *p);
+    }
+  }
+  fprintf(f, "\"");
+}
+
+
+static struct
+  {
+    int (*getparm)(char *, void *);
+    char * (*parminfo)(char *);
+    void (*error)(char *, char *);
+    void (*printer)(FILE *, void *);
+  } mcinputtypes[] =
+      {
+	mcparm_double, mcparminfo_double, mcparmerror_double,
+		mcparmprinter_double,
+	mcparm_int, mcparminfo_int, mcparmerror_int,
+		mcparmprinter_int,
+	mcparm_string, mcparminfo_string, mcparmerror_string,
+		mcparmprinter_string
+      };
+
+
+FILE *
+mcnew_file(char *name)
+{
+  int dirlen;
+  char *mem;
+  FILE *file;
+
+  dirlen = mcdirname ? strlen(mcdirname) : 0;
+  mem = malloc(dirlen + 1 + strlen(name) + 1);
+  if(!mem)
+  {
+    fprintf(stderr, "Error: Out of memory\n");
+    exit(1);
+  }
+  strcpy(mem, "");
+  if(dirlen)
+  {
+    strcat(mem, mcdirname);
+    if(mcdirname[dirlen - 1] != MC_PATHSEP_C &amp;&amp;
+       name[0] != MC_PATHSEP_C)
+      strcat(mem, MC_PATHSEP_S);
+  }
+  strcat(mem, name);
+  file = fopen(mem, "w");
+  if(!file)
+    fprintf(stderr, "Warning: could not open output file '%s'\n", mem);
+  free(mem);
+  return file;
+}
+
+
+static void
+mcinfo_out(char *pre, FILE *f)
+{
+  int i;
+
+  fprintf(f, "%sName: %s\n", pre, mcinstrument_name);
+  fprintf(f, "%sParameters:", pre);
+  for(i = 0; i &lt; mcnumipar; i++)
+    fprintf(f, " %s(%s)", mcinputtable[i].name,
+	    (*mcinputtypes[mcinputtable[i].type].parminfo)
+		(mcinputtable[i].name));
+  fprintf(f, "\n");
+  fprintf(f, "%sInstrument-source: %s\n", pre, mcinstrument_source);
+  fprintf(f, "%sTrace-enabled: %s\n", pre, mctraceenabled ? "yes" : "no");
+  fprintf(f, "%sDefault-main: %s\n", pre, mcdefaultmain ? "yes" : "no");
+  fprintf(f, "%sEmbedded-runtime: %s\n", pre,
+#ifdef MC_EMBEDDED_RUNTIME
+	 "yes"
+#else
+	 "no"
+#endif
+	 );
+}
+
+
+static void
+mcruninfo_out(char *pre, FILE *f)
+{
+  int i;
+  time_t t;
+  if(!f)
+    return;
+  time(&amp;t);
+  fprintf(f, "%sDate: %s", pre, ctime(&amp;t)); /* Note: ctime adds '\n' ! */
+  fprintf(f, "%sNcount: %g\n", pre, mcget_ncount());
+  fprintf(f, "%sTrace: %s\n", pre, mcdotrace ? "yes" : "no");
+  if(mcseed)
+    fprintf(f, "%sSeed: %ld\n", pre, mcseed);
+  for(i = 0; i &lt; mcnumipar; i++)
+  {
+    fprintf(f, "%sParam: %s=", pre, mcinputtable[i].name);
+    (*mcinputtypes[mcinputtable[i].type].printer)(f, mcinputtable[i].par);
+    fprintf(f, "\n");
+  }
+}
+
+
+void
+mcsiminfo_init(void)
+{
+  if(mcdisable_output_files)
+    return;
+  mcsiminfo_file = mcnew_file(mcsiminfo_name);
+  if(!mcsiminfo_file)
+    fprintf(stderr,
+	    "Warning: could not open simulation description file '%s'\n",
+	    mcsiminfo_name);
+  else
+  {
+    mcsiminfo_out("begin instrument\n");
+    mcinfo_out("  ", mcsiminfo_file);
+    mcsiminfo_out("end instrument\n");
+    mcsiminfo_out("\nbegin simulation\n");
+    mcruninfo_out("  ", mcsiminfo_file);
+    mcsiminfo_out("end simulation\n");
+  }
+}
+
+
+void
+mcsiminfo_out(char *format, ...)
+{
+  va_list ap;
+  double x,y,z;
+
+  if(mcsiminfo_file)
+  {
+    va_start(ap, format);
+    vfprintf(mcsiminfo_file, format, ap);
+    va_end(ap);
+  }
+}
+
+
+void
+mcsiminfo_close()
+{
+  if(mcsiminfo_file)
+    fclose(mcsiminfo_file);
+}
+
+
+void
+mcdetector_out(char *cname, double p0, double p1, double p2, char *filename)
+{
+  printf("Detector: %s_I=%g %s_ERR=%g %s_N=%g",
+	 cname, p1, cname, mcestimate_error(p0,p1,p2), cname, p0);
+  if(filename)
+    printf(" \"%s\"", filename);
+  printf("\n");
+}
+
+
+static void
+mcdatainfo_out_0D(char *pre, FILE *f, char *t,
+		  double I, double I_err, double N, char *c)
+{
+  if(!f)
+    return;
+  fprintf(f, "%stype: array_0d\n", pre);
+  fprintf(f, "%scomponent: %s\n", pre, c);
+  fprintf(f, "%stitle: %s\n", pre, t);
+  fprintf(f, "%svariables: I I_err N\n", pre);
+  fprintf(f, "%svalues: %g %g %g\n", pre, I, I_err, N);
+}
+
+static void
+mcdatainfo_out_1D(char *pre, FILE *f, char *t, char *xl, char *yl, char *xvar,
+		  double x1, double x2, int n, char *fname, char *c, int do_errb)
+{
+  if(!f)
+    return;
+  fprintf(f, "%stype: array_1d(%d)\n", pre, n);
+  fprintf(f, "%scomponent: %s\n", pre, c);
+  fprintf(f, "%stitle: %s\n", pre, t);
+  if(fname)
+    fprintf(f, "%sfilename: '%s'\n", pre, fname);
+  fprintf(f, "%svariables: %s I%s\n", pre, xvar, do_errb ? " I_err N" : "");
+  fprintf(f, "%sxvar: %s\n", pre, xvar);
+  fprintf(f, "%syvar: %s\n", pre, do_errb ? "(I,I_err)" : "I");
+  fprintf(f, "%sxlabel: '%s'\n%sylabel: '%s'\n", pre, xl, pre, yl);
+  fprintf(f, "%sxlimits: %g %g\n", pre, x1, x2);
+}
+
+static void
+mcdatainfo_out_2D(char *pre, FILE *f, char *t, char *xl, char *yl,
+		  double x1, double x2, double y1, double y2,
+		  int m, int n, char *fname, char *c)
+{
+  if(!f)
+    return;
+  fprintf(f, "%stype: array_2d(%d,%d)\n", pre, m, n);
+  fprintf(f, "%scomponent: %s\n", pre, c);
+  fprintf(f, "%stitle: %s\n", pre, t);
+  if(fname)
+    fprintf(f, "%sfilename: '%s'\n", pre, fname);
+  fprintf(f, "%sxlabel: '%s'\n%sylabel: '%s'\n", pre, xl, pre, yl);
+  fprintf(f, "%sxylimits: %g %g %g %g\n", pre, x1, x2, y1, y2);
+}  
+
+/*******************************************************************************
+* Output single detector/monitor data (p0, p1, p2).
+* Title is t, component name is c.
+*******************************************************************************/
+void
+mcdetector_out_0D(char *t, double p0, double p1, double p2, char *c)
+{
+  /* Write data set information to simulation description file. */
+  mcsiminfo_out("\nbegin data\n");
+  mcdatainfo_out_0D("  ", mcsiminfo_file, t,
+		    p1, mcestimate_error(p0, p1, p2), p0, c);
+  mcsiminfo_out("end data\n");
+  /* Finally give 0D detector output. */
+  mcdetector_out(c, p0, p1, p2, NULL);
+}
+
+
+/*******************************************************************************
+* Output 1d detector data (p0, p1, p2) for n bins linearly
+* distributed across the range x1..x2 (x1 is lower limit of first
+* bin, x2 is upper limit of last bin). Title is t, axis labels are xl
+* and yl. File name is f, component name is c.
+*******************************************************************************/
+void
+mcdetector_out_1D(char *t, char *xl, char *yl,
+		  char *xvar, double x1, double x2, int n,
+		  int *p0, double *p1, double *p2, char *f, char *c)
+{
+  int i;
+  FILE *outfile = NULL;
+  int Nsum;
+  double Psum, P2sum;
+  char *pre;
+  int do_errb = p0 &amp;&amp; p2;
+
+  /* Write data set information to simulation description file. */
+  mcsiminfo_out("\nbegin data\n");
+  mcdatainfo_out_1D("  ", mcsiminfo_file, t, xl, yl, xvar, x1, x2,
+		    n, f, c, do_errb);
+  /* Loop over array elements, computing total sums and writing to file. */
+  Nsum = Psum = P2sum = 0;
+  pre = "";
+  if(mcsingle_file)
+  {
+    outfile = mcsiminfo_file;
+    f = NULL;
+    mcsiminfo_out("  begin array2D (%d,%d)\n", do_errb ? 4 : 2, n);
+    pre = "    ";
+  }
+  else if(f &amp;&amp; !mcdisable_output_files)	/* Don't write if filename is NULL */
+    outfile = mcnew_file(f);
+  if(outfile &amp;&amp; !mcascii_only &amp;&amp; !mcsingle_file)
+  {
+    fprintf(outfile, "# Instrument-source: %s\n", mcinstrument_source);
+    mcruninfo_out("# ", outfile);
+    mcdatainfo_out_1D("# ", outfile, t, xl, yl, xvar, x1, x2,
+		      n, f, c, do_errb);
+  }
+  for(i = 0; i &lt; n; i++)
+  {
+    if(outfile)
+    {
+      fprintf(outfile, "%s%g %g", pre, x1 + (i + 0.5)/n*(x2 - x1), p1[i]);
+      if(do_errb)
+	fprintf(outfile, " %g %d", mcestimate_error(p0[i],p1[i],p2[i]), p0[i]);
+      fprintf(outfile, "\n");
+    }
+    Nsum += p0 ? p0[i] : 1;
+    Psum += p1[i];
+    P2sum += p2 ? p2[i] : p1[i]*p1[i];
+  }
+  if(mcsingle_file)
+    mcsiminfo_out("  end array2D\n");
+  else if(outfile)
+    fclose(outfile);
+  mcsiminfo_out("end data\n");
+  /* Finally give 0D detector output. */
+  mcdetector_out(c, Nsum, Psum, P2sum, f);
+}
+
+
+void
+mcdetector_out_2D(char *t, char *xl, char *yl,
+		  double x1, double x2, double y1, double y2, int m,
+		  int n, int *p0, double *p1, double *p2, char *f, char *c)
+{
+  int i, j;
+  FILE *outfile = NULL;
+  int Nsum;
+  double Psum, P2sum;
+  char *pre;
+
+  /* Write data set information to simulation description file. */
+  mcsiminfo_out("\nbegin data\n");
+  mcdatainfo_out_2D("  ", mcsiminfo_file,
+		    t, xl, yl, x1, x2, y1, y2, m, n, f, c);
+  /* Loop over array elements, computing total sums and writing to file. */
+  Nsum = Psum = P2sum = 0;
+  pre = "";
+  if(mcsingle_file)
+  {
+    outfile = mcsiminfo_file;
+    f = NULL;
+    mcsiminfo_out("  begin array2D (%d,%d)\n", m, n);
+    pre = "    ";
+  }
+  else if(f &amp;&amp; !mcdisable_output_files)	/* Don't write if filename is NULL */
+    outfile = mcnew_file(f);
+  if(outfile &amp;&amp; !mcascii_only &amp;&amp; !mcsingle_file)
+  {
+    fprintf(outfile, "# Instrument-source: %s\n", mcinstrument_source);
+    mcruninfo_out("# ", outfile);
+    mcdatainfo_out_2D("# ", outfile,
+		      t, xl, yl, x1, x2, y1, y2, m, n, f, c);
+  }
+  for(j = 0; j &lt; n; j++)
+  {
+    if(outfile)
+      fprintf(outfile,"%s", pre);
+    for(i = 0; i &lt; m; i++)
+    {
+      if(outfile)
+	fprintf(outfile, "%g ", p1[i*n + j]);
+      Nsum += p0 ? p0[i*n + j] : 1;
+      Psum += p1[i*n + j];
+      P2sum += p2 ? p2[i*n + j] : p1[i*n + j]*p1[i*n + j];
+    }
+    if(outfile)
+      fprintf(outfile,"\n");
+  }
+  if(mcsingle_file)
+    mcsiminfo_out("  end array2D\n");
+  else if(outfile)
+    fclose(outfile);
+  mcsiminfo_out("end data\n");
+  /* Finally give 0D detector output. */
+  mcdetector_out(c, Nsum, Psum, P2sum, f);
+}
+
+
+void
+mcreadparams(void)
+{
+  int i,j,status;
+  char buf[1024];
+  char *p;
+  int len;
+
+  for(i = 0; mcinputtable[i].name != 0; i++)
+  {
+    do
+    {
+      printf("Set value of instrument parameter %s (%s):\n",
+	     mcinputtable[i].name,
+	     (*mcinputtypes[mcinputtable[i].type].parminfo)
+		  (mcinputtable[i].name));
+      fflush(stdout);
+      p = fgets(buf, 1024, stdin);
+      if(p == NULL)
+      {
+	fprintf(stderr, "Error: empty input\n");
+	exit(1);
+      }
+      len = strlen(buf);
+      for(j = 0; j &lt; 2; j++)
+      {
+	if(len &gt; 0 &amp;&amp; (buf[len - 1] == '\n' || buf[len - 1] == '\r'))
+	{
+	  len--;
+	  buf[len] = '\0';
+	}
+      }
+      status = (*mcinputtypes[mcinputtable[i].type].getparm)
+		   (buf, mcinputtable[i].par);
+      if(!status)
+      {
+	(*mcinputtypes[mcinputtable[i].type].error)(mcinputtable[i].name, buf);
+      }
+    } while(!status);
+  }
+}
+
+
+
+void
+mcsetstate(double x, double y, double z, double vx, double vy, double vz,
+	   double t, double sx, double sy, double sz, double p)
+{
+  extern double mcnx, mcny, mcnz, mcnvx, mcnvy, mcnvz;
+  extern double mcnt, mcnsx, mcnsy, mcnsz, mcnp;
+
+  mcnx = x;
+  mcny = y;
+  mcnz = z;
+  mcnvx = vx;
+  mcnvy = vy;
+  mcnvz = vz;
+  mcnt = t;
+  mcnsx = sx;
+  mcnsy = sy;
+  mcnsz = sz;
+  mcnp = p;
+}
+
+void
+mcgenstate(void)
+{
+  mcsetstate(0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1);
+}
+
+/* McStas random number routine. */
+
+/*
+ * Copyright (c) 1983 Regents of the University of California.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms are permitted
+ * provided that the above copyright notice and this paragraph are
+ * duplicated in all such forms and that any documentation,
+ * advertising materials, and other materials related to such
+ * distribution and use acknowledge that the software was developed
+ * by the University of California, Berkeley.  The name of the
+ * University may not be used to endorse or promote products derived
+ * from this software without specific prior written permission.
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+ * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ */
+
+/*
+ * This is derived from the Berkeley source:
+ *	@(#)random.c	5.5 (Berkeley) 7/6/88
+ * It was reworked for the GNU C Library by Roland McGrath.
+ * Rewritten to use reentrant functions by Ulrich Drepper, 1995.
+ */
+
+/*******************************************************************************
+* Modified for McStas from glibc 2.0.7pre1 stdlib/random.c and
+* stdlib/random_r.c.
+*
+* This way random() is more than four times faster compared to calling
+* standard glibc random() on ix86 Linux, probably due to multithread support,
+* ELF shared library overhead, etc. It also makes McStas generated
+* simulations more portable (more likely to behave identically across
+* platforms, important for parrallel computations).
+*******************************************************************************/
+
+
+#define	TYPE_3		3
+#define	BREAK_3		128
+#define	DEG_3		31
+#define	SEP_3		3
+
+static mc_int32_t randtbl[DEG_3 + 1] =
+  {
+    TYPE_3,
+
+    -1726662223, 379960547, 1735697613, 1040273694, 1313901226,
+    1627687941, -179304937, -2073333483, 1780058412, -1989503057,
+    -615974602, 344556628, 939512070, -1249116260, 1507946756,
+    -812545463, 154635395, 1388815473, -1926676823, 525320961,
+    -1009028674, 968117788, -123449607, 1284210865, 435012392,
+    -2017506339, -911064859, -370259173, 1132637927, 1398500161,
+    -205601318,
+  };
+
+static mc_int32_t *fptr = &amp;randtbl[SEP_3 + 1];
+static mc_int32_t *rptr = &amp;randtbl[1];
+static mc_int32_t *state = &amp;randtbl[1];
+#define rand_deg DEG_3
+#define rand_sep SEP_3
+static mc_int32_t *end_ptr = &amp;randtbl[sizeof (randtbl) / sizeof (randtbl[0])];
+
+mc_int32_t
+mc_random (void)
+{
+  mc_int32_t result;
+
+  *fptr += *rptr;
+  /* Chucking least random bit.  */
+  result = (*fptr &gt;&gt; 1) &amp; 0x7fffffff;
+  ++fptr;
+  if (fptr &gt;= end_ptr)
+  {
+    fptr = state;
+    ++rptr;
+  }
+  else
+  {
+    ++rptr;
+    if (rptr &gt;= end_ptr)
+      rptr = state;
+  }
+  return result;
+}
+
+void
+mc_srandom (unsigned int x)
+{
+  /* We must make sure the seed is not 0.  Take arbitrarily 1 in this case.  */
+  state[0] = x ? x : 1;
+  {
+    long int i;
+    for (i = 1; i &lt; rand_deg; ++i)
+    {
+      /* This does:
+	 state[i] = (16807 * state[i - 1]) % 2147483647;
+	 but avoids overflowing 31 bits.  */
+      long int hi = state[i - 1] / 127773;
+      long int lo = state[i - 1] % 127773;
+      long int test = 16807 * lo - 2836 * hi;
+      state[i] = test + (test &lt; 0 ? 2147483647 : 0);
+    }
+    fptr = &amp;state[rand_sep];
+    rptr = &amp;state[0];
+    for (i = 0; i &lt; 10 * rand_deg; ++i)
+      random ();
+  }
+}
+
+/* "Mersenne Twister", by Makoto Matsumoto and Takuji Nishimura. */
+/* See <A HREF="http://www.math.keio.ac.jp/~matumoto/emt.html">http://www.math.keio.ac.jp/~matumoto/emt.html</A> for original source. */
+
+/*   Coded by Takuji Nishimura, considering the suggestions by */
+/* Topher Cooper and Marc Rieffel in July-Aug. 1997.           */
+
+/* This library is free software; you can redistribute it and/or   */
+/* modify it under the terms of the GNU Library General Public     */
+/* License as published by the Free Software Foundation; either    */
+/* version 2 of the License, or (at your option) any later         */
+/* version.                                                        */
+/* This library is distributed in the hope that it will be useful, */
+/* but WITHOUT ANY WARRANTY; without even the implied warranty of  */
+/* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.            */
+/* See the GNU Library General Public License for more details.    */
+/* You should have received a copy of the GNU Library General      */
+/* Public License along with this library; if not, write to the    */
+/* Free Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA   */ 
+/* 02111-1307  USA                                                 */
+
+/* Copyright (C) 1997 Makoto Matsumoto and Takuji Nishimura.       */
+/* When you use this, send an email to: matumoto@math.keio.ac.jp   */
+/* with an appropriate reference to your work.                     */
+
+#define N 624
+#define M 397
+#define MATRIX_A 0x9908b0df   /* constant vector a */
+#define UPPER_MASK 0x80000000 /* most significant w-r bits */
+#define LOWER_MASK 0x7fffffff /* least significant r bits */
+
+#define TEMPERING_MASK_B 0x9d2c5680
+#define TEMPERING_MASK_C 0xefc60000
+#define TEMPERING_SHIFT_U(y)  (y &gt;&gt; 11)
+#define TEMPERING_SHIFT_S(y)  (y &lt;&lt; 7)
+#define TEMPERING_SHIFT_T(y)  (y &lt;&lt; 15)
+#define TEMPERING_SHIFT_L(y)  (y &gt;&gt; 18)
+
+static unsigned long mt[N]; /* the array for the state vector  */
+static int mti=N+1; /* mti==N+1 means mt[N] is not initialized */
+
+/* initializing the array with a NONZERO seed */
+void
+mt_srandom(unsigned long seed)
+{
+    /* setting initial seeds to mt[N] using         */
+    /* the generator Line 25 of Table 1 in          */
+    /* [KNUTH 1981, The Art of Computer Programming */
+    /*    Vol. 2 (2nd Ed.), pp102]                  */
+    mt[0]= seed &amp; 0xffffffff;
+    for (mti=1; mti&lt;N; mti++)
+        mt[mti] = (69069 * mt[mti-1]) &amp; 0xffffffff;
+}
+
+unsigned long
+mt_random(void)
+{
+    unsigned long y;
+    static unsigned long mag01[2]={0x0, MATRIX_A};
+    /* mag01[x] = x * MATRIX_A  for x=0,1 */
+
+    if (mti &gt;= N) { /* generate N words at one time */
+        int kk;
+
+        if (mti == N+1)   /* if sgenrand() has not been called, */
+            mt_srandom(4357); /* a default initial seed is used   */
+
+        for (kk=0;kk&lt;N-M;kk++) {
+            y = (mt[kk]&amp;UPPER_MASK)|(mt[kk+1]&amp;LOWER_MASK);
+            mt[kk] = mt[kk+M] ^ (y &gt;&gt; 1) ^ mag01[y &amp; 0x1];
+        }
+        for (;kk&lt;N-1;kk++) {
+            y = (mt[kk]&amp;UPPER_MASK)|(mt[kk+1]&amp;LOWER_MASK);
+            mt[kk] = mt[kk+(M-N)] ^ (y &gt;&gt; 1) ^ mag01[y &amp; 0x1];
+        }
+        y = (mt[N-1]&amp;UPPER_MASK)|(mt[0]&amp;LOWER_MASK);
+        mt[N-1] = mt[M-1] ^ (y &gt;&gt; 1) ^ mag01[y &amp; 0x1];
+
+        mti = 0;
+    }
+  
+    y = mt[mti++];
+    y ^= TEMPERING_SHIFT_U(y);
+    y ^= TEMPERING_SHIFT_S(y) &amp; TEMPERING_MASK_B;
+    y ^= TEMPERING_SHIFT_T(y) &amp; TEMPERING_MASK_C;
+    y ^= TEMPERING_SHIFT_L(y);
+
+    return y;
+}
+#undef N
+#undef M
+#undef MATRIX_A
+#undef UPPER_MASK
+#undef LOWER_MASK
+#undef TEMPERING_MASK_B
+#undef TEMPERING_MASK_C
+#undef TEMPERING_SHIFT_U
+#undef TEMPERING_SHIFT_S
+#undef TEMPERING_SHIFT_T
+#undef TEMPERING_SHIFT_L
+/* End of "Mersenne Twister". */
+
+/* End of McStas random number routine. */
+
+double
+randnorm(void)
+{
+  static double v1, v2, s;
+  static int phase = 0;
+  double X, u1, u2;
+
+  if(phase == 0)
+  {
+    do
+    {
+      u1 = rand01();
+      u2 = rand01();
+      v1 = 2*u1 - 1;
+      v2 = 2*u2 - 1;
+      s = v1*v1 + v2*v2;
+    } while(s &gt;= 1 || s == 0);
+
+    X = v1*sqrt(-2*log(s)/s);
+  }
+  else
+  {
+    X = v2*sqrt(-2*log(s)/s);
+  }
+
+  phase = 1 - phase;
+  return X;
+}
+
+/* Compute normal vector to (x,y,z). */
+void normal_vec(double *nx, double *ny, double *nz,
+                double x, double y, double z)
+{
+  double ax = fabs(x);
+  double ay = fabs(y);
+  double az = fabs(z);
+  double l;
+  if(x == 0 &amp;&amp; y == 0 &amp;&amp; z == 0)
+  {
+    *nx = 0;
+    *ny = 0;
+    *nz = 0;
+    return;
+  }
+  if(ax &lt; ay)
+  {
+    if(ax &lt; az)
+    {                           /* Use X axis */
+      l = sqrt(z*z + y*y);
+      *nx = 0;
+      *ny = z/l;
+      *nz = -y/l;
+      return;
+    }
+  }
+  else
+  {
+    if(ay &lt; az)
+    {                           /* Use Y axis */
+      l = sqrt(z*z + x*x);
+      *nx = z/l;
+      *ny = 0;
+      *nz = -x/l;
+      return;
+    }
+  }
+  /* Use Z axis */
+  l = sqrt(y*y + x*x);
+  *nx = y/l;
+  *ny = -x/l;
+  *nz = 0;
+}
+
+/* If intersection with box dt_in and dt_out is returned */
+/* This function written by Stine Nyborg, 1999. */
+int box_intersect(double *dt_in, double *dt_out,
+                  double x, double y, double z,
+                  double vx, double vy, double vz,
+                  double dx, double dy, double dz)
+{
+  double x_in, y_in, z_in, tt, t[6], a, b;
+  int i, count, s;
+
+      /* Calculate intersection time for each of the six box surface planes
+       *  If the box surface plane is not hit, the result is zero.*/
+  
+  if(vx != 0)
+   {
+    tt = -(dx/2 + x)/vx;
+    y_in = y + tt*vy;
+    z_in = z + tt*vz;
+    if( y_in &gt; -dy/2 &amp;&amp; y_in &lt; dy/2 &amp;&amp; z_in &gt; -dz/2 &amp;&amp; z_in &lt; dz/2)
+      t[0] = tt;
+    else
+      t[0] = 0;
+
+    tt = (dx/2 - x)/vx;
+    y_in = y + tt*vy;
+    z_in = z + tt*vz;
+    if( y_in &gt; -dy/2 &amp;&amp; y_in &lt; dy/2 &amp;&amp; z_in &gt; -dz/2 &amp;&amp; z_in &lt; dz/2)
+      t[1] = tt;
+    else
+      t[1] = 0;
+   }
+  else
+    t[0] = t[1] = 0;
+
+  if(vy != 0)
+   {
+    tt = -(dy/2 + y)/vy;
+    x_in = x + tt*vx;
+    z_in = z + tt*vz;
+    if( x_in &gt; -dx/2 &amp;&amp; x_in &lt; dx/2 &amp;&amp; z_in &gt; -dz/2 &amp;&amp; z_in &lt; dz/2)
+      t[2] = tt;
+    else
+      t[2] = 0;
+
+    tt = (dy/2 - y)/vy;
+    x_in = x + tt*vx;
+    z_in = z + tt*vz;
+    if( x_in &gt; -dx/2 &amp;&amp; x_in &lt; dx/2 &amp;&amp; z_in &gt; -dz/2 &amp;&amp; z_in &lt; dz/2)
+      t[3] = tt;
+    else
+      t[3] = 0;
+   }
+  else
+    t[2] = t[3] = 0;
+
+  if(vz != 0)
+   {
+    tt = -(dz/2 + z)/vz;
+    x_in = x + tt*vx;
+    y_in = y + tt*vy;
+    if( x_in &gt; -dx/2 &amp;&amp; x_in &lt; dx/2 &amp;&amp; y_in &gt; -dy/2 &amp;&amp; y_in &lt; dy/2)
+      t[4] = tt;
+    else
+      t[4] = 0;
+
+    tt = (dz/2 - z)/vz;
+    x_in = x + tt*vx;
+    y_in = y + tt*vy;
+    if( x_in &gt; -dx/2 &amp;&amp; x_in &lt; dx/2 &amp;&amp; y_in &gt; -dy/2 &amp;&amp; y_in &lt; dy/2)
+      t[5] = tt;
+    else
+      t[5] = 0;
+   }
+  else
+    t[4] = t[5] = 0;
+
+  /* The intersection is evaluated and *dt_in and *dt_out are assigned */
+
+  a = b = s = 0;
+  count = 0;
+
+  for( i = 0; i &lt; 6; i = i + 1 )
+    if( t[i] == 0 )
+      s = s+1;
+    else if( count == 0 )
+    {
+      a = t[i];
+      count = 1;
+    }
+    else
+    {
+      b = t[i];
+      count = 2;
+    }
+
+  if ( a == 0 &amp;&amp; b == 0 )
+    return 0;
+  else if( a &lt; b )
+  {
+    *dt_in = a;
+    *dt_out = b;
+    return 1;
+  }
+  else
+  {
+    *dt_in = b;
+    *dt_out = a;
+    return 1;
+  }
+
+}
+
+/* Written by: EM,NB,ABA 4.2.98 */
+int
+cylinder_intersect(double *t0, double *t1, double x, double y, double z,
+		   double vx, double vy, double vz, double r, double h)
+{
+  double v, D, t_in, t_out, y_in, y_out;
+
+  v = sqrt(vx*vx+vy*vy+vz*vz);
+
+  D = (2*vx*x + 2*vz*z)*(2*vx*x + 2*vz*z)
+    - 4*(vx*vx + vz*vz)*(x*x + z*z - r*r);
+
+  if (D&gt;=0)
+  {
+    t_in  = (-(2*vz*z + 2*vx*x) - sqrt(D))/(2*(vz*vz + vx*vx));
+    t_out = (-(2*vz*z + 2*vx*x) + sqrt(D))/(2*(vz*vz + vx*vx));
+    y_in = vy*t_in + y;
+    y_out =vy*t_out + y;
+
+    if ( (y_in &gt; h/2 &amp;&amp; y_out &gt; h/2) || (y_in &lt; -h/2 &amp;&amp; y_out &lt; -h/2) )
+      return 0;
+    else
+    {
+      if (y_in &gt; h/2)
+	t_in = ((h/2)-y)/vy;
+      if (y_in &lt; -h/2)
+	t_in = ((-h/2)-y)/vy;
+      if (y_out &gt; h/2)
+	t_out = ((h/2)-y)/vy;
+      if (y_out &lt; -h/2)
+	t_out = ((-h/2)-y)/vy;
+    }
+    *t0 = t_in;
+    *t1 = t_out;
+    return 1;
+  }
+  else
+  {
+    *t0 = *t1 = 0;
+    return 0;
+  }
+}
+
+
+/* Calculate intersection between line and sphere. */
+int
+sphere_intersect(double *t0, double *t1, double x, double y, double z,
+		 double vx, double vy, double vz, double r)
+{
+  double A, B, C, D, v;
+
+  v = sqrt(vx*vx + vy*vy + vz*vz);
+  A = v*v;
+  B = 2*(x*vx + y*vy + z*vz);
+  C = x*x + y*y + z*z - r*r;
+  D = B*B - 4*A*C;
+  if(D &lt; 0)
+    return 0;
+  D = sqrt(D);
+  *t0 = (-B - D) / (2*A);
+  *t1 = (-B + D) / (2*A);
+  return 1;
+}
+
+
+/* Choose random direction towards target at (x,y,z) with given radius. */
+/* If radius is zero, choose random direction in full 4PI, no target. */
+/* ToDo: It should be possible to optimize this to avoid computing angles. */
+void
+randvec_target_sphere(double *xo, double *yo, double *zo, double *solid_angle,
+	       double xi, double yi, double zi, double radius)
+{
+  double l, theta0, phi, theta, nx, ny, nz, xt, yt, zt;
+
+  if(radius == 0.0)
+  {
+    /* No target, choose uniformly a direction in full 4PI solid angle. */
+    theta = acos (1 - rand0max(2));
+    phi = rand0max(2 * PI);
+    if(solid_angle)
+      *solid_angle = 4*PI;
+    nx = 1;
+    ny = 0;
+    nz = 0;
+    xi = 0;
+    yi = 1;
+    zi = 0;
+  }
+  else
+  {
+    l = sqrt(xi*xi + yi*yi + zi*zi); /* Distance to target. */
+    theta0 = asin(radius / l);	/* Target size as seen from origin */
+    if(solid_angle)
+    {
+      /* Compute solid angle of target as seen from origin. */
+      *solid_angle = 2*PI*(1 - cos(theta0));
+    }
+
+    /* Now choose point uniformly on sphere surface within angle theta0 */
+    theta = acos (1 - rand0max(1 - cos(theta0)));
+    phi = rand0max(2 * PI);
+    /* Now, to obtain the desired vector rotate (x,y,z) angle theta around a
+       perpendicular axis (nx,ny,nz) and then angle phi around (x,y,z). */
+    if(xi == 0 &amp;&amp; yi == 0)
+    {
+      nx = 1;
+      ny = 0;
+      nz = 0;
+    }
+    else
+    {
+      nx = -yi;
+      ny = xi;
+      nz = 0;
+    }
+  }
+  rotate(xt, yt, zt, xi, yi, zi, theta, nx, ny, nz);
+  rotate(*xo, *yo, *zo, xt, yt, zt, phi, xi, yi, zi);
+}
+
+/* Make sure a list is big enough to hold element COUNT.
+*
+* The list is an array, and the argument 'list' is a pointer to a pointer to
+* the array start. The argument 'size' is a pointer to the number of elements
+* in the array. The argument 'elemsize' is the sizeof() an element. The
+* argument 'count' is the minimum number of elements needed in the list.
+*
+* If the old array is to small (or if *list is NULL or *size is 0), a
+* sufficuently big new array is allocated, and *list and *size are updated.
+*/
+void extend_list(int count, void **list, int *size, size_t elemsize)
+{
+  if(count &gt;= *size)
+  {
+    void *oldlist = *list;
+    if(*size &gt; 0)
+      *size *= 2;
+    else
+      *size = 32;
+    *list = malloc(*size*elemsize);
+    if(!*list)
+    {
+      fprintf(stderr, "\nFatal error: Out of memory.\n");
+      exit(1);
+    }
+    if(oldlist)
+    {
+      memcpy(*list, oldlist, count*elemsize);
+      free(oldlist);
+    }
+  }
+}
+
+/* Number of neutron histories to simulate. */
+static double mcncount = 1e6;
+double mcrun_num = 0;
+
+void
+mcset_ncount(double count)
+{
+  mcncount = count;
+}
+
+double
+mcget_ncount(void)
+{
+  return mcncount;
+}
+
+double
+mcget_run_num(void)
+{
+  return mcrun_num;
+}
+
+static void
+mcsetn_arg(char *arg)
+{
+  mcset_ncount(strtod(arg, NULL));
+}
+
+static void
+mcsetseed(char *arg)
+{
+  mcseed = atol(arg);
+  if(mcseed)
+    srandom(mcseed);
+  else
+  {
+    fprintf(stderr, "Error seed most not be zero.\n");
+    exit(1);
+  }
+}
+
+static void
+mchelp(char *pgmname)
+{
+  int i;
+
+  fprintf(stderr, "Usage: %s [options] [parm=value ...]\n", pgmname);
+  fprintf(stderr,
+"Options are:\n"
+"  -s SEED   --seed=SEED      Set random seed (must be != 0)\n"
+"  -n COUNT  --ncount=COUNT   Set number of neutrons to simulate.\n"
+"  -d DIR    --dir=DIR        Put all data files in directory DIR.\n"
+"  -f FILE   --file=FILE      Put all data in a single file.\n"
+"  -t        --trace          Enable trace of neutron through instrument.\n"
+"  -a        --ascii-only     Do not put any headers in the data files.\n"
+"  --no-output-files          Do not write any data files.\n"
+"  -h        --help           Show help message.\n"
+"  -i        --info           Detailed instrument information.\n"
+);
+  if(mcnumipar &gt; 0)
+  {
+    fprintf(stderr, "Instrument parameters are:\n");
+    for(i = 0; i &lt; mcnumipar; i++)
+      fprintf(stderr, "  %-16s(%s)\n", mcinputtable[i].name,
+	(*mcinputtypes[mcinputtable[i].type].parminfo)(mcinputtable[i].name));
+  }
+}
+
+static void
+mcshowhelp(char *pgmname)
+{
+  mchelp(pgmname);
+  exit(0);
+}
+
+static void
+mcusage(char *pgmname)
+{
+  fprintf(stderr, "Error: incorrect command line arguments\n");
+  mchelp(pgmname);
+  exit(1);
+}
+
+static void
+mcinfo(void)
+{
+  mcinfo_out("", stdout);
+  exit(0);
+}
+
+static void
+mcenabletrace(void)
+{
+ if(mctraceenabled)
+  mcdotrace = 1;
+ else
+ {
+   fprintf(stderr,
+	   "Error: trace not enabled.\n"
+	   "Please re-run the McStas compiler"
+		   "with the --trace option, or rerun the\n"
+	   "C compiler with the MC_TRACE_ENABLED macro defined.\n");
+   exit(1);
+ }
+}
+
+static void
+mcuse_dir(char *dir)
+{
+#ifdef MC_PORTABLE
+  fprintf(stderr, "Error: "
+	  "Directory output cannot be used with portable simulation.\n");
+  exit(1);
+#else  /* !MC_PORTABLE */
+  if(mkdir(dir, 0777))
+  {
+    fprintf(stderr, "Error: unable to create directory '%s'.\n", dir);
+    fprintf(stderr, "(Maybe the directory already exists?)\n");
+    exit(1);
+  }
+  mcdirname = dir;
+#endif /* !MC_PORTABLE */
+}
+
+static void
+mcuse_file(char *file)
+{
+  mcsiminfo_name = file;
+  mcsingle_file = 1;
+}
+
+void
+mcparseoptions(int argc, char *argv[])
+{
+  int i, j, pos;
+  char *p;
+  int paramset = 0, *paramsetarray;
+
+  /* Add one to mcnumipar to aviod allocating zero size memory block. */
+  paramsetarray = malloc((mcnumipar + 1)*sizeof(*paramsetarray));
+  if(paramsetarray == NULL)
+  {
+    fprintf(stderr, "Error: insufficient memory\n");
+    exit(1);
+  }
+  for(j = 0; j &lt; mcnumipar; j++)
+    paramsetarray[j] = 0;
+
+  for(i = 1; i &lt; argc; i++)
+  {
+    if(!strcmp("-s", argv[i]) &amp;&amp; (i + 1) &lt; argc)
+      mcsetseed(argv[++i]);
+    else if(!strncmp("-s", argv[i], 2))
+      mcsetseed(&amp;argv[i][2]);
+    else if(!strcmp("--seed", argv[i]) &amp;&amp; (i + 1) &lt; argc)
+      mcsetseed(argv[++i]);
+    else if(!strncmp("--seed=", argv[i], 7))
+      mcsetseed(&amp;argv[i][7]);
+    else if(!strcmp("-n", argv[i]) &amp;&amp; (i + 1) &lt; argc)
+      mcsetn_arg(argv[++i]);
+    else if(!strncmp("-n", argv[i], 2))
+      mcsetn_arg(&amp;argv[i][2]);
+    else if(!strcmp("--ncount", argv[i]) &amp;&amp; (i + 1) &lt; argc)
+      mcsetn_arg(argv[++i]);
+    else if(!strncmp("--ncount=", argv[i], 9))
+      mcsetn_arg(&amp;argv[i][9]);
+    else if(!strcmp("-d", argv[i]) &amp;&amp; (i + 1) &lt; argc)
+      mcuse_dir(argv[++i]);
+    else if(!strncmp("-d", argv[i], 2))
+      mcuse_dir(&amp;argv[i][2]);
+    else if(!strcmp("--dir", argv[i]) &amp;&amp; (i + 1) &lt; argc)
+      mcuse_dir(argv[++i]);
+    else if(!strncmp("--dir=", argv[i], 6))
+      mcuse_dir(&amp;argv[i][6]);
+    else if(!strcmp("-f", argv[i]) &amp;&amp; (i + 1) &lt; argc)
+      mcuse_file(argv[++i]);
+    else if(!strncmp("-f", argv[i], 2))
+      mcuse_file(&amp;argv[i][2]);
+    else if(!strcmp("--file", argv[i]) &amp;&amp; (i + 1) &lt; argc)
+      mcuse_file(argv[++i]);
+    else if(!strncmp("--file=", argv[i], 7))
+      mcuse_file(&amp;argv[i][7]);
+    else if(!strcmp("-h", argv[i]))
+      mcshowhelp(argv[0]);
+    else if(!strcmp("--help", argv[i]))
+      mcshowhelp(argv[0]);
+    else if(!strcmp("-i", argv[i]))
+      mcinfo();
+    else if(!strcmp("--info", argv[i]))
+      mcinfo();
+    else if(!strcmp("-t", argv[i]))
+      mcenabletrace();
+    else if(!strcmp("--trace", argv[i]))
+      mcenabletrace();
+    else if(!strcmp("-a", argv[i]))
+      mcascii_only = 1;
+    else if(!strcmp("--ascii-only", argv[i]))
+      mcascii_only = 1;
+    else if(!strcmp("--no-output-files", argv[i]))
+      mcdisable_output_files = 1;
+    else if(argv[i][0] != '-' &amp;&amp; (p = strchr(argv[i], '=')) != NULL)
+    {
+      *p++ = '\0';
+      for(j = 0; j &lt; mcnumipar; j++)
+	if(!strcmp(mcinputtable[j].name, argv[i]))
+	{
+	  int status;
+	  status = (*mcinputtypes[mcinputtable[j].type].getparm)(p,
+			mcinputtable[j].par);
+	  if(!status)
+	  {
+	    (*mcinputtypes[mcinputtable[j].type].error)
+	      (mcinputtable[j].name, p);
+	    exit(1);
+	  }
+	  paramsetarray[j] = 1;
+	  paramset = 1;
+	  break;
+	}
+      if(j == mcnumipar)
+      {				/* Unrecognized parameter name */
+	fprintf(stderr, "Error: unrecognized parameter %s\n", argv[i]);
+	exit(1);
+      }
+    }
+    else
+      mcusage(argv[0]);
+  }
+  if(!paramset)
+    mcreadparams();		/* Prompt for parameters if not specified. */
+  else
+  {
+    for(j = 0; j &lt; mcnumipar; j++)
+      if(!paramsetarray[j])
+      {
+	fprintf(stderr, "Error: Instrument parameter %s left unset\n",
+		mcinputtable[j].name);
+	exit(1);
+      }
+  }
+  free(paramsetarray);
+}
+
+#ifndef MAC
+#ifndef WIN32
+/* This is the signal handler that makes simulation stop, and save results */  
+void sighandler(int sig)
+{
+
+	char *tmp;
+	char *atfile;
+	FILE *fnum;
+	time_t t1;
+
+	t1 = time(NULL);
+
+	printf("\n# McStas: Signal %i detected in simulation %s (%s): ", sig,  mcinstrument_name, mcinstrument_source);
+	switch (sig) {
+	case SIGINT : printf(" SIGINT "); break;  /* Ctrl-C */
+	case SIGQUIT : printf(" SIGQUIT "); break;
+	case SIGABRT : printf(" SIGABRT "); break;
+	case SIGTRAP : printf(" SIGTRAP "); break;
+	case SIGTERM : printf(" SIGTERM "); break;
+	case SIGPIPE : printf(" SIGPIPE "); break;
+	case SIGPWR  : printf(" SIGPWR "); break;
+	case SIGUSR1 : printf(" SIGUSR1 "); break;
+	case SIGUSR2 : printf(" SIGUSR2 "); break;
+	case SIGILL  : printf(" SIGILL "); break;
+	case SIGFPE  : printf(" SIGFPE "); break;
+	case SIGBUS  : printf(" SIGBUS "); break;
+	case SIGSEGV : printf(" SIGSEGV "); break;
+	case SIGSYS  : printf(" SIGSYS "); break;
+	case SIGURG  : printf(" SIGURG "); break;
+	default : break;
+	}  
+  printf("\n");
+  printf("# Date %s",ctime(&amp;t1));
+  
+  
+  if (sig == SIGUSR1)
+  {
+    printf("# McStas: simulation now at %.2f %% (%10.1f/%10.1f)\n", 100*mcget_run_num()/mcget_ncount(), mcget_run_num(), mcget_ncount());
+    return;
+  }
+  else
+  if ((sig == SIGUSR2) || (sig == SIGQUIT) || (sig == SIGTERM) || (sig == SIGABRT) || (sig == SIGALRM) || (sig == SIGINT))
+	{
+		printf("# McStas: finishing simulation at at %.2f %% (%10.1f/%10.1f)\n", 100*mcget_run_num()/mcget_ncount(), mcget_run_num(), mcget_ncount());
+    mcset_ncount(mcget_run_num());
+		return;
+	} 
+  else
+  if ((sig == SIGILL) || (sig == SIGFPE) || (sig == SIGBUS) || (sig == SIGSEGV) || (sig == SIGSYS) || (sig == SIGURG) || (sig == SIGPIPE) || (sig == SIGPWR))
+	{	
+		printf("McStas: SYSTEM stop at at %.2f %% (%10.1f/%10.1f)\n", 100*mcget_run_num()/mcget_ncount(), mcget_run_num(), mcget_ncount());
+		exit(-1);
+  }
+  else
+    exit(-1);
+  
+}
+#endif /* !MAC */
+#endif /* !WIN32 */
+
+/* McStas main() function. */
+int
+mcstas_main(int argc, char *argv[])
+{
+/*  int run_num = 0; */
+
+#ifdef MAC
+  argc = ccommand(&amp;argv);
+#endif
+
+#ifndef MAC
+#ifndef WIN32
+  /* install sig handler, but only once !! */
+	signal( SIGINT ,sighandler);	/* interrupt (rubout) */
+	signal( SIGQUIT ,sighandler);	/* quit (ASCII FS) */
+	signal( SIGABRT ,sighandler);	/* used by abort, replace SIGIOT in the future */
+	signal( SIGTRAP ,sighandler);	/* trace trap (not reset when caught) */
+	signal( SIGTERM ,sighandler);	/* software termination signal from kill */
+	signal( SIGPIPE ,sighandler);	/* write on a pipe with no one to read it */
+
+	signal( SIGPWR ,sighandler); 
+	signal( SIGUSR1 ,sighandler); /* display simulation status */
+	signal( SIGUSR2 ,sighandler); 
+	signal( SIGILL ,sighandler);	/* illegal instruction (not reset when caught) */
+	signal( SIGFPE ,sighandler);	/* floating point exception */
+	signal( SIGBUS ,sighandler);	/* bus error */
+	signal( SIGSEGV ,sighandler);	/* segmentation violation */
+	signal( SIGSYS ,sighandler);	/* bad argument to system call */
+	signal( SIGURG ,sighandler); 	/* urgent socket condition */
+#endif /* !MAC */
+#endif /* !WIN32 */
+
+  srandom(time(NULL));
+  mcparseoptions(argc, argv);
+  mcsiminfo_init();
+  mcinit();
+  while(mcrun_num &lt; mcncount)
+  {
+    mcsetstate(0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1);
+    mcraytrace();
+    mcrun_num++;
+  }
+  mcfinally();
+  mcsiminfo_close();
+  return 0;
+}
+</PRE>
+<PRE>
+/*******************************************************************************
+* Runtime system for McStas.
+*
+*	Project: Monte Carlo Simulation of Triple Axis Spectrometers
+*	File name: mcstas-r.h
+*
+*	Author: K.N.			Aug 29, 1997
+*
+* Copyright (C) Risoe National Laboratory, 1997-1998, All rights reserved
+*******************************************************************************/
+
+#ifndef MCSTAS_R_H
+#define MCSTAS_R_H
+
+#include &lt;math.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+
+/* If the runtime is embedded in the simulation program, some definitions can
+   be made static. */
+
+#ifdef MC_EMBEDDED_RUNTIME
+#define mcstatic static
+#else
+#define mcstatic
+#endif
+
+#ifdef __dest_os
+#if (__dest_os == __mac_os)
+#define MAC
+#endif
+#endif
+
+#ifdef WIN32
+#define MC_PATHSEP_C '\\'
+#define MC_PATHSEP_S "\\"
+#else  /* !WIN32 */
+#ifdef MAC
+#define MC_PATHSEP_C ':'
+#define MC_PATHSEP_S ":"
+#else  /* !MAC */
+#define MC_PATHSEP_C '/'
+#define MC_PATHSEP_S "/"
+#endif /* !MAC */
+#endif /* !WIN32 */
+
+#ifndef MAC
+#ifndef WIN32
+#include &lt;signal.h&gt;
+#endif /* !MAC */
+#endif /* !WIN32 */
+
+typedef double MCNUM;
+typedef struct {MCNUM x, y, z;} Coords;
+typedef MCNUM Rotation[3][3];
+
+/* Note: the enum instr_formal_types definition MUST be kept
+   synchronized with the one in mcstas.h and with the
+   instr_formal_type_names array in cogen.c. */
+enum instr_formal_types
+  {
+    instr_type_double, instr_type_int, instr_type_string
+  };
+struct mcinputtable_struct {
+  char *name;
+  void *par;
+  enum instr_formal_types type;
+};
+extern struct mcinputtable_struct mcinputtable[];
+extern int mcnumipar;
+extern char mcinstrument_name[], mcinstrument_source[];
+extern int mctraceenabled, mcdefaultmain;
+void mcinit(void);
+void mcraytrace(void);
+void mcfinally(void);
+void mcdisplay(void);
+
+/* Adaptive search tree definitions. */
+typedef double adapt_t;
+
+/*******************************************************************************
+* Structure of an adaptive search tree. The v array runs from 0 to N-1 (a
+* total of N elements) and holds the values of each node. The sum of all v
+* values is in total.
+* The s array runs from 0 to N and is used to represents the cumulative sum
+* of v[0] through v[i-1]. The number represented is the sum of s[i] and all
+* its parents up to the root node.
+*******************************************************************************/
+
+struct adapt_tree
+  {
+    adapt_t *s, *v, total;
+    int N;			/* &lt; 1 &lt;&lt; (depth+1) */
+    int depth;
+    int root;			/* = (1 &lt;&lt; depth) - 1 */
+    int initstep;		/* = 1 &lt;&lt; (depth-1) */
+  };
+
+int adapt_tree_search(struct adapt_tree *t, adapt_t v);
+void adapt_tree_add(struct adapt_tree *t, int i, adapt_t v);
+struct adapt_tree * adapt_tree_init(int N);
+void adapt_tree_free(struct adapt_tree *t);
+
+
+#define SCATTER do {mcDEBUG_SCATTER(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz, \
+        mcnlt,mcnlsx,mcnlsy, mcnlp);} while(0)
+#define ABSORB do {mcDEBUG_STATE(mcnlx, mcnly, mcnlz, mcnlvx, mcnlvy, mcnlvz, \
+        mcnlt,mcnlsx,mcnlsy, mcnlp); mcDEBUG_ABSORB(); goto mcabsorb;} while(0)
+/* Note: The two-stage approach to MC_GETPAR is NOT redundant; without it,
+* after #define C sample, MC_GETPAR(C,x) would refer to component C, not to
+* component sample. Such are the joys of ANSI C.
+*/
+#define MC_GETPAR2(comp, par) (mcc ## comp ## _ ## par)
+#define MC_GETPAR(comp, par) MC_GETPAR2(comp,par)
+#define DETECTOR_OUT(p0,p1,p2) mcdetector_out(mccompcurname,p0,p1,p2,NULL)
+#define DETECTOR_OUT_0D(t,p0,p1,p2) mcdetector_out_0D(t,p0,p1,p2,mccompcurname)
+#define DETECTOR_OUT_1D(t,xl,yl,xvar,x1,x2,n,p0,p1,p2,f) \
+     mcdetector_out_1D(t,xl,yl,xvar,x1,x2,n,p0,p1,p2,f,mccompcurname)
+#define DETECTOR_OUT_2D(t,xl,yl,x1,x2,y1,y2,m,n,p0,p1,p2,f) \
+     mcdetector_out_2D(t,xl,yl,x1,x2,y1,y2,m,n,p0,p1,p2,f,mccompcurname)
+
+#ifdef MC_TRACE_ENABLED
+#define DEBUG
+#endif
+
+#ifdef DEBUG
+#define mcDEBUG_INSTR() if(!mcdotrace); else printf("INSTRUMENT:\n");
+#define mcDEBUG_COMPONENT(name,c,t) if(!mcdotrace); else \
+  printf("COMPONENT: \"%s\"\n" \
+	 "POS: %g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g\n", \
+	 name, c.x, c.y, c.z, t[0][0], t[0][1], t[0][2], \
+	 t[1][0], t[1][1], t[1][2], t[2][0], t[2][1], t[2][2]);
+#define mcDEBUG_INSTR_END() if(!mcdotrace); else printf("INSTRUMENT END:\n");
+#define mcDEBUG_ENTER() if(!mcdotrace); else printf("ENTER:\n");
+#define mcDEBUG_COMP(c) if(!mcdotrace); else printf("COMP: \"%s\"\n", c);
+#define mcDEBUG_STATE(x,y,z,vx,vy,vz,t,s1,s2,p) if(!mcdotrace); else \
+  printf("STATE: %g, %g, %g, %g, %g, %g, %g, %g, %g, %g\n", \
+	 x,y,z,vx,vy,vz,t,s1,s2,p);
+#define mcDEBUG_SCATTER(x,y,z,vx,vy,vz,t,s1,s2,p) if(!mcdotrace); else \
+  printf("SCATTER: %g, %g, %g, %g, %g, %g, %g, %g, %g, %g\n", \
+	 x,y,z,vx,vy,vz,t,s1,s2,p);
+#define mcDEBUG_LEAVE() if(!mcdotrace); else printf("LEAVE:\n");
+#define mcDEBUG_ABSORB() if(!mcdotrace); else printf("ABSORB:\n");
+#else
+#define mcDEBUG_INSTR()
+#define mcDEBUG_COMPONENT(name,c,t)
+#define mcDEBUG_INSTR_END()
+#define mcDEBUG_ENTER()
+#define mcDEBUG_COMP(c)
+#define mcDEBUG_STATE(x,y,z,vx,vy,vz,t,s1,s2,p)
+#define mcDEBUG_SCATTER(x,y,z,vx,vy,vz,t,s1,s2,p)
+#define mcDEBUG_LEAVE()
+#define mcDEBUG_ABSORB()
+#endif
+
+#ifdef TEST
+#define test_printf printf
+#else
+#define test_printf while(0) printf
+#endif
+
+void mcdis_magnify(char *);
+void mcdis_line(double, double, double, double, double, double);
+void mcdis_multiline(int, ...);
+void mcdis_circle(char *, double, double, double, double);
+
+#define RAD2MIN  ((180*60)/PI)
+#define MIN2RAD  (PI/(180*60))
+#define DEG2RAD  (PI/180)
+#define RAD2DEG  (180/PI)
+#define AA2MS    629.719	   /* Convert k[1/AA] to v[m/s] */
+#define MS2AA    1.58801E-3	   /* Convert v[m/s] to k[1/AA] */
+#define K2V	 AA2MS
+#define V2K	 MS2AA
+#define Q2V	 AA2MS
+#define V2Q	 MS2AA
+#define SE2V	 437.3949	   /* Convert sqrt(E)[meV] to v[m/s] */
+#define VS2E	 5.227e-6	   /* Convert (v[m/s])**2 to E[meV] */
+#define FWHM2RMS 0.424660900144    /* Convert between full-width-half-max and */
+#define RMS2FWHM 2.35482004503     /* root-mean-square (standard deviation) */
+#define HBAR     1.05459E-34
+#define MNEUTRON 1.67492E-27
+
+#ifndef PI
+# ifdef M_PI
+#  define PI M_PI
+# else
+#  define PI 3.14159265358979323846
+# endif
+#endif
+
+typedef int mc_int32_t;
+mc_int32_t mc_random(void);
+void mc_srandom (unsigned int x);
+unsigned long mt_random(void);
+void mt_srandom (unsigned long x);
+
+#ifndef MC_RAND_ALG
+#define MC_RAND_ALG 1
+#endif
+
+#if MC_RAND_ALG == 0
+   /* Use system random() (not recommended). */
+#  define MC_RAND_MAX RAND_MAX
+#elif MC_RAND_ALG == 1
+   /* "Mersenne Twister", by Makoto Matsumoto and Takuji Nishimura. */
+#  define MC_RAND_MAX ((unsigned long)0xffffffff)
+#  define random mt_random
+#  define srandom mt_srandom
+#elif MC_RAND_ALG == 2
+   /* Algorithm used in McStas 1.1 and earlier (not recommended). */
+#  define MC_RAND_MAX 0x7fffffff
+#  define random mc_random
+#  define srandom mc_srandom
+#else
+#  error "Bad value for random number generator choice."
+#endif
+
+#define rand01() ( ((double)random())/((double)MC_RAND_MAX+1) )
+#define randpm1() ( ((double)random()) / (((double)MC_RAND_MAX+1)/2) - 1 )
+#define rand0max(max) ( ((double)random()) / (((double)MC_RAND_MAX+1)/(max)) )
+#define randminmax(min,max) ( rand0max((max)-(min)) + (min) )
+
+#define PROP_X0 \
+  do { \
+    double mc_dt; \
+    if(mcnlvx == 0) ABSORB; \
+    mc_dt = -mcnlx/mcnlvx; \
+    if(mc_dt &lt; 0) ABSORB; \
+    mcnly += mcnlvy*mc_dt; \
+    mcnlz += mcnlvz*mc_dt; \
+    mcnlt += mc_dt; \
+    mcnlx = 0; \
+  } while(0)
+
+#define PROP_Y0 \
+  do { \
+    double mc_dt; \
+    if(mcnlvy == 0) ABSORB; \
+    mc_dt = -mcnly/mcnlvy; \
+    if(mc_dt &lt; 0) ABSORB; \
+    mcnlx += mcnlvx*mc_dt; \
+    mcnlz += mcnlvz*mc_dt; \
+    mcnlt += mc_dt; \
+    mcnly = 0; \
+  } while(0)
+
+#define PROP_Z0 \
+  do { \
+    double mc_dt; \
+    if(mcnlvz == 0) ABSORB; \
+    mc_dt = -mcnlz/mcnlvz; \
+    if(mc_dt &lt; 0) ABSORB; \
+    mcnlx += mcnlvx*mc_dt; \
+    mcnly += mcnlvy*mc_dt; \
+    mcnlt += mc_dt; \
+    mcnlz = 0; \
+  } while(0)
+
+#define PROP_DT(dt) \
+  do { \
+    if(dt &lt; 0) ABSORB; \
+    mcnlx += mcnlvx*(dt); \
+    mcnly += mcnlvy*(dt); \
+    mcnlz += mcnlvz*(dt); \
+    mcnlt += (dt); \
+  } while(0)
+
+#define vec_prod(x, y, z, x1, y1, z1, x2, y2, z2) \
+  do { \
+    double mcvp_tmpx, mcvp_tmpy, mcvp_tmpz; \
+    mcvp_tmpx = (y1)*(z2) - (y2)*(z1); \
+    mcvp_tmpy = (z1)*(x2) - (z2)*(x1); \
+    mcvp_tmpz = (x1)*(y2) - (x2)*(y1); \
+    (x) = mcvp_tmpx; (y) = mcvp_tmpy; (z) = mcvp_tmpz; \
+  } while(0)
+
+#define scalar_prod(x1, y1, z1, x2, y2, z2) \
+  ((x1)*(x2) + (y1)*(y2) + (z1)*(z2))
+
+#define NORM(x,y,z) \
+  do { \
+    double mcnm_tmp = sqrt((x)*(x) + (y)*(y) + (z)*(z)); \
+    if(mcnm_tmp != 0.0) \
+    { \
+      (x) /= mcnm_tmp; \
+      (y) /= mcnm_tmp; \
+      (z) /= mcnm_tmp; \
+    } \
+  } while(0)
+
+#define rotate(x, y, z, vx, vy, vz, phi, ax, ay, az) \
+  do { \
+    double mcrt_tmpx = (ax), mcrt_tmpy = (ay), mcrt_tmpz = (az); \
+    double mcrt_vp, mcrt_vpx, mcrt_vpy, mcrt_vpz; \
+    double mcrt_vnx, mcrt_vny, mcrt_vnz, mcrt_vn1x, mcrt_vn1y, mcrt_vn1z; \
+    double mcrt_bx, mcrt_by, mcrt_bz, mcrt_v1x, mcrt_v1y, mcrt_v1z; \
+    double mcrt_cos, mcrt_sin; \
+    NORM(mcrt_tmpx, mcrt_tmpy, mcrt_tmpz); \
+    mcrt_vp = scalar_prod((vx), (vy), (vz), mcrt_tmpx, mcrt_tmpy, mcrt_tmpz); \
+    mcrt_vpx = mcrt_vp*mcrt_tmpx; \
+    mcrt_vpy = mcrt_vp*mcrt_tmpy; \
+    mcrt_vpz = mcrt_vp*mcrt_tmpz; \
+    mcrt_vnx = (vx) - mcrt_vpx; \
+    mcrt_vny = (vy) - mcrt_vpy; \
+    mcrt_vnz = (vz) - mcrt_vpz; \
+    vec_prod(mcrt_bx, mcrt_by, mcrt_bz, \
+	     mcrt_tmpx, mcrt_tmpy, mcrt_tmpz, mcrt_vnx, mcrt_vny, mcrt_vnz); \
+    mcrt_cos = cos((phi)); mcrt_sin = sin((phi)); \
+    mcrt_vn1x = mcrt_vnx*mcrt_cos + mcrt_bx*mcrt_sin; \
+    mcrt_vn1y = mcrt_vny*mcrt_cos + mcrt_by*mcrt_sin; \
+    mcrt_vn1z = mcrt_vnz*mcrt_cos + mcrt_bz*mcrt_sin; \
+    (x) = mcrt_vpx + mcrt_vn1x; \
+    (y) = mcrt_vpy + mcrt_vn1y; \
+    (z) = mcrt_vpz + mcrt_vn1z; \
+  } while(0)
+
+Coords coords_set(MCNUM x, MCNUM y, MCNUM z);
+Coords coords_add(Coords a, Coords b);
+Coords coords_sub(Coords a, Coords b);
+Coords coords_neg(Coords a);
+
+void rot_set_rotation(Rotation t, double phx, double phy, double phz);
+void rot_mul(Rotation t1, Rotation t2, Rotation t3);
+void rot_copy(Rotation dest, Rotation src);
+void rot_transpose(Rotation src, Rotation dst);
+Coords rot_apply(Rotation t, Coords a);
+void mccoordschange(Coords a, Rotation t, double *x, double *y, double *z,
+	       double *vx, double *vy, double *vz, double *time,
+	       double *s1, double *s2);
+void mccoordschange_polarisation(Rotation t,
+				 double *sx, double *sy, double *sz);
+double mcestimate_error(int N, double p1, double p2);
+void mcsiminfo_out(char *format, ...);
+void mcdetector_out(char *cname, double p0, double p1, double p2,
+		    char *filename);
+void mcdetector_out_0D(char *t, double p0, double p1, double p2, char *cname);
+void mcdetector_out_1D(char *t, char *xl, char *yl,
+		       char *xvar, double x1, double x2, int n,
+		       int *p0, double *p1, double *p2, char *f, char *c);
+void mcdetector_out_2D(char *t, char *xl, char *yl, double x1, double x2,
+		       double y1,double y2,int m, int n,
+		       int *p0, double *p1, double *p2, char *f, char *c);
+void mcreadparams(void);
+
+void mcsetstate(double x, double y, double z, double vx, double vy, double vz,
+		double t, double sx, double sy, double sz, double p);
+void mcgenstate(void);
+double randnorm(void);
+void normal_vec(double *nx, double *ny, double *nz, double x, double y, double z);
+int box_intersect(double *dt_in, double *dt_out, double x, double y, double z,
+		  double vx, double vy, double vz, double dx, double dy, double dz);
+int cylinder_intersect(double *t0, double *t1, double x, double y, double z,
+		       double vx, double vy, double vz, double r, double h);
+int sphere_intersect(double *t0, double *t1, double x, double y, double z,
+		 double vx, double vy, double vz, double r);
+void randvec_target_sphere(double *xo, double *yo, double *zo, double *solid_angle,
+			   double xi, double yi, double zi, double radius);
+void extend_list(int count, void **list, int *size, size_t elemsize);
+
+void mcset_ncount(double count);
+double mcget_ncount(void);
+int mcstas_main(int argc, char *argv[]);
+
+#endif /* MCSTAS_R_H */
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<UL><LI><STRONG>References</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00003" HREF="msg00003.html">Again: maximum number of events</A></STRONG>
+<UL><LI><EM>From:</EM> Kim Lefmann &lt;kim.lefmann@risoe.dk&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00003.html">Again: maximum number of events</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00005.html">Once more: Large numbers of events</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00004"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00004"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

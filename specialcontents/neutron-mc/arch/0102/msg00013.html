@@ -1,0 +1,191 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Compiling mcstas for windows, and bug fix for mc2d -->
+<!--X-From: "PILTZ, Ross" <rop@ansto.gov.au> -->
+<!--X-Date: Mon, 26 Feb 2001 18:37:57 +1100 -->
+<!--X-Message-Id: 40BF49FB0D7DD311922000A0C966E30E01B26C@pdnt53.anp.ansto.gov.au -->
+<!--X-ContentType: multipart/alternative -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Compiling mcstas for windows, and bug fix for mc2d</title>
+<link rev="made" href="mailto:rop@ansto.gov.au">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00012.html">Date Prev</A>][Date Next]
+<a href="index.html#00013">[Chronological]</a>
+<a href="threads.html#00013">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Compiling mcstas for windows, and bug fix for mc2d</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:neutron-mc@risoe.dk">neutron-mc@risoe.dk</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Compiling mcstas for windows, and bug fix for mc2d</strong></LI>
+<LI><strong>From</strong>: <strong>"PILTZ, Ross" &lt;<A HREF="mailto:rop@ansto.gov.au">rop@ansto.gov.au</A>&gt;</strong></LI>
+<LI>Date: Mon, 26 Feb 2001 18:37:57 +1100</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<ADDRESS>Title: <STRONG>Compiling mcstas for windows, and bug fix for mc2d</STRONG></ADDRESS>
+
+
+
+
+
+<P><FONT SIZE=2 FACE="Arial">Dear MCSTASers,</FONT>
+</P>
+
+<P><FONT SIZE=2 FACE="Arial">For those using the free Borland compiler for windows I have made an instruction</FONT>
+<BR><FONT SIZE=2 FACE="Arial">file mcstas_windows.txt on how to compile McStas.&nbsp; If you have already followed</FONT>
+<BR><FONT SIZE=2 FACE="Arial">my instructions in borland_glui.zip on how to setup the compiler you will find it</FONT>
+<BR><FONT SIZE=2 FACE="Arial">doesn't compile McStas properly, that is, McStas cannot find the component</FONT>
+<BR><FONT SIZE=2 FACE="Arial">library.&nbsp; This is due to some missing definitions in the borland configuration files.</FONT>
+<BR><FONT SIZE=2 FACE="Arial">The new borland_glui.zip and mcstas_windows.txt sent to the upload area have</FONT>
+<BR><FONT SIZE=2 FACE="Arial">corrected these mistakes.&nbsp; I have appended mcstas_windows.txt to the end of</FONT>
+<BR><FONT SIZE=2 FACE="Arial">this message.</FONT>
+</P>
+
+<P><FONT SIZE=2 FACE="Arial">The mc2d program miscounted the number of monitors in a simulation, resulting</FONT>
+<BR><FONT SIZE=2 FACE="Arial">in the last monitor being ignored.&nbsp; So if you tried it out and only had one monitor</FONT>
+<BR><FONT SIZE=2 FACE="Arial">you would just get a message about no monitors found and the program would</FONT>
+<BR><FONT SIZE=2 FACE="Arial">crash/stop. I have now sent a fix for this bug to the upload area.&nbsp; You need to</FONT>
+<BR><FONT SIZE=2 FACE="Arial">download mc3d.zip and (possibly) mc3d_exes.zip for these fixes.</FONT>
+</P>
+
+<P><FONT SIZE=2 FACE="Arial">-Ross Piltz</FONT>
+</P>
+
+<P><FONT SIZE=2 FACE="Arial">PS:&nbsp; I will now be able to maintain mc3d/mc2d as I have become permanent</FONT>
+<BR><FONT SIZE=2 FACE="Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at ANSTO.</FONT>
+<BR><FONT SIZE=2 FACE="Arial">===========================================================</FONT>
+<BR><FONT SIZE=2 FACE="Arial">Instructions for compiling and running McStas on Windows using the</FONT>
+<BR><FONT SIZE=2 FACE="Arial">free command-line C++ compiler from Borland (INPRISE).&nbsp; -Ross Piltz</FONT>
+</P>
+
+<P><FONT SIZE=2 FACE="Arial">NB:&nbsp; If you downloaded my instructions on how to make GLUI using</FONT>
+<BR><FONT SIZE=2 FACE="Arial">&nbsp;&nbsp;&nbsp;&nbsp; the Borland compiler before 26-Feb-01 then you will be missing</FONT>
+<BR><FONT SIZE=2 FACE="Arial">&nbsp;&nbsp;&nbsp;&nbsp; the &quot;-D_WIN32&quot; and &quot;-DWIN32&quot; lines in the bcc32.cfg file.</FONT>
+<BR><FONT SIZE=2 FACE="Arial">&nbsp;&nbsp;&nbsp;&nbsp; If so, change bcc32.cfg to that indicated below.</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=2 FACE="Arial">INSTALLING THE BORLAND COMPILER</FONT>
+</P>
+
+<P><FONT SIZE=2 FACE="Arial">First, download the free compiler from www.borland.com.</FONT>
+</P>
+
+<P><FONT SIZE=2 FACE="Arial">I assume in the following that you install it to the</FONT>
+<BR><FONT SIZE=2 FACE="Arial">default directory of C:\BORLAND\BCC55.</FONT>
+</P>
+
+<P><FONT SIZE=2 FACE="Arial">With an editor make the following &quot;bcc32.cfg&quot; file:</FONT>
+<BR><FONT SIZE=2 FACE="Arial">-D_BORLAND</FONT>
+<BR><FONT SIZE=2 FACE="Arial">-D_WIN32</FONT>
+<BR><FONT SIZE=2 FACE="Arial">-DWIN32</FONT>
+<BR><FONT SIZE=2 FACE="Arial">-IC:\BORLAND\BCC55\INCLUDE</FONT>
+<BR><FONT SIZE=2 FACE="Arial">-LC:\BORLAND\BCC55\LIB</FONT>
+</P>
+
+<P><FONT SIZE=2 FACE="Arial">and &quot;ilink32.cfg&quot; file:</FONT>
+<BR><FONT SIZE=2 FACE="Arial">-LC:\BORLAND\BCC55\INCLUDE</FONT>
+</P>
+
+<P><FONT SIZE=2 FACE="Arial">and put the files in the C:\BORLAND\BCC55\BIN directory.&nbsp; Don't</FONT>
+<BR><FONT SIZE=2 FACE="Arial">take Borland's advice of putting the *.CFG in your working directory</FONT>
+<BR><FONT SIZE=2 FACE="Arial">unless you want to have different configurations in every directory.</FONT>
+</P>
+
+<P><FONT SIZE=2 FACE="Arial">Edit C:\AUTOEXEC.BAT inserting the line:</FONT>
+<BR><FONT SIZE=2 FACE="Arial">PATH=%PATH%;C:\BORLAND\BCC55\BIN</FONT>
+</P>
+
+<P><FONT SIZE=2 FACE="Arial">Next restart your PC and try typing the MSDOS command</FONT>
+<BR><FONT SIZE=2 FACE="Arial">BCC32 | MORE</FONT>
+<BR><FONT SIZE=2 FACE="Arial">You should get a page of stuff about compiler options, and the</FONT>
+<BR><FONT SIZE=2 FACE="Arial">version number of the compiler at the top of the page.</FONT>
+<BR><FONT SIZE=2 FACE="Arial">(The version I have is Borland C++ v5.5.1)</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=2 FACE="Arial">COMPILING MCSTAS</FONT>
+</P>
+
+<P><FONT SIZE=2 FACE="Arial">The following will compile mcstas assuming the default directory</FONT>
+<BR><FONT SIZE=2 FACE="Arial">location of the component library is C:\MCSTAS\LIB.</FONT>
+</P>
+
+<P><FONT SIZE=2 FACE="Arial">&nbsp; bcc32 -w- -emcstas -DHAVE_FDOPEN instrument.tab.c lex.yy.c debug.c</FONT>
+<BR><FONT SIZE=2 FACE="Arial">memory.c list.c symtab.c coords.c rotation.c cexp.c position.c file.c cogen.c </FONT>
+</P>
+
+<P><FONT SIZE=2 FACE="Arial">If you want to put the components in another directory you should compile</FONT>
+<BR><FONT SIZE=2 FACE="Arial">the above but using the following switch (NB: \\ means \ in a string)</FONT>
+</P>
+
+<P><FONT SIZE=2 FACE="Arial">&nbsp; -DMC_SYS_DIR=&quot;C:\\some_directory\\lib&quot;</FONT>
+</P>
+
+<P><FONT SIZE=2 FACE="Arial">Then copy mcstas.exe to a directory in your path like</FONT>
+<BR><FONT SIZE=2 FACE="Arial">c:\windows or c:\windows\command, or add a new directory to the</FONT>
+<BR><FONT SIZE=2 FACE="Arial">PATH command in your AUTOEXEC.BAT file.</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=2 FACE="Arial">COMPILING SIMULATIONS</FONT>
+</P>
+
+<P><FONT SIZE=2 FACE="Arial">Use MCSTAS to compile your *.instr file and make a *.c file.</FONT>
+<BR><FONT SIZE=2 FACE="Arial">&nbsp; mcstas my_simulation.instr</FONT>
+<BR><FONT SIZE=2 FACE="Arial">&nbsp;</FONT>
+<BR><FONT SIZE=2 FACE="Arial">Compile the *.c file using:</FONT>
+<BR><FONT SIZE=2 FACE="Arial">&nbsp; bcc32 -w- my_simulation.c</FONT>
+</P>
+
+<P><FONT SIZE=2 FACE="Arial">NB: The -w- switch turns off the compiler warnings, otherwise you</FONT>
+<BR><FONT SIZE=2 FACE="Arial">&nbsp;&nbsp;&nbsp; will get LOTS of warning about unused variables, and the compiler</FONT>
+<BR><FONT SIZE=2 FACE="Arial">&nbsp;&nbsp;&nbsp; will give up due to &quot;Too many warning or error messages&quot;.</FONT>
+</P>
+
+
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00012.html">ESS source components</A></STRONG>
+</LI>
+
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00013"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00013"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

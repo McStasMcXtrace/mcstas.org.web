@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Exercise: Source and PSD</TITLE>
+<META NAME="description" CONTENT="Exercise: Source and PSD">
+<META NAME="keywords" CONTENT="tutorial">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="tutorial.css">
+
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="node7.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html116"
+  HREF="node9.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html114"
+  HREF="node7.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html108"
+  HREF="node7.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html117"
+  HREF="node9.html">Exercise: Insert a monochromator</A>
+<B> Up:</B> <A NAME="tex2html115"
+  HREF="node7.html">Exercises</A>
+<B> Previous:</B> <A NAME="tex2html109"
+  HREF="node7.html">Exercises</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00051000000000000000">
+Exercise: Source and PSD</A>
+</H2>
+
+<OL>
+<LI>Start the GUI (Graphical User Interface) by writing the command <code>mcgui</code> in a terminal. To open a terminal in Ubuntu, go to Applications <IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.png"
+ ALT="$\rightarrow$"> Accessories <IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.png"
+ ALT="$\rightarrow$"> Terminal or press Ctrl+Alt+t.
+</LI>
+<LI>Click the Edit/New button on the GUI.
+</LI>
+<LI>Insert a template instrument through the menu Insert <IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.png"
+ ALT="$\rightarrow$"> Instrument template or by pressing Alt+i twice. Set up an instrument, consisting only of an arm (keep the arm 'Progress_bar' that is already in the file), a source (Source_Maxwell_3) and two monitors (a PSD_monitor and an L_monitor). Insert the source at (0,0,0) relative to the origin and the monitors at (0,0,1) relative to the origin. As you input each component you should read the their documentation to find the needed input parameters. The component library can be accessed by clicking the Help (McDoc) button on McGui and choosing 'Component library index'. This will open up an webpage with a list of all the components.
+
+<P>
+For the source we will help you out. Try
+<PRE>
+COMPONENT source = Source_Maxwell_3(
+    size = 0.1, l_low = 0.1, l_high = 10, dist = 10, xw = 0.01,
+    yh = 0.01, T1 = 300, T2=300, T3=300, I1=1e14, I2=0, I3=0)
+AT (0, 0, 0) RELATIVE Origin
+</PRE>
+Read the Source_Maxwell_3 documents using McDoc to understand the suggested parameters.
+</LI>
+<LI>When the file is saved for the first time, McGui is automatically given the name of the instrument file. Run a simulation by pressing the Run button in McGui. After compiling the instrument file, McGui will open a window with questions on the simulation such as neutron count, <I>i.e.</I> how many times a neutron ray is simulated. For now, simply press the Start button. The instrument simulation will run and its output will be given in the McGui window. When the simulation finishes, plot the results by pressing the Plot button. You should now have two plots, one from the PSD monitor and one from the wavelength monitor. If either or both of the monitors have detected no neutrons, start looking for mistakes in your instrument file.
+</LI>
+<LI>Narrow down the interval of wavelengths emitted from the source to <I>e.g.</I> l_low=0.999 and l_high=1.001. Rerun your simulation to check the effect. Reset the wavelength interval to [0.1 10] &#197;.
+</LI>
+<LI>Estimate the solid angle covered by your PSD. Try to understand the neutron intensity as illustrated by the plot of the registered events in the PSD in the two previous runs. Try running the simulation with half or double the number of neutron rays. Try also to vary the source focus area and to understand what you observe.
+</LI>
+</OL><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html116"
+  HREF="node9.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html114"
+  HREF="node7.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html108"
+  HREF="node7.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html117"
+  HREF="node9.html">Exercise: Insert a monochromator</A>
+<B> Up:</B> <A NAME="tex2html115"
+  HREF="node7.html">Exercises</A>
+<B> Previous:</B> <A NAME="tex2html109"
+  HREF="node7.html">Exercises</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+Peter Kjær Willendrup
+2015-11-12
+</ADDRESS>
+</BODY>
+</HTML>

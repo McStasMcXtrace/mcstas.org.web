@@ -1,0 +1,135 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: McStas and W32 -->
+<!--X-From: Kristian Nielsen <kristian.nielsen@risoe.dk> -->
+<!--X-Date: 25 Jan 1999 12:55:17 +0100 -->
+<!--X-Message-Id:  -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 36AC3696.9550C823@physik.tu&#45;muenchen.de -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: McStas and W32</title>
+<link rev="made" href="mailto:kristian.nielsen@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00016.html">Date Prev</A>][<A HREF="msg00019.html">Date Next</A>]
+<a href="index.html#00018">[Chronological]</a>
+<a href="threads.html#00018">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: McStas and W32</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:Peter_Link@physik.tu-muenchen.de">Peter_Link@physik.tu-muenchen.de</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: McStas and W32</strong></LI>
+<LI><strong>From</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: 25 Jan 1999 12:55:17 +0100</LI>
+<LI>CC: <A HREF="mailto:kim.lefmann@risoe.dk">kim.lefmann@risoe.dk</A></LI>
+<LI>In-reply-to: &lt;<A HREF="msg00017.html">36AC3696.9550C823@physik.tu-muenchen.de</A>&gt; (message from PeterLink on Mon, 25 Jan 1999 10:17:10 +0100)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Dear Peter Link,
+
+&gt; I tried the Win32 compilation and I think in basic view it works.
+&gt; Although I'm a little concerned about some compiler warnings ( VC++,
+&gt; Microsoft, WinNT):
+&gt; 
+&gt; /usr/share/misc/bison.simple(387) : warning C4013: 'yylex' undefined;
+&gt; Suppose: extern mit Rueckgabetyp int
+&gt; /usr/share/misc/bison.simple(590) : warning C4013: 'yyerror' undefined;
+&gt; Suppose: extern mit Rueckgabetyp int
+&gt; instrument.y(745) : warning C4716: 'yyerror' : has to return a value
+&gt; e:\mcstas\rotation.c(153) : warning C4101: 'k' : unreferenced local
+&gt; variable
+
+These warnings sound completely harmless. I think the tradition in the
+Unix world is to have less strict compilers than in the Windows world.
+
+&gt; I also wonder whether there exists a possiblility to use front-ends like
+&gt; gscan with Win32?
+
+The possibility is there, but we have no experience with what kind of
+problems may turn up.
+
+To use gscan, the program Perl is needed. According to my information,
+this is available for Windows 95/98/NT. So with luck you could just
+install Perl and gscan should work. The graphics frontends also use the
+PGPLOT graphics library and an interface betwenn PGPLOT and Perl. PGPLOT
+has been ported to Windows, I do not know about the Perl interface.
+
+In short, if you can install the required supporting programs and
+libraries, in theory you should be able to use the front-ends in
+Windows. Unfortunately, we do not use Windows here at Risø for McStas,
+but if you have any problems I will do my best to help you.
+
+&gt; Last but not least I discussed with Georg Artus a collegue here in
+&gt; Munich about source definition. source_flat has a circular face. As my
+&gt; beamtube will have a rectangular nose I ask myself about the best way to
+&gt; implement this.
+
+The quick way (which I have used myself on occasion) is to put a
+rectangular slit just in front of the circular source, though you will
+waste a bit of computation time in this way. Alternatively, it is a
+two-minute modification to the Source_flat component to make it simulate
+a rectangular source rather than a circular one; I will be happy to
+write it and send it to you if you need it.
+
+Good luck using McStas!
+
+ - Kristian.
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<UL><LI><STRONG>References</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00017" HREF="msg00017.html">McStas and W32</A></STRONG>
+<UL><LI><EM>From:</EM> Peter Link &lt;Peter_Link@physik.tu-muenchen.de&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00016.html">Re: Bender</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00019.html">Re: Error in Calculation of absolute Flux (Source_flux) ???</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00018"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00018"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

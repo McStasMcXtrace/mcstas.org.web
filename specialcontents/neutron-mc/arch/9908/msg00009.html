@@ -1,0 +1,137 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: Mcstas -->
+<!--X-From: eiverson@anl.gov -->
+<!--X-Date: Wed, 25 Aug 1999 13:39:08 &#45;0400 -->
+<!--X-Message-Id: 199908251839.NAA18982@black.pns.anl.gov -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 199908251614.LAA14041@black.pns.anl.gov -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: Mcstas</title>
+<link rev="made" href="mailto:eiverson@anl.gov">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00008.html">Date Prev</A>][<A HREF="msg00007.html">Date Next</A>]
+<a href="index.html#00009">[Chronological]</a>
+<a href="threads.html#00009">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: Mcstas</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: Mcstas</strong></LI>
+<LI><strong>From</strong>: <strong><A HREF="mailto:eiverson@anl.gov">eiverson@anl.gov</A></strong></LI>
+<LI>Date: Wed, 25 Aug 1999 13:39:08 -0400</LI>
+<LI>Cc: <A HREF="mailto:eiverson@anl.gov">eiverson@anl.gov</A></LI>
+<LI>In-reply-to: "Your message of Wed, 25 Aug 1999 11:14:31 EDT."&lt;<A HREF="msg00008.html">199908251614.LAA14041@black.pns.anl.gov</A>&gt;</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+
+Dear Kristian,
+
+True to Murphy's Law, I have solved the specific problem about which I 
+emailed you earlier.  I got the source version of PGPLOT and compiled it on 
+my machine, and it provided the cpgplot that I needed. 
+
+Unfortunately, I still cannot get perl-PGPLOT to successfully compile.  It 
+will "make" without any errors, but "make test" fails completely.
+
+If you have any recommendations, that would be wonderful!
+
+Cheers,
+Erik
+
+....
+black % make
+cc -c -I/usr/local/PGPLOT/ -I/home/aaossm/kgb/soft/pgplot/bld -I/usr/local/pgplo
+t -Dbool=char -DHAS_BOOL -O2    -DVERSION=\"2.12\" -DXS_VERSION=\"2.12\" -fpic -
+I/usr/lib/perl5/i386-linux/5.00404/CORE  PGPLOT.c
+Running Mkbootstrap for PGPLOT ()
+chmod 644 PGPLOT.bs
+LD_RUN_PATH="/usr/local/PGPLOT:/usr/X11R6/lib:/usr/lib/gcc-lib/i686-unknown-linu
+x/2.7.2.3.f.1:/usr/lib" cc -o blib/arch/auto/PGPLOT/PGPLOT.so  -shared -L/usr/lo
+cal/lib PGPLOT.o    -L/usr/local/PGPLOT/ -L/usr/local/lib -lcpgplot -lpgplot -L/
+usr/X11R6/lib -lX11 -L/usr/lib/gcc-lib/i686-unknown-linux/2.7.2.3.f.1 -L/usr/lib
+ -lf2c -lm -L/usr/lib/gcc-lib/i686-unknown-linux/2.7.2.3.f.1 -lgcc 
+chmod 755 blib/arch/auto/PGPLOT/PGPLOT.so
+cp PGPLOT.bs ./blib/arch/auto/PGPLOT/PGPLOT.bs
+chmod 644 blib/arch/auto/PGPLOT/PGPLOT.bs
+Manifying ./blib/man3/ExtUtils::F77.3
+Manifying ./blib/man3/PGPLOT.3
+black % make test
+black % make test
+PERL_DL_NONLAZY=1 /usr/bin/perl -I./blib/arch -I./blib/lib -I/usr/lib/perl5/i386-
+linux/5.00404 -I/usr/lib/perl5 test.pl
+============== Running test1.p ==============
+Can't load './blib/arch/auto/PGPLOT/PGPLOT.so' for module PGPLOT: ./blib/arch/aut
+o/PGPLOT/PGPLOT.so: undefined symbol: fstat at /usr/lib/perl5/i386-linux/5.00404/
+DynaLoader.pm line 166.
+
+ at test1.p line 3
+BEGIN failed--compilation aborted at test1.p line 3.
+black % l -l ./blib/arch/auto/PGPLOT/PGPLOT.so
+-rwxr-xr-x   1 eiverson eiverson   168696 Aug 25 13:31 ./blib/arch/auto/PGPLOT/PG
+PLOT.so*
+black % printenv | grep PGPLOT
+PWD=/usr/src/redhat/SOURCES/PGPLOT-2.12
+LD_LIBRARY_PATH=/usr/local/PGPLOT
+PGPLOT_DEV=/xwin
+PGPLOT_DIR=/usr/local/PGPLOT/
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<UL><LI><STRONG>References</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00008" HREF="msg00008.html">Mcstas</A></STRONG>
+<UL><LI><EM>From:</EM> eiverson@anl.gov</LI></UL></LI>
+</UL></LI></UL>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00008.html">Mcstas</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00007.html">Re: McStas</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00009"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00009"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

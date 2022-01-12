@@ -1,0 +1,165 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Future... -->
+<!--X-From: Farhi <farhi@ill.fr> -->
+<!--X-Date: Thu, 06 Jul 2000 18:11:23 +0200 -->
+<!--X-Message-Id: 01JS13VCA2VC8ZE7DI@risoe.dk -->
+<!--X-ContentType: multipart/alternative -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Future...</title>
+<link rev="made" href="mailto:farhi@ill.fr">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[Date Prev][<A HREF="msg00000.html">Date Next</A>]
+<a href="index.html#00002">[Chronological]</a>
+<a href="threads.html#00002">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Future...</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>Future...</strong></LI>
+<LI><strong>From</strong>: <strong>Farhi &lt;<A HREF="mailto:farhi@ill.fr">farhi@ill.fr</A>&gt;</strong></LI>
+<LI>Date: Thu, 06 Jul 2000 18:11:23 +0200</LI>
+<LI>Organization: ILL</LI>
+<LI>Resent-date: Fri, 21 Jul 2000 13:25:21 +0200</LI>
+<LI>Resent-from: kristian.nielsen@risoe.dk</LI>
+<LI>Resent-message-id: &lt;<A HREF="msg00002.html">01JS13VCA2VC8ZE7DI@risoe.dk</A>&gt;</LI>
+<LI>Resent-to: <A HREF="mailto:neutron-mc-archive@risoe.dk">neutron-mc-archive@risoe.dk</A></LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+
+
+Hello Kristian,
+<p>As I told you last time you passed at the ILL, I have applied to a permanent
+position at the ILL in the Computer Simulation group.
+<br>And that's OK !
+<br>So, starting from September 1st, I'll have more time to give to scientific
+computer stuff (less local contact, experiments, etc...).
+<p>We have now some McStas simulations that are nearly finished (not including
+mines): IN6, IN10, IN16, D10, IN14, and I think I should gather ILL McStas
+users soon to exchange ideas about what should be fine for McStas evolutions,
+components and instruments.
+<p>Well, in fact I had not a lot of time for McStas since my last email.
+<br>I now turn back to it !
+<br>Before I go on with my general source/flux adapter (that should be
+able to simulate any kind of neutron beam), I'd like to ask you a few questions:
+<p>1) would it be possible to put, in the TRACE section, some bits of C
+code, e.g.:
+<p>TRACE
+<p>COMPONENT ... blahblah
+<p>{
+<br>long my_local_variable;
+<p>my_local_variable = 5;
+<br>}
+<p>COMPONENT ... blahblah = bouh(a=my_local_variable)
+<p>{
+<br>my_local_variable = 6;
+<br>}
+<p>COMPONENT ... blahblah = bouh(a=my_local_variable)
+<p>This avoids to create n variables if we only need 2 or 3 temporary variables
+to pass parameters to components.
+<p>2) would it be possible, for numerical component parameters, to indicate
+(in TRACE) an expression instead of a single variables name, e.g.:
+<p>COMPONENT ... blahblah = bouh(a=my_local_variable*2)
+<p>for strings, I guess it's more complicated, but we could think about
+<p>COMPONENT ... blahblah = bouh(a=sprintf("file= %s other stuff", my_string_variable))
+<p>even though it is not straight forward...
+<p>3) about neutron polarisation, I'm lost.
+<br>Should I use s1,s2 for spin components (that make them run with the
+'normal' mcstas), or should I use sx,sy,sz and the component could only
+work in POLARISATION mode ?
+<br>Example : Monitor_nD could detect the neutron spin, but should there
+be 2 versions of this component, one for normal and 1 for polarisation
+analysis ?
+<br>For the time being, I use s1 s2 because I'm sure it works for everybody.
+If I use sx,sy,sz, these variables are not known except if one uses POLARISATION.
+<br>I think a definitive choice should be made before people write too
+many components handling spin...
+<br>I would prefer sx,sy,sz of course, but these should be defined in 'normal'
+mcstas else a 'polarisation' component will not compile in normal mode
+(and vice-versa).
+<p>I probably plan to put in all my components things like
+<br>#ifdef sz
+<br>blahblah with sz
+<br>#else
+<br>things considering that sz = 0 (s1=sx, s2=sy)
+<br>#endif
+<p>If you choose to use sx,sy,sz for sure, then we should tell everybody
+to change their component sources (and handle s1 s2 in mcstas with warning
+message saying how to change to better code)
+<p>4) Concerning the flux_adapter, I will probably define an 'auto focus'
+mode that will set the beam divergence in order to match the preceeding
+component. If I want to rather focus on the next component, I need to use
+something like:
+<p>COMPONENT Flux_adapter
+<p>COMPONENT blahblah that follows
+<p>COMPONENT Flux_adapter_monitor
+<p>The Flux_adapter_monitor should record (in a short learning stage) the
+neutrons that pass through the component blahblah, and then compute the
+required divergences for a better MC shot.
+<p>Perhaps it could check the presence of a Monitor_nD component, and get
+from it some divergence values.
+<p>Or (simple) I use standard divergences (manual focussing, giving values
+in component option string or no focussing).
+<br>&nbsp;
+<p>5) Would it be possible to define a macro
+<br>PROTECT name
+<br>that would append the current component/instrument name root and generate
+<br>#define name component+name
+<br>just as component and instrument parameters
+<br>&nbsp;
+<p>Cheers !
+<p>Emmanuel.
+<br>&nbsp;
+<pre>--&nbsp;
+Emmanuel FARHI, <A HREF="http://www.ill.fr/tas/people/Farhi.html">http://www.ill.fr/tas/people/Farhi.html</A>&nbsp;&nbsp;&nbsp;&nbsp; \|/ ____ \|/
+TAS-Group, Institut Laue-Langevin (ILL) Grenoble&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ~@-/ oO \-@~
+Avenue J. Horowitz, BP 156, 38042 Grenoble Cedex 9,France&nbsp;&nbsp; /_( \__/ )_\
+Work :Tel (33/0) 4 76 20 71 83. Fax (33/0) 4 76 48 39 06&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \__U_/
+La Grande Arche, Chateau d'Uriage, 38410 Saint Martin d'Uriage 04 76 59 73 94</pre>
+&nbsp;
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00000.html">Problems with McStas</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00002"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00002"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

@@ -1,0 +1,227 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: Still the 2e9... -->
+<!--X-From: Per&#45;Olof =?iso&#45;8859&#45;1?Q?=C5strand?= <per&#45;olof.aastrand@risoe.dk> -->
+<!--X-Date: Tue, 20 Mar 2001 17:26:37 +0100 -->
+<!--X-Message-Id: 3AB784BD.98131E4@risoe.dk -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: Pine.LNX.4.04.10103200952250.2138&#45;100000@iritsf.iri.tudelft.nl -->
+<!--X-Reference-Id: 3AB71E77.FC158487@ill.fr -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: Still the 2e9...</title>
+<link rev="made" href="mailto:per-olof.aastrand@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00016.html">Date Prev</A>][<A HREF="msg00018.html">Date Next</A>]
+<a href="index.html#00017">[Chronological]</a>
+<a href="threads.html#00017">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: Still the 2e9...</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>Emmanuel Farhi &lt;<A HREF="mailto:farhi@ill.fr">farhi@ill.fr</A>&gt;, neutron-mc &lt;<A HREF="mailto:neutron-mc@risoe.dk">neutron-mc@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: Still the 2e9...</strong></LI>
+<LI><strong>From</strong>: <strong>Per-Olof &Aring;strand &lt;<A HREF="mailto:per-olof.aastrand@risoe.dk">per-olof.aastrand@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: Tue, 20 Mar 2001 17:26:37 +0100</LI>
+<LI>References: &lt;<A HREF="msg00015.html">Pine.LNX.4.04.10103200952250.2138-100000@iritsf.iri.tudelft.nl</A>&gt;&lt;<A HREF="msg00016.html">3AB71E77.FC158487@ill.fr</A>&gt;</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Hi,
+
+I'm in the middle of the workshop so I can't check things carefully
+right now, but if it is urgent I have a possible explanation.
+
+A check if  two variables declared as double are strictly equal may fail
+due to rounding errors. If something like (double1 .eq. double2) occurs
+it should be changed to something like (abs(double1-double2) .le. tiny)
+where tiny is a small number (e.g. 10^-2). I will look at it later on,
+but it may save you some time doing time-consuming checks. These kind of
+rounding errors will also typically show up differently on different
+platforms or for different compilers.
+
+Furthermore, the same problem may occur in various components. Users
+writing components should be careful about counters counting the number
+of neutron events. Such mistakes will not make the simulation run
+forever, but it will give wrong results.
+
+Best regards,
+
+Per-Olof Åstrand
+
+
+Emmanuel Farhi wrote:
+
+&gt; Hy all,
+&gt;
+&gt; That's true, a double is coded on twice the length of a long int. Thus
+&gt; we should not have any trouble in counting. The 'double' counter is
+&gt; thus ok. Anyway, I do not undestand why sometimes, the comparison
+&gt; expression to test the end of the simulation just stucks, and the
+&gt; simulation never ends.
+&gt;
+&gt; I will study that further, and that's why I passed to long, to be sure
+&gt; the counter is precise, and does not contain an uncertainty. Sure
+&gt; using a long limits the counting to 2e9 (or 4e9 is unsigned).
+&gt; Probably usng a 'long double' would even be better.
+&gt;
+&gt; So, sorry !
+&gt;
+&gt; For the tme being, please use the 1.4.1 version (with ncount and
+&gt; run_num as doubles).
+&gt; I will try to put a kind of basic debugger for 'stuck' simulations in
+&gt; the signal hander.
+&gt;
+&gt; Cheers.
+&gt; Emmanuel.
+&gt;
+&gt; Rob Kreuger wrote:
+&gt;
+&gt;&gt; Hello,
+&gt;&gt;
+&gt;&gt; as far as I could figure out a double has 15 significant digits, so
+&gt;&gt; counting should work up to something like 10^14. Beyond that it
+&gt;&gt; won't work
+&gt;&gt; anymore. But a 100P neutrons should be enough for the moment, unless
+&gt;&gt; you
+&gt;&gt; have a supercomputer. So I can't see why Emmanuel still has
+&gt;&gt; problems.
+&gt;&gt;
+&gt;&gt; cheers,
+&gt;&gt; Rob Kreuger
+&gt;&gt;
+&gt;&gt; farhi&gt; Hy,
+&gt;&gt; farhi&gt;
+&gt;&gt; farhi&gt; I just realized that the '2e9' bug is still there, but more
+&gt;&gt; vicious.
+&gt;&gt; farhi&gt; in fact, I passed ncount and run_num to long, because there
+&gt;&gt; may be
+&gt;&gt; farhi&gt; rounding errors when using float numbers, and comparisons. I
+&gt;&gt; got
+&gt;&gt; farhi&gt; unending simulations...
+&gt;&gt; farhi&gt;
+&gt;&gt; farhi&gt; Please use the attached files ! (lib/mcstas)
+&gt;&gt; farhi&gt; Changing that requires to update Monitor_nD...
+&gt;&gt; (lib/mcstas/monitors)
+&gt;&gt; farhi&gt;
+&gt;&gt; farhi&gt; Cheers.
+&gt;&gt; farhi&gt;
+&gt;&gt; farhi&gt; --
+&gt;&gt; farhi&gt; What's up Doc ?
+&gt;&gt; farhi&gt; --------------------------------------------
+&gt;&gt; farhi&gt; Emmanuel FARHI, <A HREF="http://www.ill.fr/tas/people/Farhi.html">http://www.ill.fr/tas/people/Farhi.html</A>   \|/
+&gt;&gt; ____ \|/
+&gt;&gt; farhi&gt; CS-Group ILL4/156, Institut Laue-Langevin (ILL) Grenoble
+&gt;&gt; ~@-/ oO \-@~
+&gt;&gt; farhi&gt; 6 rue J. Horowitz, BP 156, 38042 Grenoble Cedex 9,France  /_(
+&gt;&gt; \__/ )_\
+&gt;&gt; farhi&gt; Work :Tel (33/0) 4 76 20 71 35. Fax (33/0) 4 76 48 39 06
+&gt;&gt; \__U_/
+&gt;&gt; farhi&gt;
+&gt;&gt; farhi&gt;
+&gt;&gt; farhi&gt;
+&gt;&gt;
+&gt;&gt; +-----
+&gt;&gt; --------------------------------------------------------------+
+&gt;&gt; | Rob Kreuger                    | Email: Rob.Kreuger@iri.tudelft.nl
+&gt;&gt; |
+&gt;&gt; | Tel: (+31) 015 278 3900        |
+&gt;&gt; |
+&gt;&gt; +
+&gt;&gt; -------------------------------+-----------------------------------+
+&gt;&gt;
+&gt;&gt; | Radiation Technology group     | Neutron Scattering group
+&gt;&gt; |
+&gt;&gt; | GEM project                    | Scans PROJECT
+&gt;&gt; |
+&gt;&gt; | Tel: (+31) 015 278(5244)       | Tel: (+31) 015 278(6814)
+&gt;&gt; |
+&gt;&gt; | Fax: (+31) 015 278(6422)       | Fax: (+31) 015 278(8303)
+&gt;&gt; |
+&gt;&gt; +
+&gt;&gt; -------------------------------+-----------------------------------+
+&gt;&gt;
+&gt;&gt; | IRI                            | Mekelweg 15
+&gt;&gt; |
+&gt;&gt; | Delft University of Technology | 2629 JB  Delft
+&gt;&gt; |
+&gt;&gt; | Tel: (+31) 015 278(5022)       | Netherlands
+&gt;&gt; |
+&gt;&gt; +
+&gt;&gt; -------------------------------------------------------------------+
+&gt;
+&gt; --
+&gt; What's up Doc ?
+&gt; --------------------------------------------
+&gt; Emmanuel FARHI, <A HREF="http://www.ill.fr/tas/people/Farhi.html">http://www.ill.fr/tas/people/Farhi.html</A>   \|/ ____ \|/
+&gt; CS-Group ILL4/156, Institut Laue-Langevin (ILL) Grenoble  ~@-/ oO \-@~
+&gt; 6 rue J. Horowitz, BP 156, 38042 Grenoble Cedex 9,France  /_( \__/ )_\
+&gt; Work :Tel (33/0) 4 76 20 71 35. Fax (33/0) 4 76 48 39 06     \__U_/
+&gt;
+&gt;
+
+--
+Per-Olof Åstrand
+Dept. of Chemistry, University of Copenhagen
+and Materials Research Department, Risø National Laboratory
+per-olof.aastrand@theory.ki.ku.dk or per-olof.aastrand@risoe.dk
+<A HREF="http://www.ki.ku.dk">http://www.ki.ku.dk</A> and <A HREF="http://www.risoe.dk">http://www.risoe.dk</A>
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<UL><LI><STRONG>References</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00015" HREF="msg00015.html">Re: Still the 2e9...</A></STRONG>
+<UL><LI><EM>From:</EM> Rob Kreuger &lt;R.Kreuger@IRI.TUDELFT.NL&gt;</LI></UL></LI>
+<LI><STRONG><A NAME="00016" HREF="msg00016.html">Re: Still the 2e9...</A></STRONG>
+<UL><LI><EM>From:</EM> Emmanuel Farhi &lt;farhi@ill.fr&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00016.html">Re: Still the 2e9...</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00018.html">No attachments to neutron-mc</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00017"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00017"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

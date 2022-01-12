@@ -1,0 +1,90 @@
+/***********************************************************************
+*
+* McStas, version 1.2 released February 2000
+*         Maintained by Kristian Nielsen and Kim Lefmann,
+*         Risoe National Laboratory, Roskilde, Denmark
+*
+* %IDENTIFICATION
+*
+* Author: <a href="mailto:hansen@ill.fr">Thomas C Hansen</a>
+* Date: 07 March 2000
+* Version: $Revision: 1.1.1.1 $
+* Origin: <a href="http://www.ill.fr">ILL</a> (Dif/<a href="http://www.ill.fr/YellowBook/D20">D20</a>)
+*
+* Conversion from flat energy distribution to Maxwellian neutron spectra
+*
+* %DESCRIPTION
+*
+* The routine modifies/converts the incident flat (in energy) neutron spectra, 
+* as it comes out from a source like the standard adaptive source 
+* <a href="http://neutron.risoe.dk/mcstas/mcdoc/components/sources/Source_adapt.html">Source_adapt</a>, 
+* to obtain a Maxwellian neutron distribution, as it is approximatively the case for thermal neutrons
+* in a reactor's moderator (e.g. the HFR of the ILL in Grenoble). So, this 
+* component is only a virtual one, not corresponding to a real element in a
+* neutron beam.
+*
+* %PARAMETERS
+*
+* INPUT PARAMETERS:
+*
+* T:  	(K)	The temperature of the source, 293 K for thermal neutrons (beam tube H11 at ILL)
+* E0:	(meV)	Mean energy of neutrons (as for <a href="http://neutron.risoe.dk/mcstas/mcdoc/components/sources/Source_adapt.html">Source_adapt</a>)
+* dE: 	(meV)	Energy spread as for <a href="http://neutron.risoe.dk/mcstas/mcdoc/components/sources/Source_adapt.html">Source_adapt</a> (energy range is from E0-dE to E0+dE)
+*
+* OUTPUT PARAMETERS:
+*
+* Lmin:	(AA)	Minimum wavelength in energy range
+* Lmax:	(AA)	Maxium wavelength in energy range
+* l0:	(AA)	Mean wavelength of neutron spectra, about 1.8 AA for thermal neutrons
+* L2P:	(AA**4)	Normalisation constant for Maxwell distribution
+*
+* %LINKS
+* <a href="../d20adapt.instr">Source code of d20adapt.instr</a>, where this component is used
+* %LINKS
+* A source producing a flat in energy distribution: <a href="http://neutron.risoe.dk/mcstas/mcdoc/components/sources/Source_adapt.html">Source_adapt.comp</a>
+*
+* %END
+*
+***********************************************************************/
+
+DEFINE COMPONENT Convert_FlatE_2_Maxwell
+DEFINITION PARAMETERS (T,E0,dE)
+SETTING PARAMETERS ()
+OUTPUT PARAMETERS (Lmin,Lmax,l0,L2P)
+STATE PARAMETERS (x,y,z,vx,vy,vz,t,s1,s2,p)
+DECLARE
+%{
+  double l0, L2P, Lmin,Lmax;
+	
+%}
+INITIALIZE
+%{
+  double k;
+  k  = 1.38066e-23;
+  l0=1.0e10*sqrt(HBAR*HBAR*4.0*PI*PI/2.0/MNEUTRON/k/T);	   
+  L2P=2*l0*l0*l0*l0; 
+  Lmin = sqrt(81.81/(E0+dE)); /* AAngstroem */
+  Lmax = sqrt(81.81/(E0-dE));
+%}
+TRACE
+%{
+  double l,E, Maxwell,dE_dl;
+  l= (2*PI/V2K)/sqrt(vx*vx + vy*vy + vz*vz);
+  E=(VS2E*4.0*(PI*PI)/(V2K*V2K))/l/l;
+  dE_dl=E/l*2.0;
+  p*=2.0*dE/(Lmax - Lmin)/dE_dl; 
+  Maxwell=L2P/l/l/l/l/l*exp(-l0*l0/l/l); 
+  p*= Maxwell;
+%}
+
+FINALLY
+  %{
+  %}
+
+MCDISPLAY
+%{
+  magnify("xy");
+  circle("xy",0,0,0,0.1);
+%}
+
+END

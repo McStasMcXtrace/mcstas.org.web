@@ -1,0 +1,250 @@
+<html>
+      <head>
+      <title>McStas Survey 2002</title>
+      </head>
+      <body>
+      <center><h1>McStas Survey 2002</h1></center> 
+<FORM METHOD="post" ACTION="/cgi/survey.pl"><br>
+ <input type=hidden name="recipient" value="peter@localhost"><br>
+ <input type=hidden name="subject" value="[McStas survey 2002]"><br>
+ <input type=hidden name="sort" value="order:name,email,institute,month,year,level,preffered_version,num_instr,num_comp,num_comp_shared,kerne_mod,kernel_comments,packages,preffered_package,preference_comments,arch1,osver1,arch2,osver2,arch3,osver3,supportive,problem,problem_comments,general_comments"><br>
+<TABLE border="2" cellpadding="5" cellspacing="2" width="100%">
+<TR> 
+<TD>1:<br> <b>Your name</b> (Optional):</TD>
+<TD align=right><INPUT TYPE="text" name="name" SIZE=40></TD>
+</TR>
+<TR> 
+<TD>2:<br> <b>Email address</b> (Optional):</TD>
+<TD align=right><INPUT TYPE="text" name="email" SIZE=40></TD>
+</TR>
+<TR>
+<TD>3:<br> <b>Research institution</b> (Optional):</TD>
+<TD align=right><INPUT TYPE="text" name="institute" SIZE=40></TD>
+</TR>
+<TR>
+<TD>4:<br> <b>McStas user since</b>:</TD>
+<TD align=right>
+month:
+      <SELECT NAME="month" SIZE="1">
+      <OPTION SELECTED>dont know
+      <OPTION>01
+      <OPTION>02
+      <OPTION>03
+      <OPTION>04
+      <OPTION>05
+      <OPTION>06
+      <OPTION>07
+      <OPTION>08
+      <OPTION>09
+      <OPTION>10
+      <OPTION>11
+      <OPTION>12
+      </SELECT>
+year:
+      <SELECT NAME="year" SIZE="1">
+      <OPTION SELECTED>dont know
+      <OPTION>1997
+      <OPTION>1998
+      <OPTION>1999
+      <OPTION>2000
+      <OPTION>2001
+      <OPTION>2002
+      </SELECT>
+</TD>
+</TR>
+<TR>
+<TD>5:<br> <b>Level of experience</b>:</TD>
+<TD>
+<TABLE align=center border="0" cellpadding="0" cellspacing="0" width="100%">
+<TR>
+<TD align=center>basic</TD>
+<TD align=center>advanced</TD>
+<TD align=center>expert</TD>
+</TR>
+<TR>
+<TD align=center><INPUT TYPE="radio" NAME="level" VALUE="basic"></TD>
+<TD align=center><INPUT TYPE="radio" NAME="level" VALUE="advanced"></TD>
+<TD align=center><INPUT TYPE="radio" NAME="level" VALUE="expert"></TD></TR>
+</TABLE>
+</TR>
+<TR>
+<TD>
+6:<br> <b>What McStas version are you mainly running?</b></TD>
+<TD align=right>
+      <SELECT NAME="preffered_version" SIZE="1">
+      <OPTION SELECTED>none
+      <OPTION>McStas version previous to 1.4 
+      <OPTION>McStas 1.4 series
+      <OPTION>McStas 1.5 series
+      <OPTION>McStas 1.6-ILL series
+      <OPTION>My own customized version
+      </SELECT>
+</TD>
+</TD>
+</TR>
+<TR>
+<TD>7:<br> <b>How many <i>instruments</i> have you written / used?</b></TD>
+<TD align=right><INPUT TYPE="text" name="num_instr" SIZE=10></TD>
+</TR>
+<TR>
+<TR>
+<TD>8:<br> <b>How many <i>components</i> have you modified / written yourself?</b></TD>
+<TD align=right><INPUT TYPE="text" name="num_comp" SIZE=10></TD>
+</TR>
+<TR>
+<TR>
+<TD>9:<br> <b>How many components have you contributed / shared with others?</b></TD>
+<TD align=right><INPUT TYPE="text" name="num_comp_shared" SIZE=10></TD>
+</TR>
+<TR>
+<TR>
+<TD>10a:<br> <b>Have you ever modified kernel / runtime parts of McStas?</b></TD>
+<TD align=right>
+      <SELECT NAME="kerne_mod" SIZE="1">
+      <OPTION SELECTED>no
+      <OPTION>yes
+      </SELECT>
+</TD>
+</TR>
+<TR>
+<TD>(Only if 10a was "yes")<br>
+10b:<br> <b>What feature(s) were missing?</b></TD>
+<TD align=right>
+    <TEXTAREA NAME="kernel_comments" ROWS=3 COLS=40></TEXTAREA>
+</TD>
+</TR>
+<TR>
+<TD>
+11:<br> <b>What other neutron sim. packages are you using?</b></TD>
+<TD align=right>
+ <input type="checkbox" name="packages" value="vitess">VITESS
+ <input type="checkbox" name="packages" value="restrax">RESTRAX
+ <input type="checkbox" name="packages" value="nisp">NISP
+ <input type="checkbox" name="packages" value="mcnp">MCNP
+ <input type="checkbox" name="packages" value="other">other package
+</TD>
+</TR>
+<TR>
+<TD>
+12a:<br> <b>Which package do you prefer?</b></TD>
+<TD align=right>
+      <SELECT NAME="preffered_package" SIZE="1">
+      <OPTION SELECTED>none
+      <OPTION>McStas
+      <OPTION>VITESS
+      <OPTION>RESTRAX
+      <OPTION>NISP
+      <OPTION>MCNP
+      <OPTION>other package (please specify below)
+      </SELECT>
+</TD>
+</TR>
+<TR>
+<TD>
+12b:<br> <b>Why do you prefer the above package?</b></TD>
+<TD align=right>
+    <TEXTAREA NAME="preference_comments" ROWS=3 COLS=40></TEXTAREA>
+</TD>
+</TR>
+<TR>
+<TD>
+<b>McStas usage environment</b></TD>
+<TD>
+<b>"Architecture" indicates e.g. "i386" or "alpha" </b><br>
+(on unix, run a "uname -a" command for this information)
+<br><br><b>"OS version" indicates e.g. "RedHat linux 7.3" or "Microsoft
+Windows 2000 "</b>
+</TD>
+</TR>
+<TR>
+<TD>
+13a:<br> <b>Primary McStas platform</b></TD>
+<TD>
+<TABLE align=center>
+<TR><TD><b>Architecture</b></TD><TD><b><INPUT TYPE="text" name="arch1" SIZE=25></TD></TR>
+<TR><TD><b>OS version</b></TD><TD><INPUT TYPE="text" name="osver1" SIZE=25></TD></TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD>
+13b:<br> <b>Secondary McStas platform</b></TD>
+<TD>
+<TABLE align=center>
+<TR><TD><b>Architecture</b></TD><TD><b><INPUT TYPE="text" name="arch2" SIZE=25></TD></TR>
+<TR><TD><b>OS version</b></TD><TD><INPUT TYPE="text" name="osver2" SIZE=25></TD></TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD>
+13c:<br> <b>Tertiary McStas platform</b></TD>
+<TD>
+<TABLE align=center>
+<TR><TD><b>Architecture</b></TD><TD><b><INPUT TYPE="text" name="arch3" SIZE=25></TD></TR>
+<TR><TD><b>OS version</b></TD><TD><INPUT TYPE="text" name="osver3" SIZE=25></TD></TR>
+</TABLE>
+</TD>
+</TR>
+<TR>
+<TD>
+13d:<br> <b>What "supportive" software is installed on (any of) your platform(s)?</b></TD>
+<TD>
+<b> <input type="checkbox" name="supportive" value="perl">perl+PDL+tcl/tk+PGPLOT (sattelite packages for current McStas GUIs)<br>
+<input type="checkbox" name="supportive" value="python">python (with numerics)<br>
+ <input type="checkbox" name="supportive" value="scilab"> SCILAB <br>
+ <input type="checkbox" name="supportive" value="octave"> OCTAVE <br>
+ <input type="checkbox" name="supportive" value="matlab"> MATLAB <br>
+ <input type="checkbox" name="supportive" value="IDL"> IDL <br>
+ <input type="checkbox" name="supportive" value="NONE"> none of the above <br>
+</b>
+</TD>
+</TR>
+<TR>
+<TD>
+14a:<br> <b>What is the main problem area of the current (official)
+release 1.5 of McStas?</b></TD>
+<TD align=right>
+      <SELECT NAME="problem" SIZE="1">
+      <OPTION SELECTED>no special area
+      <OPTION>Installation procedure (./configure;make;make install)
+      <OPTION>Support applications (perl+PDL+...)
+      <OPTION>Lacking features simulation-wise
+      <OPTION>Lacking stability
+      <OPTION>Lacking support
+      </SELECT>
+</TD>
+</TR>
+<TR>
+<TD>
+14b:<br> <b>What should be done about this?</b></TD>
+<TD align=right>
+<TEXTAREA NAME="problem_comments" ROWS=3 COLS=40></TEXTAREA>
+</TD>
+</TR>
+<TR>
+<TD>
+15:<br> <b>Other Comments</b></TD>
+<TD align=right>
+<TEXTAREA NAME="general_comments" ROWS=3 COLS=40></TEXTAREA>
+</TD>
+</TR>
+<p>
+</TABLE>
+      <INPUT TYPE="submit" VALUE="Send"><INPUT TYPE="reset" value="Start Over">
+  </FORM>
+<p>
+<b>Thank's for helping us making McStas a better software</b>
+<p>
+<a href="mailto:peter.willendrup@risoe.dk">Peter Willendrup</a><br>
+<a href="mailto:kim.lefmann@risoe.dk">Kim Lefmann</a><br>
+<a href="mailto:farhi@ill.fr">Emmanuel Farhi</a><br>
+  </BODY>
+</HTML>
+
+
+
+
+
+
+

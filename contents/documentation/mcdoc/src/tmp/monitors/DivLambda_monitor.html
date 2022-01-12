@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD>
+<TITLE>DivLambda_monitor</TITLE>
+<LINK REV="made" HREF="mailto:kristian.nielsen@risoe.dk">
+</HEAD>
+
+<BODY>
+
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<H1>The <CODE>DivLambda_monitor</CODE> component</H1>
+
+Divergence/wavelength monitor.
+
+
+<H2><A NAME=id></A>Identification</H2>
+
+<UL>
+  <LI> <B>Author:</B> Kristian Nielsen</B>
+  <LI> <B>Origin:</B> McStas 1.5</B>
+  <LI> <B>Date:</B> 1999</B>
+  <LI> <B>Version:</B> 1.4 </B>
+</UL>
+<H2><A NAME=desc></A>Description</H2>
+
+<PRE>
+2D detector for intensity as a function of both horizontal divergence
+and wavelength.
+
+Example: DivLambda_monitor(nlam=20, ndiv=20, filename="Output.div",
+          xmin=-0.1, xmax=0.1, ymin=-0.1, ymax=0.1, 
+          maxdiv=2, lambda_0=2, lambda_1=10)
+
+</PRE>
+
+<H2><A NAME=ipar></A>Input parameters</H2>
+Parameters in <B>boldface</B> are required;
+the others are optional.
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD>nlam</TD>
+     <TD>1</TD>
+     <TD>Number of bins in wavelength </TD>
+<TD ALIGN=RIGHT>20</TD> </TR>
+<TR> <TD>ndiv</TD>
+     <TD>1</TD>
+     <TD>Number of bins in divergence </TD>
+<TD ALIGN=RIGHT>20</TD> </TR>
+<TR> <TD><B>filename</B></TD>
+     <TD>string</TD>
+     <TD>Name of file in which to store the detector image </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>xmin</B></TD>
+     <TD>m</TD>
+     <TD>Lower x bound of detector opening </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>xmax</B></TD>
+     <TD>m</TD>
+     <TD>Upper x bound of detector opening </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ymin</B></TD>
+     <TD>m</TD>
+     <TD>Lower y bound of detector opening </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ymax</B></TD>
+     <TD>m</TD>
+     <TD>Upper y bound of detector opening </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD>maxdiv</TD>
+     <TD>degrees</TD>
+     <TD>Maximal horizontal divergence detected </TD>
+<TD ALIGN=RIGHT>2</TD> </TR>
+<TR> <TD><B>lambda_0</B></TD>
+     <TD>AA</TD>
+     <TD>Minimum wavelength detected </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>lambda_1</B></TD>
+     <TD>AA</TD>
+     <TD>Maximum wavelength detected </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=opar></A>Output parameters</H2>
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD><B>Div_N</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Div_p</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Div_p2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=links></A>Links</H2>
+
+<UL>
+  <LI> <A HREF="DivLambda_monitor.comp">Source code</A> for <CODE>DivLambda_monitor.comp</CODE>.
+</UL>
+<HR>
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<ADDRESS>
+Generated automatically by McDoc, Kristian Nielsen
+&lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt; /
+Jul 22 2002
+</ADDRESS>
+</BODY></HTML>

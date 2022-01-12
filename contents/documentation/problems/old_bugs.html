@@ -1,0 +1,125 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.76 [en] (X11; U; Linux 2.2.17 i686) [Netscape]">
+   <title>Known Bugs in McStas</title>
+<link REV="made" HREF="mailto:kristian.nielsen@risoe.dk">
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EF" vlink="#51188E" alink="#FF0000">
+
+<h1>
+Previous problems in McStas</h1>
+
+<h2>
+Bugs (fixed) in McStas v1.4</h2>
+These are bugs for which no fix has been released yet, but that will hopefully
+be fixed in the next release:
+<ul>
+<li>
+The <tt>Single_crystal</tt> component has a bug that prevents the use of
+multiple instances of this component in a single instrument. An
+<a href="mcdoc/components/samples/Single_crystal.html">updated
+component (v 1.17)</a> is available and will be included in the next release.
+Thanks to Adrian Hillier for reporting this problem.</li>
+
+<li>
+The <tt>Monitor_nD</tt> component has a few bugs when used multiple times
+in an instrument. An updated component (v 0.13.3)
+<a href="mcdoc/components/monitors/Monitor_nD.html">is
+available</a> and will be included in the next release.</li>
+
+<li>
+When the value of a component parameter is given as a C variable (as opposed
+to a constant number or string), a name conflict may happen if the component
+uses a variable of the same name internally. A workaround is to rename
+the variable to something not used in the component.</li>
+
+<li>
+McStas does not give a meaningful error message when there is an inconsistency
+between the name of a component and the name of the file it is defined
+in.</li>
+
+<li>
+When an instrument definition contains an unterminated comment, the resulting
+error message can be misleading.</li>
+</ul>
+
+<h2>
+Bugs fixed in McStas v1.3</h2>
+These are bugs that have been fixed in McStas v1.3. Upgrade to that or
+a newer version if you experience any of these.
+<ul>
+<li>
+There is a bug in the <tt>Mosaic_simple</tt> and <tt>Mosaic_anisotropic</tt>
+components. This causes bad statistics and too-high reflectivities for
+large scattering angles (2theta greater than around 120 degrees). New versions
+of <tt><a href="support/misc/Mosaic_simple.comp">Mosaic_simple</a></tt>
+and <tt><a href="support/misc/Mosaic_anisotropic.comp">Mosaic_anisotropic</a></tt>
+are available and will be included in the next release. Thanks to Miguel
+A. Gonzalez for reporting this bug.</li>
+</ul>
+
+<h2>
+Bugs fixed in McStas v1.2</h2>
+These are bugs that have been fixed in McStas v1.2. Upgrade to that or
+a newer version if you experience any of these.
+<ul>
+<li>
+The monochromator component <tt>Monochromator.comp</tt> does not work with
+neutrons with wavelength so long that bragg scattering is not possible.
+A <a href="support/misc/Monochromator.comp">corrected version of the component</a>
+is available and will be included in the next release.</li>
+
+<li>
+In the <tt>mcplot</tt> program, zooming on a plot sometimes selects the
+wrong plot. Fixed versions of the files
+<tt><a href="http://neutron.risoe.dk/mcstas/support/artus/mcplot.pl">mcplot.pl</a></tt>
+and
+<tt><a href="http://neutron.risoe.dk/mcstas/support/artus/mcplotlib.pl">mcplotlib.pl</a></tt>
+are available, and will be included in the next release.</li>
+</ul>
+
+<h2>
+Bugs fixed in McStas v1.1</h2>
+These are bugs that have been fixed in McStas v1.1. Upgrade to that or
+a newer version if you experience any of these.
+<ul>
+<li>
+In the TOF_monitor component, a neutron with a time-of-flight beyond the
+detector limit may cause another program variable to be corrupted, possibly
+producing wrong results for the simulation.
+<a href="http://neutron.risoe.dk/mcstas/support/philipp/TOF_monitor.comp">An
+updated TOF_monitor component</a> with the bug fixed is now available and
+will be included in the next version.</li>
+
+<li>
+McStas does not give a meaningful error message when an instrument definition
+uses the same name for two components.</li>
+</ul>
+
+<h2>
+Bugs fixed in McStas v1.01 BETA 1</h2>
+These are bugs that were fixed in the <a href="support/beta/1.01b1.html">McStas
+v1.01 BETA 1</a> release.
+<ul>
+<li>
+The Moderator component emits with a distribution that is flat in velocity
+rather than energy.</li>
+
+<li>
+[Win32 compatibility] Backslashes in filenames were not correctly quoted
+in strings in the output C code.</li>
+
+<li>
+[Win32 compatibility] Instruments with zero parameters failed in a malloc(0)
+call.</li>
+</ul>
+
+<hr>
+<center>
+<address>
+Last modified February 9, 2001 by Per-Olof &Aring;strand</address></center>
+
+</body>
+</html>

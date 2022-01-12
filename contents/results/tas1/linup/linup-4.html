@@ -1,0 +1,66 @@
+<html><head>
+<title>PHM scan with 30' collimation</title>
+<LINK REV="made" HREF="mailto:kristian.nielsen@risoe.dk">
+</head>
+
+<body>
+
+<h1>PHM scan with 30' collimation</h1>
+
+
+<h2>Measurements</h2>
+
+Now redo the <a href="linup-1.html">previous PHM scan</a>, this time with 30'
+A-S collimation. Scan PHM from -2 to 2 for 5 sec/point. Data file
+<a href="linup011.dat"><TT>linup011.dat</TT></a>.
+
+<P ALIGN=CENTER><IMG SRC="fit011.gif"></P>
+<PRE>
+  Amplitude     1.6155e+05    6.8150e+03
+  Centre       -6.0192e-02    1.5766e-02
+  Width         4.6769e-01    1.2084e-02
+  Background   -9.2264e+00    5.8797e+01
+
+* Chi Squared 1.0685e+03
+</PRE>
+
+Note that the peak is offset 3.6' from the center. We attribute this to a
+slight mis-alignment of collimator C1. This is investigated in the <a
+href="linup-5.html">next simulation</a>.
+
+
+<h2>Simulations</h2>
+
+This is the result <a href="linup_4_45.sim"><TT>linup_4_45.sim</TT></a> of
+simulation with 1e5 neutrons.
+Instrument definition <a href="linup-2.instr"><TT>linup-2.instr</TT></a>.
+
+<P ALIGN=CENTER><IMG SRC="fit_4_45.gif"></P>
+<PRE>
+  Amplitude     2.0174e-02    1.2614e-04
+  Centre       -3.7091e+01    1.4394e-03
+  Width         4.0065e-01    1.5049e-03
+  Background   -1.2596e-05    1.5895e-05
+
+* Chi Squared 0.9153
+</PRE>
+
+<h2>Comparison</h2>
+
+<P ALIGN=CENTER><IMG SRC="cmp_4_45.gif"></P>
+
+<P>
+The measured data is considerably wider than the simulated. We attribute this
+to an incorrect description in the simulation of the neutron channel between
+the cold source and the monochromator. This should be further investigated by
+studying drawings of the TAS1 neutron channel construction.
+
+
+<hr><address>
+Kristian Nielsen
+&lt;<a href="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</a>&gt; /
+<!-- hhmts start -->
+Jul 17, 1998.
+<!-- hhmts end -->
+</address>
+</body></html>

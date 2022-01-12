@@ -1,0 +1,76 @@
+<html><head>
+<title>Monochromator line-up: PHM scan</title>
+<LINK REV="made" HREF="mailto:kristian.nielsen@risoe.dk">
+</head>
+
+<body>
+
+<h1>Monochromator line-up: PHM scan</h1>
+
+<h2>Measurements</h2>
+
+Open collimation, 20 meV neutrons. 10.5x40.5mm slit on sample position with
+monitor placed 20mm behind. Scan PHM from -3 to 3 for 5 sec/point. Data file
+<a href="linup010.dat"><TT>linup010.dat</TT></a>.
+
+<P ALIGN=CENTER><IMG SRC="fit010.gif"></P>
+<PRE>
+  Amplitude     3.5718e+05    7.8239e+03
+  Centre        6.7660e-03    9.1312e-03
+  Width         5.0098e-01    7.1854e-03
+  Background    4.5602e+03    4.4382e+02
+
+* Chi Squared 449.4147
+</PRE>
+
+
+<h2>Simulations</h2>
+
+2TM is set to 74° as determined from drawings of the TAS1 instrument. The
+monochromator mosaicity is specified to 30' but not precisely
+known. Simulations for different values of the mosaicity was performed as
+follows:
+
+<P ALIGN=CENTER><table border=1>
+<tr><th>Mosaicity</th>  <th>Peak width</th></tr>
+<tr> <td>40</td> <td>0.446</td> </tr>
+<tr> <td>45</td> <td>0.489</td> </tr>
+<tr> <td>50</td> <td>0.513</td> </tr>
+<tr> <td>55</td> <td>0.527</td> </tr>
+<tr> <td>60</td> <td>0.546</td> </tr>
+</table></P>
+
+Based on this, we continue the simulations with 45' mosaicity on monochromator
+and analysator.
+
+<P>
+This is the result <a href="linup_1_45.sim"><TT>linup_1_45.sim</TT></a> of
+simulation with 45' mosaicity.
+Instrument definition <a href="linup-1.instr"><TT>linup-1.instr</TT></a>.
+<P ALIGN=CENTER><IMG SRC="fit_1_45.gif"></P>
+<PRE>
+  Amplitude     3.6271e-01    2.3164e-03
+  Centre       -3.7077e+01    1.8214e-03
+  Width        -4.8897e-01    1.9908e-03
+  Background   -1.3489e-03    3.8135e-04
+
+* Chi Squared 13.9592
+</PRE>
+
+We observe that the peak is 0.077° off-center, reflecting an asymetry in the
+beam channel from the cold source to the monochromator. In the following
+simulations, PHM is set to -37.077°.
+
+<h2>Comparison</h2>
+
+<P ALIGN=CENTER><IMG SRC="cmp_1_45.gif"></P>
+
+
+<hr><address>
+Kristian Nielsen
+&lt;<a href="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</a>&gt; /
+<!-- hhmts start -->
+Jul 17, 1998.
+<!-- hhmts end -->
+</address>
+</body></html>

@@ -1,0 +1,153 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: First tries using McStas -->
+<!--X-From: artus@obiwan.kri.physik.uni&#45;muenchen.de -->
+<!--X-Date: Thu, 12 Nov 1998 16:38:18 +0100 (CET) -->
+<!--X-Message-Id: 01J48P0X9N4M8WWBMB@risoe.dk -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 13896.13203.557267.61539@obiwan.kri.physik.uni&#45;muenchen.de -->
+<!--X-Reference-Id: 01J439UDU9W891WTRJ@risoe.dk -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: First tries using McStas</title>
+<link rev="made" href="mailto:artus@obiwan.kri.physik.uni-muenchen.de">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00017.html">Date Prev</A>][<A HREF="msg00015.html">Date Next</A>]
+<a href="index.html#00018">[Chronological]</a>
+<a href="threads.html#00018">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: First tries using McStas</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: First tries using McStas</strong></LI>
+<LI><strong>From</strong>: <strong><A HREF="mailto:artus@obiwan.kri.physik.uni-muenchen.de">artus@obiwan.kri.physik.uni-muenchen.de</A></strong></LI>
+<LI>Date: Thu, 12 Nov 1998 16:38:18 +0100 (CET)</LI>
+<LI>In-reply-to: &lt;01J439UDU9W891WTRJ@risoe.dk&gt;</LI>
+<LI>References: &lt;13896.13203.557267.61539@obiwan.kri.physik.uni-muenchen.de&gt;&lt;01J439UDU9W891WTRJ@risoe.dk&gt;</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Hello Kristian,
+
+thanks for this huge amount of information! I'll try to use the new
+source and the new detector as soon as possible.
+
+Now to the problem with the graphics. I have to confess that I didn't
+realize that both PGPLOT packages are necessary! I thought it were just 
+a newer and an older version (Sorry!). So I just tried to install 2.11 
+but 'make' stops with an error:  
+
+make: *** [PGPLOT.c] Error 139
+
+?? Is the order of installation of the PGPLOT packages important? 'perl 
+Makefile.PL' seems to be ok:
+
+obiwan:/usr/local/PGPLOT-2.11 # perl Makefile.PL 
+Found compiler g77
+ExtUtils::F77: Using system=Linux compiler=G77
+Checking for gcc in disguise
+Compiler is gcc version 2.7.2.1ExtUtils::F77: Validating -L/usr/lib
+ -L/usr/lib -lf2c -lm -L/usr/lib/gcc-lib/i686-pc-linux-gnulibc1/2.8.1 -lgcc   [ok]
+ExtUtils::F77: Compiler: g77
+ExtUtils::F77: Cflags: -O
+Checking if your kit is complete...
+Looks good
+Writing Makefile for PGPLOT
+
+
+
+Back to the guides: Following Murphy's law I interchanged the m's
+describing the different reflectivity for the faces within
+Guide2.comp! We here used the 'convention', that the side faces are
+connected to the HORIZONTAL path of the neutrons and therefor we use
+mh for the side faces. You use the terminology vice versa as I now assume?
+We ran across this problem earlier here and now we always talk of top
+and bottom and left and right to avoid misunderstandings... May be
+this is worth noticing in the future documentation of Guide2.  
+
+&gt; It would probably be simpler to place one monitor at the guide entrance
+and one at the exit. The transmission is then the ratio between the
+intensities in the two monitors, mon2_I/mon1_I. The monitor at the
+entrance must have the same dimensions as the guide opening, of
+course.
+
+Placing a monitor in front of the guide in fact is a good
+idea. Dividing the final sum of weights by (solid angle at source *
+4pi) also gives the same as long as you assign xw and yh for
+Source_flat to the size of the guide entrance. 
+
+I was a little bit astonished, that your slope alpha to describe the
+reflectivity for mirrors is positive?
+Beamline uses a slightly simpler way to describe the reflectivity. The 
+only(?) difference is, that it doesn't model the sigmoid decay to
+reflectivity 0. It just uses a cutoff. But according to the numbers,
+this difference is negligible (if I didn't make any mistake):
+
+Guide              Transmissions(%)
+           McStas                Beamline
+A          1.52                  1.57
+B          2.84                  2.91
+
+A: straight guide, 20x60, TB: m=3, LR: m=2, 11.5m long, 2 gaps
+B: focussing guide 40x85 -&gt; 20x60, TB: m=3, LR: m=2, 11.5m long, 2 gaps
+
+I have also calculated three guides (straight section + diverging
+section, focussing guide, straight guide, m's = 1 and 3)
+for Ralph (he was also at the meeting) but I don't have his
+transmissions for beamline. But I remember that the numbers were also
+very close! Also all profiles looked absolutely the same!
+
+Have a nice evening,
+
+Georg
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00017.html">Re: First tries using McStas</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00015.html">Re: Absolute intensities and McStas</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00018"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00018"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

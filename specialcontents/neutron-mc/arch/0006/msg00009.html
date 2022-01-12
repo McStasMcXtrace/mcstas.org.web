@@ -1,0 +1,150 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: vitess codes -->
+<!--X-From: Geza Zsigmond <zsigmond@hmi.de> -->
+<!--X-Date: Fri, 16 Jun 2000 11:54:17 +0200 -->
+<!--X-Message-Id: 3949F949.3FC98C83@hmi.de -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 01JQMYT2WUNU93B4UG@risoe.dk -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: vitess codes</title>
+<link rev="made" href="mailto:zsigmond@hmi.de">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00007.html">Date Prev</A>][<A HREF="msg00008.html">Date Next</A>]
+<a href="index.html#00009">[Chronological]</a>
+<a href="threads.html#00009">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: vitess codes</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: vitess codes</strong></LI>
+<LI><strong>From</strong>: <strong>Geza Zsigmond &lt;<A HREF="mailto:zsigmond@hmi.de">zsigmond@hmi.de</A>&gt;</strong></LI>
+<LI>Date: Fri, 16 Jun 2000 11:54:17 +0200</LI>
+<LI>Organization: Hahn-Meitner-Institut Berlin</LI>
+<LI>References: &lt;01JQMYT2WUNU93B4UG@risoe.dk&gt;</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Hello,
+
+thank you, it would be good to have a general translation programme.
+At the moment we are thinking so: to build an arbitrary external code in
+the Vitess should work through a 'module' in the GUI which means simply
+giving a command line for the external code containing the information
+(parameters, filenames)  between 2 pipe "| " which has to be typed by
+the user (this means that the user has to generate it and not the Tcl).
+Then by starting, the GUI will include this command also in the entire
+command and runs the programme.
+
+The Tcl thing was made rather complicated (all compressed into the
+Vitess.tcl file) but in the next future we try to make it more
+accessible for the user, that is we want that the user can generate his
+GUI windows for his own codes. We are working on it (mainly F.Streffer)
+and then we could see how to make eventually an automatic generation of
+a GUI entity if we have a code in the McStas standard.
+
+In the command line in DOS I think that it works only(?) with one
+character after "-" like -a3.567. I'm not sure. In fact, it would be
+even for the Tcl irrelevant whether it is -a3.567 or -absorbtion=3.567,
+because it only transforms the table  of the window into a command
+sequence. If the command line runs, then everything is ok.
+
+ So I think the most important  would be to make it possible to produce
+the translation, then to compile it and then to be able to write the
+corresponding command sequence between two "|" in the pipe, that is, the
+user should have to be familiar with the new parameter definitions after
+translation (we could give the definitions in the help-info).  So the
+translation programme could be included in the package and then users
+could use it for any McStas code.
+
+At the moment it would be interesting to make some comparisons between
+similar modules in McStas and Vitess, for example to compare the output
+of the analysers in the two cases or others like guide, choppers, etc.
+This could we do also for the SCANS ("bench marking"). So if I would
+have your codes (which we also have) translated into "Vitess" I could
+make such comparisons. My interest is not in eventual bugs but to
+compare the different models, approaches we use. We have: source, guide,
+chopper,  velocity selector, crystal monochromator/analyser,
+power_sample, "sans" sample, inelastic sample, collimator, detector. It
+would be good to have those McStas codes which are the most similar to
+our codes.
+
+I will also send you a zipped file containing all actual source codes of
+Vitess next week.
+
+Best regards, Geza
+
+
+
+
+
+--
+Dr. Geza Zsigmond
+
+Hahn-Meitner-Institut Berlin          Tel: +49 (0)30 8062 3022
+D-14109 Glienickerstr. 100            Fax: +49 (0)30 8062 2523
+Berlin, Germany                       E-mail: zsigmond@hmi.de
+
+<A HREF="http://www.hmi.de/projects/ess/vitess">http://www.hmi.de/projects/ess/vitess</A>
+<A HREF="http://www.hmi.de/people/zsigmond">http://www.hmi.de/people/zsigmond</A>
+
+
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<UL><LI><STRONG>Follow-Ups</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00008" HREF="msg00008.html">Re: vitess codes</A></STRONG>
+<UL><LI><EM>From:</EM> Kristian Nielsen &lt;kristian.nielsen@risoe.dk&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00007.html">Re: vitess codes</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00008.html">Re: vitess codes</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00009"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00009"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

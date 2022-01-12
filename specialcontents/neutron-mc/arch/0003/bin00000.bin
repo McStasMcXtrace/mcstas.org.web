@@ -1,0 +1,290 @@
+% Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
+
+\section{Detectors and monitors}
+
+In real neutron experiments, detectors and monitors play quite
+different roles. One wants the detectors to be as efficient as 
+possible, counting all neutrons (and absorbing them in the process), 
+while the monitors measure the intensity of the incoming beam, and must
+as such be almost transparent, interacting only with (roughly) 0.1-1\%
+of the neutrons passing by. In computer simulations, it is 
+of course possible to detect every neutron without 
+absorbing it or disturbing any of its parameters. Hence, the two components
+have very similar functions in the simulations, and we do
+not distinguish between them. For simplicity, they are from here on
+just called monitors, since they do not absorb the neutron.
+
+Another difference between computer simulations and real experiments is
+that one may allow the monitor to be sensitive to any neutron property,
+as {\em e.g.} direction, energy, and polarization, in addition to what
+is found in advanced existing monitors (space and time).  One may, in
+fact, let the monitor have several of these properties at the same time,
+as seen for example in the energy sensitive monitor in
+section~\ref{s:e_monitor}.
+
+\subsection{Monitor: The single monitor}
+The component {\bf Monitor}
+consists of a rectangular opening --- like that for {\bf slit}.
+The neutron is propagated to the plane of the monitor
+by the kernel call PROP\_Z0.
+Any neutron that passes within the opening is counted ---
+the number counting variable is incremented: $N_i = N_{i-1}+1$,
+the neutron
+weight $p_i$ is added to the weight counting variable:
+$I_i = I_{i-1} + p_i$, 
+and the second moment of the weight is
+updated: $M_{2,i} = M_{2,i-1} + p_i^2$. 
+The input parameters for {\bf Monitor} are
+the opening coordinates $x_{\rm min}, x_{\rm max}, y_{\rm min}$, 
+$y_{\rm max}$, 
+and the output parameters are the three count numbers, $N, I$, and $M_2$.
+
+\subsection{Monitor\_4PI: The $4\pi$ monitor}
+The component {\bf Monitor\_4PI} does not model any physical monitor
+but may be thought of as a spherical monitor completely surrounding the
+previous component. 
+It simply detects all neutrons that have not been absorbed at the
+position in the instrument in which it is placed.
+If this monitor is placed in the instrument file after
+another component, {\em e.g.} a sample,
+it will count any neutron scattered from this component.
+This may be useful during tests.
+
+The output parameters for {\bf Monitor\_4PI} are the three count numbers, $N, I$, and $M_2$.
+
+\subsection{PSD\_monitor: The PSD monitor}
+The component {\bf PSD\_monitor} closely resembles 
+{\bf Monitor}.
+In the PSD monitor, though, the rectangular monitor window is divided
+into $n \times m$ pixels, each of which acts like a single
+monitor.
+
+The input parameters for {\bf PSD\-monitor} are
+the opening coordinates $x_{\rm min}, x_{\rm max}, y_{\rm min}$, 
+$y_{\rm max}$, the array dimensions $(n,m)$, and a name of a file in
+which to store $I(x,y)$.
+The output parameters are three two-dimensional arrays 
+of counts: $N(x,y), I(x,y), M_2(x,y)$.
+
+\subsection{PSD\_monitor\_4PI: The $4\pi$ PSD monitor}
+The component {\bf PSD\_monitor\_4PI} represents 
+a PSD monitor shaped as a sphere, much like {\bf Monitor\_4PI}.
+It subdivides the surface of the sphere into pixels of equal 
+area (using a projection onto a cylinder with an axis
+which is vertical in the local coordinate system) 
+and distributes the incoming neutron counts into the respective pixels.
+
+The $4\pi$ PSD monitor is typically placed
+around another component. Used in this way, 
+the $4\pi$ PSD monitor is very useful for debugging components.
+
+The input parameters for {\bf PSD\_monitor\_4PI} are
+the monitor radius, the number of pixels, $(n_x, n_y)$ -- where
+$y$ is the vertical direction, and the name of the file in which
+to store $I(x,y)$. 
+The output parameters of the component are the three count arrays
+$N(x,y), I(x,y)$, and $M_2(x,y)$. 
+
+
+\subsection{PSD\_monitor\_4PI\_log: The $4\pi$ PSD monitor with log scale}
+
+The component {\bf PSD\_monitor\_4PI\_log} is the same as PSD\_monitor\_4PI
+described in the previous section, except that the output histograms
+contain the base-10 logarithm of the intensities rather than the
+intensities themselves. Currently, this does not work well together with
+the McStas mechanism to output detector results (see section~\ref{s:DETECTOR_OUT}), so
+the total intensity as output by McStas from this detector component
+will be wrong. However, the component was sufficiently useful in
+Laue-type diffraction instruments to be included here nevertheless. A
+future version of McStas may implement a better way to get log-scale in
+output files.
+
+The input parameters for PSD\_monitor\_4PI\_log are the same as for PSD\_monitor\_4PI.
+
+
+\subsection{TOF\_monitor: The time-of-flight monitor}
+{\bf TOF\_monitor} is a rectangular single monitor 
+which is sensitive to
+the absolute time, where the neutron is hits the component.
+Like in a real time-of-flight detector, the time dimension is
+binned into small time intervals of length $dt$, whence this monitor
+updates a one-dimensional array of counts.
+
+The input parameters for {\bf TOF\_monitor} are the opening 
+coordinates $x_{\rm min}, x_{\rm max}, y_{\rm min}$, $y_{\rm max}$, 
+the number of time bins (beginning from $t=0$),  
+${\it n_{\rm chan}}$, the time spacing between bins, $dt$ (in $\mu$s), 
+and the name of the output file. Output parameters of the component
+are the three count arrays $N(i), I(i)$, and $M_2(i)$, where $i$ is
+the bin number. 
+
+\subsection{E\_monitor: The energy sensitive monitor}
+\label{s:e_monitor}
+The component {\bf E\_monitor} resembles {\bf TOF\_monitor}
+to a very large extent. Only this monitor is sensitive to
+the neutron energy, which in binned in \textit{nchan} bins between
+$E_{\rm min}$ and $E_{\rm max}$.
+
+The input parameters for {\bf E\_monitor} are the opening
+coordinates $x_{\rm min}, x_{\rm max}, y_{\rm min}$, $y_{\rm max}$,
+the total energy interval given by $E_{\rm min}$ and $E_{\rm max}$ (in meV), and
+\textit{nchan} and the
+name of the output file. Output parameters of the component
+are the three count arrays
+$N(i), I(i)$, and $M_2(i)$, $i$ being the bin number. 
+
+
+\subsection{L\_monitor: The wavelength sensitive monitor}
+\label{s:L_monitor}
+The component {\bf L\_monitor} is a rectangular monitor with an opening
+in the \textit{x-y} plane which is sensitive to the neutron wavelength.
+The wavelength spectrum is output in a one-dimensional histogram.
+Only neutrons with
+wavelength $\lambda_0 < \lambda < \lambda_1$ are detected.
+
+The input parameters for {\bf L\_monitor} are the opening
+coordinates \textit{xmin}, \textit{xmax}, \textit{ymin}, and
+\textit{ymax} defining the edges of the slit in meters;
+the lower and upper wavelength limit \textit{lambda\_0} and
+\textit{lambda\_1} in {\AA}ngstr{\o}m; the number of histogram bins
+\textit{nchan}; and \textit{filename}, a
+string giving the name of the file to store the data in.
+
+
+\subsection{Divergence\_monitor: The divergence sensitive monitor}
+
+The component {\bf Divergence\_monitor} is a rectangular monitor
+with an opening in the \textit{x-y} plane,
+which is sensitive to the neutron divergence, {\em i.e.} the angle
+between the neutron path and the monitor surface normal.
+ 
+The divergence is divided into horisontal and vertical divergencies,
+which are calculated as $\delta_h = \tan^{-1}(v_x/v_z)$ 
+and $\delta_v = \tan^{-1}(v_y/v_z)$, respectively. 
+Only neutrons within a divergence window of 
+$\delta_h = (-\delta_{\rm h,max} ; \delta_{\rm h,max})$, 
+$\delta_v = (-\delta_{\rm v,max} ; \delta_{\rm v,max})$ 
+are detected. The counts are binned in an array of $n_h \times n_v$ pixels.
+
+The input parameters for the Divergence\_monitor component are the opening coordinates
+$(x_{\rm min}, x_{\rm max}, y_{\rm min}, y_{\rm max})$, 
+the number of pixels $(n_h, n_v)$, 
+the parameters $(\delta_{\rm h,max}, \delta_{\rm v,max})$ 
+defining the divergence interval,
+and a name of the file in which to store the detected intensities.
+
+Note that a divergence sensitive monitor with a small opening may be 
+thought of as a non-reversing pinhole camera.
+
+
+\subsection{DivPos\_monitor: The divergence-position sensitive monitor}
+
+The component {\bf DivPos\_monitor} is a rectangular monitor with an
+opening in the \textit{x-y} plane, which is sensitive to both the
+horizontal neutron divergence and the horizontal neutron position. The
+neutron intensity as a function of position and divergence is output in
+a two-dimensional histogram. This output may be directly compared to an
+acceptance diagram, an analytical technique that is sometimes used to
+calculate neutron guide performances.
+ 
+The horizontal divergence is calculated as $\delta_h = \tan^{-1}(v_x/v_z)$ .
+Only neutrons within a divergence window of 
+$\delta_h = (-\delta_{\rm h,max} ; \delta_{\rm h,max})$ are detected.
+
+The input parameters for the DivPos\_monitor component are the opening coordinates
+\textit{xmin}, \textit{xmax}, \textit{ymin}, and
+\textit{ymax} in meters;
+the number of histogram bins \textit{npos} and \textit{ndiv} in
+position and divergence; the maximum divergence \textit{maxdiv} to
+detect, in degrees; and \textit{filename}, a
+string giving the name of the file to store the data in.
+
+
+\subsection{DivLambda\_monitor: The divergence-wavelength sensitive monitor}
+
+The component {\bf DivLambda\_monitor} is a rectangular monitor
+with an opening in the \textit{x-y} plane,
+which is sensitive to both the horizontal neutron divergence and the
+wavelength. The neutron intensity as a function of wavelength and
+divergence is output in a two-dimensional histogram.
+ 
+The horizontal divergence is calculated as $\delta_h = \tan^{-1}(v_x/v_z)$ .
+Only neutrons within a divergence window of 
+$\delta_h = (-\delta_{\rm h,max} ; \delta_{\rm h,max})$ and with
+wavelength $\lambda_0 < \lambda < \lambda_1$ are detected.
+
+The input parameters for the DivLambda\_monitor component are the opening coordinates
+\textit{xmin}, \textit{xmax}, \textit{ymin}, and
+\textit{ymax} in meters;
+the number of histogram bins \textit{nlam} and \textit{ndiv} in
+wavelength and divergence; the maximum divergence \textit{maxdiv} to
+detect, in degrees; \textit{lambda\_0} and \textit{lambda\_1} to define
+the wavelength window, in {\AA}ngstr{\o}m; and \textit{filename}, a
+string giving the name of the file to store the data in.
+
+
+\subsection{Res\_monitor: The resolution monitor}
+\label{s:res_monitor}
+The component \textbf{Res\_monitor} is used together with the
+\textbf{Res\_sample} component (described in section~\ref{s:res_sample})
+and the \verb+mcresplot+ front-end (described in
+section~\ref{s:mcresplot}). It works like a normal single detector, but
+also records all scattering events in the resolution sample and writes
+them to a file that can later be read by \verb+mcresplot+.
+
+The instrument definition should contain an instance of the
+\textbf{Res\_sample} component, the name of which should be passed as an
+input parameter to \textbf{Res\_monitor}. For example
+\begin{verbatim}
+    COMPONENT mysample = Res_sample( ... )
+    ...
+    COMPONENT det = Res_monitor(res_sample_comp = mysample, ...)
+    ...
+\end{verbatim}
+
+The output file is in ASCII format, one line per scattering event, with
+the following columns:
+\begin{itemize}
+\item ${\bf k}_{\rm i}$, the three components of the initial wave vector.
+\item ${\bf k}_{\rm f}$, the three components of the final wave vector.
+\item ${\bf r}$, the three components of the position of the scattering
+  event in the sample.
+\item $p_{\rm i}$, the neutron weight just after the scattering event.
+\item $p_{\rm f}$, the relative neutron weight adjustment from sample to
+  detector (so the total weight in the detector is $p_{\rm i}p_{\rm f}$).
+\end{itemize}
+From ${\bf k}_{\rm i}$ and ${\bf k}_{\rm f}$, we may compute ${\bf Q} =
+{\bf k}_{\rm i} - {\bf k}_{\rm f}$ and $\omega = (\mbox{2.072
+  meV$\cdot$\AA$^2$})({\bf k}_{\rm i}^2 - {\bf k}_{\rm f}^2)$.
+
+The vectors are given in the local coordinate system of the resolution
+sample component. The wave vectors are in units of $\mbox{\AA}^{-1}$, the
+scattering position in units of meters.
+
+The input parameters for {\bf Res\_monitor} are the opening coordinates
+$x_{\rm min}, x_{\rm max}, y_{\rm min}$, $y_{\rm max}$ as for the single
+monitor component, the name of the file to write in \textit{filename},
+and \textit{res\_sample\_comp} which should be set to the name of the
+resolution sample component used in the instrument.  The output
+parameters are the three count numbers, \textit{Nsum}, \textit{psum},
+and \textit{p2sum}, and the handle \textit{file} of the output file.
+
+\subsection{Adapt\_check: The simple adaptive importance sampling monitor}
+\label{s:adapt_check}
+
+The component {\bf Adapt\_check} is used together with the Source\_adapt
+component --- see section~\ref{s:source_adapt} for details. When placed
+somewhere in an instrument using Source\_adapt, the source will optimize
+for neutrons that reach that point without being absorbed (regardless of
+neutron position, direction, wavelength, \textit{etc}).
+
+The Adapt\_check component takes a single input parameter
+\textit{source\_comp}. This should be set to the name given to the
+Source\_adapt component in the instrument, for example
+\begin{verbatim}
+  ...
+  COMPONENT mysource = Source_adapt( ... )
+  ...
+  COMPONENT mycheck = Adapt_check(source_comp = mysource)
+  ...
+\end{verbatim}

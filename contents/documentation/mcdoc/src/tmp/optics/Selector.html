@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD>
+<TITLE>Selector</TITLE>
+<LINK REV="made" HREF="mailto:kristian.nielsen@risoe.dk">
+</HEAD>
+
+<BODY>
+
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<H1>The <CODE>Selector</CODE> component</H1>
+
+velocity selector (helical lamella type) such as <b>V_selector</b> component
+
+
+<H2><A NAME=id></A>Identification</H2>
+
+<UL>
+  <LI> <B>Author:</B> <a href="mailto:plink@physik.tu-muenchen.de">Peter Link</a>.</B>
+  <LI> <B>Origin:</B> McStas 1.5/Uni. Gottingen (Germany)</B>
+  <LI> <B>Date:</B> MARCH 1999</B>
+  <LI> <B>Version:</B> 1.0</B>
+</UL>
+<H2><A NAME=desc></A>Description</H2>
+
+<PRE>
+velocity selector (helical lamella type)
+
+Example: Selector(xmin=-0.015, xmax=0.015, ymin=-0.025, ymax=0.025, len=0.25,
+           num=72,width=0.004,radius=0.29,alfa=48.298,feq=500)
+
+</PRE>
+
+<H2><A NAME=ipar></A>Input parameters</H2>
+Parameters in <B>boldface</B> are required;
+the others are optional.
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD>xmin</TD>
+     <TD>m</TD>
+     <TD>Lower x bound of entry aperture </TD>
+<TD ALIGN=RIGHT>-0.015</TD> </TR>
+<TR> <TD>xmax</TD>
+     <TD>m</TD>
+     <TD>Upper x bound of entry aperture </TD>
+<TD ALIGN=RIGHT>0.015</TD> </TR>
+<TR> <TD>ymin</TD>
+     <TD>m</TD>
+     <TD>Lower y bound of entry aperture </TD>
+<TD ALIGN=RIGHT>-0.025</TD> </TR>
+<TR> <TD>ymax</TD>
+     <TD>m</TD>
+     <TD>Upper y bound of entry aperture </TD>
+<TD ALIGN=RIGHT>0.025</TD> </TR>
+<TR> <TD>len</TD>
+     <TD>m</TD>
+     <TD>rotor length  </TD>
+<TD ALIGN=RIGHT>0.25</TD> </TR>
+<TR> <TD>num</TD>
+     <TD>1</TD>
+     <TD>number of spokes/lamella </TD>
+<TD ALIGN=RIGHT>72</TD> </TR>
+<TR> <TD>width</TD>
+     <TD>m</TD>
+     <TD>width of spokes at beam-center </TD>
+<TD ALIGN=RIGHT>0.004</TD> </TR>
+<TR> <TD>radius</TD>
+     <TD>m</TD>
+     <TD>radius of beam-center </TD>
+<TD ALIGN=RIGHT>0.29</TD> </TR>
+<TR> <TD>alfa</TD>
+     <TD>deg</TD>
+     <TD>angle of torsion </TD>
+<TD ALIGN=RIGHT>48.298</TD> </TR>
+<TR> <TD>feq</TD>
+     <TD>1/s</TD>
+     <TD>frequency of rotation </TD>
+<TD ALIGN=RIGHT>500</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=opar></A>Output parameters</H2>
+None.
+
+<H2><A NAME=links></A>Links</H2>
+
+<UL>
+  <LI> <A HREF="Selector.comp">Source code</A> for <CODE>Selector.comp</CODE>.
+  <LI> See also Additional notes <a href="http://neutron.risoe.dk/neutron-mc/arch/9903/msg00032.html">March 1999</a> and <a href="http://neutron.risoe.dk/neutron-mc/arch/9904/msg00000.html">Jan 2000</a>.
+
+</UL>
+<HR>
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<ADDRESS>
+Generated automatically by McDoc, Kristian Nielsen
+&lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt; /
+Jul 22 2002
+</ADDRESS>
+</BODY></HTML>

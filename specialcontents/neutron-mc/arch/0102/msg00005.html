@@ -1,0 +1,162 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: Maximun number of neutron in a single run -->
+<!--X-From: Stephan Roth <Stephan_Roth@Physik.TU&#45;Muenchen.DE> -->
+<!--X-Date: Fri, 09 Feb 2001 09:24:11 +0100 (MET) -->
+<!--X-Message-Id: Pine.OSF.3.95.1010209091638.11846A&#45;100000@eva.e13.physik.tu&#45;muenchen.de -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 002c01c0926e$74916f40$1ddc39c2@ill.fr -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: Maximun number of neutron in a single run</title>
+<link rev="made" href="mailto:Stephan_Roth@Physik.TU-Muenchen.DE">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00004.html">Date Prev</A>][<A HREF="msg00006.html">Date Next</A>]
+<a href="index.html#00005">[Chronological]</a>
+<a href="threads.html#00005">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: Maximun number of neutron in a single run</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:neutron-mc@risoe.dk">neutron-mc@risoe.dk</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: Maximun number of neutron in a single run</strong></LI>
+<LI><strong>From</strong>: <strong>Stephan Roth &lt;<A HREF="mailto:Stephan_Roth@Physik.TU-Muenchen.DE">Stephan_Roth@Physik.TU-Muenchen.DE</A>&gt;</strong></LI>
+<LI>Date: Fri, 09 Feb 2001 09:24:11 +0100 (MET)</LI>
+<LI>In-reply-to: &lt;<A HREF="msg00004.html">002c01c0926e$74916f40$1ddc39c2@ill.fr</A>&gt;</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Hi,
+
+you have to change in
+list.c the following line to:
+#define MAX_ELEMENTS 2000
+
+and compile mcstas again. I had the same problem and solved it this way.
+
+Best regards
+Stephan
+--------------------------------
+Stephan V. Roth
+Technische Universitaet Muenchen
+Physik Department Lehrstuhl E13
+85747 Garching
+Tel.: +49 (0)89-289-12883
+Fax : +49 (0)89-289-12473
+eMail: sroth@ph.tum.de
+--------------------------------
+
+On Fri, 9 Feb 2001, Judith Preston wrote:
+
+&gt; Hi,
+&gt; 
+&gt; A related issue that I discovered the other day is that the maximum number
+&gt; of lines allowed in a component is 1000 lines. I know it is not often that
+&gt; people need all this, but it does happen!!
+&gt; 
+&gt; Cheers
+&gt; 
+&gt; Judith
+&gt; 
+&gt; ----- Original Message -----
+&gt; From: "Ulrich C. Wildgruber MPI fuer Metallforschung Stuttgart"
+&gt; &lt;wildgrub@dxray.mpi-stuttgart.mpg.de&gt;
+&gt; To: &lt;neutron-mc@risoe.dk&gt;
+&gt; Sent: Friday, February 09, 2001 8:46 AM
+&gt; Subject: Maximun number of neutron in a single run
+&gt; 
+&gt; 
+&gt; &gt; Hi all,
+&gt; &gt;
+&gt; &gt; One new - but minor - issue came up here in Garching today. The maximum
+&gt; &gt; number of neutrons which can be processed in a single run is probably
+&gt; &gt; limited (I didn't try it out though for obvious reasons :-) to something
+&gt; &gt; like 2**31-1. Now I am getting to a point where I might need more...
+&gt; &gt;
+&gt; &gt; I suggest to introduce an additional counter which allows to process more
+&gt; &gt; neutrons than the number 'intmax'.
+&gt; &gt;
+&gt; &gt; Please let me know if there is already a simple solution to this problem
+&gt; &gt; (I like to avoid having to merge the output of several seperate runs
+&gt; &gt; manually)
+&gt; &gt;
+&gt; &gt; Regards
+&gt; &gt;
+&gt; &gt; Uli
+&gt; &gt;
+&gt; &gt; --
+&gt; &gt; Ulrich WILDGRUBER
+&gt; &gt; wildgrub@dxray.mpi-stuttgart.mpg.de
+&gt; &gt; wwwmf.mpi-stuttgart.mpg.de/abteilungen/dosch/dosch.html
+&gt; &gt; --------------------------------------------------------------------------
+&gt; ---
+&gt; &gt; Max-Planck-Institut für Metallforschung | Technische Universität München
+&gt; &gt; Heisenbergstr. 1         | ZBE Neue Forschungs-Neutronenquelle
+&gt; &gt; | Instrumentierung
+&gt; &gt; D-70569 Stuttgart | D-85747 Garching/München
+&gt; &gt; Tel.: (+49)-711-689-1900 | Tel.: (+49)-89-289-14681
+&gt; &gt; Fax.: (+49)-711-689-1902 | Fax.: (+49)-89-289-14666
+&gt; &gt;
+&gt; 
+&gt; 
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<UL><LI><STRONG>Follow-Ups</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00006" HREF="msg00006.html">Re: Maximun number of neutron in a single run</A></STRONG>
+<UL><LI><EM>From:</EM> Per-Olof &Aring;strand &lt;per-olof.aastrand@risoe.dk&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<UL><LI><STRONG>References</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00004" HREF="msg00004.html">Re: Maximun number of neutron in a single run</A></STRONG>
+<UL><LI><EM>From:</EM> Judith Preston &lt;preston@ill.fr&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00004.html">Re: Maximun number of neutron in a single run</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00006.html">Re: Maximun number of neutron in a single run</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00005"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00005"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

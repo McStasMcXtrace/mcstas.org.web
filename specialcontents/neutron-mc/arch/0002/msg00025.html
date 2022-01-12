@@ -1,0 +1,185 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: mcgui&#45;new -->
+<!--X-From: Farhi <farhi@ill.fr> -->
+<!--X-Date: Thu, 17 Feb 2000 19:36:54 +0100 -->
+<!--X-Message-Id: 38AC3FC6.942587D@ill.fr -->
+<!--X-ContentType: multipart/alternative -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>mcgui-new</title>
+<link rev="made" href="mailto:farhi@ill.fr">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00024.html">Date Prev</A>][<A HREF="msg00026.html">Date Next</A>]
+<a href="index.html#00025">[Chronological]</a>
+<a href="threads.html#00025">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>mcgui-new</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>mcgui-new</strong></LI>
+<LI><strong>From</strong>: <strong>Farhi &lt;<A HREF="mailto:farhi@ill.fr">farhi@ill.fr</A>&gt;</strong></LI>
+<LI>Date: Thu, 17 Feb 2000 19:36:54 +0100</LI>
+<LI>Organization: ILL</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+
+
+Hy Kristian,
+<p>I'm afraid it does not work better !!
+<br>I've tried to look inside mcgui.pl
+<br>It seems that that error occurs during the waitVariable call of the
+do loop (function dialog_get_out_file)
+<p>do {
+<br>&nbsp;&nbsp; $dlg->waitVariable(\$state);
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } until $state;
+<p>Here is the perldb output (which is about the same as before, I've added
+some 'print breakpoints'...) :
+<p>mica~farhi 44% ./mcgui-new.pl in14_tut.instr
+<p>Loading DB routines from perl5db.pl version 1.01
+<br>Emacs support available.
+<p>Enter h or `h h' for help.
+<p>Ambiguous use of expand => resolved to "expand" => at /usr/ill/lib/perl5/site_pe
+<br>rl/Tk/Text.pm line 1038.
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; require Tk/Text.pm called
+at (eval 5) line 2
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; eval 'require Tk::Text
+<br>;' called at /usr/ill/perl/lib/base.pm line 36
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; base::import('base', 'Tk::Text')
+called at /usr/ill/lib/perl5/site_perl/
+<br>Tk/TextUndo.pm line 13
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tk::TextUndo::BEGIN() called
+at /usr/ill/lib/perl5/site_perl/Tk/Text.pm
+<br>line 1038
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; eval {...} called at /usr/ill/lib/perl5/site_perl/Tk/Text.pm
+line 1038
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; require Tk/TextUndo.pm called
+at ./mcgui-new.pl line 12
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; main::BEGIN() called at
+/usr/ill/lib/perl5/site_perl/Tk/Text.pm line 103
+<br>8
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; eval {...} called at /usr/ill/lib/perl5/site_perl/Tk/Text.pm
+line 1038
+<br>Ambiguous use of expand => resolved to "expand" => at /usr/ill/lib/perl5/site_pe
+<br>rl/Tk/Text.pm line 1075.
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; require Tk/Text.pm called
+at (eval 5) line 2
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; eval 'require Tk::Text
+<br>;' called at /usr/ill/perl/lib/base.pm line 36
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; base::import('base', 'Tk::Text')
+called at /usr/ill/lib/perl5/site_perl/
+<br>Tk/TextUndo.pm line 13
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tk::TextUndo::BEGIN() called
+at /usr/ill/lib/perl5/site_perl/Tk/Text.pm
+<br>line 1075
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; eval {...} called at /usr/ill/lib/perl5/site_perl/Tk/Text.pm
+line 1075
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; require Tk/TextUndo.pm called
+at ./mcgui-new.pl line 12
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; main::BEGIN() called at
+/usr/ill/lib/perl5/site_perl/Tk/Text.pm line 107
+<br>5
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; eval {...} called at /usr/ill/lib/perl5/site_perl/Tk/Text.pm
+line 1075
+<br>main::(./mcgui-new.pl:3):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if($ENV{"MCSTAS"})
+{
+<br>&nbsp; DB&lt;1> r
+<br>after savefocus
+<br>before for
+<br>before get_out_file_next call
+<br>before run_dialog_popup call
+<br>before run_dialog_reader
+<br>after run_dialog_reader
+<br>after fileevent
+<br>before do waitVariable
+<br>Signal SEGV at ./mcgui-new.pl line 380
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; main::__ANON__() called
+at /usr/ill/perl/lib/perl5db.pl line 1136
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tk::Widget::waitVariable('Tk::Toplevel=HASH(0x10c19248)',
+'SCALAR(0x106a
+<br>de78)') called at ./mcgui-new.pl line 388
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; main::dialog_get_out_file('MainWindow=HASH(0x10ac44a4)',
+'in14_tut.instr
+<br>', 1) called at ./mcgui-new.pl line 429
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; main::compile_instrument('MainWindow=HASH(0x10ac44a4)',
+1) called at ./m
+<br>cgui-new.pl line 449
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; main::menu_compile('MainWindow=HASH(0x10ac44a4)')
+called at ./mcgui-new.
+<br>pl line 578
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; main::__ANON__() called
+at /usr/ill/perl/lib/perl5db.pl line 1134
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; eval {...} called at /usr/ill/perl/lib/perl5db.pl
+line 1134
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tk::__ANON__('Tk::Menu=HASH(0x10b2d450)',
+'active') called at /usr/ill/l
+<br>ib/perl5/site_perl/Tk/Menu.pm line 530
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tk::Menu::Invoke('Tk::Menu=HASH(0x10b2d450)',
+1) called at /usr/ill/perl
+<br>/lib/perl5db.pl line 1136
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; eval {...} called at /usr/ill/perl/lib/perl5db.pl
+line 1136
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tk::MainLoop() called at
+../mcgui-new.pl line 761
+<br>Abort (core dumped)
+<p>Cheers. EF.
+<pre>--&nbsp;
+Emmanuel FARHI, <A HREF="http://www.ill.fr/tas/people/Farhi.html">http://www.ill.fr/tas/people/Farhi.html</A>&nbsp;&nbsp;&nbsp;&nbsp; \|/ ____ \|/
+TAS-Group, Institut Laue-Langevin (ILL) Grenoble&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ~@-/ oO \-@~
+Avenue des Martyrs, BP 156, 38042 Grenoble Cedex 9,France&nbsp;&nbsp; /_( \__/ )_\
+Work :Tel (33/0) 4 76 20 71 83. Fax (33/0) 4 76 48 39 06&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \__U_/
+La Grande Arche, Chateau d'Uriage, 38410 Saint Martin d'Uriage 04 76 59 73 94</pre>
+&nbsp;
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<UL><LI><STRONG>Follow-Ups</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00026" HREF="msg00026.html">Re: mcgui-new</A></STRONG>
+<UL><LI><EM>From:</EM> Kristian Nielsen &lt;kristian.nielsen@risoe.dk&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00024.html">Re: Bugs in McStas/McGUI-2</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00026.html">Re: mcgui-new</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00025"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00025"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

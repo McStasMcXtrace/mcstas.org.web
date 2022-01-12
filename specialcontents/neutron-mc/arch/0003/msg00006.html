@@ -1,0 +1,120 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: IN6 monochromator -->
+<!--X-From: Kristian Nielsen <kristian.nielsen@risoe.dk> -->
+<!--X-Date: 3 Mar 2000 12:58:05 +0100 -->
+<!--X-Message-Id:  -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 38BE9D5A.D3A4FC1A@ill.fr -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: IN6 monochromator</title>
+<link rev="made" href="mailto:kristian.nielsen@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00012.html">Date Prev</A>][<A HREF="msg00007.html">Date Next</A>]
+<a href="index.html#00006">[Chronological]</a>
+<a href="threads.html#00006">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: IN6 monochromator</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:poehlman@ill.fr">poehlman@ill.fr</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: IN6 monochromator</strong></LI>
+<LI><strong>From</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: 3 Mar 2000 12:58:05 +0100</LI>
+<LI>CC: <A HREF="mailto:schober@ill.fr">schober@ill.fr</A></LI>
+<LI>In-reply-to: &lt;<A HREF="msg00005.html">38BE9D5A.D3A4FC1A@ill.fr</A>&gt; (message from Markus Poehlmann on Thu,02 Mar 2000 17:56:58 +0100)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+&gt; Date: Thu, 02 Mar 2000 17:56:58 +0100
+&gt; From: Markus Poehlmann &lt;poehlman@ill.fr&gt;
+
+&gt; So what we would need is a M o n t e C a r l o choice between scattering
+&gt; and unscattered propagation. Could you please tell us how it would be
+
+This is exactly what the Mosaic_anisotropic component does. It computes
+the scattering probability for the given incoming neutron and makes a
+Monte Carlo choice between scattering or transmitting with this
+probability. See the manual for McStas v1.2 page 59.
+
+I think an example may be appropriate. I have written a simple
+instrument with three monochromators in a neutron beam, each one
+focusing at a different angle (88, 90, and 92 degrees) onto a
+detector. See
+
+    <A HREF="http://neutron.risoe.dk/mcstas/support/poehlman/mono_test.html">http://neutron.risoe.dk/mcstas/support/poehlman/mono_test.html</A>
+
+I hope this will get you started, otherwise just ask again, or phone me
+on the number below.
+
+&gt; problem? What e.g. does randnorm() exactly do?
+
+It returns a random number from a normal distribution with mean zero and
+std. deviation 1. See manual page 82.
+
+ - Kristian.
+
+--
+Kristian Nielsen        kristian.nielsen@risoe.dk
+Risø National Laboratory
+Condensed Matter Physics and Chemistry Department
+Tel. +45 4677 5515   Fax +45 4677 4790
+Encryption PGP key <A HREF="http://neutron.risoe.dk/kn.txt">http://neutron.risoe.dk/kn.txt</A>
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<UL><LI><STRONG>References</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00005" HREF="msg00005.html">IN6 monochromator</A></STRONG>
+<UL><LI><EM>From:</EM> Markus Poehlmann &lt;poehlman@ill.fr&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00012.html">Re: mcdoc</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00007.html">Re: Suggestions for McStas</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00006"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00006"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

@@ -1,0 +1,173 @@
+<h3>
+December 21st, 2012: McStas 2.0 released!!!
+</h3>
+<p>McStas 2.0 is finally ready and has been uploaded to <a
+href="/download">our download page</a>!
+<p>The full and long list of changes since last official release is
+available <a href="/download/CHANGES_McStas">here</a>.
+<p>McStas 2.0 is available for the following platforms
+<ul>
+<li> Linux deb based distros 32 and 64 bit - tested on Debian testing and Ubuntu 64bit
+<li> Linux rpm based distros 32 and 64 bit - tested on Scientific Linux and CentOS 64bit
+<li> Mac OS X 64 bit, packages for 10.8 Mountain Lion, 10.7 Lion and 10.6 Snow Leopard
+<li> Windows 32 and 64 bit - tested on Windows XP, Windows 7 and Windows 8
+</ul>
+<p>Important info:</p>
+<ul>
+<li> !! Please read the README file provided with each platform type before installing !!
+<li> !! On Unix, please use the provided migration script for moving
+  your 1.12c or earlier out of the way !!
+<li> !! On windows, please install all the dependencies we ask for,
+  don't rely on those from 1.12c working !!
+</ul>
+<p>Hope you will enjoy this little X-mas present! :-)
+<p>Please contact us if you experience trouble with McStas 2.0 (we might not answer this side of New Year's ;-) )
+<p>Seasons greetings from all of the McStas team,
+<p>Peter Willendrup
+<hr>
+<h3>
+December 2nd, 2012: McStas 2.0RC2 public beta released
+</h3>
+<p>A bug in the internal path definitions of the RC1 packages
+prevented the tools from working properly on Unix systems. For this
+reason, I have pushed the update 2.0RC2 to <a href="http://mcstas-20rc2.mcstas.org">http://mcstas-20rc2.mcstas.org</a>
+
+<p>Sorry for any inconvenience
+
+<p>Peter Willendrup
+<hr>
+<h3>
+November 30th, 2012: McStas 2.0RC1 public beta released
+</h3>
+<p>A public beta release of McStas 2.0 called 2.0RC1 has finally been released!
+
+<p>McStas 2.0RC1 is a public beta leading up to the long awaited official McStas 2.0. It is a beta release, but we expect that differences to 2.0 will be minimal.
+
+<p>The full and long list of changes since last official release is
+available here: <a href="http://mcstas-20rc1.mcstas.org/CHANGES_McStas">http://mcstas-20rc1.mcstas.org/CHANGES_McStas</a>
+
+<p>* If you do not find yourself credited in the long list of contributions - please remind me *
+
+<p>* There is still time if you have contributions you would like us to include in the official 2.0 *
+
+<p>McStas 2.0RC1 is available through this link: <a href="http://mcstas-20rc1.mcstas.org">http://mcstas-20rc1.mcstas.org</a> for the following platforms
+
+<ul>
+  <li> Linux deb based distros 32 and 64 bit - tested on Debian testing and Ubuntu 64bit
+  <li> Linux rpm based distros 32 and 64 bit - tested on Scientific Linux and CentOS 64bit
+  <li> Mac OS X 64 bit, packages for 10.8 Mountain Lion, 10.7 Lion and 10.6 Snow Leopard
+  <li> Windows 32 and 64 bit - tested on Windows XP, Windows 7 and Windows 8
+</ul>
+
+<p>!! Please read the README file provided with each platform type before installing !!
+
+<p>For Unix systems we provide a migration script that will allow you to let an existing 1.x release (i.e. 1.12c) co-exist with the new release.
+
+<p>Enjoy! :-)
+
+<p>On behalf of the McStas team, Peter Willendrup
+<hr>
+<h3>
+July 27th, 2012: McStas 1.12c on Mac OS X Mountain Lion - new DMG added to
+download section.
+</h3>
+<p>A new DMG for Mac OS X 10.8 Mountain Lion has been put together and can be
+found in the <a href="/download">download</a> section.
+<p>As Apple have discontinued distribution of X11, you need to install
+<a href="http://xquartz.macosforge.org/landing/">XQuartz</a> before
+installing McStas.
+<p>You also need to install Command Line Tools inside Xcode
+(Xcode -> Preferences-> Downloads -> Components) and also allow
+installation of third party software (System Preferences -> Security &
+Privacy -> General -> Allow applications downloaded from:
+Anywhere) - can be reset after installation of SciPDL etc. from the DMG.
+<p>Note that to enable multi-core / parallel simulations, you need to
+compile <a
+href="http://www.open-mpi.org/software/ompi/">openmpi</a>
+yourself before installing McStas, since it is not provided by Apple
+on Lion and Mountain Lion. Alternatively you can perhaps get it via <a
+href="http://www.macports.org">MacPorts</a>.
+<p>The DMG should also work on Lion - but all software on the DMG
+  must be reinstalled if McStas was previously installed.
+<hr>
+<h3>
+July 5th: PSI RITA-II instrument available for <a href="/download/share/L_Udby_RITA-II.tgz">download</a>
+</h3>
+<p>Linda Udby has contributed her detailed description of the RITA-II
+instrument for use with McStas 1.12c. <a target=_blank href="http://spectroscopy.web.psi.ch/rita2/">RITA-II</a> is
+a so-called re-invented triple axis with a multiplexed analyzer
+system. The contribution can be downloaded  <a href="/download/share/">from our share section</a> (instrument <a href="/download/share/L_Udby_RITA-II.tgz.html">info</a>).
+<p>As part of her PhD thesis, Linda used this very detailed model of
+RITA-II to perform virtual
+experiments, thereby deriving analysis parameters for her studies of
+Superoxygenated LSCO.
+<p>The hkl routine embedded in the instrument code is similar to what
+is found in templateTAS by Emmanuel Farhi. Further, the instrument
+features a multitude of input parameters to control all aspects of the
+virtual experiment. The instrument contains both an incoherent
+scatterer, a powder sample, a single crystal and a phonon-simple that
+can be selected using input parameters.
+<p>The McStas team are really greatful for this nice
+contribution that will also be 
+be part of McStas 2.0.
+<hr>
+<h3>
+Vacancy at the ESS DMSC as scientific software developer
+</h3>
+<p>The interim ESS DMSC (Data Management and Software Center for the European Spallation Source) located at the Niels Bohr Institute, University of Copenhagen is seeking a candidate for scientific software development within areas of data analysis and simulation. More specifically, the work is oriented toward integration of the McStas and Mantid software packages.
+
+<p>The advert is available through this <a href="https://ssl1.peoplexs.com/Peoplexs22/CandidatesPortalNoLogin/Vacancy.cfm?PortalID=3417&VacatureID=241334&BedrijfID=0&Vacancy=Scientific%20software%20development%20#top">link</a>.
+
+<p>For further questions or enquiries, please contact Prof. Stig Skelboe, Niels Bohr Institute, University of Copenhagen, <a href="mailto:skelboe@nbi.dk">skelboe@nbi.dk</a>, phone +45 35321449
+<hr>
+<h3>
+March 12th: Respin of McStas 1.12c dmg for OS X Lion
+</h3>
+<p>As reported to <a
+href="http://mailman.mcstas.org/pipermail/mcstas-users/2012q1/001768.html">mcstas-users@mcstas.org</a>,
+the McStas 1.12c dmg for OS X Lion was unfortunately corrupt. A new version of the
+image has been <a
+href="/download/McStas-1.12c-OSX-Lion-respin.dmg">uploaded</a>. The
+filename is slightly different to be able to distinguish the image
+from older downloads you may have.
+<hr>
+<h3>
+February 1st: Various bugs and workarounds
+</h3>
+<p>A couple of annoyances have been reported, here they are plus
+relevant workarounds:
+<ul>
+<li>1.12c version of SNS_source.comp crashes on Windows
+systems. A functional version has been uploaded <a
+href="/download/share/SNS_source.comp">to the share</a>. Thanks to
+Ruep Lechner for reporting the bug and to Garrett Granroth for
+providing a fixed component.
+<li>The previously released updated dmg image for Mac OS X should really
+  only be used on Lion, not Snow Leopard, that is use <a
+  href="/download/McStas-1.12c-OSX-Lion-respin.dmg">this image on Lion</a>
+  and <a href="/download/McStas-1.12c-OSX.dmg">this image on older
+  releases</a>.
+<li>On (at least some) Mac systems, it seems Virtual_output.comp should not be used
+  with type="double" or "float". The workaround for the time being is
+  to use the default "text" format instead. The issue seems to become
+  more severe if large ncounts are used.
+</ul>
+<hr>
+<h3>
+January 6th: New affiliation for Erik Knudsen and Peter Willendrup
+</h3>
+<p>
+A reorganisation at <a href="http://www.dtu.dk">DTU</a> and <a
+href="http://www.risoe.dtu.dk">RIS&Oslash; DTU</a> has resulted
+in a new home for the <a href="http://www.dtu.dk">DTU</a> effort on
+McStas, namely <a href="http://www.fysik.dtu.dk">DTU Physics</a>.
+<p>
+Hence, Erik Knudsen and Peter Willendrup have a new affiliation, see
+the <a href="/about/contacts">Contact</a> page.
+<p>At our new home we will be part of a dedicated neutron- and X-ray
+scattering group, which we think will become a very good home!
+<hr width="100%">
+<p><b>Previous news items: </b><a href="/news/2011.html">2011</a>, </b><a href="/news/2010.html">2010</a>, <a href="/news/2009.html">2009</a>, <a href="/news/2008.html">2008</a>, <a href="/news/2007.html">2007</a>, <a href="/news/2006.html">2006</a>, <a href="/news/2005.html">2005</a>, <a href="/news/2004.html">2004</a>, <a href="/news/2003.html">2003</a>,<a href="/news/2002.html">2002</a>, <a href="/news/2001.html">2001</a>, <a href="/news/2000.html">2000</a>, <a href="/news/1999.html">1999</a>,
+<a href="/news/1998.html">1998</a>.
+
+</p></body></html>

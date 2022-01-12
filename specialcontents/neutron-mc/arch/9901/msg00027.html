@@ -1,0 +1,128 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: Error in Calculation of absolute Flux (Source_flux) ??? -->
+<!--X-From: "Dr. Georg Artus" <Georg_Artus@Physik.TU&#45;Muenchen.DE> -->
+<!--X-Date: Thu, 28 Jan 1999 10:17:41 +0000 -->
+<!--X-Message-Id: 36B03945.BC5A4A8C@ph.tum.de -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 01J7128DFQD68X83C1@risoe.dk -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: Error in Calculation of absolute Flux (Source_flux) ???</title>
+<link rev="made" href="mailto:Georg_Artus@Physik.TU-Muenchen.DE">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00026.html">Date Prev</A>][Date Next]
+<a href="index.html#00027">[Chronological]</a>
+<a href="threads.html#00027">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: Error in Calculation of absolute Flux (Source_flux) ???</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: Error in Calculation of absolute Flux (Source_flux) ???</strong></LI>
+<LI><strong>From</strong>: <strong>"Dr. Georg Artus" &lt;<A HREF="mailto:Georg_Artus@Physik.TU-Muenchen.DE">Georg_Artus@Physik.TU-Muenchen.DE</A>&gt;</strong></LI>
+<LI>Date: Thu, 28 Jan 1999 10:17:41 +0000</LI>
+<LI>Organization: TUM</LI>
+<LI>References: &lt;01J7128DFQD68X83C1@risoe.dk&gt;</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Hello,
+
+&gt; Ok. I have modified the Monitor component to create a Monitor_flux
+&gt; component that does exactly this. It takes two extra input parameters:
+&gt; the lower and upper limit of the wavelength range to consider (eg.  lmin
+&gt; = sqrt(81.81/(E+dE)), lmax = sqrt(81.81/(E-dE)) in your case). I think
+&gt; that letting the user supply the wavelength range is more general than
+&gt; just taking the values from the source component (ie. what happens if
+&gt; another source component with no dE is used?).
+
+Thank you very much! This will help a lot. Yesterday we have started
+several jobs and up to now all fits well! May be you are right that it
+is better to let the user supply the limits. 
+
+&gt; The unit for lmin and lmax of the Monitor_flux component is AA and the
+&gt; output is in n/cm**2/AA, which is what you need, I think. There is
+&gt; starting to be a lot of inconsistency between using neutron energies in
+&gt; meV and neutron wavelengths in AA in the different components, but that
+&gt; I something I have to sort out in some way. One idea I have is to build
+&gt; in knowledge about common units in McStas so that the user can just say
+&gt; "20 [meV]" or "4 [AA]" or "2000 [m/s]" and McStas will sort it out by
+&gt; itself, but that is for the future.
+
+Yes, the two units, AA and meV, don't make things easier. Your solution
+seems good to me. Depending on the instrument one is either used to AA
+or eV. I have programmed the calculation from AA to meV in the
+INITIALIZE section. 
+
+I have another suggestion: All instruments are built in vacuum, which
+normally is not the case. It would be helpful if you had a chance to
+say, that you have e.g. 2m He, 5mm Al and 6m Air in the beam. In a first
+approximation the location of teh material in the beam is not important.
+This is just to get an estimate for the loss due to absorption by
+materials. Other materials like Mg, PG, Be, Glass... could also be
+interesting. To realize this with the Filter component is possible, but
+still affords calculating many things by hand.
+
+
+Best wishes,
+
+Georg
+-- 
+*********************************************
+
+Dr. Georg Artus
+Technische Universitaet Muenchen
+FRM-II Reaktorstation
+D-85747 Garching
+
+Tel: +49 (0)89/289-14675
+Fax: +49 (0)89/289-14666 or 12112
+E-mail: gartus@ph.tum.de
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00026.html">Re: Sources</A></STRONG>
+</LI>
+
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00027"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00027"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

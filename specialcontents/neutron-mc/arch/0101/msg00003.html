@@ -1,0 +1,354 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: Workshop summary -->
+<!--X-From: Emmanuel Farhi <farhi@ill.fr> -->
+<!--X-Date: Wed, 31 Jan 2001 10:06:32 +0100 -->
+<!--X-Message-Id: 3A77D598.36EC76A@ill.fr -->
+<!--X-ContentType: multipart/alternative -->
+<!--X-Reference-Id: Pine.LNX.3.96.1010127232840.22257A&#45;200000@fys&#45;lin&#45;1.risoe.dk -->
+<!--X-Reference-Id: 3A751E86.8C36A290@risoe.dk -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: Workshop summary</title>
+<link rev="made" href="mailto:farhi@ill.fr">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00004.html">Date Prev</A>][Date Next]
+<a href="index.html#00003">[Chronological]</a>
+<a href="threads.html#00003">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: Workshop summary</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>Per-Olof &Aring;strand &lt;<A HREF="mailto:per-olof.aastrand@risoe.dk">per-olof.aastrand@risoe.dk</A>&gt;,"<A HREF="mailto:neutron-mc@risoe.dk">neutron-mc@risoe.dk</A>" &lt;<A HREF="mailto:neutron-mc@risoe.dk">neutron-mc@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: Workshop summary</strong></LI>
+<LI><strong>From</strong>: <strong>Emmanuel Farhi &lt;<A HREF="mailto:farhi@ill.fr">farhi@ill.fr</A>&gt;</strong></LI>
+<LI>Date: Wed, 31 Jan 2001 10:06:32 +0100</LI>
+<LI>Organization: ILL</LI>
+<LI>References: &lt;Pine.LNX.3.96.1010127232840.22257A-200000@fys-lin-1.risoe.dk&gt;&lt;3A751E86.8C36A290@risoe.dk&gt;</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+
+
+Hy Per-Olof,
+<p>I agree on these two points. The log scale is ok in mcplot, as well
+as the non-interactive behaviour for iterative PS generation of all scan
+step plots at the end of simulation.
+<p>Concerning the 'targetting' , I mean that the position and orientation
+of the different components of the simulation should be accessible, without
+giving them 'by hand', using soemthing like (for instance in res_sample
+or vanadium)
+<p><tt>COMPONENT V-sample(...,</tt>
+<br><tt>focus_r = MyNextComp.parameter.radius,</tt>
+<br><tt>target_x = MyNextComp.position.x,</tt>
+<br><tt>..</tt>
+<br><tt>)</tt><tt></tt>
+<p><tt>COMPONENT MyNextComp = ... (</tt>
+<br><tt>radius = 23,...</tt>
+<br><tt>)</tt>
+<p>So each component could have a structure containing fields 'position',
+'rotation',' and 'parameter'. These fields could be also structures ([x,y,z]
+for position, [rho, theta, phi] for rotation, and parameter list).
+<p>This is probably feasible, but with some work !
+<p>Emmanuel.
+<br>&nbsp;
+<p>Per-Olof &Aring;strand wrote:
+<blockquote TYPE=CITE>Dear Kim, Ulrich and Emmanuel,
+<p>First of all. The workshop was very interesting and motivating for me.
+In
+<br>particular, I was impressed by the open and generous atmosphere and
+I am sure
+<br>that current and future collaborations within the McStas community
+will be
+<br>both fruitful and inspiring.
+<p>I will only make a small comment on the priority-list. Emmanuel had
+two
+<br>points that should be added to "high priority".
+<p>i) Corrections to mcplot: logaritmic scales as an option and a possibility
+to
+<br>"remove" user interactions.
+<br>ii) This point I did not understand fully (even if Emmanuel explained
+it
+<br>twice). It was about "targetting", which I assume means the possibility
+for a
+<br>component to refer to the position of the next component, but I and
+Emmanuel
+<br>have to discuss it in more detail to get it right.
+<p>Best regards,
+<p>Per-Olof
+<p>Kim Lefmann wrote:
+<p>> Dear Ulrich, Emmanuel, and Per-Olof,
+<br>>
+<br>> Thank you once again for a nice Workshop. I promised to write down
+the
+<br>> priority list - here it is. I also did an update of the participant
+list
+<br>> and the programme.
+<br>>
+<br>> The priority list goes to the web page after your possible comments,
+and
+<br>> the participant lists and the programme goes into the report for
+the
+<br>> Neutron round table. I will need to write some proper text as well,
+<br>> hopefully just one page. I plan to mention that
+<br>> - we had a very good workshop
+<br>> - we had 14 foreign participants and 7 from Riso.
+<br>> - talks showed the widespread use of McStas
+<br>> - There was extensive discussions and exchange of ideas.
+<br>> - Collaboration with VITESS group was enhanced
+<br>> - Actual results for curved guide simulation and ESS moderators.
+<br>> - At the end a whishlist was produced to guide the future McStas
+<br>> development to the need of the users.
+<br>>
+<br>> - the funding was essential for a large number of people showing
+up
+<br>> - Many participants suggested the deal the they'd pay the flight
+if the
+<br>>&nbsp;&nbsp; fee was free. So we did that.
+<br>> - And then of course I present them the total bill.
+<br>>
+<br>> Any comments to any of this?
+<br>>
+<br>> Bye, Kim
+<br>> ------------------------------
+<br>> Kim Lefmann
+<br>> Senior Scientist
+<br>> Dept. Cond. Matt. Phys. &amp; Chem.
+<br>> Risoe National Laboratory
+<br>>
+<br>> Phone: +45 46 77 47 26
+<br>> Fax:&nbsp;&nbsp; +45 46 77 47 90
+<br>>
+<br>>&nbsp;&nbsp; ------------------------------------------------------------------------
+<br>> McStas Workshop, 24-27 January, 2001
+<br>> at Risoe National Laborat&oacute;ry
+<br>>
+<br>> Participants:
+<br>>
+<br>> E. Fahri, ILL (co-organiser)
+<br>> J. Preston, ILL
+<br>> U. Wildgruber, MPI Stuttgart/FRM-II (co-organiser)
+<br>> S. Geckle, MPI Stuttgart/FRM-II
+<br>> O. Kirstein, Julich
+<br>> G. Zsigmont, HMI
+<br>> K. Lieutenant, HMI
+<br>> M. Hagen, Keele/ISIS
+<br>> S. Campbell, ISIS
+<br>> R. Kreuger, Delft
+<br>> S. Rycroft, Delft
+<br>> R. McGreevy, Studsvik
+<br>> P. Zetterstrom, Studsvik
+<br>> R. Zsolt, Budapest
+<br>> P.-O. Astrand, Riso (co-organiser)
+<br>> B.H. Larsen, Riso
+<br>> S.N. Klausen, Riso
+<br>> B. Lebech, Riso
+<br>> K. Norgaard, Riso
+<br>> H. Edwards, Riso
+<br>> K. Lefmann, Riso (organiser)
+<br>>
+<br>> Actual Programme:
+<br>>
+<br>> Wednesday
+<br>> ---------
+<br>>
+<br>> 13.30-15.00&nbsp; Oral session, Introduction
+<br>>&nbsp;&nbsp;&nbsp; - Welcome, pratical details (K. Lefmann)
+<br>>&nbsp;&nbsp;&nbsp; - Presentation of the participants
+<br>>&nbsp;&nbsp;&nbsp; - "Software for neutron scattering" (R. McGreevy)
+<br>>&nbsp;&nbsp;&nbsp; - General discussion
+<br>>
+<br>> 15.30-18.30&nbsp; Computer session
+<br>>&nbsp;&nbsp;&nbsp; - Demonstration of McStas tutorial for education
+(B.H.Larsen)
+<br>>&nbsp;&nbsp;&nbsp; - Demonstration of TASCOM/McStas interface (H.Edwards)
+<br>>&nbsp;&nbsp;&nbsp; - Demonstration of McStas Status Monitor (S. Geckle)
+<br>>&nbsp;&nbsp;&nbsp; - Group projects and discussions
+<br>>
+<br>> 18.30&nbsp; Informal get together party
+<br>>
+<br>> Thursday
+<br>> --------
+<br>>
+<br>> 9.00-10.30&nbsp; Oral session, McStas and other packages
+<br>>&nbsp;&nbsp;&nbsp; - Status of the McStas project (K. Lefmann)
+<br>>&nbsp;&nbsp;&nbsp; - Program structure of McStas (P.-O. Astrand)
+<br>>&nbsp;&nbsp;&nbsp; - The VITESS simulation package (G. Zsigmond)
+<br>>&nbsp;&nbsp;&nbsp; - Intercomparisons of packages (E. Fahri)
+<br>>
+<br>> 11.00-12.00&nbsp; Oral session, McStas components etc.
+<br>>&nbsp;&nbsp;&nbsp; - Ballistically curved guides (E. Fahri)
+<br>>&nbsp;&nbsp;&nbsp; - Analytical calculation of guides (R. Zsolt)
+<br>>
+<br>> 13.00-14.00&nbsp; Oral session, McStas components etc. (cont.)
+<br>>&nbsp;&nbsp;&nbsp; - Kernels for inelastic scattering samples (M.
+Hagen)
+<br>>&nbsp;&nbsp;&nbsp; - Sample components in McStas (K. Lefmann)
+<br>>&nbsp;&nbsp;&nbsp; - Multiple scattering in a filter component (S.N.
+Klausen)
+<br>>
+<br>> 14.30-16.00&nbsp; Oral session, McStas simulations (cont. source)
+<br>>&nbsp;&nbsp;&nbsp; - Simulation of the PREFECT reflectometer (S. Rycroft)
+<br>>&nbsp;&nbsp;&nbsp; - McStas Simulations at the FRM-II (U. Wildgruber)
+<br>>&nbsp;&nbsp;&nbsp; - McStas Simulations at the ILL (E. Fahri)
+<br>>
+<br>> 16.00-17.30&nbsp; Computer session
+<br>>
+<br>> 18.30&nbsp; Workshop dinner
+<br>>
+<br>> Friday
+<br>> ------
+<br>>
+<br>> 9.30-12.00&nbsp; Oral session, McStas for TOF instruments
+<br>>&nbsp;&nbsp;&nbsp; - Simulations of TOF instruments (M. Hagen)
+<br>>&nbsp;&nbsp;&nbsp; - ESS simulations with VITESS (K. Lieutenant)
+<br>>&nbsp;&nbsp;&nbsp; - McStas simulation of IRIS (S.N. Klausen)
+<br>>&nbsp;&nbsp;&nbsp; - Simulations at ISIS (S. Campbell)
+<br>>
+<br>> 13.00-18.00&nbsp; Computer session
+<br>>&nbsp;&nbsp;&nbsp; - group projects on: curved guides, ESS moderator,
+...
+<br>>
+<br>> 18.30&nbsp; Restaurant dinner
+<br>>
+<br>> Saturday
+<br>> --------
+<br>>
+<br>> 9.00-10.00&nbsp; Oral session, polarisation
+<br>>&nbsp;&nbsp;&nbsp; - Group discussion of implementation of polarisation
+in McStas
+<br>>&nbsp;&nbsp;&nbsp; - Magnetic fields for polarisation simulations
+(E. Fahri)
+<br>>
+<br>> 10.30-12.30&nbsp; Oral session, Workshop conclusion
+<br>>&nbsp;&nbsp;&nbsp; - List of priorities for the McStas development
+(K. Lefmann)
+<br>>&nbsp;&nbsp;&nbsp; - Extensive group discussion
+<br>>
+<br>> MCSTAS PRIORITY LIST
+<br>>
+<br>> Kernel level
+<br>> ------------
+<br>>
+<br>> High:
+<br>> - Component grouping (squential, exclusive, neutron splitting)
+<br>> - Support for Status Monitor
+<br>> - Event logging / logfile (or MCNP file) as virtual source
+<br>> - Representation of neutron spin
+<br>>
+<br>> Medium:
+<br>> - On-fly interactions with ongoing simulation
+<br>> - Efficiency diagnostics
+<br>> - Shape/function decoupling
+<br>>
+<br>> Low:
+<br>> - Automatic optimization of instrument parameters
+<br>> - General gravity
+<br>> - Use neutron histories in importance sampling
+<br>> - Options for background events
+<br>>
+<br>> Component level
+<br>> ---------------
+<br>>
+<br>> High:
+<br>> - Prepare all components for polarisation representation
+<br>> - Inelastic samples
+<br>> - Tabular input to powder sample
+<br>> - ESS moderators
+<br>> - Empty space with gravity
+<br>>
+<br>> Low:
+<br>> - Monochromator with parasitic reflections
+<br>>
+<br>> User contributions:
+<br>> - SANS sample
+<br>> - Amorphous sample
+<br>> - Single curved guide
+<br>> - components for polarisation
+<br>>
+<br>>
+<br>> Web page / mailing list level
+<br>> -----------------------------
+<br>>
+<br>> High:
+<br>> - Reminders to the mailing list to report on activities
+<br>> - Add information on L.Passell intercomparison project
+<br>> - Update Riso and ILL components
+<br>> - Make an archive with upload facilities for:
+<br>>&nbsp;&nbsp;&nbsp;&nbsp; simulations, instrument files, comments,
+preprints, ...
+<br>>
+<br>> User contributions:
+<br>> - Use the mailing list for reports on ongoing activities
+<br>> - Use the archive
+<br>> - Perform intercomparisons between packages
+<br>>
+<br>> Organisational level
+<br>> --------------------
+<br>>
+<br>> High:
+<br>> - Select a proper journal as "default" for neutron simulations
+<br>>
+<br>> Medium:
+<br>> - Investigate the future funding of McStas
+<br>>
+<br>> User contributions:
+<br>> - Agitate the importance of computer simulations
+<p>--
+<br>Per-Olof &Aring;strand
+<br>Dept. of Chemistry, University of Copenhagen
+<br>and Materials Research Department, Ris&oslash; National Laboratory
+<br>per-olof.aastrand@theory.ki.ku.dk or per-olof.aastrand@risoe.dk
+<br><a href="http://www.ki.ku.dk">http://www.ki.ku.dk</a> and <a href="http://www.risoe.dk">http://www.risoe.dk</a></blockquote>
+
+<pre>--&nbsp;
+What's up Doc ?
+--------------------------------------------
+Emmanuel FARHI, <A HREF="http://www.ill.fr/tas/people/Farhi.html">http://www.ill.fr/tas/people/Farhi.html</A>&nbsp;&nbsp; \|/ ____ \|/
+CS-Group ILL4/156, Institut Laue-Langevin (ILL) Grenoble&nbsp; ~@-/ oO \-@~
+Avenue des Martyrs, BP 156, 38042 Grenoble Cedex 9,France /_( \__/ )_\
+Work :Tel (33/0) 4 76 20 71 35. Fax (33/0) 4 76 48 39 06&nbsp;&nbsp;&nbsp;&nbsp; \__U_/</pre>
+&nbsp;
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00004.html">[Fwd: monte carlo intercomparisons]</A></STRONG>
+</LI>
+
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00003"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00003"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD>
+<TITLE>Filter_Graphite</TITLE>
+<LINK REV="made" HREF="mailto:kristian.nielsen@risoe.dk">
+</HEAD>
+
+<BODY>
+
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<H1>The <CODE>Filter_Graphite</CODE> component</H1>
+
+Pyrolytic graphite filter (analytical model)
+
+
+<H2><A NAME=id></A>Identification</H2>
+
+<UL>
+  <LI> <B>Author:</B> <a href="mailto:hansen@ill.fr">Thomas C Hansen</a></B>
+  <LI> <B>Origin:</B> McStas 1.5/<a href="http://www.ill.fr">ILL</a></B>
+  <LI> <B>Date:</B> 07 March 2000</B>
+  <LI> <B>Version:</B> 1.0 </B>
+</UL>
+<H2><A NAME=desc></A>Description</H2>
+
+<PRE>
+
+This rectangular pyrolytic graphite filter uses an analytical model
+with linear interpolation on the neutron wavelength
+This type of filter is e.g. used to supress higher harmonics, such as
+the 1.2 AA contribution to the 2.4 AA obtained by a highly oriented 
+pyrolytic graphite (HOPG) monochromator.
+
+Example: Filter_Graphite(xmin=-.05, xmax=.05, ymin=-.05, ymax=.05, len=1.0)
+
+</PRE>
+
+<H2><A NAME=ipar></A>Input parameters</H2>
+Parameters in <B>boldface</B> are required;
+the others are optional.
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD><B>xmin</B></TD>
+     <TD>m</TD>
+     <TD>Lower x bound 			(-0.16)
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>xmax</B></TD>
+     <TD>m</TD>
+     <TD>Upper x bound 			( 0.16)
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ymin</B></TD>
+     <TD>m</TD>
+     <TD>Lower y bound  			(-0.16)
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ymax</B></TD>
+     <TD>m</TD>
+     <TD>Upper y bound  			( 0.16)
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>len</B></TD>
+     <TD>m</TD>
+     <TD>Thickness of graphite plate 	( 0.05)
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=opar></A>Output parameters</H2>
+None.
+
+<H2><A NAME=links></A>Links</H2>
+
+<UL>
+  <LI> <A HREF="Filter_Graphite.comp">Source code</A> for <CODE>Filter_Graphite.comp</CODE>.
+</UL>
+<HR>
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<ADDRESS>
+Generated automatically by McDoc, Kristian Nielsen
+&lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt; /
+Jul 22 2002
+</ADDRESS>
+</BODY></HTML>

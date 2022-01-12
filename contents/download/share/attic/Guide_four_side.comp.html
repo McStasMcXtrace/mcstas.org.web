@@ -1,0 +1,766 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD>
+<TITLE>McStas: Guide_four_side Component</TITLE>
+<LINK REV="made" HREF="mailto:peter.willendrup@risoe.dk">
+</HEAD>
+
+<BODY>
+
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<H1>The <CODE>Guide_four_side</CODE> Component</H1>
+
+ This component models a guide with four side walls.
+ As user you can controll the properties of every wall separatly. All togther you have up to 
+ 8 walls: 4 inner walls and 4 outer walls.
+ Every single wall can have a elliptic, parabolic or straight shape.
+ All four sides of the guide are independent from each other.
+ In the elliptic case the side wall shape follows the equation x^2/b^2+(z+z0)^2/a^2=1
+ (the center of the ellipse is located at (0,-z0)).
+ In the parabolic case the side wall shape follows the equation z=b-ax^2;mc
+ In the straight case the side wall shape follows the equation z=l/(w2-w1)*x-w1.
+ The shape selection is done by the focal points. The focal points are located at the 
+ z-axis and are defined by their distance to the entrance or exit window of the guide
+ (in the following called 'focal length').
+ If both focal lengths for one wall are zero it will be a straight wall (entrance and 
+ exit width have to be given in the beginning).
+ If one of the focal lengths is not zero the shape will be parabolic (only the entrance width 
+ given in the beginning is recognized; exit width will be calculated). If the the entrance 
+ focal length is zero the guide will be a focusing devise.
+ If the exit focal length is zero it will be defocusing devise.
+ If both focals are non zero the shape of the wall will be elliptic (only the entrance width 
+ given in the beginning is recognized; exit width will be calculated). 
+ Notice: 1.)The focal points are in general located outside the guide (positive focal lengths).
+            Focal points inside the guide need to have negative focal lengths.
+         2.)The exit width parameters (w2r, w2l, h2u,h2d) are only taken into account if the 
+            walls have a linear shape. In the ellitic or parabolic case they will be ignored.
+ For the inner channel: the outer side of each wall is calculated by the component in depentence 
+ of the wallthickness and the shape of the inner side.
+ Each of walls can have a own indepenting reflecting layer (defined by an input file) 
+ or it can be a absorber or it can be transparent.
+ The reflectivity properties can be given by an input file (Format [q(Angs-1) R(0-1)]) or by 
+ parameters (Qc, alpha, m, W).
+%BUGS
+This component does not work with gravitation on.
+This component does not work correctly in GROUP-modus.
+
+
+<H2><A NAME=id></A>Identification</H2>
+
+<UL>
+  <LI> <B>Author:</B> Tobias Panzner</B>
+  <LI> <B>Origin:</B> PSI</B>
+  <LI> <B>Date:</B> 07/08/2010</B>
+  <LI> <B>Version:</B> 1.1 </B>
+</UL>
+
+<H2><A NAME=ipar></A>Input parameters</H2>
+Parameters in <B>boldface</B> are required;
+the others are optional.
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD>RIreflect</TD>
+     <TD>str</TD>
+     <TD>Name of relfectivity file for the right inner wall.
+Format [q(Angs-1) R(0-1)]  (DEFAULT : no file)
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>LIreflect</TD>
+     <TD>str</TD>
+     <TD>Name of relfectivity file for the left inner wall.
+Format [q(Angs-1) R(0-1)]   (DEFAULT : no file)
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>UIreflect</TD>
+     <TD>str</TD>
+     <TD>Name of relfectivity file for the top inner wall. 
+Format [q(Angs-1) R(0-1)]    (DEFAULT : no file)
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>DIreflect</TD>
+     <TD>str</TD>
+     <TD>Name of relfectivity file for the bottom inner wall.
+Format [q(Angs-1) R(0-1)] (DEFAULT : no file)
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>ROreflect</TD>
+     <TD>str</TD>
+     <TD>Name of relfectivity file for the right outer wall.
+Format [q(Angs-1) R(0-1)]  (DEFAULT : no file)
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>LOreflect</TD>
+     <TD>str</TD>
+     <TD>Name of relfectivity file for the left outer wall.
+Format [q(Angs-1) R(0-1)]   (DEFAULT : no file)
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>UOreflect</TD>
+     <TD>str</TD>
+     <TD>Name of relfectivity file for the top outer wall.
+Format [q(Angs-1) R(0-1)]    (DEFAULT : no file)
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>DOreflect</TD>
+     <TD>str</TD>
+     <TD>Name of relfectivity file for the bottom outer wall.
+Format [q(Angs-1) R(0-1)] (DEFAULT : no file)
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>w1l</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>[m]    Width at the left guide entry    (positive x-axis)
+</TD>
+<TD ALIGN=RIGHT>0.002</TD> </TR>
+<TR> <TD>w2l</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>[m]    Width at the left guide exit     (positive x-axis)
+</TD>
+<TD ALIGN=RIGHT>0.002</TD> </TR>
+<TR> <TD>linwl</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>[m]    left horizontal wall: distance of 1st focal point
+and guide entry </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>loutwl</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>[m]    left horizontal wall: distance of 2nd focal point
+and guide exit  </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>w1r</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>[m]    Width at the right guide entry   (negative x-axis)
+</TD>
+<TD ALIGN=RIGHT>0.002</TD> </TR>
+<TR> <TD>w2r</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>[m]    Width at the right guide exit    (negative x-axis)
+</TD>
+<TD ALIGN=RIGHT>0.002</TD> </TR>
+<TR> <TD>linwr</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>[m]   right horizontal wall: distance of 1st focal point
+and guide entry </TD>
+<TD ALIGN=RIGHT>0.0</TD> </TR>
+<TR> <TD>loutwr</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>[m]    right horizontal wall: distance of 2nd focal point
+and guide exit </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>h1u</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>[m]    Height at the top guide entry    (positive y-axis)
+</TD>
+<TD ALIGN=RIGHT>0.002</TD> </TR>
+<TR> <TD>h2u</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>[m]    Height at the top guide entry    (positive y-axis)
+</TD>
+<TD ALIGN=RIGHT>0.002</TD> </TR>
+<TR> <TD>linhu</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>[m]    upper vertical wall: distance of 1st focal point
+and guide entry </TD>
+<TD ALIGN=RIGHT>0.0</TD> </TR>
+<TR> <TD>louthu</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>[m]    upper vertical wall: distance of 2nd focal point
+and guide exit </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>h1d</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>[m]    Height at the bottom guide entry (negative y-axis)
+</TD>
+<TD ALIGN=RIGHT>0.002</TD> </TR>
+<TR> <TD>h2d</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>[m]    Height at the bottom guide entry (negative y-axis)
+</TD>
+<TD ALIGN=RIGHT>0.002</TD> </TR>
+<TR> <TD>linhd</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>[m]    lower vertical wall: distance of 1st focal point
+and guide entry </TD>
+<TD ALIGN=RIGHT>0.0</TD> </TR>
+<TR> <TD>louthd</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>[m]    lower vertical wall: distance of 2nd focal point
+and guide exit </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>l</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>[m]    length of guide </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>R0</TD>
+     <TD>DEFAULT = 0.99</TD>
+     <TD>[1]    Low-angle reflectivity </TD>
+<TD ALIGN=RIGHT>0.99</TD> </TR>
+<TR> <TD>Qcxl</TD>
+     <TD>DEFAULT = 0.0217</TD>
+     <TD>[AA-1] Critical scattering vector for left vertical
+inner wall </TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcxr</TD>
+     <TD>DEFAULT = 0.0217</TD>
+     <TD>[AA-1] Critical scattering vector for right vertical
+inner wall </TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcyu</TD>
+     <TD>DEFAULT = 0.0217</TD>
+     <TD>[AA-1] Critical scattering vector for top inner wall
+</TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>Qcyd</TD>
+     <TD>DEFAULT = 0.0217</TD>
+     <TD>[AA-1] Critical scattering vector for bottom inner wall
+</TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>alphaxl</TD>
+     <TD>DEFAULT = 6.07</TD>
+     <TD>[AA]   Slope of reflectivity for left vertical
+inner wall </TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaxr</TD>
+     <TD>DEFAULT = 6.07</TD>
+     <TD>[AA]   Slope of reflectivity for right vertical
+inner wall </TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayu</TD>
+     <TD>DEFAULT = 6.07</TD>
+     <TD>[AA]   Slope of reflectivity for top inner wall
+</TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayd</TD>
+     <TD>DEFAULT = 6.07</TD>
+     <TD>[AA]   Slope of reflectivity for bottom inner wall
+</TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>Wxr</TD>
+     <TD>DEFAULT = 0.003</TD>
+     <TD>[AA-1] Width of supermirror cut-off for right inner wall
+</TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wxl</TD>
+     <TD>DEFAULT = 0.003</TD>
+     <TD>[AA-1] Width of supermirror cut-off for left inner wall
+</TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wyu</TD>
+     <TD>DEFAULT = 0.003</TD>
+     <TD>[AA-1] Width of supermirror cut-off for top inner wall
+</TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>Wyd</TD>
+     <TD>DEFAULT = 0.003</TD>
+     <TD>[AA-1] Width of supermirror cut-off for bottom inner wall
+</TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>mxr</TD>
+     <TD>DEFAULT = 3.6</TD>
+     <TD>[1]    m-value of material for right vertical inner wall.
+0 means the wall is absorbing.
+-1 means the wall is transparent.
+</TD>
+<TD ALIGN=RIGHT>3.6</TD> </TR>
+<TR> <TD>mxl</TD>
+     <TD>DEFAULT = 3.6</TD>
+     <TD>[1]    m-value of material for left vertical inner wall.
+0 means the wall is absorbing.
+-1 means the wall is transparent.
+</TD>
+<TD ALIGN=RIGHT>3.6</TD> </TR>
+<TR> <TD>myu</TD>
+     <TD>DEFAULT = 3.6</TD>
+     <TD>[1]    m-value of material for top inner wall
+0 means the wall is absorbing.
+-1 means the wall is transparent.
+</TD>
+<TD ALIGN=RIGHT>3.6</TD> </TR>
+<TR> <TD>myd</TD>
+     <TD>DEFAULT = 3.6</TD>
+     <TD>[1]    m-value of material for bottom inner wall
+0 means the wall is absorbing.
+-1 means the wall is transparent.
+</TD>
+<TD ALIGN=RIGHT>3.6</TD> </TR>
+<TR> <TD>QcxrOW</TD>
+     <TD>DEFAULT = 0.0217</TD>
+     <TD>[AA-1] Critical scattering vector for right vertical
+outer wall </TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcxlOW</TD>
+     <TD>DEFAULT = 0.0217</TD>
+     <TD>[AA-1] Critical scattering vector for left vertical
+outer wall </TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcyuOW</TD>
+     <TD>DEFAULT = 0.0217</TD>
+     <TD>[AA-1] Critical scattering vector for top outer wall
+</TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>QcydOW</TD>
+     <TD>DEFAULT = 0.0217</TD>
+     <TD>[AA-1] Critical scattering vector for bottom outer wall
+</TD>
+<TD ALIGN=RIGHT>0.0217</TD> </TR>
+<TR> <TD>alphaxlOW</TD>
+     <TD>DEFAULT = 6.07</TD>
+     <TD>[AA]   Slope of reflectivity for left vertical
+outer wall </TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaxrOW</TD>
+     <TD>DEFAULT = 6.07</TD>
+     <TD>[AA]   Slope of reflectivity for right vertical
+outer wall </TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphayuOW</TD>
+     <TD>DEFAULT = 6.07</TD>
+     <TD>[AA]   Slope of reflectivity for top outer wall
+</TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>alphaydOW</TD>
+     <TD>DEFAULT = 6.07</TD>
+     <TD>[AA]   Slope of reflectivity for bottom outer wall
+</TD>
+<TD ALIGN=RIGHT>6.07</TD> </TR>
+<TR> <TD>WxrOW</TD>
+     <TD>DEFAULT = 0.003</TD>
+     <TD>[AA-1] Width of supermirror cut-off for right outer wall
+</TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WxlOW</TD>
+     <TD>DEFAULT = 0.003</TD>
+     <TD>[AA-1] Width of supermirror cut-off for left outer wall
+</TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WyuOW</TD>
+     <TD>DEFAULT = 0.003</TD>
+     <TD>[AA-1] Width of supermirror cut-off for top outer wall
+</TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>WydOW</TD>
+     <TD>DEFAULT = 0.003</TD>
+     <TD>[AA-1] Width of supermirror cut-off for bottom outer wall
+</TD>
+<TD ALIGN=RIGHT>0.003</TD> </TR>
+<TR> <TD>mxrOW</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>[1]   m-value of material for right vertical outer wall
+0 means the wall is absorbing. (DEFAULT)
+-1 means the wall is transparent.
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>mxlOW</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>[1]   m-value of material for left vertical outer wall
+0 means the wall is absorbing.(DEFAULT)
+-1 means the wall is transparent.
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>myuOW</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>[1]   m-value of material for top outer wall
+0 means the wall is absorbing. (DEFAULT)
+-1 means the wall is transparent.
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>mydOW</TD>
+     <TD>DEFAULT = 0</TD>
+     <TD>[1]   m-value of material for bottom outer wall
+0 means the wall is absorbing. (DEFAULT)
+-1 means the wall is transparent.
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>rwallthick</TD>
+     <TD>DEFAULT = 0.001 m</TD>
+     <TD>[m]   thickness of the right wall </TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>lwallthick</TD>
+     <TD>DEFAULT = 0.001 m</TD>
+     <TD>[m]   thickness of the left wall  </TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>uwallthick</TD>
+     <TD>DEFAULT = 0.001 m</TD>
+     <TD>[m]   thickness of the top wall   </TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+<TR> <TD>dwallthick</TD>
+     <TD>DEFAULT = 0.001 m</TD>
+     <TD>[m]   thickness of the bottom wall</TD>
+<TD ALIGN=RIGHT>0.001</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=opar></A>Output parameters</H2>
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD><B>w1rwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w1lwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h1uwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h1dwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w2rwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>w2lwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h2uwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h2dwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawr</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawl</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwr</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwl</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahu</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahd</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhu</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhd</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awl</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwl</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awr</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwr</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahu</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhu</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahd</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhd</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awlwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwlwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>awrwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bwrwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahuwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhuwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ahdwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>bhdwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawrwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pawlwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwrwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbwlwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahuwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pahdwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhuwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pbhdwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1r</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1l</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1u</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1d</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1rwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2w1lwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1uwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>t2h1dwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wlwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wlwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wrwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wrwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2huwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2huwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hdwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hdwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wl</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wl</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2wr</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2wr</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hu</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hu</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>a2hd</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>b2hd</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mru1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mru2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nru1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nru2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mrd1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mrd2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nrd1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nrd2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mlu1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mlu2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nlu1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nlu2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mld1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mld2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nld1</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nld2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0wr</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0wl</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0hu</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>z0hd</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawr</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawl</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahu</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahd</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawrwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parawlwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahuwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>p2parahdwt</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>m</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>n</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nz</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>nx</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ny</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>n2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pf</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>vxin</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>vyin</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>vzin</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>q</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>xtest</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ytest</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>riTable</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>liTable</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>uiTable</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>diTable</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>roTable</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>loTable</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>uoTable</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>doTable
+</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=links></A>Links</H2>
+
+<UL>
+  <LI> <A HREF="Guide_four_side.comp">Source code</A> for <CODE>Guide_four_side.comp</CODE>.
+</UL>
+<HR>
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<ADDRESS>
+Generated automatically by McDoc, Peter Willendrup
+&lt;<A HREF="mailto:peter.willendrup@risoe.dk">peter.willendrup@risoe.dk</A>&gt; /
+Tue Sep  7 12:28:27 2010</ADDRESS>
+</BODY></HTML>

@@ -1,0 +1,86 @@
+/*******************************************************************************
+* Test of the vanadium sample
+*******************************************************************************/
+
+
+DEFINE INSTRUMENT test_v_sample()
+
+DECLARE
+%{
+
+/* Number of neutrons to send through. */
+#define RUNNUM 5e7
+int run_num;
+
+/* Global correction factor */
+double MC_correction;
+
+char *PSD_name = "testresults/v_sample.psd";
+char *PSD_4pi_name = "testresults/v_sample_4pi.psd";
+
+/* Our main() function. */
+int
+main(int argc, char *argv[])
+{
+  mcreadparams();
+  srandom(time(NULL));
+  mcinit();
+  while(run_num < RUNNUM)
+  {
+    mcsetstate(0, 0, 0, 0, 0, 1, 0, 0, 0, 1);
+    mcraytrace();
+    run_num++;
+  }
+  mcfinally();
+  return 0;
+}
+
+%}
+
+INITIALIZE
+%{
+  MC_correction = 1;  /* Scale factor is initially unity */
+  run_num = 0;         /* Initialize mc neutron counter. */
+%}
+
+COMPONENT a1 = Axis()
+  AT (0,0,0) ABSOLUTE
+
+COMPONENT source = Source_aim(radius=0.05,
+			  dist=1,
+		          xw=0.025, yh=0.016, 
+			  v0=1000, dv=300)
+  AT (0,0,0) RELATIVE a1
+  ROTATED (0,0,0) RELATIVE a1
+
+COMPONENT target = V_sample(radius_i = 0.008, radius_o = 0.012, h = 0.015,
+			    focus_r = 0, pack = 1,
+			    target_x = 0, target_y = 0, target_z = 1)
+  AT (0,0,1) RELATIVE a1 ROTATED (0,0,0) RELATIVE a1
+
+COMPONENT a2 = Axis()
+     AT (0,0,1) RELATIVE a1
+     ROTATED (0, 0, 0) RELATIVE a1
+
+COMPONENT PSD_4pi = PSD_monitor_4PI(radius=1000000, nx=101, ny=51,
+         PSD_p=EXTERN PSD_4pi_p, PSD_N=EXTERN PSD_4pi_N,
+	 filename=EXTERN PSD_4pi_name)
+  AT (0,0,0) RELATIVE a2 ROTATED (1.5707963,0,0) RELATIVE a2
+
+COMPONENT PSD = PSD_monitor(xmin=-0.1, xmax=0.1,
+          ymin =-0.1, ymax=0.1, nx=100, ny=100,
+         PSD_p=EXTERN PSD_p, PSD_N=EXTERN PSD_N,
+         m1x=EXTERN PSD_m1x, m1y=EXTERN PSD_m1y,
+         m2x=EXTERN PSD_m2x, m2y=EXTERN PSD_m2y,
+	 filename=EXTERN PSD_name)
+  AT (0,0,1) RELATIVE a2
+  ROTATED (0,0,0) RELATIVE a1
+
+FINALLY
+%{
+  printf("Finished simulation of %d neutrons.\n", run_num);
+  printf("Correction factor: %g \n",MC_correction);
+/*   printf("Moments: %g %g %g %g\n", PSD_m1x, PSD_m2x, PSD_m1y, PSD_m2y); */
+%}
+
+END

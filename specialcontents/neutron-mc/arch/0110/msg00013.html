@@ -1,0 +1,155 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: McStas 1.5: if you encouter compilation problems -->
+<!--X-From: Per&#45;Olof =?iso&#45;8859&#45;1?Q?=C5strand?= <per&#45;olof.aastrand@risoe.dk> -->
+<!--X-Date: Wed, 31 Oct 2001 10:02:18 +0100 -->
+<!--X-Message-Id: 3BDFBE1A.E17D5B5A@risoe.dk -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 3BDD6121.65D0056E@ill.fr -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: McStas 1.5: if you encouter compilation problems</title>
+<link rev="made" href="mailto:per-olof.aastrand@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00012.html">Date Prev</A>][<A HREF="msg00014.html">Date Next</A>]
+<a href="index.html#00013">[Chronological]</a>
+<a href="threads.html#00013">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: McStas 1.5: if you encouter compilation problems</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>neutron-mc &lt;<A HREF="mailto:neutron-mc@risoe.dk">neutron-mc@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: McStas 1.5: if you encouter compilation problems</strong></LI>
+<LI><strong>From</strong>: <strong>Per-Olof &Aring;strand &lt;<A HREF="mailto:per-olof.aastrand@risoe.dk">per-olof.aastrand@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: Wed, 31 Oct 2001 10:02:18 +0100</LI>
+<LI>References: &lt;<A HREF="msg00010.html">3BDD6121.65D0056E@ill.fr</A>&gt;</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Dear McStas user,
+
+To explain this it requires a basic understanding of the philosophy of
+McStas. McStas has a layered structure which consists of one level with
+a "kernel" and another level consisting of  components and instruments,
+where the components and instruments are written in a McStas
+meta-language. The meta-language is defined in the McStas manual.
+
+To extend the useability of the components, it is of course tempting to
+look into and use internal information in the kernel. It can, however,
+not be expected that the internals of the kernel remain unchanged. In
+contrast, it can be required that the kernel calls documented in the
+manual always will not be changed. So even if it is tempting to include
+undocumented features, it should be avoided. It is the only way to
+guarantee backward compability.
+
+This is today not a serious problem. I would assume it is only a few
+components using undocumented features.
+
+Using the same arguments, it is unacceptable and very unfortunate with
+different McStas kernels available on the web. If the direction is that
+we will have many various McStas kernels available on the web, it will
+soon lead to a large degree of incompability in the components. I hope
+this will not be a future problem, and we will do our best to include
+the "McStas-ill" features in the official release as soon as possible.
+
+But to conclude, an extensive use of undocumented kernel features and
+various McStas kernels on the web, and McStas will very soon be a mess.
+
+Best regards,
+
+Per-Olof Åstrand
+
+
+Emmanuel Farhi wrote:
+
+&gt; Hello McStas users,
+&gt;
+&gt; I realised that there was an undocumented modification in the Mcstas
+&gt; version 1.5, that makes it a few percent uncompatible with some
+&gt; previous components (and perhaps the components that you wrote...)
+&gt; Per-Olof Astrand changed the nature of one of the symbols in the
+&gt; kernel ('mccompcurname' is not a char string anymore).
+&gt; Thus if you encounter any compilation problem with McStas 1.5, just
+&gt; look for the 'mccompcurname' symbol and change it to
+&gt; 'NAME_CURRENT_COMP'.
+&gt;
+&gt; Invitation:
+&gt; Use version 1.6-ill &lt;<A HREF="http://www.ill.fr/tas/mcstas/">http://www.ill.fr/tas/mcstas/</A>&gt; that one from
+&gt; which Per-Olof says "The parallel development of McStas at ILL is very
+&gt; unfortunate". Wow ! you're not very kind Per-Olof, why ?
+&gt;
+&gt; Cheers. EF.
+&gt;
+&gt; --
+&gt; What's up Doc ?
+&gt; --------------------------------------------
+&gt; Emmanuel FARHI, <A HREF="http://www.ill.fr/tas/people/Farhi.html">http://www.ill.fr/tas/people/Farhi.html</A>   \|/ ____ \|/
+&gt; CS-Group ILL4/156, Institut Laue-Langevin (ILL) Grenoble  ~@-/ oO \-@~
+&gt; 6 rue J. Horowitz, BP 156, 38042 Grenoble Cedex 9,France  /_( \__/ )_\
+&gt; Work :Tel (33/0) 4 76 20 71 35. Fax (33/0) 4 76 48 39 06     \__U_/
+&gt;
+&gt;
+
+--
+Per-Olof Åstrand
+Dept. of Chemistry, University of Copenhagen
+and Materials Research Department, Risø National Laboratory
+per-olof.aastrand@theory.ki.ku.dk or per-olof.aastrand@risoe.dk
+<A HREF="http://theochem.ki.ku.dk/~peo/">http://theochem.ki.ku.dk/~peo/</A>
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<UL><LI><STRONG>References</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00010" HREF="msg00010.html">McStas 1.5: if you encouter compilation problems</A></STRONG>
+<UL><LI><EM>From:</EM> Emmanuel Farhi &lt;farhi@ill.fr&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00012.html">McStas developments</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00014.html">McStas: Very sad situation. Keep on using it. And tell us about it.</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00013"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00013"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

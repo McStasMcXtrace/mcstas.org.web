@@ -1,0 +1,211 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: rounding errors? -->
+<!--X-From: "Dr. Georg Artus" <Georg_Artus@Physik.TU&#45;Muenchen.DE> -->
+<!--X-Date: Tue, 23 Feb 1999 14:38:29 +0000 -->
+<!--X-Message-Id: 36D2BD65.CB17EBD0@ph.tum.de -->
+<!--X-ContentType: multipart/mixed -->
+<!--X-Reference-Id: 01J82XVQ7SNO8ZFMQV@risoe.dk -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: rounding errors?</title>
+<link rev="made" href="mailto:Georg_Artus@Physik.TU-Muenchen.DE">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00020.html">Date Prev</A>][<A HREF="msg00022.html">Date Next</A>]
+<a href="index.html#00021">[Chronological]</a>
+<a href="threads.html#00021">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: rounding errors?</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;,<A HREF="mailto:Georg_Artus@Physik.TU-Muenchen.DE">Georg_Artus@Physik.TU-Muenchen.DE</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: rounding errors?</strong></LI>
+<LI><strong>From</strong>: <strong>"Dr. Georg Artus" &lt;<A HREF="mailto:Georg_Artus@Physik.TU-Muenchen.DE">Georg_Artus@Physik.TU-Muenchen.DE</A>&gt;</strong></LI>
+<LI>Date: Tue, 23 Feb 1999 14:38:29 +0000</LI>
+<LI>Organization: TUM</LI>
+<LI>References: &lt;01J82XVQ7SNO8ZFMQV@risoe.dk&gt;</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Hello,
+
+ok, I have to confess a typing error. A 8 was missing in my Q. So the
+conversion between units is ok within rounding errors.
+Unfortunately this doesn't solve my problem. Your plot for the curve
+intensity against wavelength shows a curve symmetrically around the
+energy which should be selected by the monochromator. Mine still is way
+off.
+I have modified the input file slightly. It is attached. I would like to
+send you my curves I produce with this file. Probrably you can solve the
+problem at once. I have it in Excel. Can you use that? Or is
+transmission via Fax better?
+
+Georg
+
+
+-- 
+*********************************************
+
+Dr. Georg Artus
+Technische Universitaet Muenchen
+Neue Forschungsneutronenquelle Garching
+D-85747 Garching
+
+Tel: +49 (0)89/289-14675
+Fax: +49 (0)89/289-14666 or 12112
+E-mail: gartus@ph.tum.de
+
+</PRE>
+<PRE>
+DEFINE INSTRUMENT RESI()
+
+DECLARE
+%{
+double energy = 81.804246;
+/*
+double d_energy = 8.2215;
+*/
+double d_energy = 31.804;
+double l_energy = 50.000;
+double h_energy = 90.000;
+%}
+
+TRACE
+
+COMPONENT arm = Arm()
+  AT (0,0,0) ABSOLUTE
+
+COMPONENT source = Source_flat(
+        radius = 0.1,
+        dist = 5.0,
+        xw = 0.04, yh = 0.09,
+        E0 = energy,
+        dE = d_energy)
+  AT (0,0,0) RELATIVE arm
+
+COMPONENT enbemon = E_monitor(
+        xmin = -0.03,
+        xmax =  0.03,
+        ymin = -0.05,
+        ymax =  0.05,
+        Emin = l_energy,
+        Emax = h_energy,
+        nchan = 20,
+        filename = "enbemon.out")
+  AT (0,0,4.84) RELATIVE arm
+
+COMPONENT arm45m = Arm()
+  AT (0,0,5) RELATIVE arm ROTATED (0,45,0) RELATIVE arm
+
+COMPONENT arm90m = Arm()
+  AT (0,0,5) RELATIVE arm ROTATED (0,90,0) RELATIVE arm
+
+COMPONENT mono = Monochromator(
+        zmin = -0.03,
+        zmax = 0.03,
+        ymin = -0.05,
+        ymax = 0.05,
+        mosaich = 10,
+        mosaicv = 10,
+        r0 = 0.5,
+        Q = 8.88577)  /* 45° at 1AA */
+  AT (0,0,0) RELATIVE arm45m
+/*
+COMPONENT psdafmon = PSD_monitor(
+        xmin = -0.03,
+        xmax = 0.03,
+        ymin = -0.06,
+        ymax = 0.06,
+        nx = 30,
+        ny = 70,
+        filename = "psdafmon.out")
+  AT (0,0,0.1) RELATIVE arm90m
+*/
+COMPONENT enafmon = E_monitor(
+        xmin = -0.03,
+        xmax =  0.03,
+        ymin = -0.06,
+        ymax =  0.06,
+        Emin = l_energy,
+        Emax = h_energy,
+        nchan = 20,
+        filename = "enafmon.out")
+  AT (0,0,0.1) RELATIVE arm90m
+
+COMPONENT ensample = E_monitor(
+        xmin = -0.005,
+        xmax =  0.005,
+        ymin = -0.005,
+        ymax =  0.005,
+        Emin = l_energy,
+        Emax = h_energy,
+        nchan = 20,
+        filename = "ensample.out")
+  AT (0,0,2.0) RELATIVE arm90m
+/*
+COMPONENT psdsamar = PSD_monitor(
+        xmin = -0.03,
+        xmax = 0.03,
+        ymin = -0.07,
+        ymax = 0.07,
+        nx = 30,
+        ny = 70,
+        filename = "psdsamar.out")
+  AT (0,0,2.0) RELATIVE arm90m
+*/
+END
+
+</PRE>
+<P><A HREF="xls00000.xls"> energie.xls</A></P>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<UL><LI><STRONG>Follow-Ups</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00022" HREF="msg00022.html">Re: rounding errors?</A></STRONG>
+<UL><LI><EM>From:</EM> Kristian Nielsen &lt;kristian.nielsen@risoe.dk&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00020.html">Re: rounding errors?</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00022.html">Re: rounding errors?</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00021"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00021"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

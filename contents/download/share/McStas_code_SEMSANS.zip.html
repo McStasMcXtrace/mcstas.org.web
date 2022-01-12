@@ -1,0 +1,50 @@
+<H1>SEMSANS model for McStas by Morten Sales</H1>
+This is a short guide on how to simulate a Spin-Echo Modulated Small Angle Neutron Scattering instrument (SEMSANS) using McStas and
+
+<p>components:
+<ul>
+  <li>Analyser_ideal.comp
+  <li>Pol_pi_2_rotator.comp
+  <li>Pol_triafield.comp
+</ul>
+
+<p>and instrument file:
+<ul>
+  <li>SEMSANS_instrument.instr
+</ul>
+ 
+
+<p>The Analyser_ideal component is written by Erik Knudsen and works as an (Unphysical) ideal analyser of neutron spin direction.
+<p>The Pol_pi_2_rotator component is also written by Erik Knudsen and rotates the neutron spin 90 degrees around a given vector. It is an ideal unphysical version of a V-coil.
+<p>The Pol_triafield is witten by Morten Sales and is an ideal unphysical triangular field. The amount of precession a neutron spin would experience passing through the field is calculated and applied. More information can be found in the code for the component.
+
+<p>The SEMSANS_instrument is the instrument file for the SEMSANS instrument.
+It works by having a 
+<ul>
+  <li>source, 
+  <li>double-chopper, 
+  <li>polariser, 
+  <li>slit, 
+  <li>2 V-coils, 
+  <li>1st precessionfield (called guidefield), 
+  <li>triangular field (with precessionfield included), 
+  <li>2nd precessionfield, 
+  <li>2 V-coils, 
+  <li>3rd precessionfield, 
+  <li>triangular field, 
+  <li>4th precessionfield (with precessionfield included), 
+  <li>2 V-coils, 
+  <li>slit, 
+  <li>analyser, 
+  <li>choice of single slit, double slit or grating,
+  <li>Time of Flight (TOF) detector.
+</ul>
+(More information can be found in the code of the instrument file)
+
+<p>The position of the 2 V-coils in the middle responsible for the 180 degree spin flip can be scanned with the parameter flippos.
+<br>The start orientation of the neutron spin is controlled with the parameter FLIP where 1 is ‘down’ and -1 is up’. This parameter works in the first V-coil.
+
+<p>After the simulation where flippos has been scanned for both FLIP 1 and -1, the output from the TOF detector can be combined into as e.g. a 2D colorplot of Polarisation signal vs TOF (wavelength) and flippos.
+
+<p>Regards,
+<br>Morten Sales (<a href="mailto:morten.sales@helmholtz-berlin.de">morten.sales@helmholtz-berlin.de</a> and <a href="mailto:morten.sales@gmail.com">morten.sales@gmail.com</a>)

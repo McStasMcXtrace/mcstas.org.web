@@ -1,0 +1,144 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: 3d detectors -->
+<!--X-From: Kristian Nielsen <kristian.nielsen@risoe.dk> -->
+<!--X-Date: Wed, 09 Feb 2000 09:51:34 +0100 -->
+<!--X-Message-Id: 01JLP6WYEEEQ91B0AW@risoe.dk -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: A0E27DD848C1D211AE10006097C9C0BB058847@exchmail.pns.anl.gov -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: 3d detectors</title>
+<link rev="made" href="mailto:kristian.nielsen@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00003.html">Date Prev</A>][<A HREF="msg00013.html">Date Next</A>]
+<a href="index.html#00004">[Chronological]</a>
+<a href="threads.html#00004">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: 3d detectors</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:jankner@anl.gov">jankner@anl.gov</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: 3d detectors</strong></LI>
+<LI><strong>From</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: Wed, 09 Feb 2000 09:51:34 +0100</LI>
+<LI>Cc: <A HREF="mailto:neutron-mc@risoe.dk">neutron-mc@risoe.dk</A></LI>
+<LI>Date-warning: Date header was inserted by risoe.dk</LI>
+<LI>In-reply-to: &lt;<A HREF="msg00003.html">A0E27DD848C1D211AE10006097C9C0BB058847@exchmail.pns.anl.gov</A>&gt;(jankner@anl.gov)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+&gt; Kristian,
+&gt;      I modified your PSD_monitor routine to handle time-of-flight data
+&gt; (called PSDTOF_monitor.comp).  The new detector generates data in x, y, and
+&gt; t and I find I now have a major file-size problem.  For example, a 140×140
+&gt; PSD_monitor generates about a 150 kB file.  If we divide 16.7 msec (1/60 for
+&gt; the SNS source) into 10 mu-sec bins, we need 1670×150 kB or several hundred
+&gt; MB.  These files are quite sparse, so there should be great gains to be made
+
+OK, that would be a problem.
+
+The current method needs to store one double precision floating point
+number for each bin (8 bytes) in memory during the simulation. This
+would be 260 Mb of RAM needed in your case which is a lot, but not
+totally unreasonable. To compute error estimates the current method
+needs three times that amount which is quite a lot. However, going to
+single precision is quite dangerous for large number of neutron
+histories (~10e9). Once the computation finishes, converting to single
+precision is fine, of course.
+
+I already had plans to implement an optional binary output format. This
+would output your detector data as a single precision binary file (130Mb
+in your case). This would then subsequently be converted to NeXuS. This
+is something I could implement for you quickly (a few weeks) if needed.
+
+&gt; via data compression.  In addition, the ideal way to view this data would be
+&gt; by looking at x-y plots over a specified range of time channels.  This
+&gt; viewing would best be done interactively.  In other words, import the entire
+&gt; data set into a viewer to which one can specify a range of time channels.
+&gt; My impression is that Nexus can help with both the compression and the
+&gt; viewing.  Do you have any plans for generating Nexus files?  I will look
+&gt; into this, but I suspect you are the most-qualified person for the job.
+
+Your example clearly shows the use of writing NeXuS directly from the
+simulation, using its build-in data compression algorithms. This would
+appear to be quite useful here. I will think some more about it, but
+that will take somewhat longer to implement.
+
+Are you saying that a suitable general viewer is already available for
+the NeXuS/HDF format? That would be great, obviously it will never be
+possible to create all the visualization tools we need specifically for
+McStas. If good NeXuS/HDF tools are available, I will want to accelerate
+the implementation of NeXuS in McStas.
+
+&gt; P.S. Is the source code for the DETECTOR_OUT_2D macro available?
+
+Yes, it is found in the files mcstas-r.h and mcstas-r.c (located in the
+lib/ subdirectory of the distribution). Obviously we need to include a
+DETECTOR_OUT_3D macro as well. Send me your code when you finish it or
+get stuck, and I will look at it.
+
+Good luck, it sounds like you are doing great work!
+
+ - Kristian.
+
+--
+Kristian Nielsen        kristian.nielsen@risoe.dk
+Risø National Laboratory
+Condensed Matter Physics and Chemistry Department
+Tel. +45 4677 5515   Fax +45 4677 4790
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<UL><LI><STRONG>References</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00003" HREF="msg00003.html">3d detectors</A></STRONG>
+<UL><LI><EM>From:</EM> "Ankner, John" &lt;jankner@anl.gov&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00003.html">3d detectors</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00013.html">McStas installation and Perl</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00004"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00004"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

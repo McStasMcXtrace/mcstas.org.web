@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Exercise: Insert a monochromator</TITLE>
+<META NAME="description" CONTENT="Exercise: Insert a monochromator">
+<META NAME="keywords" CONTENT="tutorial">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="tutorial.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="node7.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html126"
+  HREF="node10.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html124"
+  HREF="node7.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html118"
+  HREF="node8.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html127"
+  HREF="node10.html">Exercise: Insert a sample</A>
+<B> Up:</B> <A NAME="tex2html125"
+  HREF="node7.html">Exercises</A>
+<B> Previous:</B> <A NAME="tex2html119"
+  HREF="node8.html">Exercise: Source and PSD</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00052000000000000000">
+Exercise: Insert a monochromator</A>
+</H2>
+
+<OL>
+<LI>Keeping your current components, insert a Monochromator_flat component (use the component library index to get the needed parameters) and a new set of PSD and L_monitor after the monochromator. Two new arms should be inserted to define the rotation point at the monochromator. One is used to rotate the monochromator, while the other rotates the instrument components that follow. 
+
+<P>
+Insert the two new arms at (0,0,2) relative to the origin and the monochromator at (0,0,0) relative to the monochromator arm. Also, add two new input parameters of your instrument, which we will call OMM (Omega Monochromator) and TTM (Two Theta Monochromator). These will define the angles of rotation at the monochromator as portrayed in Figure <A HREF="#mono.eps">3</A>. 
+
+<DIV ALIGN="CENTER"><A NAME="mono.eps"></A><A NAME="165"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 3:</STRONG>
+Illustration of the monochromator orientation.</CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER">
+<IMG
+ WIDTH="352" HEIGHT="290" ALIGN="BOTTOM" BORDER="0"
+ SRC="img30.png"
+ ALT="\includegraphics[width=8cm]{pics/mono.eps}">
+
+</DIV></TD></TR>
+</TABLE>
+</DIV>
+
+</LI>
+<LI>Given <IMG
+ WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\lambda$"> = 4&#197;, and knowing that for the monochromator <IMG
+ WIDTH="78" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img31.png"
+ ALT="$\kappa=1.8734$"> &#197;<IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img32.png"
+ ALT="$^{-1}$"> (Pyrolytic Graphite), use Bragg's law to determine the correct Bragg angle (<I>i.e.</I> OMM/TTM) of the monochromator for the <IMG
+ WIDTH="43" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img33.png"
+ ALT="$n=1$"> reflection. Add the OMM and TTM input parameters to the DEFINE line at the beginning of the instrument file and give them the values you just calculated. Rotate the two arm components by OMM and TTM.
+</LI>
+<LI>Do a scan of OMM a couple of angles around the determined Bragg value to verify the finding, while keeping TTM fixed. This is done by replacing the fixed value of OMM in the Run Simulation window with two numbers separated by a comma, <I>e.g.</I> 20,25. These numbers represent the minimum and maximum values of OMM. A number of steps must also be given and this is done by changing the # steps value from 1 to <I>e.g.</I> 10. Check the position of the peak on the PSD and the wavelength on the L_monitor. 
+</LI>
+<LI>What should <IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.png"
+ ALT="$\kappa$"> be set to to get the <IMG
+ WIDTH="43" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img35.png"
+ ALT="$n=2$"> reflection at exactly OMM<IMG
+ WIDTH="44" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img36.png"
+ ALT="$=45^\circ$"> (TTM<IMG
+ WIDTH="44" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img37.png"
+ ALT="$=90^\circ$">)? Adjust <IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.png"
+ ALT="$\kappa$"> for the monochromator and verify the calculation by a scan. Check the wavelength by plotting the scan.
+</LI>
+<LI>Determine the Bragg angle for the <IMG
+ WIDTH="43" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img33.png"
+ ALT="$n=1$"> reflection in this setting of <IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.png"
+ ALT="$\kappa$"> and verify it by scanning OMM. Set OMM to this value. Perform the simulation and check the wavelength distribution. Comment.
+</LI>
+<LI>Before you go on, change the minimum and maximum wavelengths of the source to a suitably narrow interval around 4&#197;. There is no need to produce neutron rays that will not be scattered at the monochromator.
+</LI>
+</OL><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html126"
+  HREF="node10.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html124"
+  HREF="node7.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html118"
+  HREF="node8.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html127"
+  HREF="node10.html">Exercise: Insert a sample</A>
+<B> Up:</B> <A NAME="tex2html125"
+  HREF="node7.html">Exercises</A>
+<B> Previous:</B> <A NAME="tex2html119"
+  HREF="node8.html">Exercise: Source and PSD</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+Peter Kjær Willendrup
+2015-11-12
+</ADDRESS>
+</BODY>
+</HTML>

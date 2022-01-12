@@ -1,0 +1,303 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"></head><body>
+<h3>
+November 17th, 2017: Release 2.4.1 works OK on macOS 10.13 High Sierra
+</h3>
+Dear all,
+
+<p>I can confirm that the latest McStas works fine on the newest macOS
+release, even though the "Check-PL-dependencies" script will report
+10.13 as an unsupported macOS release
+
+<p>If you need to install our Perl-based tool chain on 10.13, the
+easiest way is to download an updated version of the above script, get
+it <a href="https://github.com/McStasMcXtrace/McCode/blob/master/support/MacOSX/Check-dependencies/Check-PL-dependencies.command">from our GitHub</a>
+
+<hr>
+<h3>
+June 26th, 2017: Update-release 2.4.1 available
+</h3>
+Dear all,
+
+
+<p>McStas 2.4.1 has been released and is ready for download via <a href="http://downloads.mcstas.org/mcstas-2.4.1">http://downloads.mcstas.org/mcstas-2.4.1</a>
+
+<p>Release changes are listed below, and the full list of project
+changes is also available at <a href="http://mcstas.org/CHANGES_McStas">http://mcstas.org/CHANGES_McStas</a>.
+
+
+<p>Greetings from the McStas team - hope you will enjoy this new release! :-)
+
+<p>Peter Willendrup
+
+
+<p><h4>Changes in McStas v.2.4.1, June 26th, 2017</h4>
+
+<p>McStas 2.4.1 is the sixth release in the 2.x series and fixes various issues with McStas 2.4, plus 
+ provides a small set of new developments.
+
+<p>Thanks:
+<ul>
+  <li>Thanks to all contributors of components, instruments etc.! This is what Open Source
+  and McStas is all about!
+</ul>
+
+<p>Fixes of issues from last release:
+<ul>
+  <li>A number of issues from 2.4 were corrected, <a href="https://github.com/McStasMcXtrace/McCode/issues?&q=is%3Aissue%20is%3Aclosed%20label%3A%22McStas%202.4%22%20 ">see the relevant GitHub issues for details</a>
+</ul>
+    
+
+<p>Tools:
+<ul>
+  <li>As for 2.4 we the default set of tools are Python-based and
+  developed by Jakob Garde, DTU. The perl ones will stay around as a
+  backup solution
+  <ul>
+    <li>See the GitHub <a href="https://github.com/McStasMcXtrace/McCode/wiki/User-documentation-for-the-2017--Python-tool-set">Wiki
+    doc page</a> for usage
+    <li>On Unix platforms, the perl tools are accessible by adding .pl to the wanted tool (mcgui.pl etc.)
+    <li>On Windows, the perl tools are accessible by adding -pl to the wanted tool (mcgui-pl etc.)
+    <li>BUT: Please use the Python tools and provide feedback rather that sticking with the Perl! :-)
+  </ul>
+  <li>Minor feature developments:
+  <ul>
+    <li>The mcrun utility script now automatically stores a copy of the instr file in the dataset output folder
+    <li>mcplot-pyqtgraph, mcdisplay-pyqtgraph and mcdisplay-webgl provide the --invcanvas to select white backgrounds in
+    the plots (for now only available from the commandline!)
+    <li>When installed, the mcstas-clusterscripts package provides an easy way to generate SLURM or PBS cluster batchfiles.
+    The Python mcgui allows to access these via the File -> Configuration menu.
+  </ul>
+</ul>
+  
+<p>Components and instruments:
+<ul>
+  <li>MCPL library still at v. 1.1
+  <ul>
+    <li>A minor issue in MCPL_output.comp was fixed
+    <li>Minor updates to the ESS_butterfly_MCPL.instr, see also:
+    <a href="https://confluence.esss.lu.se/display/MCSTAS/Using+MCPL+as+source+term+in+McStas">https://confluence.esss.lu.se/display/MCSTAS/Using+MCPL+as+source+term+in+McStas</a>
+  </ul>
+  <li>SNS_BASIS - model of the BASIS backscattering instrument at SNS, from Niko Tsapatsaris, ESS.
+  Further serves as test instrument for two component contributions from the same author:
+  <ul>
+    <li>Spherical_Backscattering_Analyser, a spherical backscattering analyser with variable reflectivity
+    and mosaic gaussian response.
+    <li>Guide_m, guide piece like the normal Guide.comp, but with independent reflectivity specification
+    for all four mirrors.
+  </ul>
+</ul>
+<hr>
+<h3>
+May 19th, 2017: Three minor bugs/annoyances with 2.4
+</h3>
+Three minor bugs/annoyances with 2.4 have been found, and now have fixes / workarounds:
+
+<ol>
+  <li>If you experience that your Python mcgui File->Preferences
+  dialogue crashes (<a
+  href="https://github.com/McStasMcXtrace/McCode/issues/470">Issue 470</a>), please:
+  <ul>
+    <li>Linux deb: <b>sudo apt-get install --reinstall mcstas-tools-python-mccodelib-2.4</b>
+    <li>Linux rpm: <b>sudo yum reinstall mcstas-tools-python-mccodelib-2.4</b>
+    <li>MacOS / Windows: Manually replace the mccode_config.py file as described in the issue link
+  </ul>
+  <li>The MCPL_output component was shipped with a silly off-by-one
+  error that may prevent you from merging the output. (<a
+  href="https://github.com/McStasMcXtrace/McCode/issues/475">Issue 475</a>)
+  <ul>
+    <li>Solution: <a target=_blank href="https://raw.githubusercontent.com/McStasMcXtrace/McCode/master/mcstas-comps/misc/MCPL_output.comp">Cherry-pick MCPL_output.comp via the GitHub repo</a>
+  </ul>
+  <li>On older Ubuntu's (14.04 tested), the dependency
+  python3-pyqtgraph is not available (<a
+  href="https://github.com/McStasMcXtrace/McCode/issues/471">Issue 471</a>)
+  <ul>
+    <li>Solution: <a href="https://github.com/McStasMcXtrace/McCode/issues/471">Install a newer version from the 16.04 repos as described in the issue link</a>
+  </ul>
+</ol>
+
+<p>We envisage that new issues can occur over the next weeks, and aim to fix these by a minor update release.
+
+<p><a href="https://github.com/McStasMcXtrace/McCode/issues?q=is%3Aissue%20label%3A%22McStas%202.4%22%20">Please report any bug found to our GitHub issue system</a>
+
+
+<p>Best and happy simulating! :-)
+<br>Peter
+
+<hr>
+<h3>
+May 18th, 2017: Minor bug with McStas 2.4
+</h3>
+A minor bug with McStas 2.4 has been found, which prevents the user
+from starting the File->Configuration dialogue in mcgui. If you
+encounter an error message like
+<pre>
+/usr/share/mcstas/2.4/tools/Python/mcgui/../mccodelib/mccode_config.py:76: SyntaxWarning: name 'configuration' is used prior to global declaration
+  global configuration
+user config does not exist: /home/farhi/.mcstas/2.4/mccode_config.json
+Traceback (most recent call last):
+  File "/usr/share/mcstas/2.4/bin/../tools/Python/mcgui/mcgui.py", line 615, in handleConfiguration
+    self.view.showConfigDialog()
+  File "/usr/share/mcstas/2.4/tools/Python/mcgui/viewclasses.py", line 171, in showConfigDialog
+    dlg = McConfigDialog()
+  File "/usr/share/mcstas/2.4/tools/Python/mcgui/viewclasses.py", line 1007, in __init__
+    prefix = mccode_config.get_mccode_prefix()
+AttributeError: 'module' object has no attribute 'get_mccode_prefix'
+</pre>
+You should:
+<ul>
+  <li>Deb/RPM Linux: install the package mcstas-tools-python-mccodelib-2.4
+  again
+  <li>macOS: Place <a
+  href="http://downloads.mcstas.org/mcstas-2.4/mac/mccode_config.py">this
+  configuration file</a> in your
+  /Applications//McStas-2.4.app/Contents/Resources/mcstas/2.4/tools/Python/mccodelib/
+  folder (hint: run 'open $MCSTAS' from the terminal and you should
+  get a finder window in
+  /Applications//McStas-2.4.app/Contents/Resources/mcstas/2.4/)
+  <li>Windows: Place <a
+  href="http://downloads.mcstas.org/mcstas-2.4/windows/mccode_config.py">this
+  configuration file</a> in your
+  C:\mcstas-2.4\lib\tools\Python\mccodelib
+  folder (hint: run 'start %MCSTAS%' from the terminal and you should
+  get an explorer window in
+  C:\mcstas-2.4\lib)
+</ul>
+Sorry for any inconvenience caused!
+<hr>
+<h3>
+May 18th, 2017: Updated install instructions.
+</h3>
+Dear all,
+<p>The content of the installation pages have been updated, please
+consult
+<ul>
+  <li><a
+  href="http://www.mcstas.org/download/install_linux/">http://www.mcstas.org/download/install_linux/
+  if on a Debian or RPM capable Linux</a>
+  <li><a
+  href="http://www.mcstas.org/download/install_mac_os_x/">http://www.mcstas.org/download/install_mac_os_x/
+  if Mac OS X 10.9 or later</a>
+  <li><a
+  href="http://www.mcstas.org/download/install_windows/">http://www.mcstas.org/download/install_windows/
+  if on Windows 7 or later</a>
+</ul>
+<hr>
+<h3>
+May 17th, 2017: McStas 2.4 release!
+</h3>
+Dear all,
+
+
+<p>McStas 2.4 has been released and is ready for download via <a href="http://downloads.mcstas.org/mcstas-2.4">http://downloads.mcstas.org/mcstas-2.4</a>
+
+<p>Selected highligts from the release are listed below. The full list
+of changes is also available at <a href="http://mcstas.org/CHANGES_McStas">http://mcstas.org/CHANGES_McStas</a>.
+
+
+<p>Greetings from the McStas team - hope you will enjoy this new release! :-)
+
+<p>Peter Willendrup
+
+
+<p><h4>Changes in McStas v.2.4, May 17th, 2017</h4>
+
+<p>McStas 2.4 is the fifth release in the 2.x series and fixes various issues with McStas 2.3, plus 
+ provides important new developments.
+
+<p>Note that we only provide 64 bit packages now, with the exception
+of Debian systems and the Windows platform! (32bit packages for a given platform can be made available on request)
+
+<ul>
+  <li>Tools:
+  <ul>
+    <li>From 2.4 we will default to use our new set of Python tools, developed by Jakob Garde, DTU.
+    <ul>
+      <li>See the <a
+  href="https://github.com/McStasMcXtrace/McCode/wiki/User-documentation-for-the-2017--Python-tool-set">Wiki
+  doc page</a> for usage
+    </ul>    
+    <li>A mcgui editor with rich syntax highlighting
+    <li>A mcrun utility script, with a few new features wrt. the legacy perl solution.
+    <li>A newly developed mcplot-pyqtgraph, optically similar to the legacy mcplot solution, but with new features.
+    <li>A newly developed mcdisplay-webgl
+    <ul>
+      <li>Fully 3D and interactive, uses your HTML5-capable browser with javascript controls
+      <li>Pause or resume visualisation of the neutron rays in the instrument
+      <li>Allows to keep already rendered rays to illustrate the full beam
+      <li>Visualises rays with color, scaled with particle velocity (ideal for illustrating e.g. monochromatisation)
+    </ul>
+    <li>A newly developed mcdisplay-pyqtgraph, modeled after the legacy mcdisplay tool, but with various improvements
+    <li>The cif2hkl software from iFit (<a
+  href="http://ifit.mccode.org">http://ifit.mccode.org</a>) is provided with McStas for easy generation of reflection 
+    lists for the Single_crystal and PowderN components
+  </ul>
+  
+  <li>Components and instruments:
+  <ul>
+    <li>A new set of components referred to as "Union"components,
+    contribution by Mads Bertelsen Uni Copenhagen.
+    <ul>
+      <li>Allows very rich simulation of samples and sample environment
+      <li>Several instrument files included to illustrate the capabilities and use
+      <li>See <a
+      href="http://media.mcstas.org/ESS_DMSC_20161117/DMSC_talk_MBertelsen_McStas_Union.mp4">his
+      video presentation</a>
+    </ul>
+    <li>Component and Instrument documentation headers have been
+    uniformised in preparation for a Python mcdoc.
+    <li>MCPL library updated to v. 1.1
+    <li>ESS_butterfly.comp provides a time-focusing mode ala what was available in ESS_moderator_long.
+    <li>ESS_butterfly_MCPL.instr implements the use of MCPL files in the ESS butterfly geometry
+    <li>PowderN can "flip" the d_phi focusing to "zoom" on a range of angles.
+    <li>New PSD_monitor_TOF that outputs a TOF signal pr. PSD pixel (single files). Used in templateNMX_TOF.instr
+    <li>A version of Isotropic_Sqw from the McStas 2.0 release has been imported under the name of Isotropic_Sqw_legacy,  since some users reported that release being in better agreement with experiments. 
+    <li>By the help of a Japanse user, we have identified issues with the performance of the supermirror coating option
+    in FermiChopper.comp. We will investigate further and adress the issue over the course of 2017. Note that the 
+    component works as expected when not implementing supermirror slits.
+    <li>Various bugfixes and improvements across the example instruments and component library
+  </ul>
+  <li>Platforms:
+  <ul>
+    <li>Our macOS application bundle provides a 'miniconda' Python,
+    including gcc, openmpi etc.
+    <li>Our Linux packages for RPM systems provide a 'miniconda' Python for all Python tool dependencies.
+    <li>Our Windows installer provides a 'miniconda' Python, including gcc. 
+  </ul>
+</ul>
+
+<hr>
+<h3>
+March 17th, 2017: Video presentation about using iFit with McStas by
+Emmanuel Farhi (ILL)
+</h3>
+Dear all,
+
+<p>Emmanuel Farhi (McStas team & ILL Spectroscopy Group) visited the ESS DMSC in Copenhagen today and gave a
+nice talk about using iFit and McStas together. The presentation was
+recorded and is now available for viewing <a
+href="http://media.mcstas.org/ESS_DMSC_20170317/DMSC_talk_EFarhi_iFit_McStas_20170317.mp4">online
+here</a>. Further information below:
+
+<p><b>Title:</b><br> 
+Using iFit to control McStas simulations, and more.
+
+<p><b>Abstract:</b><br>
+The iFit tool will be presented. It is a generic data analysis and
+fitting infrastructure. A special focus will be put on the ability to
+launch McStas simulations, and retrieve the monitor data. The fitting
+capability of iFit allows to optimise a defined figure of merit
+(e.g. monitor or so) by changing the instrument parameters. This type
+feature is for instance used in the guide-bot from Mads Bertelsen, but
+it is applicable to any instrument model. Other features will be
+presented, such as the 4D convolution of a McStas TAS-type instrument
+with an 4D S(q,w) dispersion volume, which could be used for
+e.g. Bifrost. More on <a href="http://ifit.mccode.org">http://ifit.mccode.org</a>.
+
+<hr>
+<p><b>Previous news items: </b><a href="/news/2016.html">2016</a>, <a href="/news/2015.html">2015</a>, <a href="/news/2014.html">2014</a>, <a href="/news/2013.html">2013</a>, <a href="/news/2012.html">2012</a>, <a href="/news/2011.html">2011</a>, </b><a href="/news/2010.html">2010</a>, <a href="/news/2009.html">2009</a>, <a href="/news/2008.html">2008</a>, <a href="/news/2007.html">2007</a>, <a href="/news/2006.html">2006</a>, <a href="/news/2005.html">2005</a>, <a href="/news/2004.html">2004</a>, <a href="/news/2003.html">2003</a>,<a href="/news/2002.html">2002</a>, <a href="/news/2001.html">2001</a>, <a href="/news/2000.html">2000</a>, <a href="/news/1999.html">1999</a>,
+<a href="/news/1998.html">1998</a>.
+
+</p></body></html>

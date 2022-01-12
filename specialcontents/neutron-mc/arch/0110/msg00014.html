@@ -1,0 +1,194 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: McStas: Very sad situation. Keep on using it. And tell us about it. -->
+<!--X-From: Emmanuel Farhi <farhi@ill.fr> -->
+<!--X-Date: Wed, 31 Oct 2001 14:34:07 +0100 -->
+<!--X-Message-Id: 3BDFFDCF.DF219C62@ill.fr -->
+<!--X-ContentType: text/plain -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>McStas: Very sad situation. Keep on using it. And tell us about it.</title>
+<link rev="made" href="mailto:farhi@ill.fr">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00013.html">Date Prev</A>][<A HREF="msg00015.html">Date Next</A>]
+<a href="index.html#00014">[Chronological]</a>
+<a href="threads.html#00014">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>McStas: Very sad situation. Keep on using it. And tell us about it.</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>"<A HREF="mailto:neutron-mc@risoe.dk">neutron-mc@risoe.dk</A>" &lt;<A HREF="mailto:neutron-mc@risoe.dk">neutron-mc@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>McStas: Very sad situation. Keep on using it. And tell us about it.</strong></LI>
+<LI><strong>From</strong>: <strong>Emmanuel Farhi &lt;<A HREF="mailto:farhi@ill.fr">farhi@ill.fr</A>&gt;</strong></LI>
+<LI>Date: Wed, 31 Oct 2001 14:34:07 +0100</LI>
+<LI>Organization: ILL</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Dear McStas users,
+
+What is going on between the ILL and Risoe is becoming very sad, and you
+probably noticed that.
+
+I can give you some details about what and how we came to the present
+situation:
+1- In January 2001, the McStas workshop gave users the opportunity to
+set a useful 'to-do' list. This list is available at
+&lt;<A HREF="http://www.ill.fr/tas/mcstas/workshop0101.html">http://www.ill.fr/tas/mcstas/workshop0101.html</A>&gt;. The workshop was
+really a success. McStas was version 1.4.0.
+2- Following that workshop versions 1.4.1 and 1.4.2 were released nearly
+at the same time, essentially including new components (no kernel
+modification).
+3- In summer 2001, I discussed with Per-Olof on how to implement new
+features in the McStas kernel. He said these ideas were nice. Indeed,
+the simulations I needed became very big (1.5 Mo source code), and
+difficult to compile. I had to find a solution.
+3- In August 2001, Per-Olof came at ILL to see me. I had an experiment
+at the same time, but we managed to set a list of things to do for the
+next release (planned for ICNS2001). Collaboration was fair. Per-Olof
+made the few modifications now included in the kernel 1.5 (new macros).
+He proposed me to enter in the McStas project development team (Kim,
+Per-Olof and me). That was nice.
+4- At ICNS2001, Phil Seeger noticed a bug in McStas sources. They did
+not focus the simulation correctly, and thus the illumination was not
+isotrope.
+5- Coming back from ICNS2001, I knew what to do to correct this bug, and
+thought about how to implement most of the January workshop 'to-do'
+list. It was clear in my mind that these new features would be
+implemented in version 1.5, so that all of you would benefit from them.
+6- I made all the new feature implementations within 1 week. I must say
+that I realized how Kristian Nielsen made a perfect work: clear,
+portable, deep thinking. I was glad to send my contribution to Per-Olof
+and Kim (end of september). I think I also realized that Per-Olof could
+not have done that work, as his time schedule is very heavy, and he does
+not know the McStas project structure as I do. I made lots of check
+(most components, kernel, etc...) and found bugs, probably because they
+have always been there.
+7- My contribution was completely rejected. I do not understand why.
+Both the new kernel features, and the bug corrections in components were
+entirely ignored by my collaborators, Kim and Per-Olof.
+8- The McStas version 1.5 was released (Oct 10th) by Risoe, without
+previous discussion with me. Getting it, it was obvious it had not been
+checked, and published in a hurry. There were bugs in the generated C
+code (could not be compiled), in the components (were buggy, specially
+all sources), and the documentation was incomplete, and without any
+component list. You probably experienced that if you upgraded to 1.5.
+9- I sent e-mails immediately to Per-Olof and Kim, to tell them about
+the bugs I had seen (in the kernel, the components, etc.). I also told
+them to inform the community about the identified bugs, and that they
+would be corrected as soon as possible. I also proposed them to look at
+what I had done (I use my version 1.6-ill daily, without bugs, and
+corrected components) as it was there. My feeling then was that McStas
+users should keep their version 1.4.2 or switch to the 1.6-ill 'test'
+version, that I decided to put on the ILL McStas page.
+10- All my e-mails were ignored. There was a temptative to correct the
+source inhomogeneity problem (Kim), but it then resulted in an even
+worse bug (neutrons with 1 m/s), probably because this was not tested.
+The compilation problem, that prevented any usage of McStas 1.5 was
+corrected at last, because there were users experiencing problems.
+11- Per-Olof sent e-mails to the neutron -mc list saying that "(...) The
+parallel development of McStas at ILL is very unfortunate (...)".
+12- Today (three weeks after release), the version 1.5 that you can find
+on the web is still not usable. If you finally manage to compile your
+instrument, there are chances that results will be wrong. Some
+components simply do not compile, and none of them was tested correctly.
+The list of bugs that I sent to Kim and Per-Olof was ignored, and bugs
+were hidden to the community (or rejecting the fault on the ILL if
+necessary), and not corrected.
+13- The version 1.6-ill works fine since its release, and most
+components available on the ILL Mctas page have been tested. You will
+also find there the corrected version 1.5 components.
+
+Conclusion:
+I was invited to participate in the development of McStas, and finally,
+my work was ignored (and I was even insulted by Per-Olof). A parallel
+version was released, without collaboration with me. I tried my best to
+inform people, identify and correct bugs, but these are still there.
+Thus I brought an alternative solution, so that McStas users do not get
+angry with McStas. For diplomatic reasons, I said it was a test version.
+As a matter of fact, it works perfectly, and thus it is not a test
+version.
+If you want to continue using McStas, either keep version 1.4.2, or
+switch to the version 1.6-ill. The version 1.5 is a failure. Be careful
+if you use it.
+Hopefully, McStas is a really nice project, and is very strong. (I hope)
+It will not suffer from these misunderstandings.
+
+And I would like to tell all of you: keep on using McStas. It's great,
+and I hope you like it as I do.
+Also, I would like to have your opinion on the current situation and on
+the future of McStas. If you encounter problems with the version 1.5,
+please talk about it ! And ask Kim and Per-Olof to correct these bugs. I
+told them to, but it appears that all my words are now ignored, or
+returned to me with offense.
+What did I do wrong ?
+
+Emmanuel Farhi.
+Thanks in advance to all of you. I like McStas, this project is very
+valuable, and should continue to have your support and approval.
+
+
+--
+What's up Doc ?
+--------------------------------------------
+Emmanuel FARHI, <A HREF="http://www.ill.fr/tas/people/Farhi.html">http://www.ill.fr/tas/people/Farhi.html</A>   \|/ ____ \|/
+CS-Group ILL4/156, Institut Laue-Langevin (ILL) Grenoble  ~@-/ oO \-@~
+6 rue J. Horowitz, BP 156, 38042 Grenoble Cedex 9,France  /_( \__/ )_\
+Work :Tel (33/0) 4 76 20 71 35. Fax (33/0) 4 76 48 39 06     \__U_/
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<UL><LI><STRONG>Follow-Ups</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00015" HREF="msg00015.html">Come on guys!.</A></STRONG>
+<UL><LI><EM>From:</EM> Ross Stewart &lt;stewart@ill.fr&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00013.html">Re: McStas 1.5: if you encouter compilation problems</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00015.html">Come on guys!.</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00014"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00014"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

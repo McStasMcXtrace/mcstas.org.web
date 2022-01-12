@@ -1,0 +1,113 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: rounding errors? -->
+<!--X-From: Kristian Nielsen <kristian.nielsen@risoe.dk> -->
+<!--X-Date: 24 Feb 1999 08:12:47 +0100 -->
+<!--X-Message-Id:  -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 36D2BD65.CB17EBD0@ph.tum.de -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: rounding errors?</title>
+<link rev="made" href="mailto:kristian.nielsen@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00021.html">Date Prev</A>][<A HREF="msg00024.html">Date Next</A>]
+<a href="index.html#00022">[Chronological]</a>
+<a href="threads.html#00022">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: rounding errors?</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:Georg_Artus@Physik.TU-Muenchen.DE">Georg_Artus@Physik.TU-Muenchen.DE</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: rounding errors?</strong></LI>
+<LI><strong>From</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: 24 Feb 1999 08:12:47 +0100</LI>
+<LI>In-reply-to: &lt;<A HREF="msg00021.html">36D2BD65.CB17EBD0@ph.tum.de</A>&gt; (Georg_Artus@Physik.TU-Muenchen.DE)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+&gt; I have modified the input file slightly. It is attached. I would like to
+&gt; send you my curves I produce with this file. Probrably you can solve the
+&gt; problem at once. I have it in Excel. Can you use that? Or is
+&gt; transmission via Fax better?
+
+I managed to use the excel files using Excel 5 and a windows emulator.
+
+Ah, now I see the problem. Your numbers are all integers, and look like
+the values of N (neutron events) in the monitors with 5e7 simulated
+neutrons. That will not work; because of neutron weights, the N values
+are not very meaningful in McStas. You need to use the I values instead
+(the 3rd column in the file).
+
+In about half an hour, I will put up a new plot on
+
+  <A HREF="http://neutron.risoe.dk/mcstas/support/artus/resi2-plot.gif">http://neutron.risoe.dk/mcstas/support/artus/resi2-plot.gif</A>
+
+for you to see.
+
+Hm, I wonder if a better file format would have helped to avoid this
+problem for you. I am in the process of designing a proper output file
+format for McStas. Do you have any suggestions resulting from your
+experience with McStas? I am considering NeXus, of course. There will
+also be an ASCII format, the challenge of which is to remain compatible
+with many different programs (excel, matlab, perldl, gnuplot, ...) while
+getting as much information in as possible.
+
+ - Kristian.
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<UL><LI><STRONG>References</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00021" HREF="msg00021.html">Re: rounding errors?</A></STRONG>
+<UL><LI><EM>From:</EM> "Dr. Georg Artus" &lt;Georg_Artus@Physik.TU-Muenchen.DE&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00021.html">Re: rounding errors?</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00024.html">Re: rounding errors?</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00022"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00022"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

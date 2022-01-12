@@ -1,0 +1,313 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Basic McStas</TITLE>
+<META NAME="description" CONTENT="Basic McStas">
+<META NAME="keywords" CONTENT="tutorial">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="tutorial.css">
+
+<LINK REL="next" HREF="node7.html">
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="tutorial.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html89"
+  HREF="node7.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html87"
+  HREF="tutorial.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html81"
+  HREF="node5.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html90"
+  HREF="node7.html">Exercises</A>
+<B> Up:</B> <A NAME="tex2html88"
+  HREF="tutorial.html">McStas neutron ray-trace tutorial</A>
+<B> Previous:</B> <A NAME="tex2html82"
+  HREF="node5.html">Basic understanding of instrument</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Basic McStas</A>
+</H1>
+In short, the core of the McStas system is a precompiler. From a
+user-provided instrument description, components are assembled into 
+a single piece of <TT>ansi-c</TT> code. Using a compiler, <I>e.g.</I> 
+<TT>gcc</TT>, the c code is compiled into an executable program 
+which can be run on your computer. Optionally, the program takes 
+input arguments to tune the setup of your instrument/simulation. 
+This section will take you through a simple example instrument 
+to teach you the basic instrument language of McStas. (Instrument 
+filename is vanadium_example.instr, can be loaded using the
+<code>Neutron Site/Tutorial</code> menu item of the <code>mcgui</code>, see below).
+<BR>
+<BR>
+<BR>
+Please study <I>carefully</I> the instructive comments,
+marked by <code>/* ... */</code> characters
+
+<P>
+<PRE>
+/* The line below defines the 'name' of our instrument */
+/* Here, we have a single input parameter, ROT         */
+DEFINE INSTRUMENT vanadium_example(ROT=0)
+
+/* The DECLARE section allows us to declare variables  */
+/* in c syntax. Here, coll_div (collimator divergence) */
+/* is set to 60 arc minutes...                         */
+DECLARE
+%{
+  double coll_div = 60;
+%}
+
+/* Here comes the TRACE section, where the actual      */
+/* instrument is defined....                           */
+TRACE
+
+/* The Arm() class component defines reference points  */
+/* and directions in 3D space. Every component instance*/
+/* must have a unique name. Here, arm is used. This    */
+/* Arm() component is set to define the origin of our  */
+/* global coordinate system (AT (0,0,0) ABSOLUTE)      */
+COMPONENT arm = Arm() AT (0,0,0) ABSOLUTE
+
+/* Next, we need some neutrons. Let's place a neutron  */
+/* source. Refer to documentation of Source_flat to    */
+/* understand the different input parameters.          */
+/* The source component is placed RELATIVE to the arm  */
+/* component, meaning that modifying the position or   */
+/* orientation of the arm will also affect the source  */
+/* component (and other components after that one...)  */
+COMPONENT source = Source_simple(radius = 0.015, dist = 1,
+  xw=0.024, yh=0.015, E0=5, dE=0.2)
+ AT (0,0,0) RELATIVE arm
+
+/* Here we have a collimator - placed to improve beam  */
+/* divergence. The component is placed at a distance   */
+/* RELATIVE to a previous component...                 */
+COMPONENT collimator = Collimator_linear(len = 0.2, 
+  divergence = coll_div, xwidth = 0.04, yheight=0.06)
+  AT (0, 0, 0.4) RELATIVE arm
+
+/* We also need something to 'shoot at' - here a sample*/
+/* made from vanadium - an isotrope scatterer. Options */
+/* are available to restrict the solid angle in which  */
+/* neutrons are emitted (no need to simulate neutrons  */
+/* that we know for sure will not reach the rest of    */
+/* instrument).                                        */
+/* Other options for smart targeting are available -   */
+/* refer to component documentation for info.          */
+COMPONENT target = V_sample(thickness = 0.004, radius = 0.012, 
+  yheight = 0.015, focus_r = 0, pack = 1,
+  target_x = 0, target_y = 0, target_z = 1)
+  AT (0,0,1) RELATIVE arm
+
+/* Here, a secondary arm - or reference point, placed  */
+/* on the sample position. The ROT parameter above     */
+/* defines rotation of this arm (and components        */
+/* relative to the arm)                                */
+COMPONENT arm2 = Arm() 
+  AT (0,0,0) RELATIVE target
+  ROTATED (0,ROT,0) relative arm
+
+/* For data output, let us place a detector. This      */
+/* detector is not very realistic, since it is sphere  */
+/* shaped and has a 10 m radius, but has the advantage */
+/* that EVERYTHING emitted from the sample will be     */
+/* picked up. Notice that this component changes       */
+/* orientation with the ROT input parameter of the     */
+/* instrument.                                         */
+COMPONENT PSD_4pi = PSD_monitor_4PI(radius=10, nx=101, ny=51,
+  filename="vanadium.psd")
+  AT (0,0,0) RELATIVE arm2
+END
+</PRE>
+Enlightened by the above example, you are probably now ready to learn
+a few more important details and tips about McStas.
+
+<UL>
+<LI><B>Neutron representation:</B> A neutron 'history' or package is
+  an entity representing a large number of neutrons. It has the
+  following physical properties:
+  
+<UL>
+<LI>Spatial coordinates, <IMG
+ WIDTH="13" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.png"
+ ALT="$\vec{x}$"> or <IMG
+ WIDTH="44" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$x,y,z$">.
+</LI>
+<LI>Velocity components, <IMG
+ WIDTH="12" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img17.png"
+ ALT="$\vec{v}$"> or <IMG
+ WIDTH="64" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.png"
+ ALT="$v_x,v_y,v_z$">.
+</LI>
+<LI>Spin components, <IMG
+ WIDTH="12" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img19.png"
+ ALT="$\vec{s}$"> or <IMG
+ WIDTH="63" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.png"
+ ALT="$s_x,s_y,s_z$">.
+</LI>
+<LI>Time, <IMG
+ WIDTH="10" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img21.png"
+ ALT="$t$">.
+</LI>
+<LI>Neutron weight factor, <IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.png"
+ ALT="$p$">.
+  
+</LI>
+</UL>
+<B>Neutron histories/Intensities:</B> McStas simulates neutron
+    histories rather than direct neutron counts, <I>i.e.</I> when a
+    Monte Carlo choice is made in a given component (<I>e.g.</I> a random
+    number is generated to decide a new direction of the neutron ray), 
+    the neutron <I>weight factor</I> is adjusted accordingly. As you
+    may have guessed already, the weight factor is the 
+    average number of of observed neutrons of a given behaviour.
+    The transition to direct neutron intensites is made
+    by adjusting the initial neutron weight of the source component,
+    so that the sum of all simulated weight factors equals the
+    absolute intensity of neutrons emitted in one
+    second. This means that the intensity of the neutron beam at a
+    given position is the initial neutron weight multiplied by the 
+    product of all the Monte Carlo weight factors occuring from the
+    source to the given position.  When observing McStas output, <IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img23.png"
+ ALT="$I$">
+    is the intensity, not <IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img24.png"
+ ALT="$N$">.
+<B>3D space:</B> The 3D space in which the instrument is defined,
+  usually has a single component which is
+  placed ABSOLUTEly  in space, <I>e.g.</I> at (0,0,0). All other components
+  can be placed RELATIVE to this component.
+<B>Changing coordinate system:</B> Each component has its own
+    local coordinate system. As the neutron travels from one component
+    to the other, the local component coordinate system changes. The
+    definition is that <IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img25.png"
+ ALT="$z$"> is the direction toward the next component,
+    and that the <IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.png"
+ ALT="$y$"> direction is vertical. Our coordinate system is 
+    right-handed, making <IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img27.png"
+ ALT="$x$"> horisontal and pointing left, looking in 
+    the direction of <IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img25.png"
+ ALT="$z$">.
+<B>Component order matters!</B> It is important to understand
+    that McStas is component order dependent. The basic idea is to
+    follow the neutron as it travels from one component to the next in
+    the instument description. This means that if you place one component
+    <I>geometrically</I> before another component, but <I>orderly</I>
+    after the other component, neutrons may never reach your 'first'
+    component. This means that some designs can be difficult to
+    achieve, though generally a solution can be found.
+<B>Use Arm()'s!</B> The Arm() component is very good for defining
+  changed orientation of the instrument, <I>e.g.</I> for axis turning points
+  etc. Placing many Arm()'s will improve future flexibility of your
+  instrument.
+<B>Use PSD_monitor()'s!</B> The PSD_monitor() component is a
+    Position Sensitive Detector. This component can
+    be used to image the shape of your beam as it travels through the
+    instrument. This is very useful for debugging purposes. Other
+    monitors, for instance wavelength monitors can also be useful.
+</LI>
+</UL>
+In the McStas manual, available by clicking
+<A NAME="tex2html6"
+  HREF="http://mcstas.risoe.dk/documentation/manual/mcstas-1.8-manual.pdf">here</A>
+if you are using an internet browser to view this document, description
+of usage of the different McStas tools is printed. The main McStas
+programs are
+
+<UL>
+<LI><I>mcstas</I> - Core application.
+</LI>
+<LI><I>mcgui</I> - Main graphical user interface.
+</LI>
+<LI><I>mcdisplay</I> - Ray trace / debugging application.
+</LI>
+<LI><I>mcplot</I> - Data / display application.
+</LI>
+<LI><I>mcdoc</I> - Documentation application.
+</LI>
+</UL>
+Here are a few hints on using the tools:
+
+<UL>
+<LI>To start mcgui, execute <code>mcgui</code> in a terminal window
+  (<code>mcgui.pl</code> on Windows).
+</LI>
+<LI>To handle instrument files (opening, editing, compiling), use <code>File</code> menu of <code>mcgui</code>.
+</LI>
+<LI>To simulate and plot data, use the <code>Simulation</code> menu of <code>mcgui</code>.
+</LI>
+<LI>To use the distributed example McStas instruments, use the <code>Neutron Site</code> menu of <code>mcgui</code>.
+</LI>
+<LI>For further help on usage, use the items of the <code>mcgui</code>
+  menu of <code>Help</code> menu or read the chapter <I>Running McStas</I>
+  of the McStas manual [<A
+ HREF="node16.html#Manual">2</A>].
+</LI>
+</UL><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html89"
+  HREF="node7.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html87"
+  HREF="tutorial.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html81"
+  HREF="node5.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html90"
+  HREF="node7.html">Exercises</A>
+<B> Up:</B> <A NAME="tex2html88"
+  HREF="tutorial.html">McStas neutron ray-trace tutorial</A>
+<B> Previous:</B> <A NAME="tex2html82"
+  HREF="node5.html">Basic understanding of instrument</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+Peter Kjær Willendrup
+2015-11-12
+</ADDRESS>
+</BODY>
+</HTML>

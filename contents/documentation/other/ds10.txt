@@ -1,0 +1,138 @@
+Aftestning af Compaq DS10 Alphaserver i Afdeling for Materialers Fysik
+og Kemi, Forskningscenter Risø.
+
+Baggrund
+--------
+
+Den 3. maj fik Afdeling for Materialers Fysik og Kemi foræret en
+Alphaserver DS10 af Compaq med det formål af "afteste" den til brug for
+de videnskabelige beregninger, som der arbedjdes med i afdelingen.
+
+Indgangsvinklen til at afprøve maskinen var dels at se hvilken
+forbedring af beregningsydelsen en Alpha-processor kan give over en
+tilsvarende Intel Pentium løsning. Men mindst lige så vigtigt var det at
+afprøve i praksis, om det var muligt at integrere en ny arkitektur
+(Alpha) i en eksisterende Pentium-baseret maskinpark uden at det førte
+til en væsentlig større arbejdsbyrde i administrationen af maskinerne.
+Alpha-maskinen fik derfor installeret operativsystemet Debian GNU/Linux,
+det samme operativsystem som bruges på afdelingens Pentium-baserede
+maskiner.
+
+Foreløbig konklusion pr. 14. juni 2000
+--------------------------------------
+
+Mht. ydelse udviser Alphaserveren en væsentlig forbedring over en
+tilsvarende Pentium-baseret løsning for serielle beregninger. De
+afprøvede numeriske beregninger viser en forbedring i ydelse på mellem
+to og fire gange over afdelings maskine fys-lin-2, en 450 MHz Pentium III,
+sammenlignet med Alphaserverens 466 MHz Alpha-21264. Mere detaljerede
+resultater er opremset i et senere afsnit.
+
+For parallelle beregninger er en eventuel ydelsesforbedring mindre
+klar. En billig Pentium-løsning baseret på to til fire processorer
+formentlig vil være prismæssigt konkurrencedygtig med en
+enkelt-processor Alphaserver. Omvendt vil parallelle beregninger i
+større skala kunne gøres med væsentligt færre Alpha-maskiner end
+Pentium-maskiner, hvilket kan give en betydelig besparelse i
+administration. Der har indtil nu kun været afprøvet parallelle
+beregninger på Alphaserveren i ret begrænset omfang, og de har ikke vist
+nogen væsentlig fordele sammenlignet med kørsel på fire Pentium
+processorer.
+
+Mht. at integrere en ny arkitektur i den eksisterende maskinpark har
+erfaringerne været meget gode. Bortset fra nogle mindre problemer er
+Alphaserveren fuldstændigt integreret i den eksisterende serverpark, og
+de fleste aspekter af systemadministrationen kan foretages, uden at det
+er nødvendigt at skelne mellem maskinernes arkitektur (Alpha eller
+Pentium).
+
+Det væsentligste problemer er installationen af Debian på
+Alpha-arkitekturen, som er meget teknisk og kræver en person som er
+erfaren i Linux, samt nødvendigheden af at bruge specielle Compaq C,
+C++, og Fortran oversættere for at opnå en god ydelse i beregningstunge
+programmer. Herudover udviser Alpha-versionen af Debian operativsystemet
+enkelte småfejl, som formentlig afspejler den langt mindre udbredelse
+end Pentium-versionen. Generelt er integrationen af de to platforme dog
+meget god, og bedre end integrationen med andre Unix-platforme eller
+bare andre Linux-distributioner.
+
+Alphaserveren er nu i daglig drift som beregningsserver for
+neutron-instrumenterne på Risøs DR3 reaktor, og bruges tillige til
+forskellige korterevarende beregninger i afdelingens daglige
+forskning. Disse opgaver løses på en måde, som samlet set klart overgår,
+hvad en Pentium-løsning kan præstere. I de kommende måneder vil der
+blive opsamlet erfaringer med længere tids drift til disse formål.
+
+Ydelse
+------
+
+Den primære anvendelse for Alphaserveren påtænkes som beregningsserver
+for måleinstrumenter på Risøs reaktor DR3. Maskinen kører løbende
+beregninger som estimerer instruments ydelse i den aktuelle
+opsætning. Disse beregninger køres interaktivt, og køretiden er derfor
+af største betydning. For disse beregninger giver Alphaserveren en
+forbedring på typisk 2.5 gange over afdelings 450 MHz Pentium III
+maskine "fys-lin-2", hvilket giver en væsentlig funktionel forbedring.
+
+Herudover har maskinen været afprøvet med to andre forskeres programmer
+til videnskabelige beregninger. Det ene, en Monte-Carlo simulering
+skrevet i C++, udviser næsten 4 gange bedre ydelse end maskinen
+fys-lin-2. Det andet, et multi-parameter fitting porgram skrevet i
+Fortran, udviser tilsvarende ydelsesforbedringer.
+
+En generel erfaring med beregninger på Alphaserveren er, at det er
+nødvendigt at anvende Compaqs specielle Alpha oversættere for C, C++, og
+Fortran for at opnå de nævnte ydelser. Standard oversætteren "gcc" i
+Debian giver væsentligt dårligere ydelse for numeriske beregninger, ofte
+under 50% af ydelsen ved brug af Compaqs oversættere.
+
+Integration med eksisterende maskinpark
+---------------------------------------
+
+Alphaserveren er installeret med Debian GNU/Linux operativsystemet
+(http://www.debian.org/). Dette operativsystem bruges også på
+afdelingens andre Linux servere. Det er en stor fordel, at det er muligt
+at bruge samme operativsystem på de forskellige typer servere
+(Pentium/Alpha), idet systemadministration bliver væsentligt nemmere end
+hvis forskellige operativsystemer blev anvendt (for eksempel Tru64
+Unix). Dette forudsætter, at operativsystemet faktisk er ens på de
+forskellige arkitekturer, men det har i vid udstrækning vist sig at være
+tilfældet for Debian. I det daglige arbejde kan man skifte mellem
+Alphaserveren og Pentium-systemerne stort set uden at bekymre sig om
+hvilken arkitektur man aktuelt arbejder på.
+
+Ved at bruge Debian er der yderligere den fordel, at næsten alle de
+programmer, som anvendes i afdelingen, er en integreret del af
+operativsystemet. Det betyder, at blov ved at foretage de samme valg
+under installationen af operativsystemet på Alphaserveren som på
+Pentiummaskinerne er de samme programmer umidelbart tilgængelige på alle
+maskiner (se dog nedenfor).
+
+Der er dog enkelte forskelle:
+
+ - En del ikke-frit (proprietært) programmel, som leveres af producenten
+uden kildetekst, er ikke umiddelbart tilgængeligt på
+Alpha-platformen. Det gælder for eksempel Netscape, Acrobat Reader
+ogMatlab. Det har dog ikke været et problem på de applikationer, som har
+været afprøvet indtil nu, men kunne blive det på et senere tidspunkt.
+Det kan muligvis lade sig gøre at køre de tilsvarende Tru64 Unix
+versioner, men ikke uden væsentligt større besvær end der kræves på
+Pentium-platformen og formentligt ikke problemfrit.
+
+ - Der er enkelte småfejl på Alpha-platformen, som ikke findes på
+Pentium-platformen, for eksempel virker clipboard ikke i Alpha-versionen
+af editoren "nedit", og der er konstateret problemer med "rshd"
+serveren. Typisk er problemet, at programmerne ikke er forberedt for en
+64-bit platform.
+
+ - De nødvendige Compaq oversættere for C, C++ og Fortran skal
+installeres seperat og er ikke tilgængelige i Debians eget format. De
+kan installeres ved at konvertere udgaverne lavet til Red Hat Linux, men
+det kræver nogle mindre tilretninger.
+
+ - Installationen af operativsystemet er væsentligt mere teknisk
+vanskelig på Alphaserveren end på Pentium-maskinerne. Dette skyldes dels
+Alpha-maskinens mere komplicerede boot-sekvens, dels Debians ikke helt
+strømlinede installationsprogram. Når først problemerne med at boote
+installationsdisketten og den installerede kerne er løst, forløber
+installationen identisk med Pentium-versionen.

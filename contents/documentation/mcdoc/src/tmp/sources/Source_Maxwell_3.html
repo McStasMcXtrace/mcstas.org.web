@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD>
+<TITLE>Source_Maxwell_3</TITLE>
+<LINK REV="made" HREF="mailto:kristian.nielsen@risoe.dk">
+</HEAD>
+
+<BODY>
+
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<H1>The <CODE>Source_Maxwell_3</CODE> component</H1>
+
+Source with up to three Maxwellian distributions
+
+
+<H2><A NAME=id></A>Identification</H2>
+
+<UL>
+  <LI> <B>Author:</B> Kim Lefmann </B>
+  <LI> <B>Origin:</B> McStas 1.5</B>
+  <LI> <B>Date:</B> March 2001</B>
+  <LI> <B>Version:</B> 1.2 </B>
+</UL>
+<H2><A NAME=desc></A>Description</H2>
+
+<PRE>
+A parametrised continuous source for modelling a (cubic) source
+with (up to) 3 Maxwellian distributions.
+The source produces a continuous spectrum.
+The sampling of the neutrons is uniform in lambda.
+
+Units of flux: neutrons/cm^2/second/ster  
+(McStas units are in general neutrons/second)
+
+</PRE>
+
+<H2><A NAME=ipar></A>Input parameters</H2>
+Parameters in <B>boldface</B> are required;
+the others are optional.
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD><B>size</B></TD>
+     <TD>m</TD>
+     <TD>Edge of cube shaped source
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>l_low</B></TD>
+     <TD>AA</TD>
+     <TD>Lower edge of lambda distribution
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>l_high</B></TD>
+     <TD>AA</TD>
+     <TD>Upper edge of lambda distribution
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>dist</B></TD>
+     <TD>m</TD>
+     <TD>Distance from source to focusing rectangle; at (0,0,dist)
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>xw</B></TD>
+     <TD>m</TD>
+     <TD>Width of focusing rectangle
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>yh</B></TD>
+     <TD>m</TD>
+     <TD>Height of focusing rectangle
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>T1</B></TD>
+     <TD>K</TD>
+     <TD>1st temperature of thermal distribution
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>T2</B></TD>
+     <TD>K</TD>
+     <TD>2nd temperature of  - - -
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>T3</B></TD>
+     <TD>K</TD>
+     <TD>3nd temperature of  - - -
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>I1</B></TD>
+     <TD>*</TD>
+     <TD>l-integrated flux, 1 (in flux units, see above)
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>I2</B></TD>
+     <TD>*</TD>
+     <TD>l-integrated flux, 2  - - -
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>I3</B></TD>
+     <TD>*</TD>
+     <TD>l-integrated flux, 3  - - -
+</TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=opar></A>Output parameters</H2>
+None.
+
+<H2><A NAME=links></A>Links</H2>
+
+<UL>
+  <LI> <A HREF="Source_Maxwell_3.comp">Source code</A> for <CODE>Source_Maxwell_3.comp</CODE>.
+</UL>
+<HR>
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<ADDRESS>
+Generated automatically by McDoc, Kristian Nielsen
+&lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt; /
+Jul 22 2002
+</ADDRESS>
+</BODY></HTML>

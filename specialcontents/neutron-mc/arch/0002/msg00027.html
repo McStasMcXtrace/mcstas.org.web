@@ -1,0 +1,130 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: mcgui tests and more -->
+<!--X-From: Farhi <farhi@ill.fr> -->
+<!--X-Date: Wed, 23 Feb 2000 09:33:12 +0100 -->
+<!--X-Message-Id: 38B39B48.CFA9AF74@ill.fr -->
+<!--X-ContentType: multipart/alternative -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>mcgui tests and more</title>
+<link rev="made" href="mailto:farhi@ill.fr">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00026.html">Date Prev</A>][<A HREF="msg00028.html">Date Next</A>]
+<a href="index.html#00027">[Chronological]</a>
+<a href="threads.html#00027">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>mcgui tests and more</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>mcgui tests and more</strong></LI>
+<LI><strong>From</strong>: <strong>Farhi &lt;<A HREF="mailto:farhi@ill.fr">farhi@ill.fr</A>&gt;</strong></LI>
+<LI>Date: Wed, 23 Feb 2000 09:33:12 +0100</LI>
+<LI>Organization: ILL</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+
+
+Hy Kristian,
+<p>the mcgui saga goes on.
+<br>I've tested the two versions
+<br>1- mcgui-1.pl : crash, here if the trace output
+<br>&nbsp; DB&lt;1> r
+<br>Signal SEGV at mcgui-1.pl line 375
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; main::__ANON__() called
+at /usr/ill/perl/lib/perl5db.pl line 1136
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tk::Widget::waitVariable('Tk::Toplevel=HASH(0x10c18260)',
+'SCALAR(0x106ade78)') called at mcgui-1.pl line 380
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; main::dialog_get_out_file('MainWindow=HASH(0x10abeba4)',
+'in14_tut.instr', 1) called at mcgui-1.pl line 419
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; main::compile_instrument('MainWindow=HASH(0x10abeba4)',
+1) called at mcgui-1.pl line 439
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; main::menu_compile('MainWindow=HASH(0x10abeba4)')
+called at mcgui-1.pl line 568
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; main::__ANON__() called
+at /usr/ill/perl/lib/perl5db.pl line 1134
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; eval {...} called at /usr/ill/perl/lib/perl5db.pl
+line 1134
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tk::__ANON__('Tk::Menu=HASH(0x10b53f4c)',
+'active') called at /usr/ill/lib/perl5/site_perl/Tk/Menu.pm line 530
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tk::Menu::Invoke('Tk::Menu=HASH(0x10b53f4c)',
+1) called at /usr/ill/perl/lib/perl5db.pl line 1136
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; eval {...} called at /usr/ill/perl/lib/perl5db.pl
+line 1136
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tk::MainLoop() called at
+mcgui-1.pl line 751
+<br>Abort (core dumped)
+<br>2- mcgui-2.pl : cannot fork
+<br>&nbsp; DB&lt;1> r
+<br>DB::fake::(/usr/ill/perl/lib/perl5db.pl:2083):
+<br>2083:&nbsp;&nbsp;&nbsp;&nbsp; "Debugged program terminated.&nbsp; Use
+`q' to quit or `R' to restart.";
+<br>Forked, but do not know how to change a TTY.
+<br>Define $DB::fork_TTY or get_fork_TTY().
+<p>I'm now finisshing a general Monitor component. It can handle any kind
+of output (0D, 1D and 2D, and multiple 1D output), with 'intelligent' features
+when they are not provided by user. This should avoid people from writing
+dozens of monitors on the same model. I tell you when I incorporate it
+to the unofficial components and automatic web page. This latter works
+ok, but can you also sort components by category in the list ?
+<p>Cheers. EF.
+<pre>--&nbsp;
+Emmanuel FARHI, <A HREF="http://www.ill.fr/tas/people/Farhi.html">http://www.ill.fr/tas/people/Farhi.html</A>&nbsp;&nbsp;&nbsp;&nbsp; \|/ ____ \|/
+TAS-Group, Institut Laue-Langevin (ILL) Grenoble&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ~@-/ oO \-@~
+Avenue des Martyrs, BP 156, 38042 Grenoble Cedex 9,France&nbsp;&nbsp; /_( \__/ )_\
+Work :Tel (33/0) 4 76 20 71 83. Fax (33/0) 4 76 48 39 06&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \__U_/
+La Grande Arche, Chateau d'Uriage, 38410 Saint Martin d'Uriage 04 76 59 73 94</pre>
+&nbsp;
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<UL><LI><STRONG>Follow-Ups</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00028" HREF="msg00028.html">Re: mcgui tests and more</A></STRONG>
+<UL><LI><EM>From:</EM> Kristian Nielsen &lt;kristian.nielsen@risoe.dk&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00026.html">Re: mcgui-new</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00028.html">Re: mcgui tests and more</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00027"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00027"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

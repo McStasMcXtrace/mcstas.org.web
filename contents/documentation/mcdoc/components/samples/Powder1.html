@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD>
+<TITLE>Powder1</TITLE>
+<LINK REV="made" HREF="mailto:kristian.nielsen@risoe.dk">
+</HEAD>
+
+<BODY>
+
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<H1>The <CODE>Powder1</CODE> component</H1>
+
+General powder sample with a single scattering vector.
+
+
+<H2><A NAME=id></A>Identification</H2>
+
+<UL>
+  <LI> <B>Author:</B> E.M.Lauridsen, N.B.Christensen, A.B.Abrahamsen</B>
+  <LI> <B>Origin:</B> McStas release</B>
+  <LI> <B>Date:</B> 4.2.98</B>
+  <LI> <B>Version:</B> 1.8 </B>
+  <LI> <B>Modification history:</B> <UL>
+    <LI>  KL, KN 20.3.98 (rewrite)
+  </UL>
+</UL>
+
+<H2><A NAME=ipar></A>Input parameters</H2>
+Parameters in <B>boldface</B> are required;
+the others are optional.
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD><B>d_phi0</B></TD>
+     <TD>deg</TD>
+     <TD>Focussing angle corresponding to the vertical dimensions
+of the detector placed at the right distance </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>radius</B></TD>
+     <TD>m</TD>
+     <TD>Radius of sample in (x,z) plane </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>h</B></TD>
+     <TD>m</TD>
+     <TD>Height of sample y direction </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pack</B></TD>
+     <TD>1</TD>
+     <TD>Packing factor </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Vc</B></TD>
+     <TD>AA^3</TD>
+     <TD>Volume of unit cell </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>sigma_a</B></TD>
+     <TD>fm^2</TD>
+     <TD>Absorption cross section per unit cell at 2200 m/s </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>j</B></TD>
+     <TD>1</TD>
+     <TD>Multiplicity of reflection </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>q</B></TD>
+     <TD>AA^-1</TD>
+     <TD>Scattering vector of reflection </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>F2</B></TD>
+     <TD>fm^2</TD>
+     <TD>Structure factor of reflection </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>DW</B></TD>
+     <TD>1</TD>
+     <TD>Debye-Waller factor of reflection </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>target_x</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>target_y</B></TD>
+     <TD>m</TD>
+     <TD>position of target to focus at </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>target_z</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=opar></A>Output parameters</H2>
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD><B>my_s_v2</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>my_a_v</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>q_v</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=links></A>Links</H2>
+
+<UL>
+  <LI> <A HREF="Powder1.comp">Source code</A> for <CODE>Powder1.comp</CODE>.
+  <LI> <A HREF="http://neutron.risoe.dk/mcstas/components/Powder1/">Old
+description</A>, with explanation of focusing.
+  <LI> <A HREF="http://neutron.risoe.dk/mcstas/components/tests/powder/">
+Test results</A> (not up-to-date).
+
+</UL>
+<HR>
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<ADDRESS>
+Generated automatically by McDoc, Kristian Nielsen
+&lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt; /
+Jan 22 2001
+</ADDRESS>
+</BODY></HTML>

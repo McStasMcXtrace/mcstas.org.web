@@ -1,0 +1,127 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: absolute flux and M2 -->
+<!--X-From: artus@obiwan.kri.physik.uni&#45;muenchen.de -->
+<!--X-Date: Mon, 23 Nov 1998 13:50:30 +0100 (CET) -->
+<!--X-Message-Id: 13913.20880.414524.792607@obiwan.kri.physik.uni&#45;muenchen.de -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 13908.5823.254805.170353@obiwan.kri.physik.uni&#45;muenchen.de -->
+<!--X-Reference-Id: 01J4EBTDRPMU8WX0AY@risoe.dk -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>absolute flux and M2</title>
+<link rev="made" href="mailto:artus@obiwan.kri.physik.uni-muenchen.de">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00028.html">Date Prev</A>][<A HREF="msg00029.html">Date Next</A>]
+<a href="index.html#00038">[Chronological]</a>
+<a href="threads.html#00038">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>absolute flux and M2</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>absolute flux and M2</strong></LI>
+<LI><strong>From</strong>: <strong><A HREF="mailto:artus@obiwan.kri.physik.uni-muenchen.de">artus@obiwan.kri.physik.uni-muenchen.de</A></strong></LI>
+<LI>Date: Mon, 23 Nov 1998 13:50:30 +0100 (CET)</LI>
+<LI>In-reply-to: &lt;<A HREF="msg00024.html">01J4EBTDRPMU8WX0AY@risoe.dk</A>&gt;</LI>
+<LI>References: &lt;<A HREF="msg00036.html">13908.5823.254805.170353@obiwan.kri.physik.uni-muenchen.de</A>&gt;&lt;<A HREF="msg00024.html">01J4EBTDRPMU8WX0AY@risoe.dk</A>&gt;</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Hello Kristian,
+
+now that I'm using the E_monitor I'm a little bit confused about the
+output. The E_monitor's output consist of 4 numbers in the file. They
+should be Energy, number of neutrons, sum of the weights and sum of
+the squared weights (E, N, I, M2). I'm not sure how to read these
+values when I use Source_flux. Then M2 is much higher than I.
+E.g. source_flat:
+
+80.992 425 0.00177358 2.13035e-08
+
+same file, but source_flux (flux=3.63E+12):
+
+80.992 384 127625 1.14823e+08
+
+The values for I can be transformed using flux and solid
+angle (2.387E-4). How about M2?
+
+What are the units of I and M2 for any monitor when I use source_flux?
+I assume it is n/cm**2/s/AA? 
+
+According to the manual all monitors should give N, I and M2 in the
+output. But using PSD_monitor or Divergence_monitor I have only one
+number in the file? The E_monitor is the only one which produces all 3
+numbers?
+
+Here two smaller remarks for any future revision of the manual:
+4.5.6. not dE but nchan hast to be given
+4.1.2 wrong formula for I in last sentence
+
+
+Best wishes,
+
+Georg
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<UL><LI><STRONG>Follow-Ups</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00029" HREF="msg00029.html">Re: absolute flux and M2</A></STRONG>
+<UL><LI><EM>From:</EM> Kristian Nielsen &lt;kristian.nielsen@risoe.dk&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<UL><LI><STRONG>References</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00036" HREF="msg00036.html">Energy_Monitor affects final intensity?</A></STRONG>
+<UL><LI><EM>From:</EM> artus@obiwan.kri.physik.uni-muenchen.de</LI></UL></LI>
+<LI><STRONG><A NAME="00024" HREF="msg00024.html">Re: Energy_Monitor affects final intensity?</A></STRONG>
+<UL><LI><EM>From:</EM> Kristian Nielsen &lt;kristian.nielsen@risoe.dk&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00028.html">Re: McStas</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00029.html">Re: absolute flux and M2</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00038"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00038"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

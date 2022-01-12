@@ -1,0 +1,2811 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Optimizer -->
+<!--X-From: Farhi <farhi@ill.fr> -->
+<!--X-Date: Wed, 29 Sep 1999 17:45:31 +0200 -->
+<!--X-Message-Id: 37F2341B.E39E8469@ill.fr -->
+<!--X-ContentType: multipart/mixed -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Optimizer</title>
+<link rev="made" href="mailto:farhi@ill.fr">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00045.html">Date Prev</A>][<A HREF="msg00046.html">Date Next</A>]
+<a href="index.html#00047">[Chronological]</a>
+<a href="threads.html#00047">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Optimizer</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>Optimizer</strong></LI>
+<LI><strong>From</strong>: <strong>Farhi &lt;<A HREF="mailto:farhi@ill.fr">farhi@ill.fr</A>&gt;</strong></LI>
+<LI>Date: Wed, 29 Sep 1999 17:45:31 +0200</LI>
+<LI>Organization: ILL</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+
+
+Hy Kristian,
+<p>Well, I now have an optimizer that seems to work correctly. In just
+ABSORB all neutrons that are known not to reach the Monitor_optimizer.
+<br>The problem is that nothing seems to occur about decreasing computation
+time. All is just like if ABSORB takes the same computation time as before.
+<p>The final flux and counts on monitor are kept. At the end, 20 % of neutrons
+were used to determine limits of state parameters and optimized source
+distributions. Among the other neutrons, 78 %&nbsp;were ABSORBed (optimized
+source identifies them as non reaching monitor), but the computation time
+is unchanged.
+<p>If you ever want to test some few things, I've attached all necessary
+components, instrument in14_6 (with optimizer) and in14_6n (no optimizer,
+same time). I now use mcstas 1.15A.
+<p>Very strange...
+<br>EF.
+<pre>--&nbsp;
+Emmanuel FARHI, <A HREF="http://www.ill.fr/tas/people/Farhi.html">http://www.ill.fr/tas/people/Farhi.html</A>&nbsp;&nbsp;&nbsp;&nbsp; \|/ ____ \|/
+TAS-Group, Institut Laue-Langevin (ILL) Grenoble&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ~@-/ oO \-@~
+Avenue des Martyrs, BP 156, 38042 Grenoble Cedex 9,France&nbsp;&nbsp; /_( \__/ )_\
+Work :Tel (33/0) 4 76 20 71 83. Fax (33/0) 4 76 48 39 06&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \__U_/
+La Grande Arche, Chateau d'Uriage, 38410 Saint Martin d'Uriage 04 76 59 73 94</pre>
+&nbsp;
+<PRE>
+DEFINE COMPONENT Source_flux
+DEFINITION PARAMETERS (radius, dist, xw, yh, E0, dE, flux)
+SETTING PARAMETERS ()
+OUTPUT PARAMETERS (hdiv, vdiv, p_in)
+STATE PARAMETERS (x,y,z,vx,vy,vz,t,s1,s2,p)
+DECLARE
+%{
+ double hdiv,vdiv;
+ double p_in;
+%}
+INITIALIZE
+%{
+  double factor, lambda_min, lambda_max, delta_lambda, source_area;
+
+  hdiv = atan(xw/(2.0*dist));
+  vdiv = atan(yh/(2.0*dist));
+
+  lambda_min = sqrt(81.81/(E0+dE)); /* AAngstroem */
+  lambda_max = sqrt(81.81/(E0-dE));
+  delta_lambda = lambda_max - lambda_min;
+  source_area = radius*radius*PI*1e4; /* cm^2 */
+  factor = flux/mcget_ncount()*delta_lambda*source_area;
+  p_in = (4*hdiv*vdiv)*factor;  /* Small angle approx. */
+%}
+
+TRACE
+%{
+ double theta0,phi0,chi,theta,phi,E,v,r;
+
+ p=p_in;
+ z=0;
+
+ chi=2*PI*rand01();                          /* Choose point on source */
+ r=sqrt(rand01())*radius;                    /* with uniform distribution. */
+ x=r*cos(chi);
+ y=r*sin(chi);
+
+ theta0= -atan(x/dist);              /* Angles to aim at target centre */
+ phi0= -atan(y/dist);
+
+ theta=theta0+hdiv*randpm1();        /* Small angle approx. */ 
+ phi=phi0+vdiv*randpm1();
+
+ E=E0+dE*randpm1();                  /* Assume linear distribution */
+ v=sqrt(E)*SE2V;
+
+ vz=v*cos(phi)*cos(theta);
+ vy=v*sin(phi);
+ vx=v*cos(phi)*sin(theta); 
+%}
+
+END
+</PRE>
+<PRE>
+/*******************************************************************************
+*
+* McStas, version 1.1, released 
+*         Maintained by Kristian Nielsen and Kim Lefmann,
+*         Risoe National Laboratory, Roskilde, Denmark
+*
+* Component: Source_Optimizer
+*
+* Written by: EF, 17 Sept 1999
+*
+* A component that optimizes the neutron flux passing through the
+* Source_optimizer in order to have the maximum flux at the 
+* Monitor_Optimizer position. Polarization is not optimized.
+* Source_optimizer should be placed just after the source.
+* Monitor_Optimizer should be placed at position to optimize. 
+*
+* INPUT PARAMETERS:
+*
+* xmin: Lower x bound of optimizer opening (m)
+* xmax: Upper x bound of optimizer opening (m)
+* ymin: Lower y bound of optimizer opening (m)
+* ymax: Upper y bound of optimizer opening (m)
+* bins: Number of cells for sampling of neutron state distribution (10 is default)
+* step: Optimizer step (%, 10 is default) 
+*            The two first steps are not optimized.
+* keep: Percentage of initial source distribution kept (%, 1 is default)
+* file: Filename where to save optimized source distributions
+*
+* parameters bins, step, keep can be -1 for default values.
+*
+* OUTPUT PARAMETERS:
+*
+* distributions if filename is not empty ("")
+*
+*******************************************************************************/
+
+DEFINE COMPONENT Source_Optimizer
+DEFINITION PARAMETERS (xmin, xmax, ymin, ymax, bins, step, keep,file)
+SETTING PARAMETERS ()
+STATE PARAMETERS (x,y,z,vx,vy,vz,t,s1,s2,p)
+DECLARE
+%{
+#ifndef MCSTAS_GEN_OPTIM	/* McStas General optimizer ID */
+#define MCSTAS_GEN_OPTIM
+#else
+#error McStas : Source_Optimizer should only be used once per instrument
+#endif
+
+#define OPTIM_MAX_ABSORB       10000 /* max number of ABSORB per bin */
+#define OPTIM_PHASE_SET_LIMITS  0 /* set array limits to 0, then ask for GET_LIMITS */
+#define OPTIM_PHASE_GET_LIMITS  1 /* compute array limits, then ask for SET_REF */
+#define OPTIM_PHASE_SET_REF     2 /* set Ref and New_Source to to 0, then ask for GET_REF */
+#define OPTIM_PHASE_GET_REF     3 /* compute Ref (and New_Source in Monitor), then ask for SET_SOURCE */ 
+#define OPTIM_PHASE_SET_SOURCE  4 /* set Source to Ref*x%+New_Source, normalize to Ref, Passing to 0, then ask for OPTIM */
+#define OPTIM_PHASE_OPTIM       5 /* Optimize and get New_Source (continuous optimization), then reask SET_SOURCE when required */
+
+/* These are distribution arrays[bins] within limits
+ * flux is kept during optimisation
+ * NOT stored : z is the position of this component
+ *              t time (linked to z)
+ */
+ 
+/* initial Reference distribution arrays (for weights) */
+  long *Optim_Reference_x;
+  long *Optim_Reference_y;
+  long *Optim_Reference_vx;
+  long *Optim_Reference_vy;
+  long *Optim_Reference_vz;
+  long *Optim_Reference_s1;
+  long *Optim_Reference_s2;
+  long *Optim_Reference_p;
+
+/* optimized Source distribution arrays (to reach) */
+  long *Optim_Source_x;
+  long *Optim_Source_y;
+  long *Optim_Source_vx;
+  long *Optim_Source_vy;
+  long *Optim_Source_vz;
+  long *Optim_Source_s1;
+  long *Optim_Source_s2;
+  long *Optim_Source_p;
+  
+/* optimized New_Source distribution arrays (to reach in next step, passed to Source) */
+  long *Optim_New_Source_x;
+  long *Optim_New_Source_y;
+  long *Optim_New_Source_vx;
+  long *Optim_New_Source_vy;
+  long *Optim_New_Source_vz;
+  long *Optim_New_Source_s1;
+  long *Optim_New_Source_s2;
+  long *Optim_New_Source_p;
+  
+/* Passing distribution arrays (should grow to reach Source) */
+  long *Optim_Passing_x;
+  long *Optim_Passing_y;
+  long *Optim_Passing_vx;
+  long *Optim_Passing_vy;
+  long *Optim_Passing_vz;
+  long *Optim_Passing_s1;
+  long *Optim_Passing_s2;
+  long *Optim_Passing_p;
+
+/* limits for state parameters */
+
+/* x and y are Optimizer dimensions (input parameters) */
+  double Optim_x_min,  Optim_x_max;
+  double Optim_y_min,  Optim_y_max; 
+  double Optim_vx_min, Optim_vx_max;
+  double Optim_vy_min, Optim_vy_max;
+  double Optim_vz_min, Optim_vz_max;
+  double Optim_s1_min, Optim_s1_max;
+  double Optim_s2_min, Optim_s2_max;
+  double Optim_p_min,  Optim_p_max;
+
+  int  Optim_index=0;                      /* a running Optim_index */
+  int  Optim_index_x=0;
+  int  Optim_index_y=0;
+  int  Optim_index_vx=0;
+  int  Optim_index_vy=0;
+  int  Optim_index_vz=0;
+  int  Optim_index_s1=0;
+  int  Optim_index_s2=0;
+  int  Optim_index_p=0;
+  int  Optim_bins;
+  long Optim_n_absorb;               /* number of consecutive ABSORB */
+  int  Optim_Phase;                  /* Optimizer function */ 
+  long Optim_Phase_Counts     =0;    /* neutron counts to achieve in each Phase */
+  
+  long Optim_Limits_Counts    =0;    /* passing neutron counts in each Optim_Phase */
+  long Optim_Reference_Counts =0;
+  long Optim_Passing_Counts   =0;
+  long Optim_Monitor_Counts   =0;
+  
+  double Optim_Limits_Flux   =0;     /* passing neutron flux in each Optim_Phase */
+  double Optim_Reference_Flux=0;
+  double Optim_Passing_Flux  =0;
+  double Optim_Monitor_Flux  =0;
+  
+  double tmp1, tmp2;
+  
+  float Optim_keep;
+  float Optim_step;
+  
+  double  Optim_vx;	/* save neutron characteristics for Monitor */
+  double  Optim_vy;
+  double  Optim_vz;
+  double  Optim_x;
+  double  Optim_y;
+  double  Optim_s1;
+  double  Optim_s2;
+  double  Optim_p;
+  
+  double Optim_Ratio = 0;
+  FILE *hfile;
+/* end declare */
+%}
+
+INITIALIZE
+%{
+  Optim_n_absorb         = 0;
+  Optim_Phase            = OPTIM_PHASE_SET_LIMITS;
+  
+  Optim_x_min = xmin;
+  Optim_x_max = xmax;
+  Optim_y_min = ymin;
+  Optim_y_max = ymax;
+  
+    
+  Optim_bins = (int)bins;
+  Optim_step = step;
+  Optim_keep = keep;
+  
+  if (Optim_step &lt; 0) Optim_step = .1;	/* default values if -1 is given */
+  if (Optim_bins &lt; 0) Optim_bins = 10;
+  if (Optim_keep &lt; 0) Optim_keep = .01;
+  
+  if (Optim_step &gt; 1)   Optim_step = Optim_step/100; /* in case user gives % in 1-100 */
+  if (Optim_step &lt; .01) Optim_step = .01;
+  if (Optim_step &gt; 1)   Optim_step = 1;
+  
+  if (Optim_keep &gt; 1)    Optim_keep = Optim_keep/100; /* in case user gives % in 1-100 */
+  if (Optim_keep &lt; .01)  Optim_keep = .01;
+  if (Optim_keep &gt; 1)    Optim_keep = 1;
+  
+  Optim_Phase_Counts     = mcget_ncount() * Optim_step;
+  
+  if (Optim_bins &lt; 1)    Optim_bins = 1;
+  if (Optim_bins &gt; 100)  Optim_bins = 100;
+  
+  if ((Optim_Source_x  = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  if ((Optim_Source_y  = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  if ((Optim_Source_vx = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  if ((Optim_Source_vy = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  if ((Optim_Source_vz = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  if ((Optim_Source_s1 = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  if ((Optim_Source_s2 = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  if ((Optim_Source_p  = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  
+  if ((Optim_New_Source_x  = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  if ((Optim_New_Source_y  = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  if ((Optim_New_Source_vx = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  if ((Optim_New_Source_vy = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  if ((Optim_New_Source_vz = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  if ((Optim_New_Source_s1 = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  if ((Optim_New_Source_s2 = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  if ((Optim_New_Source_p  = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  
+  if ((Optim_Passing_x  = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  if ((Optim_Passing_y  = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  if ((Optim_Passing_vx = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  if ((Optim_Passing_vy = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  if ((Optim_Passing_vz = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  if ((Optim_Passing_s1 = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  if ((Optim_Passing_s2 = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  if ((Optim_Passing_p  = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  
+  if ((Optim_Reference_x  = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  if ((Optim_Reference_y  = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  if ((Optim_Reference_vx = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  if ((Optim_Reference_vy = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  if ((Optim_Reference_vz = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  if ((Optim_Reference_s1 = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  if ((Optim_Reference_s2 = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+  if ((Optim_Reference_p  = (long*)malloc(Optim_bins * sizeof(long*))) == NULL) { fprintf(stderr,"Optimizer : not enough memory\n"); exit(-1); }
+/* end initialize */  
+%} 
+
+TRACE
+%{
+  PROP_Z0;
+  if (x&gt;Optim_x_min &amp;&amp; x&lt;Optim_x_max &amp;&amp; y&gt;Optim_y_min &amp;&amp; y&lt;Optim_y_max)
+  {
+  
+    Optim_vx = vx;	/* save neutron characteristics for Monitor */
+    Optim_vy = vy;
+    Optim_vz = vz;
+    Optim_x  = x;
+    Optim_y  = y;
+    Optim_s1 = s1;
+    Optim_s2 = s2;
+    Optim_p = p;
+    
+    /* pass to next New_Source optimization if too many ABSORB */
+    
+    if (Optim_n_absorb*0 &gt; OPTIM_MAX_ABSORB*Optim_bins)
+    {
+      Optim_Phase = OPTIM_PHASE_SET_SOURCE;
+      printf("ABSORB : OPTIM_PHASE_SET_SOURCE\n");
+    }
+
+    /* handle Phase sequence */
+
+    if ((Optim_Phase == OPTIM_PHASE_GET_LIMITS) 
+     &amp;&amp; (Optim_Limits_Counts &gt;= Optim_Phase_Counts))
+     {
+        Optim_Phase = OPTIM_PHASE_SET_REF;
+        printf("OPTIM_PHASE_SET_REF\n");
+      }	
+      
+    if ((Optim_Phase == OPTIM_PHASE_GET_REF)
+     &amp;&amp; (Optim_Reference_Counts &gt;= Optim_Phase_Counts))
+     {
+        Optim_Phase = OPTIM_PHASE_SET_SOURCE;
+	printf("OPTIM_PHASE_SET_SOURCE\n");
+      }	
+    
+    if ((Optim_Phase == OPTIM_PHASE_OPTIM)
+     &amp;&amp; (Optim_Passing_Counts &gt;= Optim_Phase_Counts))
+    {
+      if (Optim_Ratio == 0)
+        Optim_Ratio = (double)Optim_Monitor_Counts /Optim_Reference_Counts;
+      if (Optim_Reference_Counts*Optim_Ratio)
+      	printf("Optimizer efficiency is : %.1f \% \n", ((double)Optim_Monitor_Counts * 100/Optim_Reference_Counts)/Optim_Ratio);
+      printf("Number of ABSORB : %i\n",Optim_n_absorb);
+      printf("Counts : reference = %i, passing = %i, monitor = %i\n", Optim_Reference_Counts, Optim_Passing_Counts, Optim_Monitor_Counts);
+      printf("Flux : reference = %.2g, passing = %.2g, monitor = %.2g\n", Optim_Reference_Flux, Optim_Passing_Flux, Optim_Monitor_Flux); 
+      Optim_Phase = OPTIM_PHASE_SET_SOURCE;
+      printf("OPTIM_PHASE_SET_SOURCE update\n");
+    }  
+
+    /* handle Optim_Phase functions */
+    
+    if (Optim_Phase == OPTIM_PHASE_SET_LIMITS)	/* init : need to compute limits and flux */
+    {
+      Optim_Limits_Counts    = 0;
+      Optim_Limits_Flux      = 0;
+      
+      Optim_vx_min = FLT_MAX;  Optim_vx_max = -FLT_MAX;
+      Optim_vy_min = FLT_MAX;  Optim_vy_max = -FLT_MAX;
+      Optim_vz_min = FLT_MAX;  Optim_vz_max = -FLT_MAX;
+      Optim_s1_min = FLT_MAX;  Optim_s1_max = -FLT_MAX;
+      Optim_s2_min = FLT_MAX;  Optim_s2_max = -FLT_MAX;
+      Optim_p_min  = FLT_MAX;  Optim_p_max  = -FLT_MAX;
+      
+      Optim_Phase = OPTIM_PHASE_GET_LIMITS;
+    } /* end OPTIM_PHASE_SET_LIMITS */
+    
+    if (Optim_Phase == OPTIM_PHASE_GET_LIMITS)	/* init : need to compute limits and flux */
+    {
+      Optim_Limits_Counts++;
+      Optim_Limits_Flux += p;
+      
+      if (x &lt; Optim_x_min)   Optim_x_min = x;
+      if (y &lt; Optim_y_min)   Optim_y_min = y;
+      if (x &gt; Optim_x_max)   Optim_x_max = x;
+      if (y &gt; Optim_y_max)   Optim_y_max = y;
+      if (vx &lt; Optim_vx_min) Optim_vx_min = vx;
+      if (vx &gt; Optim_vx_max) Optim_vx_max = vx;
+      if (vy &lt; Optim_vy_min) Optim_vy_min = vy;
+      if (vy &gt; Optim_vy_max) Optim_vy_max = vy;
+      if (vz &lt; Optim_vz_min) Optim_vz_min = vz;
+      if (vz &gt; Optim_vz_max) Optim_vz_max = vz;
+      if (p  &lt; Optim_p_min)  Optim_p_min  = p;
+      if (p  &gt; Optim_p_max)  Optim_p_max  = p;
+      if (s1 &lt; Optim_s1_min) Optim_s1_min = s1;
+      if (s1 &gt; Optim_s1_max) Optim_s1_max = s1;
+      if (s2 &lt; Optim_s2_min) Optim_s2_min = s2;
+      if (s2 &gt; Optim_s2_max) Optim_s2_max = s2;
+      
+      
+    } /* end if OPTIM_PHASE_GET_LIMITS  */
+    
+    if (Optim_Phase == OPTIM_PHASE_SET_REF)	/* Set Ref and New_Source to 0 */
+    {
+      Optim_Reference_Counts = 0;
+      Optim_Reference_Flux   = 0;
+      
+      Optim_Monitor_Counts   = 0;      /* also counted as New_Source */
+      Optim_Monitor_Flux     = 0;
+      
+      for (Optim_index=0; Optim_index &lt; Optim_bins; Optim_index++)
+      {
+	Optim_Reference_x[Optim_index]  = 0; /* initial distribution will be recorded first */
+	Optim_Reference_y[Optim_index]  = 0;
+	Optim_Reference_vx[Optim_index] = 0;
+	Optim_Reference_vy[Optim_index] = 0;
+	Optim_Reference_vz[Optim_index] = 0;
+	Optim_Reference_s1[Optim_index] = 0;
+	Optim_Reference_s2[Optim_index] = 0;
+	Optim_Reference_p[Optim_index]  = 0;
+	
+	Optim_New_Source_x[Optim_index]  = 0;	/* Monitor_Optimizer will compute the */
+	Optim_New_Source_y[Optim_index]  = 0;	/* optimized New_Source distribution */
+	Optim_New_Source_vx[Optim_index] = 0;	/* that will become Source for Optim Optim_step */
+	Optim_New_Source_vy[Optim_index] = 0;
+	Optim_New_Source_vz[Optim_index] = 0;
+	Optim_New_Source_s1[Optim_index] = 0;
+	Optim_New_Source_s2[Optim_index] = 0;
+	Optim_New_Source_p[Optim_index]  = 0;
+      } /* end for */
+      Optim_Phase = OPTIM_PHASE_GET_REF;
+    }	/* end OPTIM_PHASE_SET_REF */			
+    
+    if (Optim_Phase == OPTIM_PHASE_GET_REF)	/* now build the Reference in limits */
+    {			 /* New_Source is set by Monitor_Optimizer */
+      Optim_Reference_Counts++;
+      Optim_Reference_Flux += p;
+      
+      if (Optim_vx_max-Optim_vx_min)
+        Optim_index = (int)rint(Optim_bins * (vx -Optim_vx_min)/(Optim_vx_max-Optim_vx_min));
+      else
+        Optim_index = 0;
+      if (Optim_index &lt; 0)     Optim_index = 0;
+      if (Optim_index &gt;= Optim_bins) Optim_index = Optim_bins - 1;
+      Optim_Reference_vx[Optim_index]++;
+      
+      if (Optim_vy_max-Optim_vy_min)
+        Optim_index = (int)rint(Optim_bins * (vy -Optim_vy_min)/(Optim_vy_max-Optim_vy_min));
+      else
+        Optim_index = 0;
+      if (Optim_index &lt; 0)     Optim_index = 0;
+      if (Optim_index &gt;= Optim_bins) Optim_index = Optim_bins - 1;
+      Optim_Reference_vy[Optim_index]++;
+      
+      if (Optim_vz_max-Optim_vz_min)
+        Optim_index = (int)rint(Optim_bins * (vz -Optim_vz_min)/(Optim_vz_max-Optim_vz_min));
+      else
+        Optim_index = 0;
+      if (Optim_index &lt; 0)     Optim_index = 0;
+      if (Optim_index &gt;= Optim_bins) Optim_index = Optim_bins - 1;
+      Optim_Reference_vz[Optim_index]++;
+      
+      if (Optim_x_max-Optim_x_min)
+        Optim_index = (int)rint(Optim_bins * (x -Optim_x_min)/(Optim_x_max-Optim_x_min));
+      else
+        Optim_index = 0;
+      if (Optim_index &lt; 0)     Optim_index = 0;
+      if (Optim_index &gt;= Optim_bins) Optim_index = Optim_bins - 1;
+      Optim_Reference_x[Optim_index]++;
+      
+      if (Optim_y_max-Optim_y_min)
+        Optim_index = (int)rint(Optim_bins * (y -Optim_y_min)/(Optim_y_max-Optim_y_min));
+      else
+        Optim_index = 0;
+      if (Optim_index &lt; 0)     Optim_index = 0;
+      if (Optim_index &gt;= Optim_bins) Optim_index = Optim_bins - 1;
+      Optim_Reference_y[Optim_index]++;
+      
+      if (Optim_s1_max-Optim_s1_min)
+        Optim_index = (int)rint(Optim_bins * (s1 -Optim_s1_min)/(Optim_s1_max-Optim_s1_min));
+      else
+        Optim_index = 0;
+      if (Optim_index &lt; 0)     Optim_index = 0;
+      if (Optim_index &gt;= Optim_bins) Optim_index = Optim_bins - 1;
+      Optim_Reference_s1[Optim_index]++;
+      
+      if (Optim_s2_max-Optim_s2_min)
+        Optim_index = (int)rint(Optim_bins * (s2 -Optim_s2_min)/(Optim_s2_max-Optim_s2_min));
+      else
+        Optim_index = 0;
+      if (Optim_index &lt; 0)     Optim_index = 0;
+      if (Optim_index &gt;= Optim_bins) Optim_index = Optim_bins - 1;
+      Optim_Reference_s2[Optim_index]++;
+      
+      if (Optim_p_max-Optim_p_min)
+        Optim_index = (int)rint(Optim_bins * (p -Optim_p_min)/(Optim_p_max-Optim_p_min));
+      else
+        Optim_index = 0;
+      if (Optim_index &lt; 0)     Optim_index = 0;
+      if (Optim_index &gt;= Optim_bins) Optim_index = Optim_bins - 1;
+      Optim_Reference_p[Optim_index]++;
+    } /* end if OPTIM_PHASE_GET_REF */
+    
+    if (Optim_Phase == OPTIM_PHASE_SET_SOURCE)	/* Define optimized Source */
+    {
+      if (Optim_Monitor_Counts)
+      	tmp1 = (1 - Optim_keep) * Optim_Reference_Counts/Optim_Monitor_Counts;
+      else
+        tmp1 = 0;
+      
+      Optim_Passing_Counts = 0;
+      Optim_Passing_Flux   = 0;
+      
+      Optim_Monitor_Counts   = 0;      /* also counted as New_Source */
+      Optim_Monitor_Flux     = 0;
+      
+      for (Optim_index = 0; Optim_index &lt; Optim_bins; Optim_index++)
+      { /* get Optim_keep % of Reference, and 1-Optim_keep% of New_Source normalized to Reference Counts */
+        Optim_Source_x[Optim_index]  = (long)(rint(Optim_keep * Optim_Reference_x[Optim_index])  + tmp1 * Optim_New_Source_x[Optim_index] );
+	Optim_Source_y[Optim_index]  = (long)(rint(Optim_keep * Optim_Reference_y[Optim_index])  + tmp1 * Optim_New_Source_y[Optim_index] );
+	Optim_Source_vx[Optim_index] = (long)(rint(Optim_keep * Optim_Reference_vx[Optim_index]) + tmp1 * Optim_New_Source_vx[Optim_index] );
+	Optim_Source_vy[Optim_index] = (long)(rint(Optim_keep * Optim_Reference_vy[Optim_index]) + tmp1 * Optim_New_Source_vy[Optim_index] );
+	Optim_Source_vz[Optim_index] = (long)(rint(Optim_keep * Optim_Reference_vz[Optim_index]) + tmp1 * Optim_New_Source_vz[Optim_index] );
+	Optim_Source_s1[Optim_index] = (long)(rint(Optim_keep * Optim_Reference_s1[Optim_index]) + tmp1 * Optim_New_Source_s1[Optim_index] );
+	Optim_Source_s2[Optim_index] = (long)(rint(Optim_keep * Optim_Reference_s2[Optim_index]) + tmp1 * Optim_New_Source_s2[Optim_index] );
+	Optim_Source_p[Optim_index]  = (long)(rint(Optim_keep * Optim_Reference_p[Optim_index])  + tmp1 * Optim_New_Source_p[Optim_index] );
+        
+	Optim_Passing_x[Optim_index]  = 0; /* Passing neutrons will then reach Source */
+	Optim_Passing_y[Optim_index]  = 0; /* weights will be adapted to match Reference */
+	Optim_Passing_vx[Optim_index] = 0;
+	Optim_Passing_vy[Optim_index] = 0;
+	Optim_Passing_vz[Optim_index] = 0;
+	Optim_Passing_s1[Optim_index] = 0;
+	Optim_Passing_s2[Optim_index] = 0;
+	Optim_Passing_p[Optim_index]  = 0;
+	
+	Optim_New_Source_x[Optim_index]  = 0; /* Init of next Source */
+	Optim_New_Source_y[Optim_index]  = 0; 
+	Optim_New_Source_vx[Optim_index] = 0;
+	Optim_New_Source_vy[Optim_index] = 0;
+	Optim_New_Source_vz[Optim_index] = 0;
+	Optim_New_Source_s1[Optim_index] = 0;
+	Optim_New_Source_s2[Optim_index] = 0;
+	Optim_New_Source_p[Optim_index]  = 0;
+      } /* end for */
+ 
+      Optim_Phase = OPTIM_PHASE_OPTIM;
+      
+    } /* end OPTIM_PHASE_SET_SOURCE */
+    
+    if (Optim_Phase == OPTIM_PHASE_OPTIM)	/* Use optimized Source */
+    {
+      if (Optim_vx_max-Optim_vx_min)
+      	Optim_index = (int)rint(Optim_bins * (vx -Optim_vx_min)/(Optim_vx_max-Optim_vx_min));
+      else
+      	Optim_index = 0;
+      if (Optim_index &lt; 0)    Optim_index = 0;
+      if (Optim_index &gt;= Optim_bins) Optim_index = Optim_bins - 1;
+      if (Optim_Passing_vx[Optim_index] &gt;= Optim_Source_vx[Optim_index]) /* distribution achieved : ABSORB */
+      {
+        Optim_n_absorb++;
+	ABSORB;
+      }
+      else
+         Optim_index_vx = Optim_index;
+      
+      if (Optim_vy_max-Optim_vy_min)
+        Optim_index = (int)rint(Optim_bins * (vy -Optim_vy_min)/(Optim_vy_max-Optim_vy_min));
+      else
+      	Optim_index = 0;
+	if (Optim_index &lt; 0)    Optim_index = 0;
+      if (Optim_index &gt;= Optim_bins) Optim_index = Optim_bins - 1;
+      if (Optim_Passing_vy[Optim_index] &gt;= Optim_Source_vy[Optim_index]) /* distribution achieved : ABSORB */
+      {
+        Optim_n_absorb++;
+	ABSORB;
+      }
+      else 
+	Optim_index_vy = Optim_index;
+	
+      if (Optim_vz_max-Optim_vz_min)
+        Optim_index = (int)rint(Optim_bins * (vz -Optim_vz_min)/(Optim_vz_max-Optim_vz_min));
+      else
+      	Optim_index = 0;
+      if (Optim_index &lt; 0)    Optim_index = 0;
+      if (Optim_index &gt;= Optim_bins) Optim_index = Optim_bins - 1;
+      if (Optim_Passing_vz[Optim_index] &gt;= Optim_Source_vz[Optim_index]) /* distribution achieved : ABSORB */
+      {
+        Optim_n_absorb++;
+	ABSORB;
+      }
+      else 
+	Optim_index_vz = Optim_index;
+	
+      if (Optim_x_max-Optim_x_min)
+        Optim_index = (int)rint(Optim_bins * (x -Optim_x_min)/(Optim_x_max-Optim_x_min));
+      else
+      	Optim_index = 0;
+      if (Optim_index &lt; 0)    Optim_index = 0;
+      if (Optim_index &gt;= Optim_bins) Optim_index = Optim_bins - 1;
+      if (Optim_Passing_x[Optim_index] &gt;= Optim_Source_x[Optim_index]) /* distribution achieved : ABSORB */
+      {
+        Optim_n_absorb++;
+	ABSORB;
+      }
+      else
+        Optim_index_x = Optim_index;
+	
+      if (Optim_y_max-Optim_y_min)
+        Optim_index = (int)rint(Optim_bins * (y -Optim_y_min)/(Optim_y_max-Optim_y_min));
+      else
+      	Optim_index = 0;
+      if (Optim_index &lt; 0)    Optim_index = 0;
+      if (Optim_index &gt;= Optim_bins) Optim_index = Optim_bins - 1;
+      if (Optim_Passing_y[Optim_index] &gt;= Optim_Source_y[Optim_index]) /* distribution achieved : ABSORB */
+      {
+        Optim_n_absorb++;
+	ABSORB;
+      }
+      else 
+        Optim_index_y = Optim_index;
+      
+      if (Optim_s1_max-Optim_s1_min)
+        Optim_index = (int)rint(Optim_bins * (s1 -Optim_s1_min)/(Optim_s1_max-Optim_s1_min));
+      else
+      	Optim_index = 0;
+      if (Optim_index &lt; 0)    Optim_index = 0;
+      if (Optim_index &gt;= Optim_bins) Optim_index = Optim_bins - 1;
+      if (Optim_Passing_s1[Optim_index] &gt;= Optim_Source_s1[Optim_index]) /* distribution achieved : ABSORB */
+      {
+        Optim_n_absorb++;
+	ABSORB;
+      }
+      else
+        Optim_index_s1 = Optim_index;
+      
+      if (Optim_s2_max-Optim_s2_min)
+        Optim_index = (int)rint(Optim_bins * (s2 -Optim_s2_min)/(Optim_s2_max-Optim_s2_min));
+      else
+      	Optim_index = 0;
+      if (Optim_index &lt; 0)    Optim_index = 0;
+      if (Optim_index &gt;= Optim_bins) Optim_index = Optim_bins - 1;
+      if (Optim_Passing_s2[Optim_index] &gt;= Optim_Source_s2[Optim_index]) /* distribution achieved : ABSORB */
+      {
+        Optim_n_absorb++;
+	ABSORB;
+      }
+      else
+        Optim_index_s2 = Optim_index;
+      
+      if (Optim_p_max-Optim_p_min)
+        Optim_index = (int)rint(Optim_bins * (p -Optim_p_min)/(Optim_p_max-Optim_p_min));
+      else
+      	Optim_index = 0;
+      if (Optim_index &lt; 0)    Optim_index = 0;
+      if (Optim_index &gt;= Optim_bins) Optim_index = Optim_bins - 1;
+      if (Optim_Passing_p[Optim_index] &gt;= Optim_Source_p[Optim_index]) /* distribution achieved : ABSORB */
+      {
+        Optim_n_absorb++;
+	ABSORB;
+      }
+      else
+        Optim_index_p = Optim_index;
+	
+	/* neutron is passed ! */
+	
+      Optim_Passing_vx[Optim_index_vx]++;
+      Optim_Passing_vy[Optim_index_vy]++;
+      Optim_Passing_vz[Optim_index_vz]++;
+      Optim_Passing_x[Optim_index_x]++;
+      Optim_Passing_y[Optim_index_y]++;
+      Optim_Passing_s1[Optim_index_s1]++;
+      Optim_Passing_s2[Optim_index_s2]++;
+      Optim_Passing_p[Optim_index_p]++;
+      
+ /*     
+      
+      if (Optim_Source_vx[Optim_index_vx])	
+	p *= Optim_Reference_vx[Optim_index_vx]/Optim_Source_vx[Optim_index_vx];
+
+      if (Optim_Source_vy[Optim_index_vy])	
+	p *= Optim_Reference_vy[Optim_index_vy]/Optim_Source_vy[Optim_index_vy];
+
+      if (Optim_Source_vz[Optim_index_vz])	
+	p *= Optim_Reference_vz[Optim_index_vz]/Optim_Source_vz[Optim_index_vz];
+
+      if (Optim_Source_x[Optim_index_x])	
+	p *= Optim_Reference_x[Optim_index_x]/Optim_Source_x[Optim_index_x];
+
+      if (Optim_Source_y[Optim_index_y])	
+	p *= Optim_Reference_y[Optim_index_y]/Optim_Source_y[Optim_index_y];
+
+      if (Optim_Source_s1[Optim_index_s1])	
+	p *= Optim_Reference_s1[Optim_index_s1]/Optim_Source_s1[Optim_index_s1];
+
+      if (Optim_Source_s2[Optim_index_s2])	
+	p *= Optim_Reference_s2[Optim_index_s2]/Optim_Source_s2[Optim_index_s2];
+
+      if (Optim_Source_p[Optim_index_p])	
+	p *= Optim_Reference_p[Optim_index_p]/Optim_Source_p[Optim_index_p];
+*/      
+      Optim_Passing_Counts++;
+      Optim_Passing_Flux += p;
+    } /* end if OPTIM_PHASE_OPTIM */
+    
+    /* if we reach here, n_absorb is set to 0 */
+    /* Optim_n_absorb = 0; */
+    
+  } /* end if xy in optimizer */
+  else
+    ABSORB;
+/* end trace */
+%} 
+
+FINALLY
+%{
+  if (strlen(file) &gt; 0)
+  {
+    hfile = fopen(file, "w");
+    if(!hfile)
+    {
+       fprintf(stderr, "Error: %s : could not open output file '%s'\n", mccompcurname, file);
+    }
+    else
+    {
+       fprintf(hfile,"# Instrument-source: %s\n", mcinstrument_source);
+       mcruninfo_out("# ", hfile);
+       fprintf(hfile,"# type: array_2d(%i,6) \n",Optim_bins);
+       fprintf(hfile,"# component: %s\n", mccompcurname);
+       fprintf(hfile,"# title: General Optimizer distributions\n");
+       fprintf(hfile,"# filename: '%s'\n",file);
+       fprintf(hfile,"# variables: x dx y dy vx dvx vy dvy vz dvz s1 ds1 s2 ds2 p dp\n");
+       fprintf(hfile,"# xvar: (x y vx vy vz s1 s2 p)\n");
+       fprintf(hfile,"# yvar: (dx dy dvx dvy dvz ds1 ds2 dp)\n");
+       fprintf(hfile,"# xlabel: 'Distributions'\n");
+       fprintf(hfile,"# ylabel: 'Counts'\n");
+       if (Optim_Ratio != 0)
+         fprintf(hfile,"# Optimizer speedup : %.3g \% \n", ((double)Optim_Monitor_Counts * 100/Optim_Reference_Counts)/Optim_Ratio);
+
+       fprintf(hfile,"# Absorbed neutrons : %i\n",Optim_n_absorb);
+       fprintf(hfile,"# data: Optimzed Source\n");
+       for (Optim_index = 0; Optim_index &lt; Optim_bins; Optim_index++)
+       {
+         fprintf(hfile,"%10.4g ",(Optim_x_min+((Optim_index+0.5)/Optim_bins)*(Optim_x_max - Optim_x_min)));
+	 fprintf(hfile,"%10i\t",Optim_Source_x[Optim_index]);
+	 fprintf(hfile,"%10.4g ",(Optim_y_min+((Optim_index+0.5)/Optim_bins)*(Optim_y_max - Optim_y_min)));
+	 fprintf(hfile,"%10i\t",Optim_Source_y[Optim_index]);
+	 fprintf(hfile,"%10.4g ",(Optim_vx_min+((Optim_index+0.5)/Optim_bins)*(Optim_vx_max - Optim_vx_min)));
+	 fprintf(hfile,"%10i\t",Optim_Source_vx[Optim_index]);
+	 fprintf(hfile,"%10.4g ",(Optim_vy_min+((Optim_index+0.5)/Optim_bins)*(Optim_vy_max - Optim_vy_min)));
+	 fprintf(hfile,"%10i\t",Optim_Source_vy[Optim_index]);
+	 fprintf(hfile,"%10.4g ",(Optim_vz_min+((Optim_index+0.5)/Optim_bins)*(Optim_vz_max - Optim_vz_min)));
+	 fprintf(hfile,"%10i\t",Optim_Source_vz[Optim_index]);
+	 fprintf(hfile,"%10.4g ",(Optim_s1_min+((Optim_index+0.5)/Optim_bins)*(Optim_s1_max - Optim_s1_min)));
+	 fprintf(hfile,"%10i\t",Optim_Source_s1[Optim_index]);
+	 fprintf(hfile,"%10.4g ",(Optim_s2_min+((Optim_index+0.5)/Optim_bins)*(Optim_s2_max - Optim_s2_min)));
+	 fprintf(hfile,"%10i\t",Optim_Source_s2[Optim_index]);
+	 fprintf(hfile,"%10.4g ",(Optim_p_min+((Optim_index+0.5)/Optim_bins)*(Optim_p_max - Optim_p_min)));
+	 fprintf(hfile,"%10i\t",Optim_Source_p[Optim_index]);
+	 fprintf(hfile,"\n");
+       }
+       fprintf(hfile,"# data: Reference Source\n");
+       for (Optim_index = 0; Optim_index &lt; Optim_bins; Optim_index++)
+       {
+         fprintf(hfile,"%10.4g ",(Optim_x_min+((Optim_index+0.5)/Optim_bins)*(Optim_x_max - Optim_x_min)));
+	 fprintf(hfile,"%10i\t",Optim_Reference_x[Optim_index]);
+	 fprintf(hfile,"%10.4g ",(Optim_y_min+((Optim_index+0.5)/Optim_bins)*(Optim_y_max - Optim_y_min)));
+	 fprintf(hfile,"%10i\t",Optim_Reference_y[Optim_index]);
+	 fprintf(hfile,"%10.4g ",(Optim_vx_min+((Optim_index+0.5)/Optim_bins)*(Optim_vx_max - Optim_vx_min)));
+	 fprintf(hfile,"%10i\t",Optim_Reference_vx[Optim_index]);
+	 fprintf(hfile,"%10.4g ",(Optim_vy_min+((Optim_index+0.5)/Optim_bins)*(Optim_vy_max - Optim_vy_min)));
+	 fprintf(hfile,"%10i\t",Optim_Reference_vy[Optim_index]);
+	 fprintf(hfile,"%10.4g ",(Optim_vz_min+((Optim_index+0.5)/Optim_bins)*(Optim_vz_max - Optim_vz_min)));
+	 fprintf(hfile,"%10i\t",Optim_Reference_vz[Optim_index]);
+	 fprintf(hfile,"%10.4g ",(Optim_s1_min+((Optim_index+0.5)/Optim_bins)*(Optim_s1_max - Optim_s1_min)));
+	 fprintf(hfile,"%10i\t",Optim_Reference_s1[Optim_index]);
+	 fprintf(hfile,"%10.4g ",(Optim_s2_min+((Optim_index+0.5)/Optim_bins)*(Optim_s2_max - Optim_s2_min)));
+	 fprintf(hfile,"%10i\t",Optim_Reference_s2[Optim_index]);
+	 fprintf(hfile,"%10.4g ",(Optim_p_min+((Optim_index+0.5)/Optim_bins)*(Optim_p_max - Optim_p_min)));
+	 fprintf(hfile,"%10i\t",Optim_Reference_p[Optim_index]);
+	 fprintf(hfile,"\n"); 
+       }
+       fprintf(hfile,"# data: Passing\n");
+       for (Optim_index = 0; Optim_index &lt; Optim_bins; Optim_index++)
+       {
+         fprintf(hfile,"%10.4g ",(Optim_x_min+((Optim_index+0.5)/Optim_bins)*(Optim_x_max - Optim_x_min)));
+	 fprintf(hfile,"%10i\t",Optim_Passing_x[Optim_index]);
+	 fprintf(hfile,"%10.4g ",(Optim_y_min+((Optim_index+0.5)/Optim_bins)*(Optim_y_max - Optim_y_min)));
+	 fprintf(hfile,"%10i\t",Optim_Passing_y[Optim_index]);
+	 fprintf(hfile,"%10.4g ",(Optim_vx_min+((Optim_index+0.5)/Optim_bins)*(Optim_vx_max - Optim_vx_min)));
+	 fprintf(hfile,"%10i\t",Optim_Passing_vx[Optim_index]);
+	 fprintf(hfile,"%10.4g ",(Optim_vy_min+((Optim_index+0.5)/Optim_bins)*(Optim_vy_max - Optim_vy_min)));
+	 fprintf(hfile,"%10i\t",Optim_Passing_vy[Optim_index]);
+	 fprintf(hfile,"%10.4g ",(Optim_vz_min+((Optim_index+0.5)/Optim_bins)*(Optim_vz_max - Optim_vz_min)));
+	 fprintf(hfile,"%10i\t",Optim_Passing_vz[Optim_index]);
+	 fprintf(hfile,"%10.4g ",(Optim_s1_min+((Optim_index+0.5)/Optim_bins)*(Optim_s1_max - Optim_s1_min)));
+	 fprintf(hfile,"%10i\t",Optim_Passing_s1[Optim_index]);
+	 fprintf(hfile,"%10.4g ",(Optim_s2_min+((Optim_index+0.5)/Optim_bins)*(Optim_s2_max - Optim_s2_min)));
+	 fprintf(hfile,"%10i\t",Optim_Passing_s2[Optim_index]);
+	 fprintf(hfile,"%10.4g ",(Optim_p_min+((Optim_index+0.5)/Optim_bins)*(Optim_p_max - Optim_p_min)));
+	 fprintf(hfile,"%10i\t",Optim_Passing_p[Optim_index]);
+	 fprintf(hfile,"\n"); 
+       }
+       fprintf(hfile,"# data: New_Source\n");
+       for (Optim_index = 0; Optim_index &lt; Optim_bins; Optim_index++)
+       {
+         fprintf(hfile,"%10.4g ",(Optim_x_min+((Optim_index+0.5)/Optim_bins)*(Optim_x_max - Optim_x_min)));
+	 fprintf(hfile,"%10i\t",Optim_New_Source_x[Optim_index]);
+	 fprintf(hfile,"%10.4g ",(Optim_y_min+((Optim_index+0.5)/Optim_bins)*(Optim_y_max - Optim_y_min)));
+	 fprintf(hfile,"%10i\t",Optim_New_Source_y[Optim_index]);
+	 fprintf(hfile,"%10.4g ",(Optim_vx_min+((Optim_index+0.5)/Optim_bins)*(Optim_vx_max - Optim_vx_min)));
+	 fprintf(hfile,"%10i\t",Optim_New_Source_vx[Optim_index]);
+	 fprintf(hfile,"%10.4g ",(Optim_vy_min+((Optim_index+0.5)/Optim_bins)*(Optim_vy_max - Optim_vy_min)));
+	 fprintf(hfile,"%10i\t",Optim_New_Source_vy[Optim_index]);
+	 fprintf(hfile,"%10.4g ",(Optim_vz_min+((Optim_index+0.5)/Optim_bins)*(Optim_vz_max - Optim_vz_min)));
+	 fprintf(hfile,"%10i\t",Optim_New_Source_vz[Optim_index]);
+	 fprintf(hfile,"%10.4g ",(Optim_s1_min+((Optim_index+0.5)/Optim_bins)*(Optim_s1_max - Optim_s1_min)));
+	 fprintf(hfile,"%10i\t",Optim_New_Source_s1[Optim_index]);
+	 fprintf(hfile,"%10.4g ",(Optim_s2_min+((Optim_index+0.5)/Optim_bins)*(Optim_s2_max - Optim_s2_min)));
+	 fprintf(hfile,"%10i\t",Optim_New_Source_s2[Optim_index]);
+	 fprintf(hfile,"%10.4g ",(Optim_p_min+((Optim_index+0.5)/Optim_bins)*(Optim_p_max - Optim_p_min)));
+	 fprintf(hfile,"%10i\t",Optim_New_Source_p[Optim_index]);
+	 fprintf(hfile,"\n"); 
+       }
+       fclose(hfile);
+       
+       if (Optim_Reference_Counts*Optim_Ratio)
+         printf("Optimizer efficiency is : %.1f \% \n", ((double)Optim_Monitor_Counts * 100/Optim_Reference_Counts)/Optim_Ratio);
+       printf("Number of ABSORB : %i\n",Optim_n_absorb);
+       printf("Counts : reference = %i, passing = %i, monitor = %i\n", Optim_Reference_Counts, Optim_Passing_Counts, Optim_Monitor_Counts);
+       printf("Flux : reference = %.2g, passing = %.2g, monitor = %.2g\n", Optim_Reference_Flux, Optim_Passing_Flux, Optim_Monitor_Flux); 
+
+    }
+  }
+%}
+END
+
+</PRE>
+<PRE>
+/*******************************************************************************
+*
+* McStas, version 1.0, released October 26, 1998
+*         Maintained by Kristian Nielsen and Kim Lefmann,
+*         Risoe National Laboratory, Roskilde, Denmark
+*
+* Component: Guide.
+*
+* Written by: KN, September 2 1998 
+* Modified by: KL, October 6, 1998
+*
+* Models a rectangular guide tube centered on the Z axis. The entrance lies
+* in the X-Y plane.
+* For details on the geometry calculation see the description in the McStas
+* reference manual.
+*
+* INPUT PARAMETERS:
+*
+* w1:      (m)    Width at the guide entry
+* h1:      (m)    Height at the guide entry
+* w2:      (m)    Width at the guide exit
+* h2:      (m)    Height at the guide exit
+* l:       (m)    length of guide
+* R0:      (1)    Low-angle reflectivity
+* Qc:      (AA-1) Critical scattering vector
+* alpha:   (AA)   Slope of reflectivity
+* m:       (1)    m-value of material. Zero means completely absorbing.
+* W:       (AA-1) Width of supermirror cut-off
+*
+* Example values: m=4 Qc=0.02 W=1/300 alpha=6.49 R0=1
+*******************************************************************************/
+
+DEFINE COMPONENT Guide
+DEFINITION PARAMETERS (w1, h1, w2, h2, l, R0, Qc, alpha, m, W)
+SETTING PARAMETERS ()
+STATE PARAMETERS (x,y,z,vx,vy,vz,t,s1,s2,p)
+
+TRACE
+%{
+  double t1,t2;                                 /* Intersection times. */
+  double av,ah,bv,bh,cv1,cv2,ch1,ch2,d;         /* Intermediate values */
+  double vdotn_v1,vdotn_v2,vdotn_h1,vdotn_h2;   /* Dot products. */
+  int i;                                        /* Which mirror hit? */
+  double q;                                     /* Q [1/AA] of reflection */
+  double vlen2,nlen2;                           /* Vector lengths squared */
+
+  /* ToDo: These could be precalculated. */
+  double ww = .5*(w2 - w1), hh = .5*(h2 - h1);
+  double whalf = .5*w1, hhalf = .5*h1;
+  double lwhalf = l*whalf, lhhalf = l*hhalf;
+
+  /* Propagate neutron to guide entrance. */
+  PROP_Z0;
+  if(x &lt;= -whalf || x &gt;= whalf || y &lt;= -hhalf || y &gt;= hhalf)
+    ABSORB;
+  for(;;)
+  {
+    /* Compute the dot products of v and n for the four mirrors. */
+    av = l*vx; bv = ww*vz;
+    ah = l*vy; bh = hh*vz;
+    vdotn_v1 = bv + av;         /* Left vertical */
+    vdotn_v2 = bv - av;         /* Right vertical */
+    vdotn_h1 = bh + ah;         /* Lower horizontal */
+    vdotn_h2 = bh - ah;         /* Upper horizontal */
+    /* Compute the dot products of (O - r) and n as c1+c2 and c1-c2 */
+    cv1 = -whalf*l - z*ww; cv2 = x*l;
+    ch1 = -hhalf*l - z*hh; ch2 = y*l;
+    /* Compute intersection times. */
+    t1 = (l - z)/vz;
+    i = 0;
+    if(vdotn_v1 &lt; 0 &amp;&amp; (t2 = (cv1 - cv2)/vdotn_v1) &lt; t1)
+    {
+      t1 = t2;
+      i = 1;
+    }
+    if(vdotn_v2 &lt; 0 &amp;&amp; (t2 = (cv1 + cv2)/vdotn_v2) &lt; t1)
+    {
+      t1 = t2;
+      i = 2;
+    }
+    if(vdotn_h1 &lt; 0 &amp;&amp; (t2 = (ch1 - ch2)/vdotn_h1) &lt; t1)
+    {
+      t1 = t2;
+      i = 3;
+    }
+    if(vdotn_h2 &lt; 0 &amp;&amp; (t2 = (ch1 + ch2)/vdotn_h2) &lt; t1)
+    {
+      t1 = t2;
+      i = 4;
+    }
+    if(i == 0)
+      break;                    /* Neutron left guide. */
+    PROP_DT(t1);
+    switch(i)
+    {
+      case 1:                   /* Left vertical mirror */
+        nlen2 = l*l + ww*ww;
+        q = V2Q*(-2)*vdotn_v1/sqrt(nlen2);
+        d = 2*vdotn_v1/nlen2;
+        vx = vx - d*l;
+        vz = vz - d*ww;
+        break;
+      case 2:                   /* Right vertical mirror */
+        nlen2 = l*l + ww*ww;
+        q = V2Q*(-2)*vdotn_v2/sqrt(nlen2);
+        d = 2*vdotn_v2/nlen2;
+        vx = vx + d*l;
+        vz = vz - d*ww;
+        break;
+      case 3:                   /* Lower horizontal mirror */
+        nlen2 = l*l + hh*hh;
+        q = V2Q*(-2)*vdotn_h1/sqrt(nlen2);
+        d = 2*vdotn_h1/nlen2;
+        vy = vy - d*l;
+        vz = vz - d*hh;
+        break;
+      case 4:                   /* Upper horizontal mirror */
+        nlen2 = l*l + hh*hh;
+        q = V2Q*(-2)*vdotn_h2/sqrt(nlen2);
+        d = 2*vdotn_h2/nlen2;
+        vy = vy + d*l;
+        vz = vz - d*hh;
+        break;
+    }
+    /* Now compute reflectivity. */
+    if(m == 0)
+      ABSORB;
+    if(q &gt; Qc)
+    {
+      double arg = (q-m*Qc)/W;
+      if(arg &lt; 10)
+        p *= .5*(1-tanh(arg))*(1-alpha*(q-Qc));
+      else
+        ABSORB;                               /* Cutoff ~ 1E-10 */
+    }
+    p *= R0;
+  }
+%}
+
+MCDISPLAY
+%{
+  double x;
+  int i;
+
+  magnify("xy");
+  multiline(5,
+            -w1/2.0, -h1/2.0, 0.0,
+             w1/2.0, -h1/2.0, 0.0,
+             w1/2.0,  h1/2.0, 0.0,
+            -w1/2.0,  h1/2.0, 0.0,
+            -w1/2.0, -h1/2.0, 0.0);
+  multiline(5,
+            -w2/2.0, -h2/2.0, (double)l,
+             w2/2.0, -h2/2.0, (double)l,
+             w2/2.0,  h2/2.0, (double)l,
+            -w2/2.0,  h2/2.0, (double)l,
+            -w2/2.0, -h2/2.0, (double)l);
+  line(-w1/2.0, -h1/2.0, 0, -w2/2.0, -h2/2.0, (double)l);
+  line( w1/2.0, -h1/2.0, 0,  w2/2.0, -h2/2.0, (double)l);
+  line( w1/2.0,  h1/2.0, 0,  w2/2.0,  h2/2.0, (double)l);
+  line(-w1/2.0,  h1/2.0, 0, -w2/2.0,  h2/2.0, (double)l);
+%}
+
+END
+</PRE>
+<PRE>
+/*******************************************************************************
+*
+* McStas, version 1.0, released October 26, 1998
+*         Maintained by Kristian Nielsen and Kim Lefmann,
+*         Risoe National Laboratory, Roskilde, Denmark
+*
+* Component: Guide2.
+*
+* Written by: KN, September 2 1998 
+* Modified by: KL, October 6, 1998
+*
+* Models a rectangular guide tube centered on the Z axis. The entrance lies
+* in the X-Y plane.
+* For details on the geometry calculation see the description in the McStas
+* reference manual.
+*
+* INPUT PARAMETERS:
+*
+* w1:      (m)    Width at the guide entry
+* h1:      (m)    Height at the guide entry
+* w2:      (m)    Width at the guide exit
+* h2:      (m)    Height at the guide exit
+* l:       (m)    length of guide
+* R0:      (1)    Low-angle reflectivity
+* Qc:      (AA-1) Critical scattering vector
+* alpha:   (AA)   Slope of reflectivity
+* mh:      (1)    m-horizontal value of material
+* mv:      (1)    m-vertical value of material
+* W:       (AA-1) Width of supermirror cut-off
+*
+* Example values: m=4 Qc=0.02 W=1/300 alpha=6.49 R0=1
+*/
+
+DEFINE COMPONENT Guide2
+DEFINITION PARAMETERS (w1, h1, w2, h2, l, R0, Qc, alpha, mh, mv, W)
+SETTING PARAMETERS ()
+STATE PARAMETERS (x,y,z,vx,vy,vz,t,s1,s2,p)
+
+TRACE
+%{
+  double t1,t2;                                 /* Intersection times. */
+  double av,ah,bv,bh,cv1,cv2,ch1,ch2,d;         /* Intermediate values */
+  double vdotn_v1,vdotn_v2,vdotn_h1,vdotn_h2;   /* Dot products. */
+  int i;                                        /* Which mirror hit? */
+  double q;                                     /* Q [1/AA] of reflection */
+  double vlen2,nlen2;                           /* Vector lengths squared */
+
+  /* ToDo: These could be precalculated. */
+  double ww = .5*(w2 - w1), hh = .5*(h2 - h1);
+  double whalf = .5*w1, hhalf = .5*h1;
+  double lwhalf = l*whalf, lhhalf = l*hhalf;
+
+  /* Propagate neutron to guide entrance. */
+  PROP_Z0;
+  if(x &lt;= -whalf || x &gt;= whalf || y &lt;= -hhalf || y &gt;= hhalf)
+    ABSORB;
+  for(;;)
+  {
+    /* Compute the dot products of v and n for the four mirrors. */
+    av = l*vx; bv = ww*vz;
+    ah = l*vy; bh = hh*vz;
+    vdotn_v1 = bv + av;         /* Left vertical */
+    vdotn_v2 = bv - av;         /* Right vertical */
+    vdotn_h1 = bh + ah;         /* Lower horizontal */
+    vdotn_h2 = bh - ah;         /* Upper horizontal */
+    /* Compute the dot products of (O - r) and n as c1+c2 and c1-c2 */
+    cv1 = -whalf*l - z*ww; cv2 = x*l;
+    ch1 = -hhalf*l - z*hh; ch2 = y*l;
+    /* Compute intersection times. */
+    t1 = (l - z)/vz;
+    i = 0;
+    if(vdotn_v1 &lt; 0 &amp;&amp; (t2 = (cv1 - cv2)/vdotn_v1) &lt; t1)
+    {
+      t1 = t2;
+      i = 1;
+    }
+    if(vdotn_v2 &lt; 0 &amp;&amp; (t2 = (cv1 + cv2)/vdotn_v2) &lt; t1)
+    {
+      t1 = t2;
+      i = 2;
+    }
+    if(vdotn_h1 &lt; 0 &amp;&amp; (t2 = (ch1 - ch2)/vdotn_h1) &lt; t1)
+    {
+      t1 = t2;
+      i = 3;
+    }
+    if(vdotn_h2 &lt; 0 &amp;&amp; (t2 = (ch1 + ch2)/vdotn_h2) &lt; t1)
+    {
+      t1 = t2;
+      i = 4;
+    }
+    if(i == 0)
+      break;                    /* Neutron left guide. */
+    PROP_DT(t1);
+    switch(i)
+    {
+      case 1:                   /* Left vertical mirror */
+        nlen2 = l*l + ww*ww;
+        q = V2Q*(-2)*vdotn_v1/sqrt(nlen2);
+        d = 2*vdotn_v1/nlen2;
+        vx = vx - d*l;
+        vz = vz - d*ww;
+        break;
+      case 2:                   /* Right vertical mirror */
+        nlen2 = l*l + ww*ww;
+        q = V2Q*(-2)*vdotn_v2/sqrt(nlen2);
+        d = 2*vdotn_v2/nlen2;
+        vx = vx + d*l;
+        vz = vz - d*ww;
+        break;
+      case 3:                   /* Lower horizontal mirror */
+        nlen2 = l*l + hh*hh;
+        q = V2Q*(-2)*vdotn_h1/sqrt(nlen2);
+        d = 2*vdotn_h1/nlen2;
+        vy = vy - d*l;
+        vz = vz - d*hh;
+        break;
+      case 4:                   /* Upper horizontal mirror */
+        nlen2 = l*l + hh*hh;
+        q = V2Q*(-2)*vdotn_h2/sqrt(nlen2);
+        d = 2*vdotn_h2/nlen2;
+        vy = vy + d*l;
+        vz = vz - d*hh;
+        break;
+    }
+    /* Now compute reflectivity. */
+    if(q &gt; Qc)
+    {
+      double arg = (q - (i &lt;= 2 ? mv : mh)*Qc)/W;
+      if(arg &lt; 10)
+        p *= .5*(1-tanh(arg))*(1-alpha*(q-Qc));
+      else
+        ABSORB;                               /* Cutoff ~ 1E-10 */
+    }
+    p *= R0;
+  }
+%}
+
+END
+</PRE>
+<PRE>
+/***********************************************************************
+*
+* McStas, version 1.0, released October 26, 1998
+*         Maintained by Kristian Nielsen and Kim Lefmann,
+*         Risoe National Laboratory, Roskilde, Denmark
+*
+* Component: Arm
+*
+* Written by: KL, KN, September 1997
+*
+* An arm does not actually do anything, it is just there to set
+* up a new coordinate system. 
+*
+* Input parameters:
+*
+* (none)
+*
+***********************************************************************/
+
+DEFINE COMPONENT Arm
+DEFINITION PARAMETERS ()
+SETTING PARAMETERS ()
+STATE PARAMETERS ()
+TRACE
+%{
+%}
+
+MCDISPLAY
+%{
+  /* A bit ugly; hard-coded dimensions. */
+  magnify("");
+  line(0,0,0,0.2,0,0);
+  line(0,0,0,0,0.2,0);
+  line(0,0,0,0,0,0.2);
+%}
+
+END
+</PRE>
+<PRE>
+/*******************************************************************************
+*
+* McStas, version 1.0, released October 26, 1998
+*         Maintained by Kristian Nielsen and Kim Lefmann,
+*         Risoe National Laboratory, Roskilde, Denmark
+*
+* Component: Mon_2foc
+*
+* Written by: KL, HMR  June 16, 1997
+* Rewritten by: KL  Oct. 16, 1997
+* Added double bent feature by: Peter Link Feb. 12,1999
+* 
+* Double bent monochromator which uses a small-mosaicity approximation as well as
+* the approximation vy^2 &lt;&lt; vz^2 + vx^2.
+* Second order scattering is neglected.
+* For an unrotated monochromator component, the crystal plane lies in the y-z
+* plane (ie. parallel to the beam).
+*
+* INPUT PARAMETERS:
+*
+* zwidth:  (horizontal) width of an individual slab
+* ywidth:  (vertical) heigth of an individual slab
+* gap   :   typical gap  between adjacent slabs
+* NH    :   number of slabs horizontal ( columns )
+* NV    :   number of slabs vertical   ( rows )
+* mosaich: Horisontal mosaic (FWHM) (arc minutes)
+* mosaicv: Vertical mosaic (FWHM) (arc minutes)
+* R0:      Maximum reflectivity (1)
+* Q:       Scattering vector (AA-1)
+* RV :     radius of vertical focussing (m)
+* RH :     radius of horizontal focussing (m)
+*
+*******************************************************************************/
+
+DEFINE COMPONENT Mon_2foc
+DEFINITION PARAMETERS (zwidth, ywidth, gap, NH, NV, mosaich, mosaicv, r0, Q, RV, RH)
+SETTING PARAMETERS ()
+STATE PARAMETERS (x,y,z,vx,vy,vz,t,s1,s2,p)
+DECLARE
+  %{
+#define DIV_CUTOFF 2            /* ~ 10^-5 cutoff. */
+  %}
+
+TRACE
+  %{
+    double dphi,tmp1,tmp2,tmp3,vratio,phi,theta0,theta,v,cs,sn;
+    double zmin,zmax,ymin,ymax,zp,yp,row,col;
+	double tilth,tiltv;         /* used to calculate tilt angle of slab */
+	double sna,snb,csa,csb;
+	double old_x = x, old_y = y, old_z = z, old_t = t;
+    double dt;
+    
+	if(vx != 0.0 &amp;&amp; (dt = -x/vx) &gt;= 0.0)
+    {
+      zmax = ((NH*(zwidth+gap))-gap)/2;
+	  zmin = -1*zmax;
+	  ymax = ((NV*(ywidth+gap))-gap)/2;
+	  ymin = -1*ymax;
+      y += vy*dt; z += vz*dt; t += dt; x = 0.0;
+	  zp = fmod ( (z-zmin),(zwidth+gap) );
+	  yp = fmod ( (y-ymin),(ywidth+gap) );
+	  
+	/* hit a slab or a gap ? */
+    
+    if (z&gt;zmin &amp;&amp; z&lt;zmax &amp;&amp; y&gt;ymin &amp;&amp; y&lt;ymax &amp;&amp; zp&lt;zwidth &amp;&amp; yp&lt; ywidth)
+    {
+      
+      col = ceil ( (z-zmin)/(zwidth+gap));
+	  row = ceil ( (y-ymin)/(ywidth+gap));
+	  tilth = asin((col-(NH+1)/2)*(zwidth+gap)/RH);
+	  tiltv = -asin((row-(NV+1)/2)*(ywidth+gap)/RV);
+	  
+	  /* rotate with tilth and tiltv */
+
+      sna = sin(tilth);
+	  snb = sin(tiltv);
+	  csa = cos(tilth);
+	  csb = cos(tiltv);
+	  vx = vx*csa*csb+vy*snb-vz*sna*csb;
+	  vy = -vx*csa*snb+vy*csb+vz*sna*snb;
+	  vz = vx*sna+vz*csa;  
+
+	  
+	  /* First: scattering in plane */
+      theta0 = atan2(vx,vz);           /* neutron angle to slab */
+      v = sqrt(vx*vx+vy*vy+vz*vz);
+      theta = asin(Q2V*Q/(2.0*v));               /* Bragg's law */
+      if(theta0 &lt; 0)
+        theta = -theta;
+      tmp3 = (theta-theta0)/(MIN2RAD*mosaich);
+      if(tmp3 &gt; DIV_CUTOFF)
+      {
+        x = old_x; y = old_y; z = old_z; t = old_t;
+      }
+      else
+      {
+        p *= r0*exp(-tmp3*tmp3*4*log(2)); /* Use mosaics */
+        tmp1 = 2*theta;
+        cs = cos(tmp1);
+        sn = sin(tmp1);
+        tmp2 = cs*vx - sn*vz; 
+        vy = vy;
+        vz = cs*vz + sn*vx; 
+        vx = tmp2;
+
+        /* Second: scatering out of plane. 
+           Approximation is that Debye-Scherrer cone is a plane */
+
+        phi = atan2(vy,vz);  /* out-of plane angle */
+        dphi = (MIN2RAD*mosaicv)/(2*sqrt(2*log(2)))*randnorm();  /* MC choice: */
+        /* Vertical angle of the crystallite */
+        vy = vz*tan(phi+2*dphi*sin(theta));
+        vratio = v/sqrt(vx*vx+vy*vy+vz*vz);
+        vz = vz*vratio;
+        vy = vy*vratio;                             /* Renormalize v */
+        vx = vx*vratio;
+      }
+    /* rotate v coords back */
+    vx = vx*csb*csa-vy*snb*csa+vz*sna;
+	vy = vx*snb+vy*csb;
+	vz = -vx*csb*sna+vy*snb*sna+vz*csa;    
+
+	}
+    else
+    {
+      x = old_x; y = old_y; z = old_z; t = old_t;
+    }
+    }
+  %}
+END
+
+</PRE>
+<PRE>
+/*******************************************************************************
+*
+* McStas, version 1.1, released 
+*         Maintained by Kristian Nielsen and Kim Lefmann,
+*         Risoe National Laboratory, Roskilde, Denmark
+*
+* Component: Monitor_Optimizer
+*
+* Written by: EF, 17 Sept 1999
+*
+* A component that optimizes the neutron flux passing through the
+* Source_optimizer in order to have the maximum flux at the 
+* Monitor_Optimizer position.
+* Source_optimizer should be placed just after the source.
+* Monitor_Optimizer should be placed at position to optimize. 
+*
+* INPUT PARAMETERS:
+*
+* xmin:     Lower x bound of detector opening (m)
+* xmax:     Upper x bound of detector opening (m)
+* ymin:     Lower y bound of detector opening (m)
+* ymax:     Upper y bound of detector opening (m)
+*
+* OUTPUT PARAMETERS:
+*
+* distributions, optimizer efficiency
+*
+*******************************************************************************/
+
+
+DEFINE COMPONENT Monitor_Optimizer
+DEFINITION PARAMETERS (xmin, xmax, ymin, ymax)
+SETTING PARAMETERS ()
+STATE PARAMETERS (x,y,z,vx,vy,vz,t,s1,s2,p)
+DECLARE
+%{
+#ifndef MCSTAS_GEN_OPTIM
+#error McStas : Source_Optimizer component has to be used before Monitor_Optimizer
+#endif
+
+%}
+
+INITIALIZE
+%{
+%}
+
+TRACE
+%{
+  PROP_Z0;
+  if (x&gt;xmin &amp;&amp; x&lt;xmax &amp;&amp; y&gt;ymin &amp;&amp; y&lt;ymax)
+  {
+    if ((Optim_Phase == OPTIM_PHASE_GET_REF)
+     || (Optim_Phase == OPTIM_PHASE_OPTIM) )	/* build the Optimized Source distributions */
+    {
+      Optim_Monitor_Counts++; /* initialized in OPTIM_PHASE_SET_REF */
+      Optim_Monitor_Flux += p;
+      
+      if (Optim_vx_max-Optim_vx_min)
+        Optim_index = (int)rint(Optim_bins * (Optim_vx -Optim_vx_min)/(Optim_vx_max-Optim_vx_min));
+      else
+        Optim_index = 0;
+      if (Optim_index &lt; 0)     Optim_index = 0;
+      if (Optim_index &gt;= Optim_bins) Optim_index = Optim_bins - 1;
+      Optim_New_Source_vx[Optim_index]++;
+      
+      if (Optim_vy_max-Optim_vy_min)
+        Optim_index = (int)rint(Optim_bins * (Optim_vy -Optim_vy_min)/(Optim_vy_max-Optim_vy_min));
+      else
+        Optim_index = 0;
+      if (Optim_index &lt; 0)     Optim_index = 0;
+      if (Optim_index &gt;= Optim_bins) Optim_index = Optim_bins - 1;
+      Optim_New_Source_vy[Optim_index]++;
+      
+      if (Optim_vz_max-Optim_vz_min)
+        Optim_index = (int)rint(Optim_bins * (Optim_vz -Optim_vz_min)/(Optim_vz_max-Optim_vz_min));
+      else
+        Optim_index = 0;
+      if (Optim_index &lt; 0)     Optim_index = 0;
+      if (Optim_index &gt;= Optim_bins) Optim_index = Optim_bins - 1;
+      Optim_New_Source_vz[Optim_index]++;
+      
+      if (Optim_x_max-Optim_x_min)
+        Optim_index = (int)rint(Optim_bins * (Optim_x -Optim_x_min)/(Optim_x_max-Optim_x_min));
+      else
+        Optim_index = 0;
+      if (Optim_index &lt; 0)     Optim_index = 0;
+      if (Optim_index &gt;= Optim_bins) Optim_index = Optim_bins - 1;
+      Optim_New_Source_x[Optim_index]++;
+      
+      if (Optim_y_max-Optim_y_min)
+        Optim_index = (int)rint(Optim_bins * (Optim_y -Optim_y_min)/(Optim_y_max-Optim_y_min));
+      else
+        Optim_index = 0;
+      if (Optim_index &lt; 0)     Optim_index = 0;
+      if (Optim_index &gt;= Optim_bins) Optim_index = Optim_bins - 1;
+      Optim_New_Source_y[Optim_index]++;
+      
+      if (Optim_s1_max-Optim_s1_min)
+        Optim_index = (int)rint(Optim_bins * (Optim_s1 -Optim_s1_min)/(Optim_s1_max-Optim_s1_min));
+      else
+        Optim_index = 0;
+      if (Optim_index &lt; 0)     Optim_index = 0;
+      if (Optim_index &gt;= Optim_bins) Optim_index = Optim_bins - 1;
+      Optim_New_Source_s1[Optim_index]++;
+      
+      if (Optim_s2_max-Optim_s2_min)
+        Optim_index = (int)rint(Optim_bins * (Optim_s2 -Optim_s2_min)/(Optim_s2_max-Optim_s2_min));
+      else
+        Optim_index = 0;
+      if (Optim_index &lt; 0)     Optim_index = 0;
+      if (Optim_index &gt;= Optim_bins) Optim_index = Optim_bins - 1;
+      Optim_New_Source_s2[Optim_index]++;
+      
+      if (Optim_p_max-Optim_p_min)
+        Optim_index = (int)rint(Optim_bins * (Optim_p -Optim_p_min)/(Optim_p_max-Optim_p_min));
+      else
+        Optim_index = 0;
+      if (Optim_index &lt; 0)     Optim_index = 0;
+      if (Optim_index &gt;= Optim_bins) Optim_index = Optim_bins - 1;
+      Optim_New_Source_p[Optim_index]++;
+    } /* end if Optim_Phase */
+    
+  } /* end if xy in optimizer */
+/* end trace */
+%} 
+
+FINALLY
+%{
+/* initial Reference distribution arrays (for weights) */
+  free(Optim_Reference_x);
+  free(Optim_Reference_y);
+  free(Optim_Reference_vx);
+  free(Optim_Reference_vy);
+  free(Optim_Reference_vz);
+  free(Optim_Reference_s1);
+  free(Optim_Reference_s2);
+  free(Optim_Reference_p);
+
+/* optimized Source distribution arrays (to reach) */
+  free(Optim_Source_x);
+  free(Optim_Source_y);
+  free(Optim_Source_vx);
+  free(Optim_Source_vy);
+  free(Optim_Source_vz);
+  free(Optim_Source_s1);
+  free(Optim_Source_s2);
+  free(Optim_Source_p);
+  
+/* optimized New_Source distribution arrays (to reach in next step, passed to Source) */
+  free(Optim_New_Source_x);
+  free(Optim_New_Source_y);
+  free(Optim_New_Source_vx);
+  free(Optim_New_Source_vy);
+  free(Optim_New_Source_vz);
+  free(Optim_New_Source_s1);
+  free(Optim_New_Source_s2);
+  free(Optim_New_Source_p);
+  
+/* Passing distribution arrays (should grow to reach Source) */
+  free(Optim_Passing_x);
+  free(Optim_Passing_y);
+  free(Optim_Passing_vx);
+  free(Optim_Passing_vy);
+  free(Optim_Passing_vz);
+  free(Optim_Passing_s1);
+  free(Optim_Passing_s2);
+  free(Optim_Passing_p);
+%}
+
+
+END
+</PRE>
+<PRE>
+/*******************************************************************************
+*
+* McStas, version 1.0, released October 26, 1998
+*         Maintained by Kristian Nielsen and Kim Lefmann,
+*         Risoe National Laboratory, Roskilde, Denmark
+*
+* Component: PSD_monitor
+*
+* Written by: KL,  Feb 3, 1998
+*
+* An (n times m) pixel PSD monitor. This component may also be used as a beam
+* detector.
+*
+* INPUT PARAMETERS:
+*
+* xmin:     Lower x bound of detector opening (m)
+* xmax:     Upper x bound of detector opening (m)
+* ymin:     Lower y bound of detector opening (m)
+* ymax:     Upper y bound of detector opening (m)
+* nx:       Number of pixel columns (1)
+* ny:       Number of pixel rows (1)
+* filename: Name of file in which to store the detector image (text)
+*
+* OUTPUT PARAMETERS:
+*
+* PSD_N:    Array of neutron counts
+* PSD_p:    Array of neutron weight counts
+* PSD_p2:   Array of second moments
+*
+*******************************************************************************/
+
+
+DEFINE COMPONENT PSD_monitor
+DEFINITION PARAMETERS (xmin, xmax, ymin, ymax, nx, ny, filename)
+SETTING PARAMETERS ()
+OUTPUT PARAMETERS (PSD_N, PSD_p, PSD_p2) 
+STATE PARAMETERS (x,y,z,vx,vy,vz,t,s1,s2,p)
+DECLARE
+  %{
+    int PSD_N[nx][ny];
+    double PSD_p[nx][ny];
+    double PSD_p2[nx][ny];
+  %}
+INITIALIZE
+  %{
+    int i,j;
+
+    for (i=0; i&lt;nx; i++)
+     for (j=0; j&lt;ny; j++) 
+     {
+      PSD_N[i][j] = 0;
+      PSD_p[i][j] = 0;
+      PSD_p2[i][j] = 0;
+     }
+  %}
+TRACE
+  %{
+    int i,j;
+
+    PROP_Z0;
+    if (x&gt;xmin &amp;&amp; x&lt;xmax &amp;&amp; y&gt;ymin &amp;&amp; y&lt;ymax)
+    {
+      i = floor((x - xmin)*nx/(xmax - xmin));
+      j = floor((y - ymin)*ny/(ymax - ymin));
+      PSD_N[i][j]++;
+      PSD_p[i][j] += p;
+      PSD_p2[i][j] += p*p;
+    }
+  %}
+FINALLY
+  %{
+    DETECTOR_OUT_2D(
+        "PSD monitor",
+        "X position [cm]",
+        "Y position [cm]",
+        xmin*100.0, xmax*100.0, ymin*100.0, ymax*100.0,
+        nx, ny,
+        &amp;PSD_N[0][0],&amp;PSD_p[0][0],&amp;PSD_p2[0][0],
+        filename);
+  %}
+
+MCDISPLAY
+%{
+  magnify("xy");
+  multiline(5, (double)xmin, (double)ymin, 0.0,
+               (double)xmax, (double)ymin, 0.0,
+               (double)xmax, (double)ymax, 0.0,
+               (double)xmin, (double)ymax, 0.0,
+               (double)xmin, (double)ymin, 0.0);
+%}
+
+END
+</PRE>
+<PRE>
+/***********************************************************************
+*
+* McStas, version 1.0, released October 26, 1998
+*         Maintained by Kristian Nielsen and Kim Lefmann,
+*         Risoe National Laboratory, Roskilde, Denmark
+*
+* Component: E_monitor
+*
+* Written by:  KN,KL,  April 20, 1998
+* Modified by: KL, Octorber 7, 1998
+*
+* A square single monitor that measures the energy of the incoming neutrons.
+*
+* INPUT PARAMETERS:
+*
+* xmin:     Lower x bound of detector opening (m)
+* xmax:     Upper x bound of detector opening (m)
+* ymin:     Lower y bound of detector opening (m)
+* ymax:     Upper y bound of detector opening (m)
+* Emin:     Minimum energy to detect (meV)
+* Emax:     Maximum energy to detect (meV)
+* nchan:    Number of energy channels (1)
+* filename: Name of file in which to store the detector image (text)
+*
+* OUTPUT PARAMETERS:
+*
+* E_N:      Array of neutron counts
+* E_p:      Array of neutron weight counts
+* E_p2:     Array of second moments
+*
+***********************************************************************/
+
+DEFINE COMPONENT E_monitor
+DEFINITION PARAMETERS (xmin, xmax, ymin, ymax, Emin, Emax, nchan, filename)
+SETTING PARAMETERS ()
+OUTPUT PARAMETERS (E_N, E_p, E_p2)
+STATE PARAMETERS (x,y,z,vx,vy,vz,t,s1,s2,p)
+DECLARE
+  %{
+    int E_N[nchan];
+    double E_p[nchan], E_p2[nchan];
+  %}
+INITIALIZE
+  %{
+    int i;
+
+    for (i=0; i&lt;nchan; i++)
+    {
+      E_N[i] = 0;
+      E_p[i] = 0;
+      E_p2[i] = 0;
+    }
+  %}
+TRACE
+  %{
+    int i;
+    double E;
+
+    PROP_Z0;
+    if (x&gt;xmin &amp;&amp; x&lt;xmax &amp;&amp; y&gt;ymin &amp;&amp; y&lt;ymax)
+    {
+      E = VS2E*(vx*vx + vy*vy + vz*vz);
+
+      i = floor((E-Emin)*nchan/(Emax-Emin));
+      if(i &gt;= 0 &amp;&amp; i &lt; nchan)
+      {
+        E_N[i]++;
+        E_p[i] += p;
+        E_p2[i] += p*p;
+      }
+    }
+  %}
+FINALLY
+  %{
+    DETECTOR_OUT_1D(
+        "Energy monitor",
+        "Energy [meV]",
+        "Intensity",
+        "E", Emin, Emax, nchan,
+        &amp;E_N[0],&amp;E_p[0],&amp;E_p2[0],
+        filename);
+  %}
+
+MCDISPLAY
+%{
+  magnify("xy");
+  multiline(5, (double)xmin, (double)ymin, 0.0,
+               (double)xmax, (double)ymin, 0.0,
+               (double)xmax, (double)ymax, 0.0,
+               (double)xmin, (double)ymax, 0.0,
+               (double)xmin, (double)ymin, 0.0);
+%}
+
+END
+</PRE>
+<PRE>
+/*******************************************************************************
+*
+* McStas, version 1.1, released 
+*         Maintained by Kristian Nielsen and Kim Lefmann,
+*         Risoe National Laboratory, Roskilde, Denmark
+*
+* Component: Divergence_monitor
+*
+* Written by: KL,  Nov. 11, 1998
+*
+* A divergence sensitive monitor. The counts are distributed in 
+* (n times m) pixels. 
+*
+* INPUT PARAMETERS:
+*
+* xmin:     Lower x bound of detector opening (m)
+* xmax:     Upper x bound of detector opening (m)
+* ymin:     Lower y bound of detector opening (m)
+* ymax:     Upper y bound of detector opening (m)
+* nv:       Number of pixel columns (1)
+* nh:       Number of pixel rows (1)
+* v_maxdiv  Maximal vertical divergence detected (degrees)
+* h_maxdiv  Maximal vertical divergence detected (degrees)
+* filename: Name of file in which to store the detector image (text)
+*
+* OUTPUT PARAMETERS:
+*
+* Div_N:    Array of neutron counts
+* Div_p:    Array of neutron weight counts
+* Div_p2:   Array of second moments
+*
+*******************************************************************************/
+
+
+DEFINE COMPONENT Divergence_monitor
+DEFINITION PARAMETERS (xmin, xmax, ymin, ymax, 
+                       nh, nv, h_maxdiv, v_maxdiv, filename)
+SETTING PARAMETERS ()
+OUTPUT PARAMETERS (Div_N, Div_p, Div_p2) 
+STATE PARAMETERS (x,y,z,vx,vy,vz,t,s1,s2,p)
+DECLARE
+  %{
+    int Div_N[nh][nv];
+    double Div_p[nh][nv];
+    double Div_p2[nh][nv];
+  %}
+INITIALIZE
+  %{
+    int i,j;
+
+    for (i=0; i&lt;nh; i++)
+     for (j=0; j&lt;nv; j++) 
+     {
+      Div_N[i][j] = 0;
+      Div_p[i][j] = 0;
+      Div_p2[i][j] = 0;
+     }
+  %}
+TRACE
+  %{
+    int i,j;
+    double h_div, v_div;
+
+    PROP_Z0;
+    if (x&gt;xmin &amp;&amp; x&lt;xmax &amp;&amp; y&gt;ymin &amp;&amp; y&lt;ymax)
+    {
+      h_div = RAD2DEG*atan2(vx,vz);
+      v_div = RAD2DEG*atan2(vy,vz);
+      if (h_div &lt; h_maxdiv &amp;&amp; h_div &gt; -h_maxdiv &amp;&amp; 
+          v_div &lt; v_maxdiv &amp;&amp; v_div &gt; -v_maxdiv)
+      {
+        i = floor((h_div + h_maxdiv)*nh/(2.0*h_maxdiv));
+        j = floor((v_div + v_maxdiv)*nv/(2.0*v_maxdiv));
+        Div_N[i][j]++;
+        Div_p[i][j] += p;
+        Div_p2[i][j] += p*p;
+      }
+    }
+  %}
+FINALLY
+  %{
+    DETECTOR_OUT_2D(
+        "Divergence monitor",
+        "X divergence [deg]",
+        "Y divergence [deg]",
+        -h_maxdiv, h_maxdiv, -v_maxdiv, v_maxdiv,
+        nh, nv,
+        &amp;Div_N[0][0],&amp;Div_p[0][0],&amp;Div_p2[0][0],
+        filename);
+  %}
+
+MCDISPLAY
+  %{
+    magnify("xy");
+    multiline(5, (double)xmin, (double)ymin, 0.0,
+                 (double)xmax, (double)ymin, 0.0,
+                 (double)xmax, (double)ymax, 0.0,
+                 (double)xmin, (double)ymax, 0.0,
+                 (double)xmin, (double)ymin, 0.0);
+%}
+
+END
+</PRE>
+<PRE>
+/*******************************************************************************
+*
+* McStas, version 1.1, released 
+*         Maintained by Kristian Nielsen and Kim Lefmann,
+*         Risoe National Laboratory, Roskilde, Denmark
+*
+* Component: kw_monitor
+*
+* Written by: EF, 17 Sept 1999
+*
+* A monitor that list all neutron (k,w).
+* Output is a 2D matrix of lines [ kx ky kz Omega Intensity DeltaIntensity ]
+* stored if a file. The integrated flux is also measured.
+*
+* INPUT PARAMETERS:
+*
+* xmin:     Lower x bound of detector opening (m)
+* xmax:     Upper x bound of detector opening (m)
+* ymin:     Lower y bound of detector opening (m)
+* ymax:     Upper y bound of detector opening (m)
+* filename: Name of file in which to store the counts (text)
+*
+* OUTPUT PARAMETERS:
+*
+* Nsum:    Integrated neutron counts
+* psum:    Integrated neutron weight counts
+* p2sum:   Integrated second moments
+*
+*******************************************************************************/
+
+DEFINE COMPONENT kw_monitor
+DEFINITION PARAMETERS (xmin, xmax, ymin, ymax, filename)
+SETTING PARAMETERS ()
+OUTPUT PARAMETERS (Nsum, psum, p2sum)
+STATE PARAMETERS (x,y,z,vx,vy,vz,t,s1,s2,p)
+DECLARE
+  %{
+    int nlines;
+    int Nsum;
+    double psum, p2sum;
+    FILE *file;
+    double kx, ky, kz, E;
+  %}
+INITIALIZE
+  %{
+    psum = 0;
+    p2sum = 0;
+    Nsum = 0;
+    nlines = 0;
+    file = fopen(filename, "w");
+    if(!file)
+    {
+       fprintf(stderr, "Error: %s : could not open output file '%s'\n", mccompcurname, filename);
+       exit(-1);
+    }
+    else
+    {
+       fprintf(file,"# Instrument-source: %s\n", mcinstrument_source);
+       mcruninfo_out("# ", file);
+       fprintf(file,"# type: array_2d(-1,6) (See end of file for exact dimensions)\n");
+       fprintf(file,"# component: %s\n", mccompcurname);
+       fprintf(file,"# title: Resolution (\\vec{k},omega) Monitor\n");
+       fprintf(file,"# filename: '%s'\n",filename);
+       fprintf(file,"# variables: Kx Ky Kz E I I_err\n");
+       fprintf(file,"# xvar: (Kx Ky Kz E)\n");
+       fprintf(file,"# yvar: (I,I_err)\n");
+       fprintf(file,"# xlabel: 'Wavevector [Angs-1], Energie [meV]'\n");
+       fprintf(file,"# ylabel: 'Intensity'\n");
+    }
+  %}
+TRACE
+  %{
+    PROP_Z0;
+    if (x&gt;xmin &amp;&amp; x&lt;xmax &amp;&amp; y&gt;ymin &amp;&amp; y&lt;ymax)
+    {
+      Nsum++;
+      psum += p;
+      p2sum += p*p;
+      nlines++;
+      
+      kx = V2K*vx;
+      ky = V2K*vy;
+      kz = V2K*vz;
+      E = VS2E*(vx*vx + vy*vy + vz*vz);
+      
+	fprintf(file, "%g %g %g %g %g %g\n",
+		kx, ky, kz, E, p, p*p);
+    }
+  %}
+FINALLY
+  %{
+    if (file)
+    {
+       fprintf(file,"# type: array_2d(%i,6)\n",nlines);
+       fprintf(file,"# End of (k,omega) resolution block.\n");
+       fclose(file);
+    }
+    DETECTOR_OUT_0D("Resolution_monitor (integrated)", Nsum, psum, p2sum);
+  %}
+  
+MCDISPLAY
+%{
+  magnify("xy");
+  multiline(5, (double)xmin, (double)ymin, 0.0,
+               (double)xmax, (double)ymin, 0.0,
+               (double)xmax, (double)ymax, 0.0,
+               (double)xmin, (double)ymax, 0.0,
+               (double)xmin, (double)ymin, 0.0);
+%}
+END
+</PRE>
+<PRE>
+DEFINE INSTRUMENT IN14(KI,WN,ORDER,MHV)
+/* preprocess with : mcstas in14_4.instr */
+/* compile on mica with : cc -Ofast -64 -o in14_3 in14_3.c -lm */
+/* Test with : in14_4 KI=1.55 WN=5 */
+/* in14_6 -n 1e6 KI=2.66 WN=0.03 ORDER=1 MHV=3 */
+
+DECLARE
+%{
+
+#define VERSION "60"
+
+double L1 = 16.68;	/* source-mono */
+double L2 = 2.12;	/* mono-sample */
+double L3 = 1.35;	/* sample-ana */
+double L4 = 0.70;	/* ana-det */
+
+int    SM,SS,SA;
+double A1,A3,A5;
+
+double LM1, LM1b;	/* distances to monitors M1 and M2 */
+double LM2, LM2b;
+
+double A2,A4,A6,RM,RH;
+
+char *pfile;
+char *efile;
+char *dfile;
+char *kfile;
+
+/* ==================== Source description ==================== */
+
+double EN;
+double D_EN;
+double EMIN, EMAX;
+double FLUX = 1e13;	/* n/cm^2/s on guide entry */
+
+/* ==================== Monochromator desciption ==================== */
+
+double ETAM       = 30;	/* Mosaicity used on monochromator 30 */
+double DM         = 3.355;	/* Monochromator d-spacing in Angs */
+				/* PG002 Orders : 1st 3.355 2e 1.6775, 3e 1.1183 */
+double mono_r0    = 0.9;	/* mean reflectivity */
+double mono_width = 0.15;
+double mono_heigh = .122;
+double mono_gap   = 0;		/* slates are adjacent */
+int    mono_segment_number_vert = 7;
+int    mono_segment_number_horz = 1;
+double mono_curv_vert;		/* Vertical Rotation between adjacent slabs. */
+double mono_curv_horz;		/* Horizontal Rotation between adjacent slabs. */
+double mono_slate_heigh; 	/* size (height) of slates */
+double mono_slate_width; 	/* size (width) of slates */
+
+double mono_q;	/* Q vector for bragg scattering with monochromator and analysator */
+double Ki, Ei;
+
+double TM, GM;
+
+/* ==================== Sample desciption ==================== */
+
+double TU, TL;
+double GU, GL;
+
+/* ==================== Analyser desciption ==================== */
+
+double ETAA      = 30;	/* Mosaicity used on analyser 30 */
+double DA        = 3.355;	/* analyser d-spacing in Angs */
+				/* PG002 Orders : 1st 3.355 2e 1.6775, 3e 1.1183 */
+double ana_r0    = 0.9;	/* mean reflectivity */
+double ana_width = 0.10;
+double ana_heigh = .14;
+double ana_gap   = 0;	/* slates are adjacent */
+int    ana_segment_number_vert = 7;
+int    ana_segment_number_horz = 1;
+double ana_curv_vert;	/* Vertical Rotation between adjacent slabs. */
+double ana_curv_horz;	/* Horizontal Rotation between adjacent slabs. */
+double ana_slate_heigh; 	/* size (height) of slates */
+double ana_slate_width; 	/* size (width) of slates */
+
+double ana_q;	/* Q vector for bragg scattering with monochromator and analysator */
+double Kf, Ef;
+
+double TA, GA;
+
+%}
+
+INITIALIZE
+%{
+
+double vi,vf,sample_q;
+
+mono_q = 2*PI*ORDER/DM;	/* Q mono in Angs-1 */
+
+A4 = 0;
+A2 = asin(mono_q/2/KI)*RAD2DEG*2;
+A6 = A2;
+
+printf("Instrument : IN14, v%s (21/09/99) on %s.\n",VERSION,getenv("HOSTNAME"));
+
+/* SM : scattering at mono to the right (-1)/left(+1) */
+/* SS : scattering at sample to the right (-1)/left(+1) */
+/* SA : scattering at analyser to the right (-1)/left(+1) */
+SM = 1; SS = 1; SA = 1;
+
+A2 *= SM;	/* A1 : mono theta (crystal) */
+A1 = A2/2; 	/* A2 : mono 2 theta (arm to sample) */
+A4 *= SS;	/* A3 : sample theta */
+A3 = A4/2; 	/* A4 : sample 2 theta (arm to analyser) */
+A6 *= SA;	/* A5 : analyser theta (crystal) */
+A5 = A6/2; 	/* A6 : analyser 2 theta (arm to detector) */
+
+TM = 0;		/* TM : translation mono */
+GM = 0;		/* GM : tilt mono */
+
+GU = 0;		/* GU : tilt sample Up */
+GL = 0;		/* GL : tilt sample Low */
+TU = 0;		/* TU : translation sample Up */
+TL = 0;		/* TL : translation sample Low */
+
+TA = 0;		/* TA : translation analyser */
+GA = 0;		/* GA : tilt analyser */
+/* RA : horizontal curvature analyser */
+
+
+if ((fabs(mono_q/2/KI) &lt; 1) &amp;&amp; (sin(DEG2RAD*A1) != 0))
+	Ki = mono_q/2/sin(DEG2RAD*A1);
+else
+	{
+	printf("Warn : Can't define incident wave vector Ki\n");
+	Ki = 0;
+	printf("Skipping simulation\n");
+	exit(-1);
+	}
+
+vi = K2V*fabs(Ki);
+Ei = VS2E*vi*vi;
+
+EN = Ei; D_EN = .5;	/* optimize source on Ki */
+
+ana_q = 2*PI/DA;	/* Q ana in Angs-1 */
+if (sin(DEG2RAD*A5) != 0)
+	Kf = ana_q/2/sin(DEG2RAD*A5);
+else
+	{
+	printf("Warn : Can't define outgoing wave vector Kf\n");
+	Kf = 0;
+	}
+
+vf = K2V*fabs(Kf);
+Ef = VS2E*vf*vf;
+
+sample_q = sqrt(Ki*Ki + Kf*Kf -2*fabs(Ki*Kf)*cos(DEG2RAD*A4));
+
+mono_slate_heigh = mono_heigh/mono_segment_number_vert;	/* slates are adjacent */
+mono_curv_vert = fabs(mono_slate_heigh*RAD2DEG/(2*L2*sin(DEG2RAD*A1))); /* RM : vertical mono curvature */
+
+mono_slate_width = mono_width/mono_segment_number_horz;	/* slates are adjacent */
+mono_curv_horz = fabs(mono_slate_width*RAD2DEG*sin(DEG2RAD*A1)/(2*L2)); /* RH : horizontal mono curvature */
+
+ana_slate_heigh = ana_heigh/ana_segment_number_vert;	/* slates are adjacent */
+ana_curv_vert = fabs(ana_slate_heigh*RAD2DEG/(2*L3*sin(DEG2RAD*A5))); /* RA : vertical ana curvature */
+
+ana_slate_width = ana_width/ana_segment_number_horz;	/* slates are adjacent */
+ana_curv_horz = fabs(ana_slate_width*RAD2DEG*sin(DEG2RAD*A5)/(2*L3)); /* RHA : horizontal ana curvature */
+
+/* print instrument config */
+printf("Flat source, m=%.2f noze, width %.2f\n",MHV,WN);
+printf("Monochromator : (DM = %g)\n",DM);
+printf("A1 = %.2f, A2 = %.2f (deg)\n",A1,A2);
+printf("Ki = %.3g Angs-1 (Energy = %.3g meV, Velocity = %.3g m/s) \n", Ki, Ei,vi);
+printf("RM = %.3g Deg, RH = %.3g Deg\n",mono_curv_vert,mono_curv_horz);
+printf("\n");
+printf("Sample :\n");
+printf("A3 = %.2f, A4 = %.2f (deg)\n",A3,A4);
+printf("Energy transfert %.3g meV, Moment transfert %.3g Angs-1\n",Ef-Ei,sample_q);
+printf("\n");
+printf("Analyser :  (DA = %g)\n",DA);
+printf("A5 = %.2f, A6 = %.2f (deg)\n",A5,A6);
+printf("Kf = %.3g Angs-1 (Energy = %.3g meV, Velocity = %.3g m/s) \n", Kf, Ef,vf);
+printf("RA = %.3g Deg\n",ana_curv_vert);
+printf("\n");
+printf("Detectors :\n");
+
+/* local variables ------------------------------------ */
+
+LM1 = L2*.9; LM1b = LM1+0.001;
+LM2 = L3/2;  LM2b = LM2+0.001;
+
+EMIN = EN - D_EN;
+EMAX = EN + D_EN;
+
+pfile = (char *)malloc(256);
+efile = (char *)malloc(256);
+dfile = (char *)malloc(256);
+kfile = (char *)malloc(256);
+
+sprintf(pfile,"sim/i%s_k%iw%id%im%i.psd",VERSION,(int)floor(10*Ki+0.5),(int)floor(1000*WN),(int)floor(ORDER),(int)floor(MHV+0.5));
+sprintf(efile,"sim/i%s_k%iw%id%im%i.nrj",VERSION,(int)floor(10*Ki+0.5),(int)floor(1000*WN),(int)floor(ORDER),(int)floor(MHV+0.5));
+sprintf(dfile,"sim/i%s_k%iw%id%im%i.div",VERSION,(int)floor(10*Ki+0.5),(int)floor(1000*WN),(int)floor(ORDER),(int)floor(MHV+0.5));
+sprintf(kfile,"sim/i%s_k%iw%id%im%i.kw",VERSION,(int)floor(10*Ki+0.5),(int)floor(1000*WN),(int)floor(ORDER),(int)floor(MHV+0.5));
+
+%}
+
+TRACE
+
+COMPONENT origin = Arm()
+  AT (0,0,0) ABSOLUTE
+
+COMPONENT source = Source_flux(
+	radius = 0.20,
+	dist = 2.16,
+	xw = 0.06, yh = 0.12, 
+	E0 = EN,		
+	dE = D_EN,
+	flux=FLUX)		
+  AT (0,0,0) RELATIVE origin ROTATED (0,0,0) RELATIVE origin
+
+COMPONENT optim_s = Source_Optimizer(
+        xmin = -0.1, xmax = 0.1,
+        ymin = -0.1, ymax = 0.1,
+        bins = -1, step = -1, keep = -1,
+file="source.optim")
+  AT (0,0,2.14) RELATIVE origin ROTATED (0,0,0) RELATIVE origin
+
+COMPONENT doigt_de_gant = Guide(
+	w1 = 0.06, h1 = 0.12,
+	w2 = 0.06, h2 = 0.12,
+	l = 2.75,		/* guide into the doigt de gant */
+	R0 = 1, m=1.2, 		/* Ni 58 */
+	Qc = 0.021, alpha = 2.33, W = 2e-3)
+  AT (0,0,2.15) RELATIVE origin ROTATED (0,0,0) RELATIVE origin
+	
+COMPONENT external_guide = Guide2(
+	w1 = 0.06, h1 = 0.12,
+	w2 = 0.06, h2 = 0.12,
+	l = 13.67,		/* external guide between doigt de gant and mono */
+	R0 = 1, 
+	Qc = 0.021, alpha = 2.33, 
+	mh=1.2, 		/* 1.2 Ni 58, 3 Super mirror */
+	mv=1.2,
+	W = 2e-3)
+  AT (0,0,4.91) RELATIVE origin ROTATED (0,0,0) RELATIVE origin
+
+/* -------------- Start of monochromator building -------------- */
+
+/*                                                support of mono */
+COMPONENT focus_mono = Arm()	
+  AT (0, 0, L1) RELATIVE origin ROTATED (0, A1, 0) RELATIVE origin
+
+COMPONENT m0 = Mon_2foc(
+	zwidth=mono_slate_width,
+	ywidth=mono_slate_heigh,
+	gap=mono_gap,
+	NH=mono_segment_number_vert,
+	NV=mono_segment_number_horz,
+	mosaich=ETAM,
+	mosaicv=ETAM,
+	r0=mono_r0, Q=mono_q,
+	RH=mono_curv_vert,
+	RV=mono_curv_horz)
+  AT (TM, 0, 0) RELATIVE focus_mono
+  ROTATED (0, 0, GM) RELATIVE focus_mono
+
+/*                                on mono, pointing towards sample */
+COMPONENT out_mono = Arm()	
+  AT (0,0,0) RELATIVE focus_mono ROTATED (0, A2, 0) RELATIVE origin
+
+/* -------------- End of monochromator building -------------- */
+
+COMPONENT noze = Guide2(
+	w1 = 0.05, h1 = 0.05,
+	w2 = WN, h2 = 0.05,
+	l = .825,		
+	R0 = 1, 
+	Qc = 0.021, alpha = 2.33, 
+	mh=1e-5, mv = MHV,		/* Ni 58 */
+	W = 2e-3)
+  AT (0, 0, .9) RELATIVE out_mono ROTATED (0,0,0) RELATIVE out_mono
+
+/*
+COMPONENT M1 = Monitor(
+	xmin = -0.03, xmax = 0.03, 
+	ymin = -0.06, ymax = 0.06)
+  AT (0, 0, LM1) RELATIVE out_mono ROTATED (0,0,0) RELATIVE out_mono
+*/
+/* -------------- Start of sample building -------------- */
+
+/*                                           support of sample */
+COMPONENT focus_sample = Arm()	
+  AT (0, 0, L2) RELATIVE out_mono ROTATED (0,A3,0) RELATIVE out_mono
+
+/*
+COMPONENT sample = Powder1(
+	radius = 0.007,
+	h = 0.015,
+	q = 1.8049,
+	d_phi0 = 4,
+	pack = 1, j = 6, DW = 1,
+	F2 = 56.8,
+	Vc = 85.0054, sigma_a = 0.463,
+	target_x = alu_focus_x,  
+	target_y = 0, target_z = 1000)
+  AT (GU, 0, GL) RELATIVE focus_sample ROTATED (TU,0,TL) RELATIVE focus_sample
+*/
+
+/*
+COMPONENT AtSample = Monitor(
+	xmin = -0.05, xmax = 0.05, 
+	ymin = -0.05, ymax = 0.05)
+  AT (0, 0, 0) RELATIVE focus_sample ROTATED (0,0,0) RELATIVE focus_sample
+*/
+
+COMPONENT optim_m = Monitor_Optimizer(
+        xmin = -0.1, xmax = 0.1, 
+	ymin = -0.1, ymax = 0.1)
+  AT(0, 0, 0) RELATIVE focus_sample ROTATED (0,0,0) RELATIVE focus_sample
+
+COMPONENT PSDSample = PSD_monitor(
+	xmin = -0.05, xmax = 0.05, 
+	ymin = -0.05, ymax = 0.05,
+	nx = 50, ny = 50,
+	filename = pfile)
+  AT(0, 0, 0.001) RELATIVE focus_sample ROTATED (0,0,0) RELATIVE focus_sample
+
+COMPONENT Int4Sample = Monitor(
+	xmin = -0.02, xmax = 0.02, 
+	ymin = -0.02, ymax = 0.02)
+  AT(0, 0, 0.002) RELATIVE focus_sample ROTATED (0,0,0) RELATIVE focus_sample
+
+COMPONENT Flux1Sample = Monitor(
+	xmin = -0.005, xmax = 0.005, 
+	ymin = -0.005, ymax = 0.005)
+  AT(0, 0, 0.003) RELATIVE focus_sample ROTATED (0,0,0) RELATIVE focus_sample
+
+COMPONENT ESample = E_monitor(
+	xmin = -0.005, xmax = 0.005, 
+	ymin = -0.005, ymax = 0.005,
+	Emin = EMIN, Emax = EMAX, nchan = 21,
+	filename = efile)
+  AT(0, 0, 0.004) RELATIVE focus_sample ROTATED (0,0,0) RELATIVE focus_sample
+
+COMPONENT DivSample = Divergence_monitor(
+	xmin = -0.005, xmax = 0.005, 
+	ymin = -0.005, ymax = 0.005,
+	nv = 10, nh= 10,
+	v_maxdiv = 1, h_maxdiv = 1,
+	filename = dfile)
+  AT(0, 0, 0.005) RELATIVE focus_sample ROTATED (0,0,0) RELATIVE focus_sample
+  
+COMPONENT kw = kw_monitor(
+	xmin = -0.005, xmax = 0.005, 
+	ymin = -0.005, ymax = 0.005,
+	filename = kfile)
+  AT(0, 0, 0.006) RELATIVE focus_sample ROTATED (0,0,0) RELATIVE focus_sample
+
+/*                                  on sample, pointing towards ana */
+COMPONENT out_sample = Arm()	
+  AT (0,0,0) RELATIVE focus_sample ROTATED (0, A4, 0) RELATIVE out_mono
+
+/* -------------- End of sample building -------------- */
+
+/*
+COMPONENT M2 = Monitor(
+	xmin = -0.1, xmax = 0.1, 
+	ymin = -0.1, ymax = 0.1)
+  AT (0, 0, LM2) RELATIVE out_sample ROTATED (0,0,0) RELATIVE out_sample
+*/
+
+/* -------------- Start of analyzer building -------------- */
+
+/*                                              support of analyzer */
+/*
+COMPONENT focus_ana = Arm()	
+  AT (0, 0, L3) RELATIVE out_sample ROTATED (0,A5,0) RELATIVE out_sample
+
+COMPONENT a0 = Mon_2foc(
+	zwidth = ana_half_width,
+	ywidth = ana_half_heigh, 
+	gap = 0,
+	NH  = 1,
+	NV  = 1,
+	mosaich = ETAA, 
+	mosaicv = ETAA,
+	r0 = ana_r0, 
+	Q = ana_q,
+	RH=ana_curv_vert,
+	RV=ana_curv_horz)
+  AT (TA, 0, 0) RELATIVE focus_ana ROTATED (0, 0, GA) RELATIVE focus_ana
+
+COMPONENT out_ana = Arm()
+  AT (0, 0, 0) RELATIVE focus_ana ROTATED (0, A6, 0) RELATIVE out_sample
+*/
+/* -------------- End of analyzer building -------------- */
+/*
+COMPONENT focus_det = Arm()
+  AT (0, 0, L4) RELATIVE out_ana ROTATED (0,0,0) RELATIVE out_ana
+
+
+COMPONENT Detector = Monitor(
+	xmin = -0.02, xmax = 0.02, 
+	ymin = -0.05, ymax = 0.05)
+  AT(0, 0, 0) RELATIVE focus_det ROTATED (0,0,0) RELATIVE focus_det
+
+COMPONENT emon2 = E_monitor(
+	xmin = -0.02, xmax = 0.02, 
+	ymin = -0.05, ymax = 0.05,
+	Emin = 10, Emax = 20, nchan = 35,
+	filename = "sim/in14_EM2.vmon")
+  AT(0, 0, 0.01) RELATIVE focus_det ROTATED (0,0,0) RELATIVE focus_det
+*/
+
+FINALLY
+%{
+printf("Output files : %s %s %s %s\n",pfile,efile,dfile,kfile);
+free(pfile);
+free(dfile);
+free(efile);
+free(kfile);
+%}
+
+END
+</PRE>
+<PRE>
+DEFINE INSTRUMENT IN14(KI,WN,ORDER,MHV)
+/* preprocess with : mcstas in14_4.instr */
+/* compile on mica with : cc -Ofast -64 -o in14_3 in14_3.c -lm */
+/* Test with : in14_4 KI=1.55 WN=5 */
+/* in14_6 -n 1e6 KI=2.66 WN=0.03 ORDER=1 MHV=3 */
+
+DECLARE
+%{
+
+#define VERSION "60"
+
+double L1 = 16.68;	/* source-mono */
+double L2 = 2.12;	/* mono-sample */
+double L3 = 1.35;	/* sample-ana */
+double L4 = 0.70;	/* ana-det */
+
+int    SM,SS,SA;
+double A1,A3,A5;
+
+double LM1, LM1b;	/* distances to monitors M1 and M2 */
+double LM2, LM2b;
+
+double A2,A4,A6,RM,RH;
+
+char *pfile;
+char *efile;
+char *dfile;
+char *kfile;
+
+/* ==================== Source description ==================== */
+
+double EN;
+double D_EN;
+double EMIN, EMAX;
+double FLUX = 1e13;	/* n/cm^2/s on guide entry */
+
+/* ==================== Monochromator desciption ==================== */
+
+double ETAM       = 30;	/* Mosaicity used on monochromator 30 */
+double DM         = 3.355;	/* Monochromator d-spacing in Angs */
+				/* PG002 Orders : 1st 3.355 2e 1.6775, 3e 1.1183 */
+double mono_r0    = 0.9;	/* mean reflectivity */
+double mono_width = 0.15;
+double mono_heigh = .122;
+double mono_gap   = 0;		/* slates are adjacent */
+int    mono_segment_number_vert = 7;
+int    mono_segment_number_horz = 1;
+double mono_curv_vert;		/* Vertical Rotation between adjacent slabs. */
+double mono_curv_horz;		/* Horizontal Rotation between adjacent slabs. */
+double mono_slate_heigh; 	/* size (height) of slates */
+double mono_slate_width; 	/* size (width) of slates */
+
+double mono_q;	/* Q vector for bragg scattering with monochromator and analysator */
+double Ki, Ei;
+
+double TM, GM;
+
+/* ==================== Sample desciption ==================== */
+
+double TU, TL;
+double GU, GL;
+
+/* ==================== Analyser desciption ==================== */
+
+double ETAA      = 30;	/* Mosaicity used on analyser 30 */
+double DA        = 3.355;	/* analyser d-spacing in Angs */
+				/* PG002 Orders : 1st 3.355 2e 1.6775, 3e 1.1183 */
+double ana_r0    = 0.9;	/* mean reflectivity */
+double ana_width = 0.10;
+double ana_heigh = .14;
+double ana_gap   = 0;	/* slates are adjacent */
+int    ana_segment_number_vert = 7;
+int    ana_segment_number_horz = 1;
+double ana_curv_vert;	/* Vertical Rotation between adjacent slabs. */
+double ana_curv_horz;	/* Horizontal Rotation between adjacent slabs. */
+double ana_slate_heigh; 	/* size (height) of slates */
+double ana_slate_width; 	/* size (width) of slates */
+
+double ana_q;	/* Q vector for bragg scattering with monochromator and analysator */
+double Kf, Ef;
+
+double TA, GA;
+
+%}
+
+INITIALIZE
+%{
+
+double vi,vf,sample_q;
+
+mono_q = 2*PI*ORDER/DM;	/* Q mono in Angs-1 */
+
+A4 = 0;
+A2 = asin(mono_q/2/KI)*RAD2DEG*2;
+A6 = A2;
+
+printf("Instrument : IN14, v%s (21/09/99) on %s.\n",VERSION,getenv("HOSTNAME"));
+
+/* SM : scattering at mono to the right (-1)/left(+1) */
+/* SS : scattering at sample to the right (-1)/left(+1) */
+/* SA : scattering at analyser to the right (-1)/left(+1) */
+SM = 1; SS = 1; SA = 1;
+
+A2 *= SM;	/* A1 : mono theta (crystal) */
+A1 = A2/2; 	/* A2 : mono 2 theta (arm to sample) */
+A4 *= SS;	/* A3 : sample theta */
+A3 = A4/2; 	/* A4 : sample 2 theta (arm to analyser) */
+A6 *= SA;	/* A5 : analyser theta (crystal) */
+A5 = A6/2; 	/* A6 : analyser 2 theta (arm to detector) */
+
+TM = 0;		/* TM : translation mono */
+GM = 0;		/* GM : tilt mono */
+
+GU = 0;		/* GU : tilt sample Up */
+GL = 0;		/* GL : tilt sample Low */
+TU = 0;		/* TU : translation sample Up */
+TL = 0;		/* TL : translation sample Low */
+
+TA = 0;		/* TA : translation analyser */
+GA = 0;		/* GA : tilt analyser */
+/* RA : horizontal curvature analyser */
+
+
+if ((fabs(mono_q/2/KI) &lt; 1) &amp;&amp; (sin(DEG2RAD*A1) != 0))
+	Ki = mono_q/2/sin(DEG2RAD*A1);
+else
+	{
+	printf("Warn : Can't define incident wave vector Ki\n");
+	Ki = 0;
+	printf("Skipping simulation\n");
+	exit(-1);
+	}
+
+vi = K2V*fabs(Ki);
+Ei = VS2E*vi*vi;
+
+EN = Ei; D_EN = .5;	/* optimize source on Ki */
+
+ana_q = 2*PI/DA;	/* Q ana in Angs-1 */
+if (sin(DEG2RAD*A5) != 0)
+	Kf = ana_q/2/sin(DEG2RAD*A5);
+else
+	{
+	printf("Warn : Can't define outgoing wave vector Kf\n");
+	Kf = 0;
+	}
+
+vf = K2V*fabs(Kf);
+Ef = VS2E*vf*vf;
+
+sample_q = sqrt(Ki*Ki + Kf*Kf -2*fabs(Ki*Kf)*cos(DEG2RAD*A4));
+
+mono_slate_heigh = mono_heigh/mono_segment_number_vert;	/* slates are adjacent */
+mono_curv_vert = fabs(mono_slate_heigh*RAD2DEG/(2*L2*sin(DEG2RAD*A1))); /* RM : vertical mono curvature */
+
+mono_slate_width = mono_width/mono_segment_number_horz;	/* slates are adjacent */
+mono_curv_horz = fabs(mono_slate_width*RAD2DEG*sin(DEG2RAD*A1)/(2*L2)); /* RH : horizontal mono curvature */
+
+ana_slate_heigh = ana_heigh/ana_segment_number_vert;	/* slates are adjacent */
+ana_curv_vert = fabs(ana_slate_heigh*RAD2DEG/(2*L3*sin(DEG2RAD*A5))); /* RA : vertical ana curvature */
+
+ana_slate_width = ana_width/ana_segment_number_horz;	/* slates are adjacent */
+ana_curv_horz = fabs(ana_slate_width*RAD2DEG*sin(DEG2RAD*A5)/(2*L3)); /* RHA : horizontal ana curvature */
+
+/* print instrument config */
+printf("Flat source, m=%.2f noze, width %.2f\n",MHV,WN);
+printf("Monochromator : (DM = %g)\n",DM);
+printf("A1 = %.2f, A2 = %.2f (deg)\n",A1,A2);
+printf("Ki = %.3g Angs-1 (Energy = %.3g meV, Velocity = %.3g m/s) \n", Ki, Ei,vi);
+printf("RM = %.3g Deg, RH = %.3g Deg\n",mono_curv_vert,mono_curv_horz);
+printf("\n");
+printf("Sample :\n");
+printf("A3 = %.2f, A4 = %.2f (deg)\n",A3,A4);
+printf("Energy transfert %.3g meV, Moment transfert %.3g Angs-1\n",Ef-Ei,sample_q);
+printf("\n");
+printf("Analyser :  (DA = %g)\n",DA);
+printf("A5 = %.2f, A6 = %.2f (deg)\n",A5,A6);
+printf("Kf = %.3g Angs-1 (Energy = %.3g meV, Velocity = %.3g m/s) \n", Kf, Ef,vf);
+printf("RA = %.3g Deg\n",ana_curv_vert);
+printf("\n");
+printf("Detectors :\n");
+
+/* local variables ------------------------------------ */
+
+LM1 = L2*.9; LM1b = LM1+0.001;
+LM2 = L3/2;  LM2b = LM2+0.001;
+
+EMIN = EN - D_EN;
+EMAX = EN + D_EN;
+
+pfile = (char *)malloc(256);
+efile = (char *)malloc(256);
+dfile = (char *)malloc(256);
+kfile = (char *)malloc(256);
+
+sprintf(pfile,"sim/i%s_k%iw%id%im%i.psd",VERSION,(int)floor(10*Ki+0.5),(int)floor(1000*WN),(int)floor(ORDER),(int)floor(MHV+0.5));
+sprintf(efile,"sim/i%s_k%iw%id%im%i.nrj",VERSION,(int)floor(10*Ki+0.5),(int)floor(1000*WN),(int)floor(ORDER),(int)floor(MHV+0.5));
+sprintf(dfile,"sim/i%s_k%iw%id%im%i.div",VERSION,(int)floor(10*Ki+0.5),(int)floor(1000*WN),(int)floor(ORDER),(int)floor(MHV+0.5));
+sprintf(kfile,"sim/i%s_k%iw%id%im%i.kw",VERSION,(int)floor(10*Ki+0.5),(int)floor(1000*WN),(int)floor(ORDER),(int)floor(MHV+0.5));
+
+%}
+
+TRACE
+
+COMPONENT origin = Arm()
+  AT (0,0,0) ABSOLUTE
+
+COMPONENT source = Source_flux(
+	radius = 0.20,
+	dist = 2.16,
+	xw = 0.06, yh = 0.12, 
+	E0 = EN,		
+	dE = D_EN,
+	flux=FLUX)		
+  AT (0,0,0) RELATIVE origin ROTATED (0,0,0) RELATIVE origin
+/*
+COMPONENT optim_s = Source_Optimizer(
+        xmin = -0.1, xmax = 0.1,
+        ymin = -0.1, ymax = 0.1,
+        bins = -1, step = -1, keep = -1,
+file="source.optim")
+  AT (0,0,2.14) RELATIVE origin ROTATED (0,0,0) RELATIVE origin
+*/
+COMPONENT doigt_de_gant = Guide(
+	w1 = 0.06, h1 = 0.12,
+	w2 = 0.06, h2 = 0.12,
+	l = 2.75,		/* guide into the doigt de gant */
+	R0 = 1, m=1.2, 		/* Ni 58 */
+	Qc = 0.021, alpha = 2.33, W = 2e-3)
+  AT (0,0,2.15) RELATIVE origin ROTATED (0,0,0) RELATIVE origin
+	
+COMPONENT external_guide = Guide2(
+	w1 = 0.06, h1 = 0.12,
+	w2 = 0.06, h2 = 0.12,
+	l = 13.67,		/* external guide between doigt de gant and mono */
+	R0 = 1, 
+	Qc = 0.021, alpha = 2.33, 
+	mh=1.2, 		/* 1.2 Ni 58, 3 Super mirror */
+	mv=1.2,
+	W = 2e-3)
+  AT (0,0,4.91) RELATIVE origin ROTATED (0,0,0) RELATIVE origin
+
+/* -------------- Start of monochromator building -------------- */
+
+/*                                                support of mono */
+COMPONENT focus_mono = Arm()	
+  AT (0, 0, L1) RELATIVE origin ROTATED (0, A1, 0) RELATIVE origin
+
+COMPONENT m0 = Mon_2foc(
+	zwidth=mono_slate_width,
+	ywidth=mono_slate_heigh,
+	gap=mono_gap,
+	NH=mono_segment_number_vert,
+	NV=mono_segment_number_horz,
+	mosaich=ETAM,
+	mosaicv=ETAM,
+	r0=mono_r0, Q=mono_q,
+	RH=mono_curv_vert,
+	RV=mono_curv_horz)
+  AT (TM, 0, 0) RELATIVE focus_mono
+  ROTATED (0, 0, GM) RELATIVE focus_mono
+
+/*                                on mono, pointing towards sample */
+COMPONENT out_mono = Arm()	
+  AT (0,0,0) RELATIVE focus_mono ROTATED (0, A2, 0) RELATIVE origin
+
+/* -------------- End of monochromator building -------------- */
+
+COMPONENT noze = Guide2(
+	w1 = 0.05, h1 = 0.05,
+	w2 = WN, h2 = 0.05,
+	l = .825,		
+	R0 = 1, 
+	Qc = 0.021, alpha = 2.33, 
+	mh=1e-5, mv = MHV,		/* Ni 58 */
+	W = 2e-3)
+  AT (0, 0, .9) RELATIVE out_mono ROTATED (0,0,0) RELATIVE out_mono
+
+/*
+COMPONENT M1 = Monitor(
+	xmin = -0.03, xmax = 0.03, 
+	ymin = -0.06, ymax = 0.06)
+  AT (0, 0, LM1) RELATIVE out_mono ROTATED (0,0,0) RELATIVE out_mono
+*/
+/* -------------- Start of sample building -------------- */
+
+/*                                           support of sample */
+COMPONENT focus_sample = Arm()	
+  AT (0, 0, L2) RELATIVE out_mono ROTATED (0,A3,0) RELATIVE out_mono
+
+/*
+COMPONENT sample = Powder1(
+	radius = 0.007,
+	h = 0.015,
+	q = 1.8049,
+	d_phi0 = 4,
+	pack = 1, j = 6, DW = 1,
+	F2 = 56.8,
+	Vc = 85.0054, sigma_a = 0.463,
+	target_x = alu_focus_x,  
+	target_y = 0, target_z = 1000)
+  AT (GU, 0, GL) RELATIVE focus_sample ROTATED (TU,0,TL) RELATIVE focus_sample
+*/
+
+/*
+COMPONENT AtSample = Monitor(
+	xmin = -0.05, xmax = 0.05, 
+	ymin = -0.05, ymax = 0.05)
+  AT (0, 0, 0) RELATIVE focus_sample ROTATED (0,0,0) RELATIVE focus_sample
+*/
+/*
+COMPONENT optim_m = Monitor_Optimizer(
+        xmin = -0.1, xmax = 0.1, 
+	ymin = -0.1, ymax = 0.1)
+  AT(0, 0, 0) RELATIVE focus_sample ROTATED (0,0,0) RELATIVE focus_sample
+*/
+COMPONENT PSDSample = PSD_monitor(
+	xmin = -0.05, xmax = 0.05, 
+	ymin = -0.05, ymax = 0.05,
+	nx = 50, ny = 50,
+	filename = pfile)
+  AT(0, 0, 0.001) RELATIVE focus_sample ROTATED (0,0,0) RELATIVE focus_sample
+
+COMPONENT Int4Sample = Monitor(
+	xmin = -0.02, xmax = 0.02, 
+	ymin = -0.02, ymax = 0.02)
+  AT(0, 0, 0.002) RELATIVE focus_sample ROTATED (0,0,0) RELATIVE focus_sample
+
+COMPONENT Flux1Sample = Monitor(
+	xmin = -0.005, xmax = 0.005, 
+	ymin = -0.005, ymax = 0.005)
+  AT(0, 0, 0.003) RELATIVE focus_sample ROTATED (0,0,0) RELATIVE focus_sample
+
+COMPONENT ESample = E_monitor(
+	xmin = -0.005, xmax = 0.005, 
+	ymin = -0.005, ymax = 0.005,
+	Emin = EMIN, Emax = EMAX, nchan = 21,
+	filename = efile)
+  AT(0, 0, 0.004) RELATIVE focus_sample ROTATED (0,0,0) RELATIVE focus_sample
+
+COMPONENT DivSample = Divergence_monitor(
+	xmin = -0.005, xmax = 0.005, 
+	ymin = -0.005, ymax = 0.005,
+	nv = 10, nh= 10,
+	v_maxdiv = 1, h_maxdiv = 1,
+	filename = dfile)
+  AT(0, 0, 0.005) RELATIVE focus_sample ROTATED (0,0,0) RELATIVE focus_sample
+  
+COMPONENT kw = kw_monitor(
+	xmin = -0.005, xmax = 0.005, 
+	ymin = -0.005, ymax = 0.005,
+	filename = kfile)
+  AT(0, 0, 0.006) RELATIVE focus_sample ROTATED (0,0,0) RELATIVE focus_sample
+
+/*                                  on sample, pointing towards ana */
+COMPONENT out_sample = Arm()	
+  AT (0,0,0) RELATIVE focus_sample ROTATED (0, A4, 0) RELATIVE out_mono
+
+/* -------------- End of sample building -------------- */
+
+/*
+COMPONENT M2 = Monitor(
+	xmin = -0.1, xmax = 0.1, 
+	ymin = -0.1, ymax = 0.1)
+  AT (0, 0, LM2) RELATIVE out_sample ROTATED (0,0,0) RELATIVE out_sample
+*/
+
+/* -------------- Start of analyzer building -------------- */
+
+/*                                              support of analyzer */
+/*
+COMPONENT focus_ana = Arm()	
+  AT (0, 0, L3) RELATIVE out_sample ROTATED (0,A5,0) RELATIVE out_sample
+
+COMPONENT a0 = Mon_2foc(
+	zwidth = ana_half_width,
+	ywidth = ana_half_heigh, 
+	gap = 0,
+	NH  = 1,
+	NV  = 1,
+	mosaich = ETAA, 
+	mosaicv = ETAA,
+	r0 = ana_r0, 
+	Q = ana_q,
+	RH=ana_curv_vert,
+	RV=ana_curv_horz)
+  AT (TA, 0, 0) RELATIVE focus_ana ROTATED (0, 0, GA) RELATIVE focus_ana
+
+COMPONENT out_ana = Arm()
+  AT (0, 0, 0) RELATIVE focus_ana ROTATED (0, A6, 0) RELATIVE out_sample
+*/
+/* -------------- End of analyzer building -------------- */
+/*
+COMPONENT focus_det = Arm()
+  AT (0, 0, L4) RELATIVE out_ana ROTATED (0,0,0) RELATIVE out_ana
+
+
+COMPONENT Detector = Monitor(
+	xmin = -0.02, xmax = 0.02, 
+	ymin = -0.05, ymax = 0.05)
+  AT(0, 0, 0) RELATIVE focus_det ROTATED (0,0,0) RELATIVE focus_det
+
+COMPONENT emon2 = E_monitor(
+	xmin = -0.02, xmax = 0.02, 
+	ymin = -0.05, ymax = 0.05,
+	Emin = 10, Emax = 20, nchan = 35,
+	filename = "sim/in14_EM2.vmon")
+  AT(0, 0, 0.01) RELATIVE focus_det ROTATED (0,0,0) RELATIVE focus_det
+*/
+
+FINALLY
+%{
+printf("Output files : %s %s %s %s\n",pfile,efile,dfile,kfile);
+free(pfile);
+free(dfile);
+free(efile);
+%}
+
+END
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00045.html">Re: Mcstas</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00046.html">Optimizer : Great</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00047"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00047"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

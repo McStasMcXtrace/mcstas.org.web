@@ -1,0 +1,58 @@
+MC2D & MC3D - replacements for the McStas display GUI's
+
+I designed these programs to run on windows & unix platforms.
+May even be possible to port to a mac given enough effort.
+
+MC2D & MC3D were built around the OpenGL engine and use the
+GLUT and GLUI libraries to implement a GUI interface.  On
+unix you probably have GLUT installed, if not the source
+file is included here and a link it given to the newest
+version.  On windows you should copy the compiled dlls for
+GLUT.  On windows I have used the free Borland compiler
+though Visual C++ will probably also work.  You will have
+to go the Borland (Inprise) site to download their compiler
+if you want to use it.
+
+glut-3.7.tar.gz  3,151,216
+   Source files for GLUT, needed for unix, and taken from:
+   http://reality.sgi.com/mjk_asd/glut3/glut3.html
+
+glut-3.7.2-dlls.zip  106,110
+   Precompiled dlls for GLUT, needed for windows, and taken from:
+   http://www.xmission.com/~nate/glut.html
+
+glui_v2_beta.zip  327,381
+   Source files for GLUI, needed by everyone, and taken from:
+   http://www.cs.unc.edu/~rademach/glui/#beta_v2
+
+borland_glui.zip  30,294
+   How to compile GLUI using the Borland compiler for windows.
+   Even if you are going to use another windows compiler you
+   should download this and look at the readme.txt file.
+
+mc3d_components.zip  91,564
+   The standard components of McStas v1.4 editted for use by
+   MC3D.  Also contains a new prismas2.instr to be used as an
+   example.  Copy these files over the standard ones (backup
+   the old ones first)
+
+mc3d.zip  30,403
+   Source code for MC3D & MC2D.
+   I include a MAKE.BAT to compile the program on windows using
+   the Borland compiler, and a makefile that I used on our SGI
+   O2 machine.
+
+mc3d_exes.zip 228,237
+   Precompiled versions of MC3D & MC2D for windows.
+   Either download mc3d_components.zip and mc3d.zip (to look at
+   the readme.txt file in it) to compile your own simulations,
+   or download demo_exes.zip to view the results for the
+   example prisma2 simulation.
+
+demo_exes.zip 65,446
+   Precompiled version of (editted) prisma2 for windows.
+   Use run.bat to create prisma2 output files.
+   Use commands "mc3d trace.out" and "mc2d" to display results.
+
+mc3d.txt  2,285
+   This file!

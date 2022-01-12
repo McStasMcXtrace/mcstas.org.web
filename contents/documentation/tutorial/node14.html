@@ -1,0 +1,219 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2008 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Example instrument file</TITLE>
+<META NAME="description" CONTENT="Example instrument file">
+<META NAME="keywords" CONTENT="tutorial">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2008">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="tutorial.css">
+
+<LINK REL="previous" HREF="node13.html">
+<LINK REL="up" HREF="node7.html">
+<LINK REL="next" HREF="node15.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html174"
+  HREF="node15.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html172"
+  HREF="node7.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html168"
+  HREF="node13.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html175"
+  HREF="node15.html">Suffix</A>
+<B> Up:</B> <A NAME="tex2html173"
+  HREF="node7.html">Exercises</A>
+<B> Previous:</B> <A NAME="tex2html169"
+  HREF="node13.html">Exercise: Insert an analyzer</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00057000000000000000"></A><A NAME="subsection:examplefile"></A>
+<BR>
+Example instrument file
+</H2>
+<PRE>
+/*******************************************************************************
+*         McStas instrument definition URL=http://www.mcstas.org
+*
+* Instrument: test (rename also the example and DEFINE lines below)
+*
+* %Identification
+* Written by: Your name (email)
+* Date: Current Date
+* Origin: Your institution
+* Release: McStas CVS-080208
+* Version: 0.2
+* %INSTRUMENT_SITE: Institution_name_as_a_single word
+*
+* Instrument short description
+*
+* %Description
+* Instrument longer description (type, elements, usage...)
+*
+* Example: mcrun test.instr &lt;parameters=values&gt;
+*
+* %Parameters
+* Par1: [unit] Parameter1 description
+*
+* %Link
+* A reference/HTML link for more information
+*
+* %End
+*******************************************************************************/
+
+/* Change name of instrument and input parameters with default values */
+DEFINE INSTRUMENT test(OMM=36.607, TTM=73.214, TT=-66.94, OMA=36.607, TTA=73.214)
+
+/* The DECLARE section allows us to declare variables or  small      */
+/* functions in C syntax. These may be used in the whole instrument. */
+DECLARE
+%{
+%}
+
+/* The INITIALIZE section is executed when the simulation starts     */
+/* (C code). You may use them as component parameter values.         */
+INITIALIZE
+%{
+%}
+
+/* Here comes the TRACE section, where the actual      */
+/* instrument is defined as a sequence of components.  */
+TRACE
+
+/* The Arm() class component defines reference points and orientations  */
+/* in 3D space. Every component instance must have a unique name. Here, */
+/* Origin is used. This Arm() component is set to define the origin of  */
+/* our global coordinate system (AT (0,0,0) ABSOLUTE). It may be used   */
+/* for further RELATIVE reference, Other useful keywords are : ROTATED  */
+/* EXTEND GROUP PREVIOUS. Also think about adding a neutron source !    */
+/* Progress_bar is an Arm displaying simulation progress.               */
+COMPONENT Origin = Progress_bar()
+  AT (0,0,0) ABSOLUTE
+
+COMPONENT Source_Maxwell_3 = Source_Maxwell_3(
+    size = 0.05, l_low = 3.9, l_high = 4.1, dist = 10, xw = 0.01,
+    yh = 0.01, T1 = 150.42, T2 = 38.74, T3 = 14.84, I1 = 3.67E11, I2 = 3.64E11,
+    I3 = 0.95E11)
+  AT (0, 0, 0) RELATIVE Origin
+
+COMPONENT L_monitor = L_monitor(
+    filename = "test2.psd", xmin = -0.1, xmax = 0.1, ymin = -0.1,
+    ymax = 0.1, Lmin = 2.1, Lmax = 6)
+  AT (0, 0, 1) RELATIVE Origin
+
+COMPONENT PSD_monitor = PSD_monitor(
+    nx = 90, ny = 90, filename = "test.psd", xmin = -0.1,
+    xmax = 0.1, ymin = -0.1, ymax = 0.1)
+  AT (0, 0, 1) RELATIVE Origin
+
+COMPONENT arm1 = Arm()
+  AT (0, 0, 2) RELATIVE Origin
+  ROTATED (0, OMM, 0) RELATIVE Origin
+
+SPLIT 10 COMPONENT Monochromator_flat = Monochromator_flat(
+    zmin = -0.1, zmax = 0.1, ymin = -0.1, ymax = 0.1,
+    mosaich = 30, mosaicv = 30)
+  AT (0, 0, 0) RELATIVE arm1
+EXTEND %{ 
+if (!SCATTERED) ABSORB;
+%}
+
+COMPONENT arm2 = Arm()
+  AT (0, 0, 2) RELATIVE Origin
+  ROTATED (0, TTM, 0) RELATIVE Origin
+
+COMPONENT L_monitor2 = L_monitor(
+    filename = "test3.psd", xmin = -0.1, xmax = 0.1, ymin = -0.1,
+    ymax = 0.1, Lmin = 2.1, Lmax = 6)
+  AT (0, 0, 1) RELATIVE arm2
+
+COMPONENT PSD_monitor2 = PSD_monitor(
+    nx = 90, ny = 90, filename = "test4.psd", xmin = -0.1,
+    xmax = 0.1, ymin = -0.1, ymax = 0.1)
+  AT (0, 0, 1.01) RELATIVE arm2
+
+SPLIT 10 
+COMPONENT sample = PowderN(
+    reflections = "Na2Ca3Al2F14.laz", d_phi = 0.1, radius = 0.004,
+    h = 0.03, DW = 0.9, barns = 1, pack = 0.7, frac = 0, tfrac=0)
+  AT (0, 0, 2) RELATIVE arm2
+
+/*COMPONENT sample = PowderN(
+    reflections = "mylist.dat", d_phi = 0.1, radius = 0.01,
+    Vc = 3.86*3.86*11.82, sigma_abs = 0, sigma_inc = 2, h = 0.01,
+    DW = 0.9, barns = 1, pack = 0.5, frac = 0.5)
+  AT (0, 0, 2) RELATIVE arm2*/
+EXTEND %{ 
+if (!SCATTERED) ABSORB;
+%}
+
+COMPONENT arm3 = Arm()
+  AT (0, 0, 0) RELATIVE sample
+  ROTATED (0, TT, 0) RELATIVE sample
+
+/*COMPONENT BananaDetector = Monitor_nD(
+    xwidth = 2, yheight=0.09, 
+    options="banana, theta limits [-10 -130] bins=360, file =detector.dat")
+  AT (0, 0, 0) RELATIVE sample
+
+COMPONENT STOP2 = Beamstop(radius=0.3)
+AT (0,0,3.5) RELATIVE arm2*/
+
+COMPONENT PSD_monitor3 = PSD_monitor(
+    nx = 90, ny = 90, filename = "test5.psd", xmin = -0.132,
+    xmax = 0.132, ymin = -0.02, ymax = 0.02)
+  AT (0, 0, 0.5) RELATIVE arm3
+
+COMPONENT arm4 = Arm()
+  AT (0, 0, 1) RELATIVE arm3
+  ROTATED (0, OMA, 0) RELATIVE arm3
+
+SPLIT 10 COMPONENT AnalyzerCrystal = Monochromator_flat(
+    zmin = -0.1, zmax = 0.1, ymin = -0.1, ymax = 0.1,
+    mosaich = 30, mosaicv = 30)
+  AT (0, 0, 0) RELATIVE arm4
+
+COMPONENT arm5 = Arm()
+  AT (0, 0, 0) RELATIVE AnalyzerCrystal
+  ROTATED (0, TTA, 0) RELATIVE arm3
+
+COMPONENT Analyzer = Monitor_nD(
+    xwidth = 0.01, yheight=0.1, 
+    options="single, file = analyzer.dat")
+  AT (0, 0, 1) RELATIVE arm5
+
+
+
+/* This section is executed when the simulation ends (C code). Other    */
+/* optional sections are : SAVE                                         */
+FINALLY
+%{
+%}
+/* The END token marks the instrument definition end */
+END
+</PRE>
+<BR><HR>
+<ADDRESS>
+Peter Kjær Willendrup
+2015-11-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,104 @@
+/*******************************************************************************
+*
+* McStas, version 1.2 released February 2000
+*         Maintained by Kristian Nielsen and Kim Lefmann,
+*         Risoe National Laboratory, Roskilde, Denmark
+*
+* %IDENTIFICATION
+*
+* Written by: <a href="mailto:hansen@ill.fr">Thomas C Hansen</a>
+* Date: 07 March 2000
+* Version: $Revision: 1.1.1.1 $
+* Origin: <a href="http://www.ill.fr">ILL</a> (Dif/<a href="http://www.ill.fr/YellowBook/D20">D20</a>)
+*
+* Pyrolytic graphite filter
+*
+* %DESCRIPTION
+*
+* This pyrolytic graphite filter, defined by two identical rectangular opening apertures, 
+* is based upon empiric data and determines by
+* interpolation the transmission of an incomming neutron, depending on its 
+* wavelength. This type of filter is e.g. used to supress higher harmonics, so
+* the 1.2 AA contribution to the 2.4 AA obtained by a highly orientated 
+* pyrolytic graphite (HOPG) monochromator at a takeoff angle of 42 deg., as
+* it is the case for the powder diffractometer D20 at the ILL Grenoble
+*
+* %PARAMETERS
+*
+* INPUT PARAMETERS:
+*
+* xmin: 	(m)	Lower x bound 			(-0.16)
+* xmax: 	(m)	Upper x bound 			( 0.16)
+* ymin: 	(m)	Lower y bound  			(-0.16)
+* ymax: 	(m)	Upper y bound  			( 0.16)
+* len:  	(m)	Thickness of graphite plate 	( 0.05)
+*
+* %LINKS
+* <a href="../d20adapt.instr">Source code of d20adapt.instr</a>, where this component is used
+* 
+* %END
+*
+*******************************************************************************/
+
+DEFINE COMPONENT Filter_Graphite
+DEFINITION PARAMETERS (xmin, xmax, ymin, ymax, len)
+SETTING PARAMETERS ()
+OUTPUT PARAMETERS ()
+STATE PARAMETERS (x,y,z,vx,vy,vz,t,s1,s2,p)
+DECLARE
+%{
+%}
+INITIALIZE
+%{
+%}
+TRACE
+%{
+  double L,L1,L0,T1,T0, Filt_T;
+  double dt;
+  PROP_Z0;
+  L = (2*PI/V2K)/sqrt(vx*vx + vy*vy + vz*vz);
+  if (x<xmin || x>xmax || y<ymin || y>ymax) ABSORB;
+  dt = len/vz;
+  PROP_DT(dt);
+  if (x<xmin || x>xmax || y<ymin || y>ymax) ABSORB;
+  if (L>2.60) {L1= L  ;L0=2.60;T1=0.06;T0=0.06;}; 
+  if (L<2.60) {L1=2.60;L0=2.40;T1=0.06;T0=0.05;}; 
+  if (L<2.40) {L1=2.40;L0=2.30;T1=0.05;T0=0.09;}; 
+  if (L<2.30) {L1=2.30;L0=2.20;T1=0.09;T0=0.22;}; 
+  if (L<2.20) {L1=2.20;L0=2.00;T1=0.22;T0=0.34;}; 
+  if (L<2.00) {L1=2.00;L0=1.90;T1=0.34;T0=0.61;}; 
+  if (L<1.90) {L1=1.90;L0=1.80;T1=0.61;T0=0.23;}; 
+  if (L<1.80) {L1=1.80;L0=1.60;T1=0.23;T0=0.25;}; 
+  if (L<1.60) {L1=1.60;L0=1.40;T1=0.25;T0=0.27;}; 
+  if (L<1.40) {L1=1.40;L0=1.30;T1=0.27;T0=0.53;}; 
+  if (L<1.30) {L1=1.30;L0=1.20;T1=0.53;T0=0.98;}; 
+  if (L<1.20) {L1=1.20;L0=1.10;T1=0.98;T0=0.89;}; 
+  if (L<1.10) {L1=1.10;L0=1.00;T1=0.89;T0=0.52;}; 
+  if (L<1.00) {L1=1.00;L0=0.87;T1=0.52;T0=0.47;}; 
+  if (L<0.87) {L1=0.87;L0= L  ;T1=0.47;T0=0.47;}; 
+  Filt_T=(T0+(L-L0)/(L1-L0)*(T1-T0))*100.0;
+  Filt_T = exp(-Filt_T*len);
+  p*=Filt_T;
+%}
+FINALLY
+%{
+%}
+MCDISPLAY
+%{
+  magnify("xy");
+  multiline(5, (double)xmin, (double)ymin, 0.0,
+               (double)xmax, (double)ymin, 0.0,
+               (double)xmax, (double)ymax, 0.0,
+               (double)xmin, (double)ymax, 0.0,
+               (double)xmin, (double)ymin, 0.0);
+  multiline(5, (double)xmin, (double)ymin, (double)len,
+               (double)xmax, (double)ymin, (double)len,
+               (double)xmax, (double)ymax, (double)len,
+               (double)xmin, (double)ymax, (double)len,
+               (double)xmin, (double)ymin, (double)len);
+  line(xmin, ymin, 0.0, xmin, ymin, len);
+  line(xmax, ymin, 0.0, xmax, ymin, len);
+  line(xmin, ymax, 0.0, xmin, ymax, len);
+  line(xmax, ymax, 0.0, xmax, ymax, len);
+%}
+END

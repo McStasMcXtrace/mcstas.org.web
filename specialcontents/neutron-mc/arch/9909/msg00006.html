@@ -1,0 +1,134 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: MSCAT etc -->
+<!--X-From: Kristian Nielsen <kristian.nielsen@risoe.dk> -->
+<!--X-Date: 1 Sep 1999 14:41:08 +0200 -->
+<!--X-Message-Id:  -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 37C5A0CB.38BBD62B@nist.gov -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: MSCAT etc</title>
+<link rev="made" href="mailto:kristian.nielsen@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00005.html">Date Prev</A>][<A HREF="msg00000.html">Date Next</A>]
+<a href="index.html#00006">[Chronological]</a>
+<a href="threads.html#00006">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: MSCAT etc</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:john.copley@nist.gov">john.copley@nist.gov</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: MSCAT etc</strong></LI>
+<LI><strong>From</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: 1 Sep 1999 14:41:08 +0200</LI>
+<LI>CC: <A HREF="mailto:kim.lefmann@risoe.dk">kim.lefmann@risoe.dk</A></LI>
+<LI>In-reply-to: &lt;37C5A0CB.38BBD62B@nist.gov&gt; (message from John Copley on Thu, 26Aug 1999 16:17:15 -0400)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+&gt; Date: Thu, 26 Aug 1999 16:17:15 -0400
+&gt; From: John Copley &lt;john.copley@nist.gov&gt;
+
+&gt; Kristian
+
+&gt; Regarding the optical filter calculation, many thanks! I would indeed
+&gt; appreciate more information, and I'm also wondering if you could do a
+&gt; few more runs? One of these days I'd like to get familiar with McStas
+
+&gt; You say the transmission for 0.5 AA neutrons is about 2e-5. What is it
+&gt; for 5 A neutrons?  How much work would it be to calculate the
+&gt; transmission in steps of 0.1 AA say from 0.1 to 5 AA, using (i) the
+&gt; reflectivity graphs that I sent you and (ii) idealized reflectivity
+&gt; graphs with R=1 for Q&lt;=0.265 (sides), R=1 for Q&lt;=0.43 (top/bottom), 0
+&gt; otherwise?
+
+Ok, I found a little time to do a few more runs. I actually changed my
+instrument definition somewhat. In your fax you mention three guide
+sections, the first one immediately after the source. I realized that
+the first 12 meters are just a 60mm channel with no mirror, right? Then
+comes the focusing 6.9m guide and the straight 26m guide. This gives the
+4.4AA leveling of the transmission, whereas with my first guess the
+transmission does not level off until about 40AA. Well, the single most
+difficult part in simulations is to get the details right, in my
+experience.
+
+I made the runs with lambda from 0.1AA to 5AA for two reflectivities:
+either sharp cut-off at the critical angle, or the rough analytical
+approximation to the measured curves you sent me. I also did the same
+runs in the interval 0.1AA to 1.1AA (for detail at high wavelength). If
+you want, you can send me the actual measured reflectivity data, and I
+can put that into the simulation.
+
+I put up some plots for you on our web site, at
+
+    <A HREF="http://neutron.risoe.dk/mcstas/support/copley/">http://neutron.risoe.dk/mcstas/support/copley/</A>
+
+Basically, they show that transmission vanishes at about 1AA, with small
+traces of shorter wavelength. For the idealized reflectivity, the
+transmission completely vanishes at about 0.6AA, whereas for my crude
+approximations to your measured reflectivity, neutrons down to about
+0.3AA are transmitted.
+
+I wonder how you interpret these results? Of course, just ask if you
+need any further information.
+
+&gt; In terms of running McStas here, Collin Broholm has a student who is
+&gt; running it. He could probably help me if needed.
+
+I also put the files I used to produce the simulation on the server, in
+case you want to look at it.
+
+ - Kristian.
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00005.html">Re: Mcstas</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00000.html">Re: PGPLOT - no success under LinuxPPC</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00006"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00006"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

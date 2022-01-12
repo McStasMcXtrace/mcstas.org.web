@@ -1,0 +1,200 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: McStas installation and questions -->
+<!--X-From: emmanuel farhi <farhi@ill.fr> -->
+<!--X-Date: Tue, 19 Jan 1999 16:25:47 +0000 (GMT) -->
+<!--X-Message-Id: 199901191625.QAA18936@elvira2.ill.fr -->
+<!--X-ContentType: text/plain -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>McStas installation and questions</title>
+<link rev="made" href="mailto:farhi@ill.fr">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00002.html">Date Prev</A>][<A HREF="msg00003.html">Date Next</A>]
+<a href="index.html#00010">[Chronological]</a>
+<a href="threads.html#00010">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>McStas installation and questions</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>McStas installation and questions</strong></LI>
+<LI><strong>From</strong>: <strong>emmanuel farhi &lt;<A HREF="mailto:farhi@ill.fr">farhi@ill.fr</A>&gt;</strong></LI>
+<LI>Date: Tue, 19 Jan 1999 16:25:47 +0000 (GMT)</LI>
+<LI>Cc: <A HREF="mailto:farhi@elvira2.ill.fr">farhi@elvira2.ill.fr</A></LI>
+<LI>Content-MD5: e3BPFSGw4W43+brHBTzYtg==</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Hello,
+
+As I already mentioned in a previous mail, I'm deseperatly trying to install 
+McStas program on my account. I'm not root on our machines, and it doesn't seems 
+to be so easy as written in the manual !
+
+1a- First, I tryied to install the program on HP two HP stations. The first one 
+is a 
+hp9000s800 bi-processor machine. In that case, an error appears in 
+pre-processing when compiling ('make', after 'configure 
+--prefix=/home/tas/farhi'), as reported in the previous mail :
+
+biceps~farhi 26&gt; make
+        gcc -I. -I. -c -O2 -DMC_SYS_DIR='"'/home/tas/farhi/lib/mcstas'"' 
+-DCC_HAS_PROTOS=1  -DDEBUG=0 instrument.tab.c
+as: "/var/tmp/cca11970.s", line 2786: error 1052: Directive name not recognized 
+- PARAM
+as: "/var/tmp/cca11970.s", line 2816: error 1052: Directive name not recognized 
+- PARAM
+as: "/var/tmp/cca11970.s", line 2850: error 1052: Directive name not recognized 
+- PARAM
+as: "/var/tmp/cca11970.s", line 2918: error 1052: Directive name not recognized 
+- PARAM
+as: "/var/tmp/cca11970.s", line 2979: error 1052: Directive name not recognized 
+- PARAM
+*** Error exit code 1
+
+Stop.
+
+1b- Then I passed on an other HP machine, a mono-processor hp9000s800. An error 
+also occurs, but different :
+
+elvira2~farhi 26&gt; make
+        gcc -I. -I. -c -O2 -DMC_SYS_DIR='"'/home/tas/farhi/lib/mcstas'"' 
+-DCC_HAS_PROTOS=1  -DDEBUG=0 instrument.tab.c
+In file included from 
+/usr/local/lib/gcc-lib/hppa1.1-hp-hpux9.03/2.6.3/include/stdlib.h:231,
+                 from mcstas.h:59,
+                 from instrument.y:70:
+/usr/include/pwd.h:29: parse error before `int32_t'
+/usr/include/pwd.h:29: warning: no semicolon at end of struct or union
+/usr/include/pwd.h:31: parse error before `}'
+/usr/include/pwd.h:67: parse error before `int32_t'
+/usr/include/pwd.h:67: warning: no semicolon at end of struct or union
+/usr/include/pwd.h:69: parse error before `}'
+/usr/include/pwd.h:80: warning: parameter names (without types) in function 
+declaration
+*** Error exit code 1
+
+Stop.
+
+Note : gcc, bison and perl are installed on both machines.
+
+2- After those two uneffective trials, I turned to a SGI machine iris4d. 
+Compiling is nearly ok : configure+make, with warnings as follows :
+
+        gcc -I. -I. -c -O2 -DMC_SYS_DIR='"'/home/tas/farhi/lib/mcstas'"' 
+-DCC_HAS_PROTOS=1  -DDEBUG=0 instrument.tab.c
+        gcc -I. -I. -c -O2 -DMC_SYS_DIR='"'/home/tas/farhi/lib/mcstas'"' 
+-DCC_HAS_PROTOS=1  -DDEBUG=0 lex.yy.c
+        gcc -I. -I. -c -O2 -DMC_SYS_DIR='"'/home/tas/farhi/lib/mcstas'"' 
+-DCC_HAS_PROTOS=1  -DDEBUG=0 debug.c
+        gcc -I. -I. -c -O2 -DMC_SYS_DIR='"'/home/tas/farhi/lib/mcstas'"' 
+-DCC_HAS_PROTOS=1  -DDEBUG=0 memory.c
+        gcc -I. -I. -c -O2 -DMC_SYS_DIR='"'/home/tas/farhi/lib/mcstas'"' 
+-DCC_HAS_PROTOS=1  -DDEBUG=0 list.c
+        gcc -I. -I. -c -O2 -DMC_SYS_DIR='"'/home/tas/farhi/lib/mcstas'"' 
+-DCC_HAS_PROTOS=1  -DDEBUG=0 symtab.c
+        gcc -I. -I. -c -O2 -DMC_SYS_DIR='"'/home/tas/farhi/lib/mcstas'"' 
+-DCC_HAS_PROTOS=1  -DDEBUG=0 coords.c
+        gcc -I. -I. -c -O2 -DMC_SYS_DIR='"'/home/tas/farhi/lib/mcstas'"' 
+-DCC_HAS_PROTOS=1  -DDEBUG=0 rotation.c
+        gcc -I. -I. -c -O2 -DMC_SYS_DIR='"'/home/tas/farhi/lib/mcstas'"' 
+-DCC_HAS_PROTOS=1  -DDEBUG=0 cexp.c
+        gcc -I. -I. -c -O2 -DMC_SYS_DIR='"'/home/tas/farhi/lib/mcstas'"' 
+-DCC_HAS_PROTOS=1  -DDEBUG=0 position.c
+        gcc -I. -I. -c -O2 -DMC_SYS_DIR='"'/home/tas/farhi/lib/mcstas'"' 
+-DCC_HAS_PROTOS=1  -DDEBUG=0 file.c
+        gcc -I. -I. -c -O2 -DMC_SYS_DIR='"'/home/tas/farhi/lib/mcstas'"' 
+-DCC_HAS_PROTOS=1  -DDEBUG=0 cogen.c
+        gcc -o mcstas -O2  instrument.tab.o lex.yy.o debug.o  memory.o list.o 
+symtab.o coords.o rotation.o cexp.o position.o  file.o cogen.o -lm
+ld: WARNING 84: /usr/public/lib/gcc-lib/mips-sgi-irix5.3/2.7.2.1/libgcc.a is not 
+used for resolving any symbol.
+ld: WARNING 84: /usr/public/lib/gcc-lib/mips-sgi-irix5.3/2.7.2.1/libgcc.a is not 
+used for resolving any symbol.
+
+but final step fails (make install) as follows :
+
+mica~farhi 27% make install
+        ./mkinstalldirs /home/tas/farhi/bin /home/tas/farhi/lib 
+/home/tas/farhi/lib/mcstas
+        /opt/imake/bin/install -c mcstas /home/tas/farhi/bin/mcstas
+cannot load /opt/imake/bin/install (bu24):No such file or directory
+*** Error code 1 (bu21)
+
+So I'm now praying for help. Can't I just simply install those programs, without 
+beeing root or needing some 'hieroglyphic' commands ? Are there some already 
+compiled versions for HP or SGI ?
+
+Ian Anderson is now discussing your coming in Marsh, but I'd like to play with 
+your toy before. I'd like also to indicate than a deeply improved version of 
+MFit/Mview is now available on ILL/TAS group Web page (which becomes an official 
+archive site for those Matlab stuff: <A HREF="http://www.ill.fr/tas">http://www.ill.fr/tas</A>).
+
+I now began to think about a graphic user interface between MFit/Mview and 
+McStas (if I can ever make this latter work !), that would enable to build 
+instruments easely, to pre-process mcstas, and compile gcc Monte Carlo program, 
+simulate scans and finally display results, all mouse-driven, if possible.
+
+Bye. EF.
+
+*************************************************************************
+Emmanuel FARHI, <A HREF="http://www.ldv.univ-montp2.fr:7082/~manuf">http://www.ldv.univ-montp2.fr:7082/~manuf</A>    \|/ ____ \|/
+Institut Laue Langevin (ILL) Grenoble                        ~@-/ oO \-@~
+Avenue des Martyrs, BP 156, 38042 Grenoble Cedex 9,France    /_( \__/ )_\
+Tel (33) 04 76 20 71 83.                                        \__U_/
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<UL><LI><STRONG>Follow-Ups</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00008" HREF="msg00008.html">Re: McStas installation and questions</A></STRONG>
+<UL><LI><EM>From:</EM> Kristian Nielsen &lt;kristian.nielsen@risoe.dk&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00002.html">Re: order of moving and rotating</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00003.html">Bender</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00010"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00010"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

@@ -1,0 +1,313 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: Bugs in McStas/McGUI&#45;2 -->
+<!--X-From: Ron Ghosh <ron@ill.fr> -->
+<!--X-Date: Wed, 16 Feb 2000 18:30:23 +0100 -->
+<!--X-Message-Id: 38AADEAF.333BE852@ill.fr -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 01JLZ0W0AJMM91DJFO@risoe.dk -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: Bugs in McStas/McGUI-2</title>
+<link rev="made" href="mailto:ron@ill.fr">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00021.html">Date Prev</A>][<A HREF="msg00023.html">Date Next</A>]
+<a href="index.html#00022">[Chronological]</a>
+<a href="threads.html#00022">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: Bugs in McStas/McGUI-2</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: Bugs in McStas/McGUI-2</strong></LI>
+<LI><strong>From</strong>: <strong>Ron Ghosh &lt;<A HREF="mailto:ron@ill.fr">ron@ill.fr</A>&gt;</strong></LI>
+<LI>Date: Wed, 16 Feb 2000 18:30:23 +0100</LI>
+<LI>References: &lt;01JLZ0W0AJMM91DJFO@risoe.dk&gt;</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+I thought I was making some progress when I found that Emmanuel had
+two components that weren't in the library, i.e. a manual compilation
+using mcstas stopped at this first stage.  I quickly excised the two
+modules, but then it still crashed, though the mcstas stage
+window stayed up longer(!).   I then did a hand compile of the
+c from mcstas, and it brought up a number of odd errors.  Perhaps
+the SGI error returns are not treated well enough, and mcgui ploughs
+on relentlessly and crashes.
+
+It is too late for attachments - I'll simply copy in results:
+
+Manual compilation of slightly hacked code (removing SOURCE and MON1D,
+and replacing source by cold_guide at absolute 0,0,0)
+
+----------------------------------------------------------------------
+is1 95% /usr/ill/perl/bin/perl -d /usr/ill/bin/mcgui in14r.instr
+
+Loading DB routines from perl5db.pl version 1.01
+Emacs support available.
+
+Enter h or `h h' for help.
+
+Ambiguous use of expand =&gt; resolved to "expand" =&gt; at
+/usr/ill/lib/perl5/site_perl/Tk/Text.pm line 1038.
+        require Tk/Text.pm called at (eval 5) line 2
+        eval 'require Tk::Text
+;' called at /usr/ill/perl/lib/base.pm line 36
+        base::import('base', 'Tk::Text') called at
+/usr/ill/lib/perl5/site_perl/Tk/TextUndo.pm line 13
+        Tk::TextUndo::BEGIN() called at
+/usr/ill/lib/perl5/site_perl/Tk/Text.pm line 1038
+        eval {...} called at /usr/ill/lib/perl5/site_perl/Tk/Text.pm
+line 1038
+        require Tk/TextUndo.pm called at /usr/ill/bin/mcgui line 12
+        main::BEGIN() called at /usr/ill/lib/perl5/site_perl/Tk/Text.pm
+line 1038
+        eval {...} called at /usr/ill/lib/perl5/site_perl/Tk/Text.pm
+line 1038
+Ambiguous use of expand =&gt; resolved to "expand" =&gt; at
+/usr/ill/lib/perl5/site_perl/Tk/Text.pm line 1075.
+        require Tk/Text.pm called at (eval 5) line 2
+        eval 'require Tk::Text
+;' called at /usr/ill/perl/lib/base.pm line 36
+        base::import('base', 'Tk::Text') called at
+/usr/ill/lib/perl5/site_perl/Tk/TextUndo.pm line 13
+        Tk::TextUndo::BEGIN() called at
+/usr/ill/lib/perl5/site_perl/Tk/Text.pm line 1075
+        eval {...} called at /usr/ill/lib/perl5/site_perl/Tk/Text.pm
+line 1075
+        require Tk/TextUndo.pm called at /usr/ill/bin/mcgui line 12
+        main::BEGIN() called at /usr/ill/lib/perl5/site_perl/Tk/Text.pm
+line 1075
+        eval {...} called at /usr/ill/lib/perl5/site_perl/Tk/Text.pm
+line 1075
+main::(/usr/ill/bin/mcgui:3):   if($ENV{"MCSTAS"}) {
+  DB&lt;1&gt; r
+Signal SEGV at /usr/ill/bin/mcgui line 375
+        main::__ANON__() called at /usr/ill/perl/lib/perl5db.pl line
+1136
+        Tk::Widget::waitVariable('Tk::Toplevel=HASH(0x10c04110)',
+'SCALAR(0x106a8f2c)') called at /usr/ill/bin/mcgui line 380
+        main::dialog_get_out_file('MainWindow=HASH(0x10ab9b68)',
+'in14r.instr', 1) called at /usr/ill/bin/mcgui line 416
+        main::compile_instrument('MainWindow=HASH(0x10ab9b68)', 1)
+called at /usr/ill/bin/mcgui line 436
+        main::menu_compile('MainWindow=HASH(0x10ab9b68)') called at
+/usr/ill/bin/mcgui line 562
+        main::__ANON__() called at /usr/ill/perl/lib/perl5db.pl line
+1134
+        eval {...} called at /usr/ill/perl/lib/perl5db.pl line 1134
+        Tk::__ANON__('Tk::Menu=HASH(0x10b3df28)', 'active') called at
+/usr/ill/lib/perl5/site_perl/Tk/Menu.pm line 530
+        Tk::Menu::Invoke('Tk::Menu=HASH(0x10b3df28)', 1) called at
+/usr/ill/perl/lib/perl5db.pl line 1136
+        eval {...} called at /usr/ill/perl/lib/perl5db.pl line 1136
+        Tk::MainLoop() called at /usr/ill/bin/mcgui line 745
+Abort (core dumped)
+
+
+not really much help I'm afraid!  It just seems to be in the event loop.
+
+-----------------------------------------------------------------------------
+Is it because the compilation failed on the SGI?
+
+is1 103% mcstas -o fff.c in14r.instr
+
+is1 109% cc -c fff.c
+cc-1174 cc: WARNING File = mcstas-r.c, Line = 153
+  The variable "k" was declared but never referenced.
+
+    int i,j, k;
+             ^
+
+cc-1174 cc: WARNING File = mcstas-r.c, Line = 460
+  The variable "x" was declared but never referenced.
+
+    double x,y,z;
+           ^
+
+cc-1174 cc: WARNING File = mcstas-r.c, Line = 460
+  The variable "y" was declared but never referenced.
+
+    double x,y,z;
+             ^
+
+cc-1174 cc: WARNING File = mcstas-r.c, Line = 460
+  The variable "z" was declared but never referenced.
+
+    double x,y,z;
+               ^
+
+cc-1552 cc: WARNING File = mcstas-r.c, Line = 962
+  The variable "v" is set but never used.
+
+    double v, D, t_in, t_out, y_in, y_out;
+           ^
+
+cc-1174 cc: WARNING File = mcstas-r.c, Line = 1073
+  The variable "mcrt_v1x" was declared but never referenced.
+
+    rotate(xt, yt, zt, xi, yi, zi, theta, nx, ny, nz);
+    ^
+
+cc-1174 cc: WARNING File = mcstas-r.c, Line = 1073
+  The variable "mcrt_v1y" was declared but never referenced.
+
+    rotate(xt, yt, zt, xi, yi, zi, theta, nx, ny, nz);
+    ^
+
+cc-1174 cc: WARNING File = mcstas-r.c, Line = 1073
+  The variable "mcrt_v1z" was declared but never referenced.
+
+    rotate(xt, yt, zt, xi, yi, zi, theta, nx, ny, nz);
+    ^
+
+cc-1174 cc: WARNING File = mcstas-r.c, Line = 1074
+  The variable "mcrt_v1x" was declared but never referenced.
+
+    rotate(*xo, *yo, *zo, xt, yt, zt, phi, xi, yi, zi);
+    ^
+
+cc-1174 cc: WARNING File = mcstas-r.c, Line = 1074
+  The variable "mcrt_v1y" was declared but never referenced.
+
+    rotate(*xo, *yo, *zo, xt, yt, zt, phi, xi, yi, zi);
+    ^
+
+cc-1174 cc: WARNING File = mcstas-r.c, Line = 1074
+  The variable "mcrt_v1z" was declared but never referenced.
+
+    rotate(*xo, *yo, *zo, xt, yt, zt, phi, xi, yi, zi);
+    ^
+
+cc-1174 cc: WARNING File = mcstas-r.c, Line = 1202
+  The variable "pos" was declared but never referenced.
+
+    int i, j, pos;
+              ^
+
+cc-1008 cc: ERROR File = in14r.instr, Line = 102
+  A new-line character appears inside a string literal.
+
+    printf("Incident Ki = %f Angs-1, Exchange Q=%f Angs-1, Final Kf = %f 
+           ^
+
+cc-1018 cc: ERROR File = in14r.instr, Line = 103
+  An unmatched left parentheses "(" appears in an expression.
+
+  Angs-1\n",Ki,Q,Kf);
+  ^
+
+cc-1007 cc: ERROR File = in14r.instr, Line = 103
+  The indicated token is not valid in this context.
+
+  Angs-1\n",Ki,Q,Kf);
+        ^
+
+cc-1008 cc: ERROR File = in14r.instr, Line = 103
+  A new-line character appears inside a string literal.
+
+  Angs-1\n",Ki,Q,Kf);
+          ^
+
+cc-1174 cc: WARNING File = fff, Line = 2206
+  The variable "mctr2" was declared but never referenced.
+
+      Rotation mctr1, mctr2;
+                      ^
+
+cc-1174 cc: WARNING File = /usr/ill/lib/mcstas/Guide.comp, Line = 45
+  The variable "vlen2" was declared but never referenced.
+
+    double vlen2,nlen2;                           /* Vector lengths
+squared */
+           ^
+
+cc-1174 cc: WARNING File = /usr/ill/lib/mcstas/Guide.comp, Line = 50
+  The variable "lwhalf" was declared but never referenced.
+
+    double lwhalf = l*whalf, lhhalf = l*hhalf;
+           ^
+
+cc-1174 cc: WARNING File = /usr/ill/lib/mcstas/Guide.comp, Line = 50
+  The variable "lhhalf" was declared but never referenced.
+
+    double lwhalf = l*whalf, lhhalf = l*hhalf;
+                             ^
+
+cc-1174 cc: WARNING File = /usr/ill/lib/mcstas/Guide.comp, Line = 142
+  The variable "x" was declared but never referenced.
+
+    double x;
+           ^
+
+cc-1174 cc: WARNING File = /usr/ill/lib/mcstas/Guide.comp, Line = 143
+  The variable "i" was declared but never referenced.
+
+    int i;
+        ^
+
+4 errors detected in the compilation of "fff.c".
+------------------------------------------------------------------------
+I hope this might give some hint to you!
+
+Bon soir,  Ron
+
+-- 
+Ron Ghosh, Institut Laue Langevin, B.P. 156    tel: +33-476207178
+38042 Grenoble cedex 9, FRANCE                 fax: +33-476483906
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<UL><LI><STRONG>Follow-Ups</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00023" HREF="msg00023.html">Re: Bugs in McStas/McGUI-2</A></STRONG>
+<UL><LI><EM>From:</EM> Kristian Nielsen &lt;kristian.nielsen@risoe.dk&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00021.html">Re: Bugs in McStas/McGUI</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00023.html">Re: Bugs in McStas/McGUI-2</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00022"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00022"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

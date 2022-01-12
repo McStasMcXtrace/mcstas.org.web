@@ -1,0 +1,145 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Bender from Phillip Bernhard -->
+<!--X-From: Kim Lefmann <kim.lefmann@risoe.dk> -->
+<!--X-Date: Fri, 23 Mar 2001 12:35:44 +0100 (CET) -->
+<!--X-Message-Id: Pine.LNX.3.96.1010323123446.7176A&#45;100000@fys&#45;lin&#45;1.risoe.dk -->
+<!--X-ContentType: text/plain -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Bender from Phillip Bernhard</title>
+<link rev="made" href="mailto:kim.lefmann@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00019.html">Date Prev</A>][<A HREF="msg00021.html">Date Next</A>]
+<a href="index.html#00020">[Chronological]</a>
+<a href="threads.html#00020">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Bender from Phillip Bernhard</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:neutron-mc@risoe.dk">neutron-mc@risoe.dk</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Bender from Phillip Bernhard</strong></LI>
+<LI><strong>From</strong>: <strong>Kim Lefmann &lt;<A HREF="mailto:kim.lefmann@risoe.dk">kim.lefmann@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: Fri, 23 Mar 2001 12:35:44 +0100 (CET)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Date: Fri, 23 Mar 2001 11:33:06 +0100 (MET)
+From: Philipp Bernhardt &lt;bernhard@amos.krist.uni-erlangen.de&gt;
+Subject: Re: Bender.comp ...
+In-reply-to: &lt;<A HREF="msg00019.html">3AB870E5.116C476E@dxray.mpi-stuttgart.mpg.de</A>&gt;
+To: neutron-mc@risoe.dk
+Message-id:
+ &lt;Pine.HPP.3.96.1010323100107.6544A-100000@amos.krist.uni-erlangen.de&gt;
+MIME-version: 1.0
+Content-type: TEXT/PLAIN; charset=US-ASCII
+
+
+Hi everybody,
+
+I just want to answer to the question of Ulrich about the new versions of
+the Bender (22 Feb 1999). I am sorry that there was still the old version
+(7 Feb 1999) in the mcstas archive. 
+The small bug is not easy to see. The problem is that in the old version
+one variable was not initiated by 0.0 as it should be.
+If your compiler does this automatically for you, everything is fine. If
+not, you 
+will see differences, whenever neutrons are absorbed on the top and
+the bottom side caused by too big divergence (argument of the 
+tanh-function bigger than 10 like the standard guide component). 
+Then all following neutrons, which Q-value is smaller than Qcs will also
+be absorbed in the old version, which is the bug.
+
+I have added an example file, where you should see diverences, when your
+compiler does not automatically initiate double variables.
+
+DEFINE INSTRUMENT BEND() 
+ 
+TRACE
+ 
+COMPONENT a1 = Arm() 
+  AT (0,0,0) ABSOLUTE
+ 
+COMPONENT source = Source_div(
+        width=0.05, height=0.12,
+        hdiv=1.0, vdiv=0.5,
+        E0=5.0,dE=1.0) 
+  AT (0,0,0) RELATIVE a1
+ 
+COMPONENT ben=Bender(
+        w=0.06, h=0.12, r=500.0, d=0.0, Win=0.03, k=1,
+        R0a=1.0, Qca=0.02, alphaa=1.0, ma=1, Wa=0.000001,
+        R0i=1.0, Qci=0.02, alphai=1.0, mi=1, Wi=0.000001,
+        R0s=1.0, Qcs=0.02, alphas=1.0, ms=1, Ws=0.000001) 
+ AT(0, 0, 0) RELATIVE a1
+ 
+COMPONENT mon=Monitor(
+        xmin=-0.03, xmax=0.03,ymin=-0.06,ymax=0.06) 
+ AT(0,0,15.01) RELATIVE a1
+ 
+END
+
+
+
+I hope I could help
+
+Philipp Bernhardt
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<UL><LI><STRONG>Follow-Ups</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00021" HREF="msg00021.html">Re: Bender from Phillip Bernhard</A></STRONG>
+<UL><LI><EM>From:</EM> "Ulrich C. Wildgruber MPI fuer Metallforschung Stuttgart"&lt;wildgrub@dxray.mpi-stuttgart.mpg.de&gt;</LI></UL></LI>
+<LI><STRONG><A NAME="00023" HREF="msg00023.html">Re: Bender from Phillip Bernhard</A></STRONG>
+<UL><LI><EM>From:</EM> Rob Kreuger &lt;R.Kreuger@IRI.TUDELFT.NL&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00019.html">Bender.comp ...</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00021.html">Re: Bender from Phillip Bernhard</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00020"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00020"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

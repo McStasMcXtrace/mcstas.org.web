@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD>
+<TITLE>Vitess_output</TITLE>
+<LINK REV="made" HREF="mailto:kristian.nielsen@risoe.dk">
+</HEAD>
+
+<BODY>
+
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<H1>The <CODE>Vitess_output</CODE> component</H1>
+
+Write neutron state parameters to VITESS neutron file.
+
+
+<H2><A NAME=id></A>Identification</H2>
+
+<UL>
+  <LI> <B>Author:</B> Kristian Nielsen</B>
+  <LI> <B>Origin:</B> McStas release</B>
+  <LI> <B>Date:</B> June 6, 2000</B>
+  <LI> <B>Version:</B> 1.2 </B>
+</UL>
+<H2><A NAME=desc></A>Description</H2>
+
+<PRE>
+Detector-like component writing neutron state parameters to a
+VITESS neutron file. Used to interface McStas components or
+simulations into VITESS.
+
+Note that when standard output is used, as is the default, no
+monitors or other components that produce terminal output must be
+used, or the neutron output from this component will become
+currupted.
+
+</PRE>
+
+<H2><A NAME=ipar></A>Input parameters</H2>
+Parameters in <B>boldface</B> are required;
+the others are optional.
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD>outname</TD>
+     <TD>string</TD>
+     <TD>Filename of neutron file to write. Default is standard
+output </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>bufsize</TD>
+     <TD>records</TD>
+     <TD>Size of neutron output buffer </TD>
+<TD ALIGN=RIGHT>10000</TD> </TR>
+<TR> <TD>progress</TD>
+     <TD>flag</TD>
+     <TD>If not zero, output dots as progress indicator </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=opar></A>Output parameters</H2>
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD><B>file</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>buf</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>pos</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=links></A>Links</H2>
+
+<UL>
+  <LI> <A HREF="Vitess_output.comp">Source code</A> for <CODE>Vitess_output.comp</CODE>.
+</UL>
+<HR>
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<ADDRESS>
+Generated automatically by McDoc, Kristian Nielsen
+&lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt; /
+Jan 22 2001
+</ADDRESS>
+</BODY></HTML>

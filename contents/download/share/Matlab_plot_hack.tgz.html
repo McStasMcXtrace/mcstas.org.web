@@ -1,0 +1,10 @@
+<h1>Matlab scripts for McStas legacy data format</h1>
+<p>These are handy, but unsupported scripts for loading legacy McStas datasets into Matlab.
+<ul>
+<li>1D-datasets (such as L_monitor.comp output) - [x,y,err,xlab,ylab,titl]=Mc1Dload('lmonsrc.sim');
+<li>2D-datasets (such as PSD_monitor.comp output) - [x,y,data,z,xlab,ylab,titl]=Mc2Dload('psd.sim');
+<li>Single monitor output from scans (10 means 10'th monitor) - [x,y,err,xlab,ylab,titl]=McScanLoad('.',10)
+</ul>
+A test usage script plus datafiles are also provided.
+<p>Peter Willendrup, Ris&oslash; DTU, 2010
+

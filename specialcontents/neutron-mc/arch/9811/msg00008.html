@@ -1,0 +1,112 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: MCStas -->
+<!--X-From: Kristian Nielsen <kristian.nielsen@risoe.dk> -->
+<!--X-Date: Wed, 11 Nov 1998 14:56:38 +0100 -->
+<!--X-Message-Id: 01J48MENXNQC8WWAUI@risoe.dk -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 36493348.BCF0DE3B@ccbsf0.kek.jp -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: MCStas</title>
+<link rev="made" href="mailto:kristian.nielsen@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00007.html">Date Prev</A>][<A HREF="msg00010.html">Date Next</A>]
+<a href="index.html#00008">[Chronological]</a>
+<a href="threads.html#00008">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: MCStas</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:agarrett@ccbsf0.kek.jp">agarrett@ccbsf0.kek.jp</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: MCStas</strong></LI>
+<LI><strong>From</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: Wed, 11 Nov 1998 14:56:38 +0100</LI>
+<LI>In-reply-to: &lt;36493348.BCF0DE3B@ccbsf0.kek.jp&gt;(message from Andrew Garrett on Wed, 11 Nov 1998 15:48:40 +0900)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+&gt; Fatal error: memory exhausted during allocation of size 8000.
+&gt; 
+&gt; Program aborted.
+&gt; 
+&gt; 
+&gt;   The machine I'm using has 32 MB RAM, and I'm wondering if this is enough.  I have
+&gt; not yet traced the memory handling all that well, I'll admit - and with DOS's
+&gt; insistence on stack vs. heap memory use, it is possible that I can fix this by
+&gt; playing around with the mem functions.  Still, how much memory do you have on your
+&gt; machines, and do you have any measurement of how much you need?
+
+Hm, this sounds as if you are compiling in dos mode? In that case you
+are probably running up against the 64Kb limitation. I think you will
+need to compile McStas for 32 bit.
+
+Anyway, I just got Rene Moeller to help me compile mcstas for Windows
+95/NT. This is compiled as a 32bit console application, so there should
+be no memory problems.
+
+You can download it from this URL:
+
+  <A HREF="http://ELU-ALF-2.risoe.dk/~elu-krni/mcstas/support/misc/mcstas.exe">http://ELU-ALF-2.risoe.dk/~elu-krni/mcstas/support/misc/mcstas.exe</A>
+
+To use it, you need to set the environment variable MCSTAS to point to
+the "lib" subdirectory of the mcstas distribution, eg:
+
+  set MCSTAS=C:\mcstas\lib
+
+Let me know if it works so that I can make a proper Windows release of
+McStas.
+
+ - Kristian.
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00007.html">Re: MCStas</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00010.html">Windows McStas</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00008"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00008"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

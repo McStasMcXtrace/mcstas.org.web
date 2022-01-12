@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"></head><body><center>
+<hr>
+<h2>December 19th, 2019: Seasons greetings, McStas news and call for contributions</h2>
+<p>Dear all,
+
+<p>This is to inform you all that the next stable McStas release 2.6 will become available during January 2020.<br>
+<br>- If you have any useful contributions to make, in the shape of instruments or components, now would be a good time. :-)
+
+<p>I would also like to mention that we aim to make an official beta-release of our experimental McStas 3.0 available soon. This will happen following v. 2.6 within the first months of the new year, and be the first release to support running <strong>simulations on Nvidia GPU processors</strong>. Probably not all of our components will be ported at release, but most of what you do on CPUs today will be available!
+
+<p>A short set of slides is available <a href="http://www.mcstas.org/news/Porting_McStas_to_GPU_via_OpenACC.pdf">here</a> outlining what is coming, when we started and how we achieved it... :-)
+
+<p>Seasons greetings on behalf of the McStas team,
+<br><br>
+Peter Willendrup 
+<p><img src="/logo-left.png" height="88"><img src="/news/NVLogo_2D.jpg" height="88"><img src="/news/OpenACC-logo.png" height="88">
+<hr>
+<h2>October 11th, 2019: Respin of McStas v2.5 to support macOS Mojave
+and Catalina</h2>
+Recently one of our users reported issues on macOS Mojave with mcgui
+not picking up the right location of the mcstas library, please <a href="https://github.com/McStasMcXtrace/McCode/issues/868">see
+the related GitHub issue</a> for more information.
+<p>Since the problem seems to occur consistently on updated Mojave
+(10.14) and Catalina (10.15) systems, a patched version of our macOS
+App bundle has been uploaded to <a
+href="http://download.mcstas.org/current/mac">our download page</a>.
+<p>Please let us know via <a href="mailto:mcstas-users@mcstas.org">the
+mailinglist</a> or by <a href="https://github.com/McStasMcXtrace/McCode/issues/">creating a GitHub ticket</a> if any further issues arise.
+<hr>
+<h2>June 16th, 2019: Statistics on the history of McStas releases</h2>
+<p>Did you ever wonder how the number of included components and instrument files in McStas changed over time? - And did you know that we now include 215 components and 192 example instruments?
+
+<p>The figure below is generated from release-metadata extracted from
+<a href="http://download.mcstas.org">http://download.mcstas.org</a>,
+where all McStas releases can be found.
+
+<p><a target="_blank" href="/news/Comps_and_instrs.png"><img width="48%"
+src="/news/Comps_and_instrs.png"></a><img width="48%"
+src="/news/McStas-20years.png">
+
+<hr>
+<h2>June 7th, 2019: math.h issues on macOS 10.14.5 Mojave</h2>
+<p>With the latest update to Xcode command line tools on macOS, there is no longer an option to install the system header files to the legacy location of /usr/include .
+
+<p>This unfortunately means that the miniconda-based gcc that we
+distribute with McStas (and set up by default) is no longer able to locate the math.h header file and compilations fail with
+<pre>
+mccode-r.h:39:18: fatal error: math.h: No such file or directory
+</pre>
+
+<p>Our suggested workaround is to configure your McStas installation
+to instead use the system-provided clang compiler, see <a href="https://github.com/McStasMcXtrace/McCode/issues/799">our GitHub
+issue #799</a> for a detailed description of how to do this.
+<hr>
+<h2>April 2nd, 2019: Announcing ISTSI2019</h2>
+
+<p>The workshop <b>Innovative Simulation Tools, Shielding and
+Instrumentation 2019 (ISTSI2019)</b> will be held at Holiday Inn
+St. Petersburg, Russia, on Saturday June 29th 2019, as a satellite of
+the ECNS conference.
+
+<p>The workshop brings together the partners of the <a href="http://sine2020.eu/randd-activities/e-tools.html">SINE2020 WP8</a> that have contributed work in the areas of
+<ul>
+  <li>Integrated simulation using neutronics and Monte Carlo ray-tracing
+  <li>Innovative Shielding Concepts and Materials
+  <li>Compact Instrumentation for Larmor Labelling applications at the
+  ESS
+</ul>
+  
+<p>For more information and registration, please consult the website
+at <a href="http://ecns2019.essworkshop.org">http://ecns2019.essworkshop.org</a>
+
+<p>This workshop / project has received funding from the European Union's Horizon 2020 research and innovation programme under grant agreement No 654000.
+<p><a href="http://sine2020.eu"><img src="http://ecns2019.essworkshop.org/SINE.png" width=70%></a><a href="http://www.ecns2019.com/"><img src="http://ecns2019.essworkshop.org/ECNS2019.png" width=9.6%></a>
+<hr>
+<h2>March 25th-20th, 2019: McStas School at CSNS</h2>
+<p>Dear all,
+<p>In collaboration with the <a href="http://english.ihep.cas.cn/csns/">China Spallation Neutron
+Source</a>, the McStas team participated in the first ever <a href="http://csns2019.mcstas.org">McStas
+school in China</a> in the last week of March.
+<p><img src="http://csns2019.mcstas.org/logo-left.png"><img width="3.5%" src="http://csns2019.mcstas.org/DTU.png"> <img width="10%" src="http://csns2019.mcstas.org/ESS.png"> <img src="http://csns2019.mcstas.org/csns_logo.png">
+<p>All lecture material and exercises are available through our new
+<a href="https://github.com/McStasMcXtrace/Schools/tree/master/CSNS_March_2019">McStas school site, hosted on GitHub</a>
+<p>Further, our hosts suggested we <a href="https://www.youtube.com/playlist?list=PLodvBRHVfJ9HjquUVlyXtLjvVB3x67_p7">recorded videos of the lectures</a>
+which are slowly becoming available on the new <a href="https://www.youtube.com/playlist?list=PLodvBRHVfJ9HjquUVlyXtLjvVB3x67_p7">McStas youtube channel</a>.
+<hr>
+<h2>January 18th, 2019: McStas survey results</h2>
+<p>Dear all,
+<p>The results from the 2018 McStas user survey are now online at <a href="http://survey2018.mcstas.org">http://survey2018.mcstas.org</a>.
+<p>
+<a href="http://survey2018.mcstas.org"><img border="1" height=200
+src="http://survey2018.mcstas.org/results/Q1.png"><img border="1" height=200
+src="http://survey2018.mcstas.org/results/Q3.png"><img border="1" height=200 src="http://survey2018.mcstas.org/results/Q5.png"></a>
+<p>The main conclusions are that
+<ul>
+    <li>Q1: McStas users tend to upgrade to the latest release.
+    <li>Q2: Linux is by a large margin the most used platform, followed by Windows 10 and macOS.
+    <li>Q3: McStas are generally happy about the installation and use of the package. Very few people have issues with installation.
+    <li>Q4: The most used tool set is the default Python version, default since v. 2.1.
+    <li>Q5: McStas users seem very satisfied with the user support.
+    <li>Q6: McStas users tend to trust McStas to large extent. <b>But please don't trust it blindly!!</b>
+    <li>Q7: McStas users mostly compare with experimental data or  analytic / back of envelope calculations.
+    <li>Q8: McStas users have widespread knowledge of all documentation resources - but we should probably disseminate the wiki further.
+    <li>Q9: The individual suggestions/questions/comments/... will be answered through individual <a href="https://github.com/McStasMcXtrace/McCode/labels/2018%20survey">GitHub issues</a>.
+    <li>Q10: McStas is used on all continents that have / are planning neutron scattering infrastructure. Users are mostly based at these facilities, but also at other research labs or universities.
+</ul>
+Thank you very much for the (generally) very positive review - also,
+you are more than welcome to participate in continuing debate on user
+suggestions that will take place in the individual <a
+href="https://github.com/McStasMcXtrace/McCode/labels/2018%20survey">GitHub
+survey issues</a>.
+<hr>
+<p><b>Previous news items: </b><a href="/news/2018.html">2018</a>, <a
+href="/news/2017.html">2017</a>, <a href="/news/2016.html">2016</a>,
+<a href="/news/2015.html">2015</a>, <a
+href="/news/2014.html">2014</a>, <a href="/news/2013.html">2013</a>,
+<a href="/news/2012.html">2012</a>, <a
+href="/news/2011.html">2011</a>, </b><a
+href="/news/2010.html">2010</a>, <a href="/news/2009.html">2009</a>,
+<a href="/news/2008.html">2008</a>, <a
+href="/news/2007.html">2007</a>, <a href="/news/2006.html">2006</a>,
+<a href="/news/2005.html">2005</a>, <a
+href="/news/2004.html">2004</a>, <a href="/news/2003.html">2003</a>, <a href="/news/2002.html">2002</a>, <a href="/news/2001.html">2001</a>, <a href="/news/2000.html">2000</a>, <a href="/news/1999.html">1999</a>,
+<a href="/news/1998.html">1998</a>.
+
+</p></body></html>

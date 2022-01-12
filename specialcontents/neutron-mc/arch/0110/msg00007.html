@@ -1,0 +1,181 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: compile problem with mcstas&#45;1.5 -->
+<!--X-From: "Ulrich C. Wildgruber MPI fuer Metallforschung Stuttgart"<wildgrub@dxray.mpi&#45;stuttgart.mpg.de> -->
+<!--X-Date: Mon, 22 Oct 2001 14:02:10 +0200 -->
+<!--X-Message-Id: 3BD40AC2.A5418613@dxray.mpi&#45;stuttgart.mpg.de -->
+<!--X-ContentType: multipart/mixed -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>compile problem with mcstas-1.5</title>
+<link rev="made" href="mailto:wildgrub@dxray.mpi-stuttgart.mpg.de">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00006.html">Date Prev</A>][<A HREF="msg00008.html">Date Next</A>]
+<a href="index.html#00007">[Chronological]</a>
+<a href="threads.html#00007">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>compile problem with mcstas-1.5</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:neutron-mc@risoe.dk">neutron-mc@risoe.dk</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>compile problem with mcstas-1.5</strong></LI>
+<LI><strong>From</strong>: <strong>"Ulrich C. Wildgruber MPI fuer Metallforschung Stuttgart"&lt;<A HREF="mailto:wildgrub@dxray.mpi-stuttgart.mpg.de">wildgrub@dxray.mpi-stuttgart.mpg.de</A>&gt;</strong></LI>
+<LI>Date: Mon, 22 Oct 2001 14:02:10 +0200</LI>
+<LI>Organization: MPI fuer Metallforschung Stuttgart</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Dear fellow McStas user,
+
+just recently I switched to McStas 1.5 and everything went smooth
+until I tried to compile the McStas generated C-code for an .inst
+I used before.
+
+ I am getting the following error messages:
+
+wildgrub@pc-e21-18:/mc &gt; cc -o t t.c -lm
+/home/wildgrub/lib/mcstas/Flux_adapter.comp: In function `mcinit':
+/home/wildgrub/lib/mcstas/Flux_adapter.comp:92: `flad' undeclared (first use in
+this function)
+/home/wildgrub/lib/mcstas/Flux_adapter.comp:92: (Each undeclared identifier is
+reported only once
+/home/wildgrub/lib/mcstas/Flux_adapter.comp:92: for each function it appears
+in.)
+
+I'll attach t.instr for anybody interested in trying out!
+
+Is this a known problem ?
+What am I doing wrong ?
+
+Any comments are greatly appreciated!!!
+
+Regards
+
+Uli
+
+P.S. 't.instr' is only the beginning of a longer file, the result during 
+compile time however is identical...
+
+-- 
+Ulrich WILDGRUBER
+wildgrub@dxray.mpi-stuttgart.mpg.de
+wwwmf.mpi-stuttgart.mpg.de/abteilungen/dosch/dosch.html
+-----------------------------------------------------------------------------
+Max-Planck-Institut für Metallforschung	| Technische Universität München
+Heisenbergstr. 1		        | ZBE Neue Forschungs-Neutronenquelle
+					| Instrumentierung
+D-70569 Stuttgart			| D-85747 Garching/München
+Tel.: (+49)-711-689-1900		| Tel.: (+49)-89-289-14681
+Fax.: (+49)-711-689-1902		| Fax.: (+49)-89-289-14666</PRE>
+<PRE>
+DEFINE INSTRUMENT MatSciR(PHM, TTM, PHD)
+
+/* 						improved version 01/2001        */
+/* NL-1: Alle (!) Segmente beruecksichtigt ... 					*/
+/*    work in progress...		       					*/
+/*										*/
+/* Basic configuration of the monochromator with downstream apertures		*/
+/*	n-Quelle:      Leiterende NL-1; m = 2, 2.5; 60mm wide, 120mm high      	*/
+/*	Monochromator: Mica d(002) = 9.95 A; Q = 2pi/d = 0.6315 rez.A	  	*/
+/*		       (a small vertical mosaic spread is more realistic	*/
+/*      	or:    HOPG d(002) = 3.355A; Q = 2pi/d = 1.8728 rez.A     	*/
+/*                     220mm wide (long), 120mm high - hypothetical             */
+/*	Aperture 1:    25mm x 5mm					 	*/
+/*		 2:    not yet introduced again					*/
+/*										*/
+/*	Guide:	       2m, sides only between apertures, m = 1, 2, 3  (later)  	*/
+/*	Detector:      after last device				  	*/
+
+DECLARE
+%{
+double mono_mosaic = 60;	/* Is less more ?  ...probably not */
+double mono_vmos   = 60;
+/* double mono_q = 0.6315; */
+double mono_q = 1.8728;
+double mono_r0 = 1.0;
+double m1 = 2.0;
+double m2 = 2.5;
+double alp = 6.49;
+double CW = 0.003333;
+%}
+
+INITIALIZE
+%{
+%}
+
+TRACE
+
+COMPONENT a1 = Arm()
+  AT (0,0,0) ABSOLUTE
+
+COMPONENT source = Source_flat_lambda(
+	radius = 0.15,
+	dist = 2.595,
+	xw = 0.11, yh = 0.17,
+	lambda_0 = 2.0,
+	d_lambda = 0.20)
+  AT (0,0,0) RELATIVE a1
+
+COMPONENT flad = Flux_adapter(
+	xmin = -0.055,
+	xmax = 0.055,
+	ymin = -0.085,
+	ymax = 0.085,
+	file = "./source.flux",
+	options = " [ lambda p ]")
+  AT (0,0,0.001) RELATIVE a1
+
+end
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<UL><LI><STRONG>Follow-Ups</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00008" HREF="msg00008.html">Re: compile problem with mcstas-1.5</A></STRONG>
+<UL><LI><EM>From:</EM> Emmanuel Farhi &lt;farhi@ill.fr&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00006.html">McStas 1.5 and 1.6-alpha</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00008.html">Re: compile problem with mcstas-1.5</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00007"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00007"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

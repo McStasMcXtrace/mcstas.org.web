@@ -1,0 +1,188 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: mcdoc -->
+<!--X-From: Farhi <farhi@ill.fr> -->
+<!--X-Date: Thu, 24 Feb 2000 20:37:58 +0100 -->
+<!--X-Message-Id: 38B58896.87DB233D@ill.fr -->
+<!--X-ContentType: multipart/alternative -->
+<!--X-Reference-Id: 01JLPGSZB0BU91BJNC@risoe.dk -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>mcdoc</title>
+<link rev="made" href="mailto:farhi@ill.fr">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00034.html">Date Prev</A>][<A HREF="msg00033.html">Date Next</A>]
+<a href="index.html#00032">[Chronological]</a>
+<a href="threads.html#00032">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>mcdoc</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>mcdoc</strong></LI>
+<LI><strong>From</strong>: <strong>Farhi &lt;<A HREF="mailto:farhi@ill.fr">farhi@ill.fr</A>&gt;</strong></LI>
+<LI>Date: Thu, 24 Feb 2000 20:37:58 +0100</LI>
+<LI>Organization: ILL</LI>
+<LI>References: &lt;01JLPGSZB0BU91BJNC@risoe.dk&gt;</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+
+
+&nbsp;
+<br>Hy Kristian,
+<p>I've just finished my general monitor. It seems that it can handle any
+set of 1D monitors at the same position, as well as a 2D monitor, and at
+the samme time a neutron variable list (such as the one produced by my
+old kw_monitor). All current monitors appear obsolete , except 3D if some
+exist !, or special ones (some exotic variables).
+<br>It handles many options, default values, and automatic limits... I've
+started to test it, and it's ok for 0D, multiple 1D at the same place,
+list of neutrons (such as kw_monitor), 2D monitors, and mixtures of all
+this !
+<p>About mcdoc:
+<br>1- it's great (subdirectories, history, links...)
+<br>2- I've seen that there are default vaules, sub directories, optional
+parameters. great
+<br>3- you should add a line in index.html saying what is a bold component
+vs a normal font one
+<br>4- I usually define lots of OUTPUT parameters, in order not to mix
+them with possible other variables from other components. This produces
+a long list of output parameters. I think it's better to move the in/out
+param sections at the end of the page
+<br>5- It could be fine to set tags (&lt;a name=>) and a short (1 line
+centered) table of contents at the begining of html description
+<br>6- in mcstas DETECTOR_OUT... functions, also print out the name of
+output file after Detector:.... [filename]
+<p>Now how should we share the two pages ? I make a tar of my components
+and send it to you by mail, and you do the same ?
+<p>I think a go home now (it's sure time !!)
+<p>EF.
+<p>Kristian Nielsen wrote:
+<blockquote TYPE=CITE>Hi Emmanuel,
+<p>I was much inspired by our discussion of the automatic generation of
+<br>documentation (web pages, ...) from the header comments in components.
+I
+<br>now have a first working version, and I hope we can work together on
+<br>developing it.
+<p>First, to see the results go to
+<p>&nbsp;&nbsp;&nbsp; <a href="http://neutron.risoe.dk/mcstas/mcdoc/test/">http://neutron.risoe.dk/mcstas/mcdoc/test/</a>
+<p>These pages were generated automatically by McDoc from the component
+<br>sources. The Perl program McDoc itself is found at
+<p>&nbsp;&nbsp;&nbsp; <a href="http://neutron.risoe.dk/mcstas/mcdoc/test/mcdoc.pl">http://neutron.risoe.dk/mcstas/mcdoc/test/mcdoc.pl</a>
+<p>To generate a set of web pages, you copy the component source codes
+into
+<br>a directory and issue the command
+<p>&nbsp;&nbsp;&nbsp; perl mcdoc.pl *.comp
+<p>Components can also be placed in subdirectories, as seen on the
+<br>demonstration pages, using a command like
+<p>&nbsp;&nbsp;&nbsp; perl mcdoc.pl */*.comp
+<p>The comment syntax uses %IDENTIFICATION, %DESCRIPTION, %PARAMETERS,
+and
+<br>%END keywords to mark the different sections; keywords may be
+<br>%abbreviated.
+<p>&nbsp;* In the identification section, "author:" (or "written by" for
+backwards
+<br>compatibility) denote author; "date:", "version:", and "origin:" are
+<br>also supported. These must be on a single line. Everything else is
+part
+<br>of the "short description" of the component.
+<p>&nbsp;* In the parameters section, descriptions have the form
+<br>"name: [unit] text" or "name: text [unit]". These may span multiple
+<br>lines; subsequent lines must be indented by at least four spaces. Note
+<br>that square brackets [] should be used for units. Normal parenthesis
+are
+<br>also supported for backwards compatibility, but nested parenthesis
+do
+<br>not work well.
+<p>&nbsp;* The description section contains text in free format.
+<p>&nbsp;* After %END, no more header text is parsed.
+<p>I also have an idea for how we can cooperate on maintaining the
+<br>component library. We need to have each a master directory containing
+<br>the components that each of us maintain. For each web server mirror,
+<br>every night (or however often), an automatic job copies the contents
+of
+<br>both master directory into a single directory on the web server and
+runs
+<br>the mcdoc.pl script on the contents. This way, either of us can update
+<br>our private master directory individually and the change will be
+<br>reflected on both the Ris&oslash; and ILL pages.
+<p>So, what do you think? I suggest you try to convert the headers of a
+few
+<br>of your own components and see how it works out. You will probably
+have
+<br>some suggestions for me about how to improve the header syntax. Once
+we
+<br>have a good agreement on the syntax, we can start rewriting all the
+<br>headers in the library (I suggest that I handle the 39 components that
+<br>are part of the official v1.2 release and you handle the rest of the
+<br>components on the ILL page).
+<p>I also have other plans for how to extend mcdoc. The documentation could
+<br>be made accessible from within the graphical user interface. The
+<br>web-pages should have links to postscript files of the individual
+<br>section in the McStas manual where relevant. And it should be possible
+<br>to put in pictures and links to other web pages (sample instrument
+for
+<br>example) in a %LINKS section in the header.
+<p>&nbsp;- Kristian.
+<p>--
+<br>Kristian Nielsen&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; kristian.nielsen@risoe.dk
+<br>Ris&oslash; National Laboratory
+<br>Condensed Matter Physics and Chemistry Department
+<br>Tel. +45 4677 5515&nbsp;&nbsp; Fax +45 4677 4790</blockquote>
+
+<pre>--&nbsp;
+Emmanuel FARHI, <a href="http://www.ill.fr/tas/people/Farhi.html">http://www.ill.fr/tas/people/Farhi.html</a>&nbsp;&nbsp;&nbsp;&nbsp; \|/ ____ \|/
+TAS-Group, Institut Laue-Langevin (ILL) Grenoble&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ~@-/ oO \-@~
+Avenue des Martyrs, BP 156, 38042 Grenoble Cedex 9,France&nbsp;&nbsp; /_( \__/ )_\
+Work :Tel (33/0) 4 76 20 71 83. Fax (33/0) 4 76 48 39 06&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; \__U_/
+La Grande Arche, Chateau d'Uriage, 38410 Saint Martin d'Uriage 04 76 59 73 94</pre>
+&nbsp;
+<p>&nbsp;
+
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00034.html">Suggestions for McStas</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00033.html">Update of Web site</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00032"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00032"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

@@ -1,0 +1,213 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: supermirrors -->
+<!--X-From: Kristian Nielsen <kristian.nielsen@risoe.dk> -->
+<!--X-Date: 23 Apr 1999 15:59:43 +0200 -->
+<!--X-Message-Id:  -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 37206868.108B8CA2@ph.tum.de -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: supermirrors</title>
+<link rev="made" href="mailto:kristian.nielsen@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00002.html">Date Prev</A>][<A HREF="msg00012.html">Date Next</A>]
+<a href="index.html#00003">[Chronological]</a>
+<a href="threads.html#00003">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: supermirrors</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:Ralph_Gilles@Physik.TU-Muenchen.DE">Ralph_Gilles@Physik.TU-Muenchen.DE</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: supermirrors</strong></LI>
+<LI><strong>From</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: 23 Apr 1999 15:59:43 +0200</LI>
+<LI>In-reply-to: &lt;<A HREF="msg00002.html">37206868.108B8CA2@ph.tum.de</A>&gt;(Ralph_Gilles@Physik.TU-Muenchen.DE)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Hi,
+
+&gt; example in detail. mv = 0 has still reflectivity because of R0 = 1.0. If
+&gt; I would like to calculate a supermirror with mh = 3 and a non reflecting
+&gt; material mv for the sidewalls (it make sense to check the contribution
+
+For this, you should modify the Guide2 component to always absorb when
+m=0 (it is a very simple change). I have included some untested code
+below, could you try it and let me know if it works (so I can put it on
+the web page)?
+
+The only change is the added lines
+
+    if((i &lt;= 2 &amp;&amp; mv == 0) || (i &gt; 2 &amp;&amp; mh == 0))
+      ABSORB;
+
+ - Kristian.
+
+------------------------------------------------------------------------
+DEFINE COMPONENT Guide2
+DEFINITION PARAMETERS (w1, h1, w2, h2, l, R0, Qc, alpha, mh, mv, W)
+SETTING PARAMETERS ()
+STATE PARAMETERS (x,y,z,vx,vy,vz,t,s1,s2,p)
+
+TRACE
+%{
+  double t1,t2;                                 /* Intersection times. */
+  double av,ah,bv,bh,cv1,cv2,ch1,ch2,d;         /* Intermediate values */
+  double vdotn_v1,vdotn_v2,vdotn_h1,vdotn_h2;   /* Dot products. */
+  int i;                                        /* Which mirror hit? */
+  double q;                                     /* Q [1/AA] of reflection */
+  double vlen2,nlen2;                           /* Vector lengths squared */
+
+  /* ToDo: These could be precalculated. */
+  double ww = .5*(w2 - w1), hh = .5*(h2 - h1);
+  double whalf = .5*w1, hhalf = .5*h1;
+  double lwhalf = l*whalf, lhhalf = l*hhalf;
+
+  /* Propagate neutron to guide entrance. */
+  PROP_Z0;
+  if(x &lt;= -whalf || x &gt;= whalf || y &lt;= -hhalf || y &gt;= hhalf)
+    ABSORB;
+  for(;;)
+  {
+    /* Compute the dot products of v and n for the four mirrors. */
+    av = l*vx; bv = ww*vz;
+    ah = l*vy; bh = hh*vz;
+    vdotn_v1 = bv + av;         /* Left vertical */
+    vdotn_v2 = bv - av;         /* Right vertical */
+    vdotn_h1 = bh + ah;         /* Lower horizontal */
+    vdotn_h2 = bh - ah;         /* Upper horizontal */
+    /* Compute the dot products of (O - r) and n as c1+c2 and c1-c2 */
+    cv1 = -whalf*l - z*ww; cv2 = x*l;
+    ch1 = -hhalf*l - z*hh; ch2 = y*l;
+    /* Compute intersection times. */
+    t1 = (l - z)/vz;
+    i = 0;
+    if(vdotn_v1 &lt; 0 &amp;&amp; (t2 = (cv1 - cv2)/vdotn_v1) &lt; t1)
+    {
+      t1 = t2;
+      i = 1;
+    }
+    if(vdotn_v2 &lt; 0 &amp;&amp; (t2 = (cv1 + cv2)/vdotn_v2) &lt; t1)
+    {
+      t1 = t2;
+      i = 2;
+    }
+    if(vdotn_h1 &lt; 0 &amp;&amp; (t2 = (ch1 - ch2)/vdotn_h1) &lt; t1)
+    {
+      t1 = t2;
+      i = 3;
+    }
+    if(vdotn_h2 &lt; 0 &amp;&amp; (t2 = (ch1 + ch2)/vdotn_h2) &lt; t1)
+    {
+      t1 = t2;
+      i = 4;
+    }
+    if(i == 0)
+      break;                    /* Neutron left guide. */
+    PROP_DT(t1);
+    switch(i)
+    {
+      case 1:                   /* Left vertical mirror */
+        nlen2 = l*l + ww*ww;
+        q = V2Q*(-2)*vdotn_v1/sqrt(nlen2);
+        d = 2*vdotn_v1/nlen2;
+        vx = vx - d*l;
+        vz = vz - d*ww;
+        break;
+      case 2:                   /* Right vertical mirror */
+        nlen2 = l*l + ww*ww;
+        q = V2Q*(-2)*vdotn_v2/sqrt(nlen2);
+        d = 2*vdotn_v2/nlen2;
+        vx = vx + d*l;
+        vz = vz - d*ww;
+        break;
+      case 3:                   /* Lower horizontal mirror */
+        nlen2 = l*l + hh*hh;
+        q = V2Q*(-2)*vdotn_h1/sqrt(nlen2);
+        d = 2*vdotn_h1/nlen2;
+        vy = vy - d*l;
+        vz = vz - d*hh;
+        break;
+      case 4:                   /* Upper horizontal mirror */
+        nlen2 = l*l + hh*hh;
+        q = V2Q*(-2)*vdotn_h2/sqrt(nlen2);
+        d = 2*vdotn_h2/nlen2;
+        vy = vy + d*l;
+        vz = vz - d*hh;
+        break;
+    }
+    /* Now compute reflectivity. */
+    if((i &lt;= 2 &amp;&amp; mv == 0) || (i &gt; 2 &amp;&amp; mh == 0))
+      ABSORB;
+    if(q &gt; Qc)
+    {
+      double arg = (q - (i &lt;= 2 ? mv : mh)*Qc)/W;
+      if(arg &lt; 10)
+        p *= .5*(1-tanh(arg))*(1-alpha*(q-Qc));
+      else
+        ABSORB;                               /* Cutoff ~ 1E-10 */
+    }
+    p *= R0;
+  }
+%}
+
+END
+
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<UL><LI><STRONG>References</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00002" HREF="msg00002.html">supermirrors</A></STRONG>
+<UL><LI><EM>From:</EM> "Dr. Ralph Gilles" &lt;Ralph_Gilles@Physik.TU-Muenchen.DE&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00002.html">supermirrors</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00012.html">Re: supermirrors</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00003"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00003"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

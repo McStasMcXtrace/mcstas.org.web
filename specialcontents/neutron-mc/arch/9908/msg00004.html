@@ -1,0 +1,148 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: McStas -->
+<!--X-From: John Copley <john.copley@nist.gov> -->
+<!--X-Date: Mon, 23 Aug 1999 13:09:46 &#45;0400 -->
+<!--X-Message-Id: 37C1805A.E615FC07@nist.gov -->
+<!--X-ContentType: text/plain -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>McStas</title>
+<link rev="made" href="mailto:john.copley@nist.gov">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00003.html">Date Prev</A>][<A HREF="msg00005.html">Date Next</A>]
+<a href="index.html#00004">[Chronological]</a>
+<a href="threads.html#00004">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>McStas</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>"Nielsen, Kristian" &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>McStas</strong></LI>
+<LI><strong>From</strong>: <strong>John Copley &lt;<A HREF="mailto:john.copley@nist.gov">john.copley@nist.gov</A>&gt;</strong></LI>
+<LI>Date: Mon, 23 Aug 1999 13:09:46 -0400</LI>
+<LI>Cc: Kim Lefmann &lt;<A HREF="mailto:kim.lefmann@risoe.dk">kim.lefmann@risoe.dk</A>&gt;, Kurt Clausen &lt;<A HREF="mailto:kurt.clausen@risoe.dk">kurt.clausen@risoe.dk</A>&gt;</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Dear Kristian
+
+ Thanks for your message, and thanks for adding me to the mailing list.
+I'm not sure whether your colleagues got a copy of your message.  The CC
+line read as follows:
+        CC: kim.lefmann@risoe.dk.kurt.clausen@risoe.dk
+(note the . between dk and kurt)
+
+Let me tell you a little bit about MSCAT.
+
+The original program, called MSC, was written by Frank Bischoff roughly
+30 years ago! When I was a postdoc at Argonne my supervisor, Mike Rowe,
+asked me to acquire the program and get it into a form that would be
+easier for neutron scatterers to use. In the process and since then a
+number of new features have been added. The last official release was
+about 15 years ago. It is described in Comp. Phys. Commun. 40 (1986)
+337-357 (which I can send you if you are interested), together with
+references therein.
+
+Frankly the program is sufficiently antiquated that I don't particularly
+like to use it myself! On the other hand it is still (I think) the only
+comprehensive program that's available for this type of calculation.
+I've tried on several occasions to persuade someone to have their
+student rewrite the program under some sort of loose supervision from
+me, but it has never taken off. I have also rewritten large parts of the
+program myself, but there are challenges that I have never succeeded in
+sorting out to my own satisfaction. Largely these challenges have to do
+with the selection of a new direction and magnitude for the neutron wave
+vector k, given S(Q,omega). Within MSCAT, before the Monte Carlo loop
+begins, a number of functions are formed from the input S(Q,omega);
+these include the upscattering probability as a function of the incident
+neutron energy, the so-called marginal up- and down-scattering
+functions, and so on. These functions are used to select the new
+direction and magnitude of k in such a way that all choices are about
+equally likely (i.e. to reduce the variance), but there are problems in
+deciding how to do the various integrals necessary to form these
+functions (number of points, mesh size etc). Every time I think about
+this matter I ask myself whether it might be better to do the sampling
+in a more straightforward but less efficient manner, and I have never
+satisfactorily resolved this question. If you think this is worth
+pursuing I can fill you in with more detailed information and I can send
+you code. At present MSCAT is a standalone program written in Fortran
+and the user is required to provide a subroutine that defines S(Q,omega)
+(even though this is of course unknown, being the quanitity that one is
+trying to measure when one does a neutron scattering experiment). This
+should be kept in mind when rewriting the program and/or incorporating
+it in a larger piece of software such as McStas.
+
+With regard to simulating the optical filter at my instrument, I propose
+to send you a fax containing a description of the geometry of the guide,
+plus a measured reflectivity curve. What is your fax number?
+
+Best wishes
+John
+
+
+
+--
+John R.D. Copley
+National Institute of Standards and Technology
+100 Bureau Drive, Stop 8562
+Gaithersburg, MD 20899-8562
+Tel: (301)975-5133/6220
+FAX: (301)921-9847
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<UL><LI><STRONG>Follow-Ups</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00005" HREF="msg00005.html">Re: McStas</A></STRONG>
+<UL><LI><EM>From:</EM> Kristian Nielsen &lt;kristian.nielsen@risoe.dk&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00003.html">Re: McStas</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00005.html">Re: McStas</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00004"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00004"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

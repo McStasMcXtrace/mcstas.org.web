@@ -1,0 +1,110 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: Mcstas -->
+<!--X-From: Kristian Nielsen <kristian.nielsen@risoe.dk> -->
+<!--X-Date: 1 Sep 1999 08:49:06 +0200 -->
+<!--X-Message-Id:  -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 199908251839.NAA18982@black.pns.anl.gov -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: Mcstas</title>
+<link rev="made" href="mailto:kristian.nielsen@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[Date Prev][<A HREF="msg00006.html">Date Next</A>]
+<a href="index.html#00005">[Chronological]</a>
+<a href="threads.html#00005">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: Mcstas</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:eiverson@anl.gov">eiverson@anl.gov</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: Mcstas</strong></LI>
+<LI><strong>From</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: 1 Sep 1999 08:49:06 +0200</LI>
+<LI>In-reply-to: &lt;199908251839.NAA18982@black.pns.anl.gov&gt; (eiverson@anl.gov)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+&gt; Date: Wed, 25 Aug 1999 13:39:08 -0400
+&gt; From: eiverson@anl.gov
+
+&gt; Dear Kristian,
+
+&gt; Unfortunately, I still cannot get perl-PGPLOT to successfully compile.  It 
+&gt; will "make" without any errors, but "make test" fails completely.
+
+First, sorry for answering so late, things have been busy here due to
+the upcoming ECNS (even though I am not going myself).
+
+&gt; Can't load './blib/arch/auto/PGPLOT/PGPLOT.so' for module PGPLOT: ./blib/arch/aut
+&gt; o/PGPLOT/PGPLOT.so: undefined symbol: fstat at /usr/lib/perl5/i386-linux/5.00404/
+&gt; DynaLoader.pm line 166.
+
+Sigh. Apparently some library problem. It is difficult to say much about
+it without further information. Would it be possible for you to give me
+a temporary account on the machine, so that I can examine the problem
+directly? If you want to try yourself, the "HELP" file in the pgperl
+source seems to give some hints. In my experience, the first place to
+look is in compiler and library versions for the fortran stuff.
+
+The problem with pgperl/pgplot is that it is linking THREE languages -
+perl, fortran, and C. This has turned out to cause a lot of problems,
+especially on Linux where fortran support seems somewhat weak. Pgplot
+with the perl interface is actually quite nice, but if users cannot
+install it then that does not help much.
+
+(You don't happen to know of a good alternative to pgplot for scientific
+plotting?)
+
+ - Kristian.
+
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00006.html">Re: MSCAT etc</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00005"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00005"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

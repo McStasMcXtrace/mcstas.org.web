@@ -1,0 +1,178 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: McStas -->
+<!--X-From: "Pay H. Schulze Horn" <horn@ill.fr> -->
+<!--X-Date: Mon, 06 Sep 1999 15:24:24 +0200 -->
+<!--X-Message-Id: 37D3C088.41C6@ill.fr -->
+<!--X-ContentType: multipart/mixed -->
+<!--X-Reference-Id: 01JF7Y4FJTL89JEAIX@risoe.dk -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>McStas</title>
+<link rev="made" href="mailto:horn@ill.fr">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00000.html">Date Prev</A>][<A HREF="msg00044.html">Date Next</A>]
+<a href="index.html#00007">[Chronological]</a>
+<a href="threads.html#00007">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>McStas</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>McStas</strong></LI>
+<LI><strong>From</strong>: <strong>"Pay H. Schulze Horn" &lt;<A HREF="mailto:horn@ill.fr">horn@ill.fr</A>&gt;</strong></LI>
+<LI>Date: Mon, 06 Sep 1999 15:24:24 +0200</LI>
+<LI>Organization: Institut Laue Langevin</LI>
+<LI>References: &lt;01JF7Y4FJTL89JEAIX@risoe.dk&gt;</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+After a more a week now here is the Component, which gives the
+Divergence in relation to the energy
+out. Change it for distribution like you want.
+The other monitor, which gives out everything, has small syntax-error
+which i cant't find.
+
+Are there any know problems with the ROTATED-command?
+
+Also as an attachment you can find an instrument-definition with a small
+component-definition, which are reproducing a thing i can't understand.
+
+After the compiling with the shell command:
+mcstas t9.instr &amp;&amp; gcc -O -o t9 t9.c -lm &amp;&amp; t9 -n 3
+
+I had this output:
+Phi:4.19437 theta0:-60
+
+Phi:4.19437 theta0:-60
+
+Phi:4.19437 theta0:-60
+
+Why do i have a value of 4.19 degree as an divergence ?
+
+Why not 2.1 ?
+
+Why is it nearly the double value i was awaiting ?
+ 
+I have installed the version:"McStas version 1.1, March 31, 1999" on a
+Silicon graphics Iris with
+Irix 5.3 and gcc 2.7.2.1 .
+
+
+Thanks
+	Pay
+
+P.S.
+Please forget the question for the monochromator component which
+includes multiple scattering.
+</PRE>
+<PRE>
+
+DEFINE COMPONENT Angle_test
+DEFINITION PARAMETERS ()
+SETTING PARAMETERS ()
+STATE PARAMETERS (x,y,z,vx,vy,vz,t,s1,s2,p)
+DECLARE
+  %{
+  %}
+
+TRACE
+  %{
+	 double theta0, phi;
+	 PROP_Z0;
+	 theta0 = atan2(vx,vz);
+	 phi = atan2(vy,vz);
+	 printf("\nphi:%g theta0:%g\n",RAD2DEG*phi,RAD2DEG*theta0);
+  %}
+
+END
+</PRE>
+<PRE>
+DEFINE INSTRUMENT t9()
+
+DECLARE
+%{
+%}
+
+INITIALIZE
+%{
+%}
+
+TRACE
+
+COMPONENT a1 = Arm()
+	AT (0,0,0) ABSOLUTE
+	ROTATED (0,0,0) ABSOLUTE
+
+COMPONENT s = Source_div(
+		width = 0.01,
+		height = 0.01,
+		hdiv=0,
+		vdiv=0,
+		E0 = e_zero,
+		dE = 0)
+	AT (0,0,0) RELATIVE a1
+	ROTATED (0,0,0) RELATIVE a1
+
+COMPONENT a2=Arm()
+	AT (0,0,1) RELATIVE a1
+	ROTATED (2.1,60,0) RELATIVE a1
+
+COMPONENT moni2=Angle_test()
+	AT (0,0,0) RELATIVE a2
+	ROTATED (0,0,0) RELATIVE a2
+
+END
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<UL><LI><STRONG>Follow-Ups</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00008" HREF="msg00008.html">Re: McStas</A></STRONG>
+<UL><LI><EM>From:</EM> Kristian Nielsen &lt;kristian.nielsen@risoe.dk&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00000.html">Re: PGPLOT - no success under LinuxPPC</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00044.html">McStas: forgotten attachment</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00007"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00007"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

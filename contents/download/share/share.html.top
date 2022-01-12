@@ -1,0 +1,14 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title></title>
+</head>
+
+<body>
+<h1>Shared area for user files</h1>
+This directory contains user contributions or generally useful files,
+not included in the distribution. The developer team also places
+enrichments or minor improvements here when a new release is not to
+happen soon.
+
+<p>To contribute file(s), please send file and info to one of the <a
+href="/about/contacts">authors</a> of <a href="/">McStas</a>

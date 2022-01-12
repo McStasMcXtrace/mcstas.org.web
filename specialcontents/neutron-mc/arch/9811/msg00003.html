@@ -1,0 +1,178 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: First tries using McStas -->
+<!--X-From: artus@obiwan.kri.physik.uni&#45;muenchen.de -->
+<!--X-Date: Thu, 05 Nov 1998 18:21:04 +0100 (CET) -->
+<!--X-Message-Id: 01J48MCU7VTI8WWAUI@risoe.dk -->
+<!--X-ContentType: text/plain -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>First tries using McStas</title>
+<link rev="made" href="mailto:artus@obiwan.kri.physik.uni-muenchen.de">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[Date Prev][<A HREF="msg00004.html">Date Next</A>]
+<a href="index.html#00003">[Chronological]</a>
+<a href="threads.html#00003">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>First tries using McStas</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>First tries using McStas</strong></LI>
+<LI><strong>From</strong>: <strong><A HREF="mailto:artus@obiwan.kri.physik.uni-muenchen.de">artus@obiwan.kri.physik.uni-muenchen.de</A></strong></LI>
+<LI>Date: Thu, 05 Nov 1998 18:21:04 +0100 (CET)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Dear Kristian,
+
+in the last days since our return from Denmark I've installed your
+program McStas on my machine here. Right now I'm trying to get my
+first "instrument" running. I have some 'beginners problems' and now allow
+myself to ask for help.
+I wanted to simulate a simple straight neutron guide with m=2 for left 
+and right faces and m=3 for top and bottom faces. But the component
+Guide only allows one kind of coating. It is not quite clear to me
+from the manual how to build such a guide out of four Mirror
+components. The manual says that Mirrors can be used to assemble a
+guide but it says also that a Mirror lies in the xy-plane. Wouldn't
+one need Mirrors lying parallel to the z-axis to build a guide? May be 
+the use of different coatings within the same guide can be implemented 
+within the Guide component in some future release?
+
+To make things easier I tried to set up the instrument with m=2 for
+all faces. But trying to compile it with McStas ends with:
+
+artus@obiwan:/home/artus/mcstas/resi1 &gt; mcstas resi1.instr 
+parse error, expecting `"AT"' at line 37.
+Errors encountered during parse.
+artus@obiwan:/home/artus/mcstas/resi1 &gt; 
+
+The AT is expected in the END line? 
+I cannot find any error in resi1.instr:
+
+DEFINE INSTRUMENT RESI1()
+
+TRACE
+
+COMPONENT a1 = Arm()
+  AT (0,0,0) ABSOLUTE
+
+COMPONENT source = Source_flat(
+	radius = 0.050,
+	dist = 2.000,
+	xw = 0.020, yh = 0.060,
+	E0 = 81.804,	/* = 1A*/
+	dE = 1.0)	/* =0.99394A - 1.00617A 
+  AT (0,0,0) RELATIVE a1
+
+COMPONENT guide1 = Guide(
+	w1 = 0.020
+	h1 = 0.060
+	w2 = 0.020
+	h2 = 0.060
+	l = 11.500
+	R0 = 1.0
+	Qc = 0.0214
+	alpha = 5.617
+	m = 2
+	W = 0.0033)
+  AT (0,0,2) RELATIVE a1 
+
+COMPONENT mon = Monitor(
+	xmin = -0.01,
+	xmax = 0.01,
+	ymin = -0.03,
+	ymax = 0.03)
+  AT (0,0,13.5) RELATIVE a1
+
+END
+
+What is wrong with the input file? The example files on the CD
+unfortunately don't contain a Mirror or Guide component for
+comparison.
+
+Furthermore I've tried to use mcdisplay on the example files but this
+also ends with an error:
+
+artus@obiwan:/home/artus/mcstas/example &gt; mcdisplay linup-1.instr 
+Can't locate PGPLOT.pm in @INC (@INC contains: /usr/lib/perl5/i586-linux/5.00404 /usr/lib/perl5 /usr/lib/perl5/site_perl/i586-linux /usr/lib/perl5/site_perl .) at /usr/local/bin/mcdisplay line 6.
+BEGIN failed--compilation aborted at /usr/local/bin/mcdisplay line 6.
+artus@obiwan:/home/artus/mcstas/example &gt; 
+
+I have installed pgplot from the CD. The pgplot examples are running
+and 
+
+PGPLOT_DIR="/usr/local/pgplot/"; export PGPLOT_DIR
+PGPLOT_DEV="/xwin"; export PGPLOT_DEV
+
+is added to my .bashrc file.
+
+I couldn't find the file PGPLOT.pm anywhere on the harddisk. I also
+didn't find any information about this in the installation guidelines
+of pgplot. What is wrong?
+
+Thank you very much for your help and
+
+best wishes from Garching,
+
+Georg
+
+*********************************************
+
+Dr. Georg Artus
+Technische Universität München
+FRM-II Reaktorstation
+D-85747 Garching
+
+Tel: +49 (0)89/289-14018
+Fax: +49 (0)89/289-12112
+E-mail: gartus@ph.tum.de
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00004.html">Re: First tries using McStas</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00003"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00003"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

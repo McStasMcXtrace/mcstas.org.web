@@ -1,0 +1,172 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: The first one to unsubscribe ? -->
+<!--X-From: Mark Hagen <mark.hagen@neutron&#45;server.kek.jp> -->
+<!--X-Date: Wed, 25 Nov 1998 06:03:31 +0000 -->
+<!--X-Message-Id: 365B9DB3.8BACE4E3@neutron&#45;server.kek.jp -->
+<!--X-ContentType: text/plain -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>The first one to unsubscribe ?</title>
+<link rev="made" href="mailto:mark.hagen@neutron-server.kek.jp">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00031.html">Date Prev</A>][<A HREF="msg00032.html">Date Next</A>]
+<a href="index.html#00039">[Chronological]</a>
+<a href="threads.html#00039">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>The first one to unsubscribe ?</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI><strong>Subject</strong>: <strong>The first one to unsubscribe ?</strong></LI>
+<LI><strong>From</strong>: <strong>Mark Hagen &lt;<A HREF="mailto:mark.hagen@neutron-server.kek.jp">mark.hagen@neutron-server.kek.jp</A>&gt;</strong></LI>
+<LI>Date: Wed, 25 Nov 1998 06:03:31 +0000</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Hi Kristian,
+
+I don't know if you keep a watchful eye on who subscribes and unsubscribes
+from your mailing list ? If you do you may be insulted to see that 
+pha70@cc.keele.ac.uk (Mark Hagen) has unsubscribed, however I can reassure
+you I hope by pointing out that mark.hagen@neutron-server.kek.jp has 
+subscribed to it. Easier to get my e-mail here at the moment, rather than
+in Keele.
+
+Okay, other reasons for e-mailing. I leave it to you as to whether you forward
+these onto the e-mail list or if you quietly deal with them.
+
+
+The ALLOCA problem.
+-------------------
+When I was at the MC meeting we tried to compile MCStas on MS-Visual C++, I 
+don't know if you recall or not. However the reason it wouldn't work was
+because in instrument.tab.c there was a call to alloca, which it seems isn't
+an ANSI standard-C function. Okay my reason for bringing this up again is that
+I "made a sale" yesterday. A guy from Metro. Univ. in Tokyo who works at KEK.
+We tried to install Mcstas on a Hewlett Packard Workstation (HPUX) he has and
+it failed because it objected to alloca.
+
+Okay, so the guy will try installing it on an IBM Unix (AIX ?) workstation to
+see if it will work through there.
+
+Now you had a work around for the failure of alloca ? using malloc. Any chance 
+of version of instrument.tab.c with that work around in it ? My recollection for
+Visual C++ was that the alloca and changing strcmpcase to stricase were all that
+the problem was there. If you made a change to instrument.tab.c and put the new
+file on the webpage for download as an "upgrade" for people who have the alloca 
+problem then that would resolve the problem for this release. Well if you put
+the files with strcmpcase changed to stricase up as well with a note for HP or 
+MS-VC users to download them and replace that would be even better. I know you
+put up a .exe for Win95 but the correct source files would be nice. 
+
+The good news, Mcstas works fine under Digital Unix, I loaded it on my Keele DEC
+Unix Alpha with no problems. Ditto Slackware Linux, the only subtlety is that one
+needs to run the final exe files via ./program for some reason.
+
+
+Time of Flight, Source Distributions and Energy Monitors
+-------------------------------------------------------
+As I mentioned above Drew Garret and I were demonstrating Mcstas to someone from
+Metro. Univ. and we decided to do a very simple ToF sim. to show him. Source +
+Collimator + Energy monitor. Okay so a flat energy distribution from say 5meV
+to 100meV. But it wasn't flat in the energy detector. Reason being, as Drew
+explained to me, your source emits as a uniform velocity distribution ? In other
+words you convert the low and high energy ranges to velocities and then use a 
+0 t 1 random number generator in the range of velocities ? Velocity is a funny 
+one, it is not particularly used. For reactor people this may not matter but to 
+us ToF boys it will be more relevant. I think a source should emit in uniform 
+energy steps not velocity. 
+
+When I first saw the curved energy distribution I jumped to a conclusion many
+ToF people would, that you hadn't done the ToF to Energy jacobian in the 
+energy monitor. This isn't strictly correct but is close to the reason. You're
+plotting neutrons/unit of velocity in energy bins, hence the graph has a 1/sqrt(E)
+form. If you emitted uniformly in energy it would be neutrons/unit energy against
+energy which would be a nice flat line.
+
+So a request for a source that emits uniformly in energy, should be an extremely
+minor change, in the next revision ?
+
+
+
+The mailing list looks very nice, my man from Metro. Univ. was very impressed and
+signed on to it. Another suggestion, for your benefit, well Risoes. On the sign on
+page, in the form, ask people to supply their names and normal mail addresses as 
+well. When it comes time to write a report for the EU about how wonderful all this
+Mcstas work is, you'll be able to supply a list of "Mcstas users" from around the 
+world showing what a great success it is. A list of e-mail addresses doesn't have 
+the same impact. Also it provides a mailing list for any future MC meetings. If
+you're unsure about this ask Kurt what he thinks, I think he'll see the "political"
+advantages to keeping such a record. Also record the number of hits and downloads
+from the web page. Again will look nice and impressive in a report to Brussels in
+the future.
+
+
+Okay, after all these suggestions of work for you I'd better get on and do some of
+my own work :) By the way Drew will be in touch soon, he has a working Mcstas routine
+for a Fermi chopper. I have one for my program as well. You could mention this to 
+Kurt, he asked a number of people at the meeting if they had Fermi chopper code and
+everyone said no. Fermi chopper will be a very useful addition, very important for
+time of flighters.
+
+
+Cheers,
+
+
+Mark
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<UL><LI><STRONG>Follow-Ups</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00033" HREF="msg00033.html">Re: The first one to unsubscribe ?</A></STRONG>
+<UL><LI><EM>From:</EM> Kristian Nielsen &lt;kristian.nielsen@risoe.dk&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00031.html">Re: First tries using McStas</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00032.html">Fermi Chopper</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00039"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00039"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

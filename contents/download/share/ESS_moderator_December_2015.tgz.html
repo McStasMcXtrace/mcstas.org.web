@@ -1,0 +1,21 @@
+<p>This directory contains an updated ESS source component for use with McStas 2.x and 1.12c - dated December 2015!
+
+<p>The component comes with a library of ESS source brilliances, including:
+<ul>
+    <li> 2001, legacy "Mezei moderators" from the original F. Mezei documents, rescaled to ESS TDR frequency, pulselength and power.
+    <li> TDR,  Mezei moderators, with a wavelength-dependent correction term to the cold flux, derived from  2012 MCNPX calculations 
+      by ESS neutronics group. Corrections calculated by K Lieutenant (Vitess) NOTE: uses the 2001 brilliance for the thermal moderator!
+    <li> 2013, post-TDR update with non-Maxwellian cold spectrum, Troels Schoenfeldt, BEFORE the ESS pancake geometry was introduced.
+    <li> 2014  updated brilliance using formulation by Troels Schoenfeldt, including support for the "pancacke", i.e. flat geometry and
+      geometrical brilliance over the moderator surface.
+    <li> 2015  updated brilliance using formulation by Troels Schoenfeldt, including support for the "butterfly" moderator in 3 and 6cm 
+      height versions. This formulation further includes local variation of the brilliance over the moderator surface, and variation 
+      with selected beamport angle.
+    <li> We further provide a set of example instruments for producing curves corresponding to each of the brilliance settings.
+    <li> ... as well as an updated version of the Brilliance_monitor.comp with controllable size and distance from the source - for free
+      calculation of the solid angle covered.
+</ul>
+
+<p>Please also read the "usage recommendations" provided in the enclosed PDF
+
+<p>Peter Willendrup

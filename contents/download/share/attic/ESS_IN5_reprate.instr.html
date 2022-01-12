@@ -1,0 +1,270 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD>
+<TITLE>McStas: ESS_IN5_reprate Instrument at  ESS</TITLE>
+<LINK REV="made" HREF="mailto:peter.willendrup@risoe.dk">
+</HEAD>
+
+<BODY>
+
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<H1>The <CODE>ESS_IN5_reprate</CODE> Instrument</H1>
+
+
+
+<H2><A NAME=id></A>Identification</H2>
+
+<UL>
+  <LI> <B>Site:    ESS</B>
+  <LI> <B>Author:</B> Kim Lefmann (kim.lefmann@risoe.dk), Helmuth Schober, Feri Mezei</B>
+  <LI> <B>Origin:</B>ESS</B>
+  <LI> <B>Date:</B> September 20, 2006</B>
+  <LI> <B>Version:</B> 1.3 </B> Updated with respect to McStas 1.12b version which does not compile
+</UL>
+<H2><A NAME=desc></A>Description</H2>
+
+<PRE>
+McStas instrument for simulating IN5-TYPE (cold chopper) multi-frame spectrometer at ESS LPTS
+
+</PRE>
+
+<H2><A NAME=ipar></A>Input parameters</H2>
+Parameters in <B>boldface</B> are required;
+the others are optional.
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD>Lam_min</TD>
+     <TD>AA</TD>
+     <TD>Minimum wavelength emitted by the moderator
+</TD>
+<TD ALIGN=RIGHT>4.9</TD> </TR>
+<TR> <TD>Lam_max</TD>
+     <TD>AA</TD>
+     <TD>Maximum wavelength emitted by the moderator
+</TD>
+<TD ALIGN=RIGHT>5.1</TD> </TR>
+<TR> <TD>Lam_target</TD>
+     <TD>AA</TD>
+     <TD>Target wavelength for the monochromating crystal
+</TD>
+<TD ALIGN=RIGHT>5</TD> </TR>
+<TR> <TD>Pulse_width</TD>
+     <TD>s</TD>
+     <TD>Length of the long pulse. Default to 2 ms.
+</TD>
+<TD ALIGN=RIGHT>0.002</TD> </TR>
+<TR> <TD>Twopulses</TD>
+     <TD>1</TD>
+     <TD>Possibility of emitting neutrons from a second pulse. Default 0.
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>GUI_start</TD>
+     <TD>m</TD>
+     <TD>Distance from moderator to guide start
+</TD>
+<TD ALIGN=RIGHT>1.5</TD> </TR>
+<TR> <TD>FO1_DIST</TD>
+     <TD>m</TD>
+     <TD>Distance from moderator to FO1 chopper
+</TD>
+<TD ALIGN=RIGHT>6</TD> </TR>
+<TR> <TD>L_ballistic_begin</TD>
+     <TD>m</TD>
+     <TD>Length of expanding ballistic section in the beginning of the guide
+</TD>
+<TD ALIGN=RIGHT>19.5</TD> </TR>
+<TR> <TD>L_ballistic_end</TD>
+     <TD>m</TD>
+     <TD>Length of compressing ballistic section in the end of the guide
+</TD>
+<TD ALIGN=RIGHT>17</TD> </TR>
+<TR> <TD>Length</TD>
+     <TD>moderator to F2</TD>
+     <TD>[m]	Total length of spectrometer </TD>
+<TD ALIGN=RIGHT>100</TD> </TR>
+<TR> <TD>SAMPLE_DIST</TD>
+     <TD>m</TD>
+     <TD>Distance from F2 to sample
+</TD>
+<TD ALIGN=RIGHT>1.2</TD> </TR>
+<TR> <TD>DETECTOR_DIST</TD>
+     <TD>m</TD>
+     <TD>Length sample-detector
+</TD>
+<TD ALIGN=RIGHT>4</TD> </TR>
+<TR> <TD>GUI_h</TD>
+     <TD>m</TD>
+     <TD>Height of guide opening at entry
+</TD>
+<TD ALIGN=RIGHT>0.105</TD> </TR>
+<TR> <TD>GUI_w</TD>
+     <TD>m</TD>
+     <TD>Width of guide opening at entry
+H1-H4:                  [m]     Height of guide elements
+W1-W4:		        [m]     Width of guide elements
+</TD>
+<TD ALIGN=RIGHT>0.1</TD> </TR>
+<TR> <TD>GUI_GAP</TD>
+     <TD>m</TD>
+     <TD>Gap between guides due to chopper hardware
+</TD>
+<TD ALIGN=RIGHT>0.05</TD> </TR>
+<TR> <TD>H1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.167</TD> </TR>
+<TR> <TD>W1</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.116</TD> </TR>
+<TR> <TD>H2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.185</TD> </TR>
+<TR> <TD>W2</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.15</TD> </TR>
+<TR> <TD>H3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.19</TD> </TR>
+<TR> <TD>W3</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.15</TD> </TR>
+<TR> <TD>H4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.213</TD> </TR>
+<TR> <TD>W4</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0.14</TD> </TR>
+<TR> <TD>H_chop</TD>
+     <TD>m</TD>
+     <TD>Height at F2 chopper position
+</TD>
+<TD ALIGN=RIGHT>0.075</TD> </TR>
+<TR> <TD>W_chop</TD>
+     <TD>m</TD>
+     <TD>Width at F2 chopper position
+</TD>
+<TD ALIGN=RIGHT>0.03</TD> </TR>
+<TR> <TD>H_end</TD>
+     <TD>m</TD>
+     <TD>Height of guide opening at exit
+</TD>
+<TD ALIGN=RIGHT>0.042</TD> </TR>
+<TR> <TD>W_end</TD>
+     <TD>m</TD>
+     <TD>Width of guide opening at exit
+</TD>
+<TD ALIGN=RIGHT>0.0215</TD> </TR>
+<TR> <TD>ALPHA</TD>
+     <TD>m</TD>
+     <TD>Parameter for supermirrors in guides, Swiss Neutronics best at 3.4 
+</TD>
+<TD ALIGN=RIGHT>3.4</TD> </TR>
+<TR> <TD>M</TD>
+     <TD>1</TD>
+     <TD>Parameter for supermirrors in guides, Swiss Neutronics best at 4
+</TD>
+<TD ALIGN=RIGHT>3.5</TD> </TR>
+<TR> <TD>F_slow1</TD>
+     <TD>Hz</TD>
+     <TD>Frequency of the FO1 chopper
+</TD>
+<TD ALIGN=RIGHT>16.6667</TD> </TR>
+<TR> <TD>F_slow2</TD>
+     <TD>Hz</TD>
+     <TD>Frequency of the FO2 chopper
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>F_fast1</TD>
+     <TD>Hz</TD>
+     <TD>Frequency of the F1 chopper
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>F_fast2</TD>
+     <TD>Hz</TD>
+     <TD>Frequency of the F2 chopper
+</TD>
+<TD ALIGN=RIGHT>200</TD> </TR>
+<TR> <TD>N_fast</TD>
+     <TD>1</TD>
+     <TD>Number of symmetric openings in the fast F choppers
+</TD>
+<TD ALIGN=RIGHT>1</TD> </TR>
+<TR> <TD>SLOW1_THETA</TD>
+     <TD>deg</TD>
+     <TD>Opening angle of the FO1 chopper
+</TD>
+<TD ALIGN=RIGHT>120</TD> </TR>
+<TR> <TD>FO3</TD>
+     <TD>if 1, same as F2; if 2, half of F2, etc.</TD>
+     <TD>[1]	Inverse frequency of FO3 chopper </TD>
+<TD ALIGN=RIGHT>1</TD> </TR>
+<TR> <TD>THETA_fast1</TD>
+     <TD>deg</TD>
+     <TD>Opening angle of the F1 chopper
+</TD>
+<TD ALIGN=RIGHT>180</TD> </TR>
+<TR> <TD>FAST_THETA</TD>
+     <TD>deg</TD>
+     <TD>Opening angle of the F2 chopper 
+</TD>
+<TD ALIGN=RIGHT>5</TD> </TR>
+<TR> <TD>Gamma</TD>
+     <TD>0=elastic</TD>
+     <TD>[meV]	Width of sample quasielastic scattering </TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>Etun</TD>
+     <TD>meV</TD>
+     <TD>Tunneling energy
+</TD>
+<TD ALIGN=RIGHT>1</TD> </TR>
+<TR> <TD>V_HOLE</TD>
+     <TD>m</TD>
+     <TD>Radius of hole in V sample (must be smaller than the outer radius: 0.01)
+FRAC_QUASIEL            [1]     Fraction of the sample that scatters quasielastically
+</TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>FRAC_QUASIEL</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>FRAC_TUNNEL</TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>0</TD> </TR>
+<TR> <TD>TT</TD>
+     <TD>deg</TD>
+     <TD>2T (or a4) scattering angle
+</TD>
+<TD ALIGN=RIGHT>50</TD> </TR>
+<TR> <TD>RES_DE</TD>
+     <TD>meV</TD>
+     <TD>Adjustable zoom for energy monitor at detector position
+</TD>
+<TD ALIGN=RIGHT>0.5</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=links></A>Links</H2>
+
+<UL>
+  <LI> <A HREF="ESS_IN5_reprate.instr">Source code</A> for <CODE>ESS_IN5_reprate.instr</CODE>.
+  <LI> The <a href="http://www.ill.fr/Computing/ESS-LP/">ESS-Rencurel</a> website.
+
+</UL>
+<HR>
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<ADDRESS>
+Generated automatically by McDoc, Peter Willendrup
+&lt;<A HREF="mailto:peter.willendrup@risoe.dk">peter.willendrup@risoe.dk</A>&gt; /
+Tue Aug 10 09:44:40 2010</ADDRESS>
+</BODY></HTML>

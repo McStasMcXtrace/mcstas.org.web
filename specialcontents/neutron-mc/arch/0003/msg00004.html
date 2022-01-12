@@ -1,0 +1,134 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: mcdoc -->
+<!--X-From: Kristian Nielsen <kristian.nielsen@risoe.dk> -->
+<!--X-Date: 3 Mar 2000 11:27:43 +0100 -->
+<!--X-Message-Id:  -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 38B58896.87DB233D@ill.fr -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: mcdoc</title>
+<link rev="made" href="mailto:kristian.nielsen@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00005.html">Date Prev</A>][<A HREF="msg00012.html">Date Next</A>]
+<a href="index.html#00004">[Chronological]</a>
+<a href="threads.html#00004">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: mcdoc</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:farhi@ill.fr">farhi@ill.fr</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: mcdoc</strong></LI>
+<LI><strong>From</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: 3 Mar 2000 11:27:43 +0100</LI>
+<LI>In-reply-to: &lt;38B58896.87DB233D@ill.fr&gt; (message from Farhi on Thu, 24 Feb2000 20:37:58 +0100)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+Hi Emmanuel,
+
+Thanks for the comments. They were as always very useful, and I have
+implemented all of them now (if you find something missing, please let
+me know).
+
+Your generic monitor is very interesting, and I am sure that it will
+prove very useful. I am really hoping that you will write some
+documentation in the same style as all the official components in the
+McStas manual, so that I can include it in the next official
+release. You do not have to use LaTeX, I will convert it for you from
+whatever format you prefer to use.
+
+I have also implemented a method for sharing our component libraries. We
+need to set up a special directory on a web server at each institute
+participating (currently only Risø and ILL). This directory contains
+ONLY the source code for the components to be shared (ie. my directory
+contains the official components, your directory contains the rest). I
+have written a small shell script,
+
+    <A HREF="http://neutron.risoe.dk/mcstas/support/farhi/builddocs.sh">http://neutron.risoe.dk/mcstas/support/farhi/builddocs.sh</A>
+
+This script automatically downloads the component source codes from each
+web server into common subdirectories. It then downloads the newest
+mcdoc program from the Risø server and re-builds all the documentation.
+
+On mica, I have set up a demonstration in the /home/cs/nielsen/mcdoc/
+directory. The command
+
+    ./builddocs.sh
+
+will download all components and build the web pages. Because of the
+firewall, it is necessary to first execute
+
+    setenv http_proxy proxy.ill.fr:8888
+
+What you need to do is to set up a directory on your web server and keep
+it updated with the newest source codes for the components you want to
+share. Then we can both use the builddocs.sh script to create a single
+component page with all components that are automatically kept
+synchronized. What do you think?
+
+Finally, with regard to the mcgui crash on SGI. From yours and Ron's
+emails, I got the impression that this problem was solved with the new
+Perl installation, is this correct?
+
+ - Kristian.
+
+--
+Kristian Nielsen        kristian.nielsen@risoe.dk
+Risø National Laboratory
+Condensed Matter Physics and Chemistry Department
+Tel. +45 4677 5515   Fax +45 4677 4790
+Encryption PGP key <A HREF="http://neutron.risoe.dk/kn.txt">http://neutron.risoe.dk/kn.txt</A>
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00005.html">IN6 monochromator</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00012.html">Re: mcdoc</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00004"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00004"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

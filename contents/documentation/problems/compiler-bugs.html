@@ -1,0 +1,63 @@
+<html><head>
+<title>McStas and compiler bugs</title>
+<LINK REV="made" HREF="mailto:kristian.nielsen@risoe.dk">
+</head>
+
+<body>
+
+<h1>McStas and compiler bugs</h1>
+
+Investigations indicate that McStas-generated code is very sensitive to bugs
+in the optimizers of commonly used compilers! This note documents preliminary
+results on comparing a McStas simulation when compiled with different
+compilers and optimizations.
+
+<P>
+Compilers were:
+<ul>
+<li> <b>gcc-i386</b> - GCC 2.7.2.3 for i386-linux
+<li> <b>egcs</b> - EGCS 2.90.29 for i386-linux
+<li> <b>pgcc</b> - PGCC 2.90.29 for i386-linux
+<li> <b>cc</b> - HP92453-01 A.10.32.03 HP ANSI C Compiler HPPA/HPUX B.10.20
+<li> <b>gcc-hp</b> - GCC 2.7.2 for HPPA/HPUX B.10.20
+</ul>
+
+The i386-linux compiled simulations were run on a 300MHz Pentium II. The HPPA
+compiled simulations were run on the fys-hp-2 workstation.
+
+<P>
+The results:
+<P ALIGN=CENTER>
+<TABLE BORDER=1>
+<tr> <th>Compiler</th> <th>flags</th> <th>I [p/N]</th> <th>MON [p/N]</th> <th>neutrons/sec</th> </tr>
+<tr> <td>gcc-i386</td> <td>none</td> <td>3.1e-07/393</td> <td>17823.7/72244</td> <td>23k</td> </tr>
+<tr> <td>gcc-i386</td> <td>-O6</td>  <td>3.3e-07/428</td> <td>17868.9/72309</td> <td>25k</td> </tr>
+<tr> <td>egcs</td>     <td>-O6</td>  <td>3.6e-07/420</td> <td>17938.8/72394</td> <td>30k</td> </tr>
+<tr> <td>pgcc</td>     <td>none</td> <td>2.8e-07/387</td> <td>17945.1/72334</td> <td>21k</td> </tr>
+<tr> <td>pgcc</td>     <td>-O6</td>  <td>4.8e-07/718</td> <td>8420.16/34245</td> <td>36k</td> </tr>
+<tr> <td>cc</td>       <td>-Aa</td>  <td>2.9e-07/379</td> <td>17937.6/72292</td> <td>17k</td> </tr>
+<tr> <td>cc</td>       <td>-Aa +Oall -Wl,-a,archive</td>
+                                     <td>1.7e-07/203</td> <td>17949.7/72351</td> <td>40k</td> </tr>
+<tr> <td>gcc-hp</td>   <td>none</td> <td>3.0e-07/373</td> <td>17877.8/71976</td> <td>19k</td> </tr>
+<tr> <td>gcc-hp</td>   <td>-O6</td>  <td>3.2e-07/368</td> <td>17726.2/71825</td> <td>22k</td> </tr>
+</TABLE></P>
+
+<P>
+As can be seen from the table, PGCC and HP CC with full optimization gives
+very large speedups on the simulations, but unfortunately also produce
+incorrect results!
+
+<h4>Update</h4>
+
+A new release of PGCC (1.1a) seems to correct the bugs and produce correct
+code. Using the '-mstack-align-double' switch in addition to -O6 it also
+achieves slightly better performance, about 31k neutrons/sec.
+
+<hr><address>
+Kristian Nielsen
+&lt;<a href="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</a>&gt; /
+<!-- hhmts start -->
+Sep  3, 1998.
+<!-- hhmts end -->
+</address>
+</body></html>

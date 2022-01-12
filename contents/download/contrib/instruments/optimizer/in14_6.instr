@@ -1,0 +1,427 @@
+DEFINE INSTRUMENT IN14(KI,WN,ORDER,MHV)
+/* preprocess with : mcstas in14_4.instr */
+/* compile on mica with : cc -Ofast -64 -o in14_3 in14_3.c -lm */
+/* Test with : */
+/* in14_6 -n 1e6 KI=2.66 WN=0.03 ORDER=1 MHV=3 */
+
+DECLARE
+%{
+
+#define VERSION "60"
+
+double L1 = 16.68;	/* source-mono */
+double L2 = 2.12;	/* mono-sample */
+double L3 = 1.35;	/* sample-ana */
+double L4 = 0.70;	/* ana-det */
+
+int    SM,SS,SA;
+double A1,A3,A5;
+
+double LM1, LM1b;	/* distances to monitors M1 and M2 */
+double LM2, LM2b;
+
+double A2,A4,A6,RM,RH;
+
+char *pfile;
+char *efile;
+char *dfile;
+char *kfile;
+
+/* ==================== Source description ==================== */
+
+double EN;
+double D_EN;
+double EMIN, EMAX;
+double FLUX = 1e13;	/* n/cm^2/s on guide entry */
+
+/* ==================== Monochromator desciption ==================== */
+
+double ETAM       = 30;	/* Mosaicity used on monochromator 30 */
+double DM         = 3.355;	/* Monochromator d-spacing in Angs */
+				/* PG002 Orders : 1st 3.355 2e 1.6775, 3e 1.1183 */
+double mono_r0    = 0.9;	/* mean reflectivity */
+double mono_width = 0.15;
+double mono_heigh = .122;
+double mono_gap   = 0;		/* slates are adjacent */
+int    mono_segment_number_vert = 7;
+int    mono_segment_number_horz = 1;
+double mono_curv_vert;		/* Vertical Rotation between adjacent slabs. */
+double mono_curv_horz;		/* Horizontal Rotation between adjacent slabs. */
+double mono_slate_heigh; 	/* size (height) of slates */
+double mono_slate_width; 	/* size (width) of slates */
+
+double mono_q;	/* Q vector for bragg scattering with monochromator and analysator */
+double Ki, Ei;
+
+double TM, GM;
+
+/* ==================== Sample desciption ==================== */
+
+double TU, TL;
+double GU, GL;
+
+/* ==================== Analyser desciption ==================== */
+
+double ETAA      = 30;	/* Mosaicity used on analyser 30 */
+double DA        = 3.355;	/* analyser d-spacing in Angs */
+				/* PG002 Orders : 1st 3.355 2e 1.6775, 3e 1.1183 */
+double ana_r0    = 0.9;	/* mean reflectivity */
+double ana_width = 0.10;
+double ana_heigh = .14;
+double ana_gap   = 0;	/* slates are adjacent */
+int    ana_segment_number_vert = 7;
+int    ana_segment_number_horz = 1;
+double ana_curv_vert;	/* Vertical Rotation between adjacent slabs. */
+double ana_curv_horz;	/* Horizontal Rotation between adjacent slabs. */
+double ana_slate_heigh; 	/* size (height) of slates */
+double ana_slate_width; 	/* size (width) of slates */
+
+double ana_q;	/* Q vector for bragg scattering with monochromator and analysator */
+double Kf, Ef;
+
+double TA, GA;
+
+%}
+
+INITIALIZE
+%{
+
+double vi,vf,sample_q;
+
+mono_q = 2*PI*ORDER/DM;	/* Q mono in Angs-1 */
+
+A4 = 0;
+A2 = asin(mono_q/2/KI)*RAD2DEG*2;
+A6 = A2;
+
+printf("Instrument : IN14, v%s (21/09/99) on %s.\n",VERSION,getenv("HOSTNAME"));
+
+/* SM : scattering at mono to the right (-1)/left(+1) */
+/* SS : scattering at sample to the right (-1)/left(+1) */
+/* SA : scattering at analyser to the right (-1)/left(+1) */
+SM = 1; SS = 1; SA = 1;
+
+A2 *= SM;	/* A1 : mono theta (crystal) */
+A1 = A2/2; 	/* A2 : mono 2 theta (arm to sample) */
+A4 *= SS;	/* A3 : sample theta */
+A3 = A4/2; 	/* A4 : sample 2 theta (arm to analyser) */
+A6 *= SA;	/* A5 : analyser theta (crystal) */
+A5 = A6/2; 	/* A6 : analyser 2 theta (arm to detector) */
+
+TM = 0;		/* TM : translation mono */
+GM = 0;		/* GM : tilt mono */
+
+GU = 0;		/* GU : tilt sample Up */
+GL = 0;		/* GL : tilt sample Low */
+TU = 0;		/* TU : translation sample Up */
+TL = 0;		/* TL : translation sample Low */
+
+TA = 0;		/* TA : translation analyser */
+GA = 0;		/* GA : tilt analyser */
+/* RA : horizontal curvature analyser */
+
+
+if ((fabs(mono_q/2/KI) < 1) && (sin(DEG2RAD*A1) != 0))
+	Ki = mono_q/2/sin(DEG2RAD*A1);
+else
+	{
+	printf("Warn : Can't define incident wave vector Ki\n");
+	Ki = 0;
+	printf("Skipping simulation\n");
+	exit(-1);
+	}
+
+vi = K2V*fabs(Ki);
+Ei = VS2E*vi*vi;
+
+EN = Ei; D_EN = .5;	/* optimize source on Ki */
+
+ana_q = 2*PI/DA;	/* Q ana in Angs-1 */
+if (sin(DEG2RAD*A5) != 0)
+	Kf = ana_q/2/sin(DEG2RAD*A5);
+else
+	{
+	printf("Warn : Can't define outgoing wave vector Kf\n");
+	Kf = 0;
+	}
+
+vf = K2V*fabs(Kf);
+Ef = VS2E*vf*vf;
+
+sample_q = sqrt(Ki*Ki + Kf*Kf -2*fabs(Ki*Kf)*cos(DEG2RAD*A4));
+
+mono_slate_heigh = mono_heigh/mono_segment_number_vert;	/* slates are adjacent */
+mono_curv_vert = fabs(mono_slate_heigh*RAD2DEG/(2*L2*sin(DEG2RAD*A1))); /* RM : vertical mono curvature */
+
+mono_slate_width = mono_width/mono_segment_number_horz;	/* slates are adjacent */
+mono_curv_horz = fabs(mono_slate_width*RAD2DEG*sin(DEG2RAD*A1)/(2*L2)); /* RH : horizontal mono curvature */
+
+ana_slate_heigh = ana_heigh/ana_segment_number_vert;	/* slates are adjacent */
+ana_curv_vert = fabs(ana_slate_heigh*RAD2DEG/(2*L3*sin(DEG2RAD*A5))); /* RA : vertical ana curvature */
+
+ana_slate_width = ana_width/ana_segment_number_horz;	/* slates are adjacent */
+ana_curv_horz = fabs(ana_slate_width*RAD2DEG*sin(DEG2RAD*A5)/(2*L3)); /* RHA : horizontal ana curvature */
+
+/* print instrument config */
+printf("Flat source, m=%.2f noze, width %.2f\n",MHV,WN);
+printf("Monochromator : (DM = %g)\n",DM);
+printf("A1 = %.2f, A2 = %.2f (deg)\n",A1,A2);
+printf("Ki = %.3g Angs-1 (Energy = %.3g meV, Velocity = %.3g m/s) \n", Ki, Ei,vi);
+printf("RM = %.3g Deg, RH = %.3g Deg\n",mono_curv_vert,mono_curv_horz);
+printf("\n");
+printf("Sample :\n");
+printf("A3 = %.2f, A4 = %.2f (deg)\n",A3,A4);
+printf("Energy transfert %.3g meV, Moment transfert %.3g Angs-1\n",Ef-Ei,sample_q);
+printf("\n");
+printf("Analyser :  (DA = %g)\n",DA);
+printf("A5 = %.2f, A6 = %.2f (deg)\n",A5,A6);
+printf("Kf = %.3g Angs-1 (Energy = %.3g meV, Velocity = %.3g m/s) \n", Kf, Ef,vf);
+printf("RA = %.3g Deg\n",ana_curv_vert);
+printf("\n");
+printf("Detectors :\n");
+
+/* local variables ------------------------------------ */
+
+LM1 = L2*.9; LM1b = LM1+0.001;
+LM2 = L3/2;  LM2b = LM2+0.001;
+
+EMIN = EN - D_EN;
+EMAX = EN + D_EN;
+
+pfile = (char *)malloc(256);
+efile = (char *)malloc(256);
+dfile = (char *)malloc(256);
+kfile = (char *)malloc(256);
+
+sprintf(pfile,"i%s_k%iw%id%im%i.psd",VERSION,(int)floor(10*Ki+0.5),(int)floor(1000*WN),(int)floor(ORDER),(int)floor(MHV+0.5));
+sprintf(efile,"i%s_k%iw%id%im%i.nrj",VERSION,(int)floor(10*Ki+0.5),(int)floor(1000*WN),(int)floor(ORDER),(int)floor(MHV+0.5));
+sprintf(dfile,"i%s_k%iw%id%im%i.div",VERSION,(int)floor(10*Ki+0.5),(int)floor(1000*WN),(int)floor(ORDER),(int)floor(MHV+0.5));
+sprintf(kfile,"i%s_k%iw%id%im%i.kw",VERSION,(int)floor(10*Ki+0.5),(int)floor(1000*WN),(int)floor(ORDER),(int)floor(MHV+0.5));
+
+%}
+
+TRACE
+
+COMPONENT origin = Arm()
+  AT (0,0,0) ABSOLUTE
+
+COMPONENT source = Source_flux(
+	radius = 0.20,
+	dist = 2.16,
+	xw = 0.06, yh = 0.12, 
+	E0 = EN,		
+	dE = D_EN,
+	flux=FLUX)		
+  AT (0,0,0) RELATIVE origin ROTATED (0,0,0) RELATIVE origin
+
+COMPONENT optim_s = Source_Optimizer(
+        xmin = -0.03, xmax = 0.03,
+        ymin = -0.06, ymax = 0.06,
+        bins = -1, step = 10, keep = 10,
+	file="source.optim",
+	options="verbose+absorb+auto")
+  AT (0,0,2.14) RELATIVE origin ROTATED (0,0,0) RELATIVE origin
+
+COMPONENT kw1 = kw_monitor(
+	xmin = -0.01, xmax = 0.01, 
+	ymin = -0.01, ymax = 0.01,
+	filename = "kguide.kw")
+  AT(0, 0, 2.145) RELATIVE origin ROTATED (0,0,0) RELATIVE origin
+
+COMPONENT doigt_de_gant = Guide(
+	w1 = 0.06, h1 = 0.12,
+	w2 = 0.06, h2 = 0.12,
+	l = 2.75,		/* guide into the doigt de gant */
+	R0 = 1, m=1.2, 		/* Ni 58 */
+	Qc = 0.021, alpha = 2.33, W = 2e-3)
+  AT (0,0,2.15) RELATIVE origin ROTATED (0,0,0) RELATIVE origin
+	
+COMPONENT external_guide = Guide2(
+	w1 = 0.06, h1 = 0.12,
+	w2 = 0.06, h2 = 0.12,
+	l = 13.67,		/* external guide between doigt de gant and mono */
+	R0 = 1, 
+	Qc = 0.021, alpha = 2.33, 
+	mh=1.2, 		/* 1.2 Ni 58, 3 Super mirror */
+	mv=1.2,
+	W = 2e-3)
+  AT (0,0,4.91) RELATIVE origin ROTATED (0,0,0) RELATIVE origin
+
+/* -------------- Start of monochromator building -------------- */
+
+/*                                                support of mono */
+COMPONENT focus_mono = Arm()	
+  AT (0, 0, L1) RELATIVE origin ROTATED (0, A1, 0) RELATIVE origin
+
+COMPONENT m0 = Mon_2foc(
+	zwidth=mono_slate_width,
+	ywidth=mono_slate_heigh,
+	gap=mono_gap,
+	NH=mono_segment_number_vert,
+	NV=mono_segment_number_horz,
+	mosaich=ETAM,
+	mosaicv=ETAM,
+	r0=mono_r0, Q=mono_q,
+	RH=mono_curv_vert,
+	RV=mono_curv_horz)
+  AT (TM, 0, 0) RELATIVE focus_mono
+  ROTATED (0, 0, GM) RELATIVE focus_mono
+
+/*                                on mono, pointing towards sample */
+COMPONENT out_mono = Arm()	
+  AT (0,0,0) RELATIVE focus_mono ROTATED (0, A2, 0) RELATIVE origin
+
+/* -------------- End of monochromator building -------------- */
+
+COMPONENT noze = Guide2(
+	w1 = 0.05, h1 = 0.05,
+	w2 = WN, h2 = 0.05,
+	l = .825,		
+	R0 = 1, 
+	Qc = 0.021, alpha = 2.33, 
+	mh=1e-5, mv = MHV,		/* Ni 58 */
+	W = 2e-3)
+  AT (0, 0, .9) RELATIVE out_mono ROTATED (0,0,0) RELATIVE out_mono
+
+/*
+COMPONENT M1 = Monitor(
+	xmin = -0.03, xmax = 0.03, 
+	ymin = -0.06, ymax = 0.06)
+  AT (0, 0, LM1) RELATIVE out_mono ROTATED (0,0,0) RELATIVE out_mono
+*/
+/* -------------- Start of sample building -------------- */
+
+/*                                           support of sample */
+COMPONENT focus_sample = Arm()	
+  AT (0, 0, L2) RELATIVE out_mono ROTATED (0,A3,0) RELATIVE out_mono
+
+/*
+COMPONENT sample = Powder1(
+	radius = 0.007,
+	h = 0.015,
+	q = 1.8049,
+	d_phi0 = 4,
+	pack = 1, j = 6, DW = 1,
+	F2 = 56.8,
+	Vc = 85.0054, sigma_a = 0.463,
+	target_x = alu_focus_x,  
+	target_y = 0, target_z = 1000)
+  AT (GU, 0, GL) RELATIVE focus_sample ROTATED (TU,0,TL) RELATIVE focus_sample
+*/
+
+/*
+COMPONENT AtSample = Monitor(
+	xmin = -0.05, xmax = 0.05, 
+	ymin = -0.05, ymax = 0.05)
+  AT (0, 0, 0) RELATIVE focus_sample ROTATED (0,0,0) RELATIVE focus_sample
+*/
+
+COMPONENT optim_m = Monitor_Optimizer(
+        xmin = -0.05, xmax = 0.05, 
+	ymin = -0.05, ymax = 0.05)
+  AT(0, 0, 0) RELATIVE focus_sample ROTATED (0,0,0) RELATIVE focus_sample
+
+COMPONENT PSDSample = PSD_monitor(
+	xmin = -0.05, xmax = 0.05, 
+	ymin = -0.05, ymax = 0.05,
+	nx = 50, ny = 50,
+	filename = pfile)
+  AT(0, 0, 0.001) RELATIVE focus_sample ROTATED (0,0,0) RELATIVE focus_sample
+
+COMPONENT Int4Sample = Monitor(
+	xmin = -0.02, xmax = 0.02, 
+	ymin = -0.02, ymax = 0.02)
+  AT(0, 0, 0.002) RELATIVE focus_sample ROTATED (0,0,0) RELATIVE focus_sample
+
+COMPONENT Flux1Sample = Monitor(
+	xmin = -0.005, xmax = 0.005, 
+	ymin = -0.005, ymax = 0.005)
+  AT(0, 0, 0.003) RELATIVE focus_sample ROTATED (0,0,0) RELATIVE focus_sample
+
+COMPONENT ESample = E_monitor(
+	xmin = -0.005, xmax = 0.005, 
+	ymin = -0.005, ymax = 0.005,
+	Emin = EMIN, Emax = EMAX, nchan = 21,
+	filename = efile)
+  AT(0, 0, 0.004) RELATIVE focus_sample ROTATED (0,0,0) RELATIVE focus_sample
+
+COMPONENT DivSample = Divergence_monitor(
+	xmin = -0.005, xmax = 0.005, 
+	ymin = -0.005, ymax = 0.005,
+	nv = 10, nh= 10,
+	v_maxdiv = 1, h_maxdiv = 1,
+	filename = dfile)
+  AT(0, 0, 0.005) RELATIVE focus_sample ROTATED (0,0,0) RELATIVE focus_sample
+  
+COMPONENT kw = kw_monitor(
+	xmin = -0.005, xmax = 0.005, 
+	ymin = -0.005, ymax = 0.005,
+	filename = kfile)
+  AT(0, 0, 0.006) RELATIVE focus_sample ROTATED (0,0,0) RELATIVE focus_sample
+
+/*                                  on sample, pointing towards ana */
+COMPONENT out_sample = Arm()	
+  AT (0,0,0) RELATIVE focus_sample ROTATED (0, A4, 0) RELATIVE out_mono
+
+/* -------------- End of sample building -------------- */
+
+/*
+COMPONENT M2 = Monitor(
+	xmin = -0.1, xmax = 0.1, 
+	ymin = -0.1, ymax = 0.1)
+  AT (0, 0, LM2) RELATIVE out_sample ROTATED (0,0,0) RELATIVE out_sample
+*/
+
+/* -------------- Start of analyzer building -------------- */
+
+/*                                              support of analyzer */
+/*
+COMPONENT focus_ana = Arm()	
+  AT (0, 0, L3) RELATIVE out_sample ROTATED (0,A5,0) RELATIVE out_sample
+
+COMPONENT a0 = Mon_2foc(
+	zwidth = ana_half_width,
+	ywidth = ana_half_heigh, 
+	gap = 0,
+	NH  = 1,
+	NV  = 1,
+	mosaich = ETAA, 
+	mosaicv = ETAA,
+	r0 = ana_r0, 
+	Q = ana_q,
+	RH=ana_curv_vert,
+	RV=ana_curv_horz)
+  AT (TA, 0, 0) RELATIVE focus_ana ROTATED (0, 0, GA) RELATIVE focus_ana
+
+COMPONENT out_ana = Arm()
+  AT (0, 0, 0) RELATIVE focus_ana ROTATED (0, A6, 0) RELATIVE out_sample
+*/
+/* -------------- End of analyzer building -------------- */
+/*
+COMPONENT focus_det = Arm()
+  AT (0, 0, L4) RELATIVE out_ana ROTATED (0,0,0) RELATIVE out_ana
+
+
+COMPONENT Detector = Monitor(
+	xmin = -0.02, xmax = 0.02, 
+	ymin = -0.05, ymax = 0.05)
+  AT(0, 0, 0) RELATIVE focus_det ROTATED (0,0,0) RELATIVE focus_det
+
+COMPONENT emon2 = E_monitor(
+	xmin = -0.02, xmax = 0.02, 
+	ymin = -0.05, ymax = 0.05,
+	Emin = 10, Emax = 20, nchan = 35,
+	filename = "sim/in14_EM2.vmon")
+  AT(0, 0, 0.01) RELATIVE focus_det ROTATED (0,0,0) RELATIVE focus_det
+*/
+
+FINALLY
+%{
+printf("Output files : %s %s %s %s\n",pfile,efile,dfile,kfile);
+free(pfile);
+free(dfile);
+free(efile);
+free(kfile);
+%}
+
+END

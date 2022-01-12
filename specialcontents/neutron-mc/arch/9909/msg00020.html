@@ -1,0 +1,129 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: Optimizing McStas -->
+<!--X-From: Kristian Nielsen <kristian.nielsen@risoe.dk> -->
+<!--X-Date: 22 Sep 1999 16:58:09 +0200 -->
+<!--X-Message-Id:  -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 37E8E009.FF857D75@ill.fr -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: Optimizing McStas</title>
+<link rev="made" href="mailto:kristian.nielsen@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00019.html">Date Prev</A>][<A HREF="msg00027.html">Date Next</A>]
+<a href="index.html#00020">[Chronological]</a>
+<a href="threads.html#00020">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: Optimizing McStas</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:farhi@ill.fr">farhi@ill.fr</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: Optimizing McStas</strong></LI>
+<LI><strong>From</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: 22 Sep 1999 16:58:09 +0200</LI>
+<LI>In-reply-to: &lt;37E8E009.FF857D75@ill.fr&gt; (message from Farhi on Wed, 22 Sep1999 15:56:25 +0200)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+&gt; Date: Wed, 22 Sep 1999 15:56:25 +0200
+&gt; From: Farhi &lt;farhi@ill.fr&gt;
+
+&gt; I now have a (k,w) detector, that enables to plot 3D views of resolution
+&gt; ellisoid and so (not only for 3 axis instruments). I've tested it, and
+&gt; it gives the same results as ResTrax. It's really great and output file
+&gt; is McStas compliant (same structure). I attach to this mail some files
+&gt; showing how that stuff is working...
+
+That's great! I would definately like to include it in McStas (with your
+permission ...). I will put in some extensions to the DETECTOR_OUT stuff
+so that your component will work a little better. It seems that you are
+really getting up to speed on McStas, and it is quite unfortunate that
+I am in Oxford just now. I will send you my latest development of McStas
+as soon as I can, Monday at the latest.
+
+&gt; I'm now working on McStas optimization. I think about having 2
+
+&gt; Please answer me as soon as possible about this and what you think (did
+&gt; you started something equivalent already ?)
+
+Yes indeed, in fact I have a quite stable implementation already! This
+is in the form of a special source component Source_adapt; together with
+another component it performs adaptive importance sampling, just as you
+suggest.
+
+It works by building a 3D stair-case distribution, covering energy,
+horizontal position, and horizontal divergence. Initially the
+distribution is flat, but bins that result in useful neutrons are given
+a boost so that they will be selected more frequently, with lower
+weight. It really works quite well, and often results in a 10-fold
+decrease in running times. I will send you some code and documentation
+as soon as I can.
+
+&gt; I've been talking with Jiri kulda about what does ResTrax do for
+&gt; optimisation, but he is very cautious about giving such informations :
+&gt; fear of beeing stolen without credits about ideas and sources. Anyway,
+&gt; he does not know exactly how it works (Jan Saroun made that part), and
+
+&gt; the method seems only applicable to 3-axis intruments (it starts from
+&gt; the sample).
+
+Yes, there seem to be a bit of secrecy and protection surrounding
+ResTrax ... but actually I had a very good talk with Jan Sauron in March
+at the Ill, and I understand a bit of the optimizations. As you suggest,
+much of it is specific to triple-axis (for example it sets the energy at
+the monochromator, not at the source).
+
+ - Kristian.
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00019.html">&raquo;&Oslash;&cedil;&acute;: about McStas</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00027.html">Re: Optimizing McStas</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00020"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00020"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

@@ -1,0 +1,128 @@
+<P><strong><blink>This archive web page is obsolete!</blink></strong> 
+<P>Please refer to the new <a href="/pipermail/neutron-mc">mailman<a> archive!
+
+
+<!-- MHonArc v2.1.0 -->
+<!--X-Subject: Re: mcgui&#45;new -->
+<!--X-From: Kristian Nielsen <kristian.nielsen@risoe.dk> -->
+<!--X-Date: 23 Feb 2000 09:08:08 +0100 -->
+<!--X-Message-Id:  -->
+<!--X-ContentType: text/plain -->
+<!--X-Reference-Id: 38AC3FC6.942587D@ill.fr -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: mcgui-new</title>
+<link rev="made" href="mailto:kristian.nielsen@risoe.dk">
+</head>
+<body bgcolor="white">
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<A HREF="msg00025.html">Date Prev</A>][<A HREF="msg00027.html">Date Next</A>]
+<a href="index.html#00026">[Chronological]</a>
+<a href="threads.html#00026">[Thread]</a>
+<a href="/cgi-bin/wilma/neutron-mc">[Top]</a>
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<H1>Re: mcgui-new</H1>
+<HR>
+<!--X-Subject-Header-End-->
+<UL>
+<LI><strong>To</strong>: <strong><A HREF="mailto:farhi@ill.fr">farhi@ill.fr</A></strong></LI>
+<LI><strong>Subject</strong>: <strong>Re: mcgui-new</strong></LI>
+<LI><strong>From</strong>: <strong>Kristian Nielsen &lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt;</strong></LI>
+<LI>Date: 23 Feb 2000 09:08:08 +0100</LI>
+<LI>CC: <A HREF="mailto:ron@ill.fr">ron@ill.fr</A></LI>
+<LI>In-reply-to: &lt;<A HREF="msg00025.html">38AC3FC6.942587D@ill.fr</A>&gt; (message from Farhi on Thu, 17 Feb 200019:36:54 +0100)</LI>
+</UL>
+<!--X-Head-Body-Sep-Begin-->
+<HR>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+<PRE>
+&gt; Date: Thu, 17 Feb 2000 19:36:54 +0100
+&gt; From: Farhi &lt;farhi@ill.fr&gt;
+
+&gt; I'm afraid it does not work better !!
+
+Ok, that is just the way it is then.
+
+&gt; I've tried to look inside mcgui.pl
+&gt; It seems that that error occurs during the waitVariable call of the do
+&gt; loop (function dialog_get_out_file)
+
+Yes. I am pretty sure that the problem is a conflict between the main
+mcgui process, the spawned compiler process, and the Tk/X Windows
+System. I am not sure of the details though, so I would ask you to run
+two more tests that will help to pinpoint the problem.
+
+I have put two new version of mcgui on mica, in
+~nielsen/mcgui-crash/. They are called mcgui-1.pl and mcgui-2.pl. They
+are both identical to the previous mcgui except for the exec() call that
+actually starts the mcstas compiler program.
+
+Could you try running both of them and let me know the results? The
+commands would be
+
+    /usr/ill/perl/bin/perl -d mcgui-1.pl in14_tut.instr
+    /usr/ill/perl/bin/perl -d mcgui-2.pl in14_tut.instr
+
+and for each command, just select "File"-&gt;"Compile instrument".
+
+I also did a web search, and for a similar problem it was suggested to
+install a newer version of perl. Maybe Ron will want to try that at some
+point.
+
+The mcgui-1.pl starts a simple "echo" command instead of the McStas and
+C compiler. On my machine, compilation emits two
+"EXEC call succeeded ok" messages, and succeeds.
+
+The mcgui-2.pl does not start any commands at all. On my machine,
+compilation fails with "Error: exec() of mcstas failed!" and two curious
+"Callback called exit." messages.
+
+ - Kristian.
+
+
+
+
+</PRE>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<HR>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<UL><LI><STRONG>References</STRONG>:
+<UL>
+<LI><STRONG><A NAME="00025" HREF="msg00025.html">mcgui-new</A></STRONG>
+<UL><LI><EM>From:</EM> Farhi &lt;farhi@ill.fr&gt;</LI></UL></LI>
+</UL></LI></UL>
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<LI>Prev by Date:
+<STRONG><A HREF="msg00025.html">mcgui-new</A></STRONG>
+</LI>
+
+<LI>Next by Date:
+<STRONG><A HREF="msg00027.html">mcgui tests and more</A></STRONG>
+</LI>
+
+<li>Index(es):
+<ul>
+<li><a href="index.html#00026"><strong>Chronological</Strong></a></li>
+<li><a href="threads.html#00026"><strong>Thread</strong></a></li>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</BODY>
+</HTML>

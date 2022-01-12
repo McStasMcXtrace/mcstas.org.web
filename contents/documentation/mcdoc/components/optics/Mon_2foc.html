@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML><HEAD>
+<TITLE>Mon_2foc</TITLE>
+<LINK REV="made" HREF="mailto:kristian.nielsen@risoe.dk">
+</HEAD>
+
+<BODY>
+
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<H1>The <CODE>Mon_2foc</CODE> component</H1>
+
+Double bent monochromator with multiple slabs
+
+
+<H2><A NAME=id></A>Identification</H2>
+
+<UL>
+  <LI> <B>Author:</B> PL</B>
+  <LI> <B>Origin:</B> Uni. Gottingen (Germany)</B>
+  <LI> <B>Date:</B> Feb. 12,1999</B>
+  <LI> <B>Version:</B> 1.0</B>
+</UL>
+<H2><A NAME=desc></A>Description</H2>
+
+<PRE>
+Double bent monochromator which uses a small-mosaicity approximation as well
+as the approximation vy^2 << vz^2 + vx^2.
+Second order scattering is neglected.
+For an unrotated monochromator component, the crystal plane lies in the y-z
+plane (ie. parallel to the beam).
+
+Added double bent feature by: Peter Link Feb. 12,1999
+corrected bug in rotation of v-coords: Peter Link Sep. 24. 1999 
+
+</PRE>
+
+<H2><A NAME=ipar></A>Input parameters</H2>
+Parameters in <B>boldface</B> are required;
+the others are optional.
+<TABLE BORDER=1>
+<TR><TH>Name</TH>  <TH>Unit</TH>  <TH>Description</TH> <TH>Default</TH></TR>
+<TR> <TD><B>zwidth</B></TD>
+     <TD>m</TD>
+     <TD>horizontal width of an individual slab </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>ywidth</B></TD>
+     <TD>m</TD>
+     <TD>vertical heigth of an individual slab </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>gap</B></TD>
+     <TD>m</TD>
+     <TD>typical gap  between adjacent slabs </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>NH</B></TD>
+     <TD>columns</TD>
+     <TD>number of slabs horizontal </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>NV</B></TD>
+     <TD>rows</TD>
+     <TD>number of slabs vertical   </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mosaich</B></TD>
+     <TD>arc minutes</TD>
+     <TD>Horisontal mosaic FWHM </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>mosaicv</B></TD>
+     <TD>arc minutes</TD>
+     <TD>Vertical mosaic FWHM </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>r0</B></TD>
+     <TD></TD> <TD></TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>Q</B></TD>
+     <TD>AA-1</TD>
+     <TD>Scattering vector </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>RV</B></TD>
+     <TD>m</TD>
+     <TD>radius of vertical focussing </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+<TR> <TD><B>RH</B></TD>
+     <TD>m</TD>
+     <TD>radius of horizontal focussing </TD>
+<TD ALIGN=RIGHT>&nbsp;</TD> </TR>
+</TABLE>
+
+
+<H2><A NAME=opar></A>Output parameters</H2>
+None.
+
+<H2><A NAME=links></A>Links</H2>
+
+<UL>
+  <LI> <A HREF="Mon_2foc.comp">Source code</A> for <CODE>Mon_2foc.comp</CODE>.
+  <LI> <a href="http://neutron.risoe.dk/mcstas/support/misc/Mon_2foc.txt">Additional note</a> from <a href="mailto:plink@physik.tu-muenchen.de">Peter Link</a>.
+
+</UL>
+<HR>
+<P ALIGN=CENTER>
+ [ <A href="#id">Identification</A>
+ | <A href="#desc">Description</A>
+ | <A href="#ipar">Input parameters</A>
+ | <A href="#opar">Output parameters</A>
+ | <A href="#links">Links</A> ]
+</P>
+
+<ADDRESS>
+Generated automatically by McDoc, Kristian Nielsen
+&lt;<A HREF="mailto:kristian.nielsen@risoe.dk">kristian.nielsen@risoe.dk</A>&gt; /
+Jan 22 2001
+</ADDRESS>
+</BODY></HTML>
