@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+<hr>
+<h2>November 24th, 2021: McStas "ng" 3.1 released</h2>
+<p>Dear all,
+
+<p>A new release of McStas "next-generation", v. 3.1 has been built and is ready for download!
+
+<p>Download and installation instructions are available via our <a href="https://github.com/McStasMcXtrace/McCode/tree/master/INSTALL-McStas-3.x">GitHub download pages</a>.
+
+<p>Selected highligts from the release are listed below. The full list
+of changes is also available at <a href="https://mcstas.org/CHANGES_McStas">https://mcstas.org/CHANGES_McStas</a>.
+
+<ul>
+  <li>Fixes of issues from last release:
+  <ul>
+    <li>A large number of issues from the earlier 3.0 were addressed, see the relevant GitHub issues for details:
+    <li><a href="https://github.com/McStasMcXtrace/McCode/issues?q=is%3Aissue+is%3Aclosed+label%3Amcstas-3.0">https://github.com/McStasMcXtrace/McCode/issues?q=is%3Aissue+is%3Aclosed+label%3Amcstas-3.0</a>
+    <li>Migration-docs and guides for transitioning between McStas 2.x and 3.x can be found on our GitHub-based <a href="https://github.com/McStasMcXtrace/McCode/wiki">Wiki</a>
+    <li>3.1 can be considered the first "full-quality" production release of McStas with GPU support    
+  </ul>
+  <li>Tools
+  <ul>
+    <li>mcgui allows definition of an "external editor", see the configuration menu.
+    <li>On Linux we preconfigure for gedit (where we now also provide syntax-highlighting, on macOS
+    and Windows we default to use the OS file-type settings, i.e. whatever you get by double-clicking
+    an instr file.) Use ctrl/meta + shift + e to spawn the editor from mcgui.
+  </ul>
+  <li>Platforms:
+  <ul>
+    <li>We still support 64bit Windows 10/11 on Intel, all recent 64bit macOS including 11.x Big Sur and 12.x Monterey on
+    both Intel and Apple Silicon/M1 processors. Debian-based distros on Intel and Arm, RPM-based distros on Intel.
+    (RPMs are built on/for CentOS and Fedora, you may get varying
+    milage elsewhere.)
+  </ul>
+</ul>
+We hope you will enjoy this new release!!!
+
+<hr>
+<h2>October 4th, 2021: McStas "classic" 2.7.1 released</h2>
+<p>Dear all,
+
+<p>A new release of McStas "classic", v. 2.7.1 has been built and is ready for download!
+
+<p>Download and installation instructions are available via our <a href="https://github.com/McStasMcXtrace/McCode/tree/master/INSTALL-McStas-2.x">GitHub download pages</a>.
+
+<p>Selected highligts from the release are listed below. The full list
+of changes is also available at <a href="https://mcstas.org/CHANGES_McStas">https://mcstas.org/CHANGES_McStas</a>.
+
+<ul>
+  <li>Fixes of issues from last release:
+  <ul>
+    <li>A number of minor issues from 2.7 were addressed, see the relevant GitHub issues for details:
+    <li><a href="https://github.com/McStasMcXtrace/McCode/issues?q=is%3Aissue+is%3Aclosed+label%3Amcstas-2.7">https://github.com/McStasMcXtrace/McCode/issues?q=is%3Aissue+is%3Aclosed+label%3Amcstas-2.7</a>
+  </ul>
+  <li>Tools
+  <ul>
+    <li>mcgui allows definition of an "external editor", see the configuration menu.
+    <li>On Linux we preconfigure for gedit (where we now also provide syntax-highlighting, on macOS
+    and Windows we default to use the OS file-type settings, i.e. whatever you get by double-clicking
+    an instr file.) Use ctrl/meta + shift + e to spawn the editor from mcgui.
+  </ul>
+  <li>Platforms:
+  <ul>
+    <li>We still support 64bit Windows 10/11 on Intel, all recent 64bit macOS including 11.0 Big Sur on
+    both Intel and Apple Silicon/M1 processors. Debian-based distros on Intel and Arm, RPM-based distros on Intel.
+    (RPMs are built on/for CentOS and Fedora, you may get varying
+    milage elsewhere.)
+  </ul>
+</ul>
+We hope you will enjoy this new release!!! (And keep an eye out for 3.1, it is almost also there...)
+
+<hr>
+<h2>April 21st, 2021: McStas on the Apple M1 processor</h2>
+<p>Dear all,
+<p>The McStas team finally got access to a mac with the new Apple M1
+processor and can now report some experience back:
+<ul>
+  <li>Installation and use of the McStas 2.7 and 3.0 app bundles work OK via Rosetta 2
+  (i.e. Intel-emulation on M1)
+  <li>You have to do a little hacking to run on the commandline,
+  i.e. use the command:
+  <pre>arch -x86_64 /usr/local/bin/mcstas-3.0-environment </pre>
+  to start a full McStas 3.0 environment in emulation.
+  <li>To simply always run such an env script via emulation, you may even replace the first #! command in the script by this:
+  <pre>#!/usr/bin/arch -x86_64 /bin/bash</pre>
+  <li>Performance-wise the processor looks very good, having tried a
+  few MPI-based simulations that are all a factor of 2-6 faster than
+  on the 2018 machine it is replacing.
+  <li>Performance should be even better the moment we release a
+  dedicated M1-native version of McStas, hopfully within the next few months.
+</ul>
+</hr>
+<hr>
+<h2>March 10th, 2021: Videos from Virtual McStas Seminar at MLZ</h2>
+<p>Dear all,
+<p>Mads Bertelsen and Peter Willendrup gave 3 talks at an MLZ Virtual
+McStas Seminar last week, arranged by Peter Link MLZ. The videos are
+available on YouTube:
+<p><a href="https://www.youtube.com/watch?v=ZQHiLHeI4Tk">McStas 3.0 -
+GPU support in McStas (Peter Willendrup)</a>
+<br><strong>Abstract:</strong> <i>The recent McStas 3.0 marks a big step
+forward with added support for acceleration on NVIDIA GPUs. The
+presentation will highlight the main changes between the McStas 2 and
+McStas 3 series and with emphasis on what modifications are needed to
+port an existing instrument or component. Finally the presentation
+will discuss the areas of McStas 3 that are not yet fully developed
+and mature.</i>
+<p><a href="https://www.youtube.com/watch?v=xDwZ_ryPl5M">McStas Union
+components (Mads Bertelsen)</a> <br><strong>Abstract:</strong> <i>The
+McStas Union components is a set of components that are used in
+together to describe complex parts of neutron instruments where
+multiple scattering can be an important aspect. The user will describe
+scattering properties in a modular fashion to describe
+materials. Complex geometry can be described, allowing hollow regions,
+windows and similar with full multiple scattering, which is especially
+useful for simulating sample environments. The talk will have a focus
+on the practical use of these components, teaching the basic concepts,
+as well as showcasing what can be achieved.</i>
+<p><a href="https://www.youtube.com/watch?v=jeM2S4ht9hM">McStasScript
+(Mads Bertelsen)</a> <br><strong>Abstract:</strong> <i>As python has
+become the main language for scientific software, it was decided to
+introduce a python interface to McStas called McStasScript. Using
+McStasScript a user can describe an instrument, perform simulations
+and analyze the data directly from a python script. This simplifies
+including McStas in more advanced workflows. The talk will introduce
+McStasScript and show how it allows using McStas in a new way that
+appeals to both new and experienced users.</i>
+
+<hr>
+<h2>February 9th, 2021: Updated miniconda3 packages for v.2.7 and 3.0
+on CentOS</h2>
+<p>Dear all,
+<p>We have recently discovered issues with binary-compatibility of
+some miniconda3-based Python modules in both 2.7 and 3.0 on
+CentOS. As a consequence, the related packages have been updated on 
+the download page plus in our repo.
+<hr>
+<p><b>Previous news items: </b><a href="/news/2020.html">2020</a>,<a href="/news/2019.html">2019</a>, <a href="/news/2018.html">2018</a>, <a
+href="/news/2017.html">2017</a>, <a href="/news/2016.html">2016</a>,
+<a href="/news/2015.html">2015</a>, <a
+href="/news/2014.html">2014</a>, <a href="/news/2013.html">2013</a>,
+<a href="/news/2012.html">2012</a>, <a
+href="/news/2011.html">2011</a>, </b><a
+href="/news/2010.html">2010</a>, <a href="/news/2009.html">2009</a>,
+<a href="/news/2008.html">2008</a>, <a
+href="/news/2007.html">2007</a>, <a href="/news/2006.html">2006</a>,
+<a href="/news/2005.html">2005</a>, <a
+href="/news/2004.html">2004</a>, <a href="/news/2003.html">2003</a>, <a href="/news/2002.html">2002</a>, <a href="/news/2001.html">2001</a>, <a href="/news/2000.html">2000</a>, <a href="/news/1999.html">1999</a>,
+<a href="/news/1998.html">1998</a>.
+
+</p></body></html>
