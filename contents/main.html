@@ -31,6 +31,55 @@ Recent news
 <strong><font color="green">Migrating from McStas 2.x to 3.x? - <a href="https://github.com/McStasMcXtrace/McCode/wiki">Use the wiki-based guides<a></font></strong>
 </center>
 <hr>
+<h2>November 1st, 2022: macOS 13 Ventura issues</h2>
+<p>Dear all,
+<p>If you upgrade to macOS 13 Ventura (intel/x86_64), your already installed Python
+tools of McStas 2.7.1 / 3.1 and /Application bundles may not work after the upgrade.
+<p>A workaround is to:
+<ul>
+  <li>In a terminal, start your "McStas shell"
+  (e.g. run mcstas-3.1-environment, /Applications/McStas-3.1-environment.command or
+  /Applications/McStas-3.1.app/Contents/Resources/mcstas/3.1/environment)
+  <li>Issue the command <pre>export PATH=$MCSTAS/miniconda3/bin:$PATH</pre>
+  <li>Next, you may issue the mcgui command<pre>mcgui</pre>
+</ul>
+<p>New releases 2.7.2 and 3.2 are in preparation and should be
+released during November or December.
+<hr>
+<h2>November 1st, 2022: Python 3.10 / pyqtgraph issues in current releases.</h2>
+<p>Dear all,
+<p>Several users have reported "yet another Python issue" that arise
+in current releases of McStas (2.7.1 / 3.1). After following the
+advice from September 23rd to replace mcgui/viewclasses.py and
+mccodelib/pqtgfrontend.py, mcplot-pyqtgraph fails with
+<pre>
+mcplot error: scale(self): too many arguments
+Traceback (most recent call last):
+File "C:\mcstas-2.7.1\lib\tools\Python\mcplot\pyqtgraph\mcplot.py", line 67, in 
+main(args)
+File "C:\mcstas-2.7.1\lib\tools\Python\mcplot\pyqtgraph\mcplot.py", line 57, in main
+raise e
+File "C:\mcstas-2.7.1\lib\tools\Python\mcplot\pyqtgraph\mcplot.py", line 51, in main
+plotter.runplot()
+File "C:\mcstas-2.7.1\lib\tools\Python\mcplot\pyqtgraph....\mccodelib\pqtgfrontend.py", line 62, in runplot
+plot_node(node, self.plot_func, plt_layout, viewmodel)
+File "C:\mcstas-2.7.1\lib\tools\Python\mcplot\pyqtgraph....\mccodelib\pqtgfrontend.py", line 144, in plot_node
+viewbox_lst.append(add_plot(layout, node, plot_func, i, n, viewmodel))
+File "C:\mcstas-2.7.1\lib\tools\Python\mcplot\pyqtgraph....\mccodelib\pqtgfrontend.py", line 382, in add_plot
+view_box, plt_itm = plot_node_func(node, i, plt, options)
+File "C:\mcstas-2.7.1\lib\tools\Python\mcplot\pyqtgraph\plotfuncs.py", line 33, in plot
+view_box, lyt = plot_Data2D(data, plt, log=opts['log'], legend=opts['legend'], icolormap=opts['icolormap'],
+File "C:\mcstas-2.7.1\lib\tools\Python\mcplot\pyqtgraph\plotfuncs.py", line 203, in plot_Data2D
+img.scale(dx,dy)
+TypeError: scale(self): too many arguments'
+</pre>
+To fix this issue, please replace your
+<ul>
+  <li>$MCSTAS/tools/Python/mcplot/pyqtgraph/plotfuncs.py with <a href="https://raw.githubusercontent.com/McStasMcXtrace/McCode/master/tools/Python/mcplot/pyqtgraph/plotfuncs.py">this new version</a>
+</ul>
+<p>New releases 2.7.2 and 3.2 are in preparation and should be
+released during November or December.
+<hr>
 <h2>September 23rd, 2022: Python 3.10 issues in current releases.</h2>
 <p>Dear all,
 <p>We have recently become aware of a couple of issues that arise with all current releases of McStas (2.7.1 / 3.1)
