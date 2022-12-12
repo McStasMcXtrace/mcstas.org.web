@@ -31,6 +31,162 @@ Recent news
 <strong><font color="green">Migrating from McStas 2.x to 3.x? - <a href="https://github.com/McStasMcXtrace/McCode/wiki">Use the wiki-based guides<a></font></strong>
 </center>
 <hr>
+<h2>December 12th, 2022: McStas 2.7.2 and McStas 3.2 released</h2>
+<p>Dear all,
+A new <b>PAIR</b> of releases of McStas:
+<ul>
+  <li>McStas "classic" v. 2.7.2
+  <li>McStas "next-generation", v. 3.2
+</ul>
+Are both built and ready for download!
+
+<p>Download and installation instructions are available via our <a href="https://github.com/McStasMcXtrace/McCode/tree/master/INSTALL-McStas">GitHub INSTALL-doc pages</a>.
+
+<p>Selected highligts from the releases are listed below. The full list
+of changes for both releases is also available at <a href="https://mcstas.org/CHANGES_McStas">https://mcstas.org/CHANGES_McStas<a>.
+
+<p><b>Please start your migration to 3.x:</b>
+<ul>
+  <li>McStas 2.7.2 is a "last update" to the 2.x series, sharing a subset of tool features with McStas 3.2.
+  <li>The Wiki has a dedicated section on <a href="https://github.com/McStasMcXtrace/McCode/wiki#migrating-from-mcstas-2x-to-3x-and-mcxtrace-1x-to-3x">McStas 2.x -> McStas 3.x conversion</a> that includes:
+  <ul>
+    <li><a href="https://github.com/McStasMcXtrace/McCode/wiki/Overview-of-differences-in-%22classic-McStas-McXtrace%22-and-the-3.x-versions">An overvies of differences</a>
+    <li><a href="https://github.com/McStasMcXtrace/McCode/wiki/McStas-McXtrace-3-and-GPU-terminology-%28table%29">A nomenclature list containing short descriptions of new concepts and important keywords in McStas 3.x</a> and OpenACC / CUDA code in general.
+    <li><a href="https://github.com/McStasMcXtrace/McCode/wiki/Overview-of-differences-in-%22classic-McStas-McXtrace%22-and-the-3.x-versions">A document outlining the most importand differences between 2.x and 3.x.</a>
+    <li><a href="https://github.com/McStasMcXtrace/McCode/wiki/HOWTO%3A-Modifying-a-McStas-2-instrument-for-use-under-McStas-3">A guide for 2.x -> 3.x instrument conversion.</a>
+    <li><a href="https://github.com/McStasMcXtrace/McCode/wiki/HOWTO%3A-Modifying-a-McStas-2-component-for-use-under-McStas-3">A guide for 2.x -> 3.x component conversion.</a>
+  </ul>
+</ul>  
+ - If you are still in trouble, please write us a GitHub issue or an email to <a href="mailto:mcstas-users@mcstas.org">mcstas-users@mcstas.org</a>
+
+<p><b>Fixes of issues from last releases:</b><br>
+A good number of issues from the earlier 2.7.1 and 3.1 releases were addressed, see the relevant GitHub issues for details:<br>
+<a
+href="https://github.com/McStasMcXtrace/McCode/issues?q=is%3Aissue+is%3Aclosed+label%3Amcstas-2.7.1">Full
+2.7.1 issue list</a><br>
+<a
+href="https://github.com/McStasMcXtrace/McCode/issues?q=is%3Aissue+is%3Aclosed+label%3Amcstas-3.1">Full
+3.1 issue list</a><br>
+
+<p><b>Release highligts</b><br>
+(!!<b>3.2 only</b> denotes features or improvements that are 3.2 specific!!)
+<ul>
+  <li><b>Documentation & guides:</b>
+  <ul>
+    <li><b>3.2 only:</b> All 3.2 component and instrument headers have been given an overhaul and should
+   render correctly in mcdoc / your browser.
+    <li>The component pages now include an extra column in the parameter-table. When filling in
+   this column with wanted values, plus filling the entry-boxes for AT, ROTATED and instance
+   name, pressing "Generate" will put a code-snipet for your component instance directly on
+   your computer clipboard, for easy transfer to the mcgui editor or any other editor of choice!
+    <li>mcdoc has been made "less picky" wrt. component and instrument structure for a more robust
+   experience.
+    <li>mcgui has a new "Docs" button for easier access to the generated mcdoc pages (that give easy
+   access to components, instruments, manuals, datafiles and more.
+  </ul>
+  <li><b>Interoperability with other codes:</b>
+  <ul>
+    <li>We have worked on the interfaces with MCPL (v. 1.6.1 included)
+    and NCrystal (v. 3.5.1 included) and a mechanism was developed
+    to automatically detect their location using the mcpl-config and ncrystal-config utils.
+    In practice this happens prior/during to the code-generation step, see below under mcrun.
+    Thanks to Thomas Kittelmann (ESS) for your help in this area.
+  </ul>
+  <li><b>Tools:</b>
+  <ul>
+    <li>mcrun has a new solution to support 3 new keywords CMD(), ENV() and GETPATH() through the
+   DEPENDENCY line as collected by the code-generator. (see CHANGES
+    doc for more details)
+    <li>As mentioned above, mcdoc has been made "less picky" wrt. component
+    and instrument structure and enriched with JavaScript for easy
+    transfer of information to you editor.
+    <li>mcplot(-pyqtgraph) has received a nice update with an infobar at the bottom of the window.
+    The infobar is updated with coordinates of the cursor on the active plot, meaning that you
+    can easily determine the coordinates of e.g. a peak. The code has also received a number of
+    bugfixes relating to colorbars, the order of monitor output in overviews etc.
+    Thanks to Tobias Weber (ILL) for your work on mcplot.
+    <li><b>3.2 only:</b> The new mcdisplay-cad variant has come along, and is currently included in the form of a
+    technology-preview. The code uses the Python module cadquery (https://github.com/CadQuery/cadquery)
+    and is able to write e.g. STEP or STL output. For now, resolving the required dependencies is
+    left to the user, but we foresee that this tool will mature over the coming releases.
+    Thanks to Greg Tyler (ESS) for contributing this tool.
+  </ul>
+  <li><b>Components and Instruments:</b>
+  <ul>
+    <li>The Union framework is now considered a fully "official" part of McStas and is hence now found
+    in the $MCSTAS/union folder. In McStas 3.2 Union_master is a still a NOACC component when running on GPU
+    (i.e. performs its calculations on CPU in FUNNEL mode). We expect Union_master to receive
+    full GPU suport within 2023. The NCrystal_process.comp is back in
+    Union on 3.2 - will work only in a NOACC/CPU COMPONENT setting.
+    <li>By popular demand, the ConicTracer code for simulating Wolter optics from Boris Khaykovich et. al. (MIT)
+    has been included. The main "library" code is conic.h found in $MCSTAS/share and is used from
+    3 different example Wolter optic components: Conics_EH.comp, Conics_PH.comp, Conics_PP.comp.
+    The illustrate how to mplement Elliptic-Hyperbolic, Parabolic-Hyperbolic and Parabolic-Parabolic
+    Wolter mirrors, and two of these are used in the
+    Test_Conics_pairs.instr instrument.
+    <li><b>3.2 only:</b> Most of the standard monitors will now fill in their own "instance name" as filename in case
+    a filename was not defined. A small but very useful convenience.
+    <li>Source_div_quasi.comp allows to sample source phase-space using Halton-sequences, which proves
+    to be a very effective way to ensure an evenly distributed phase space region of interest, e.g.
+    for imaging/SANS settings where a very low-divergent beam is relevant. This contribution is from 
+    Mads Carlsen and Erik B. Knudsen (DTU) and was originally
+    developed for McXtrace.
+    <li>PSD_Pol_monitor.comp measures (local) polarisation over the (x,y) cross-section of a beam. Contributed
+    by Alexander Backs (LU/ESS).
+    <li><b>3.2 only:</b> Single_crystal_inelastic.comp (NOACC), Single_magnetic_crystal.comp (NOACC), SANS_benchmark2.comp and
+    Guide_multichannel are now all available in the McStas 3
+    series. Also, the Fermi_chop2a.comp and Vertical_T0a.comp chopppers from Garrett Granroth (SNS) have received
+    a GPU-oriented update.
+</ul>
+  <li><b>Core and libs:</b>
+  <ul>
+    <li><b>3.2 only:</b>Previously, any component present in a McStas instrument would trigger the transformation of
+    every neutron to its local coordinate system, even in the case of an Arm() (empty TRACE) without
+    an EXTEND block. We now instead detect components with an empty TRACE that have no EXTEND block
+    and are able to completely skip these in the calculation. This results in a speedup in case of
+    instruments with many "empty" components, such as big Union assemblies.
+    Thanks to Mads Bertelsen (ESS) for investigating the problem and finding a good solution.
+    <li><b>3.2 only:</b> A new syntax called SHELL has been added to the grammar, allowing users to run a system command
+    prior to code-generation. This may for instance be used to generate an instrument-snippet that
+    you may %include in the instrument (think for-loops of an assembly of identical components).
+    One could also imagine compilation of a needed library, wget of a data file etc.
+    The synax is SHELL "command-to-execute" and it should be placed directly after a DEPENDENCY line
+    within an instrument or component. We expect that applications and examples will come in the
+    next couple of releases.
+    <li><b>3.2 only:</b>Components may from McStas 3.2 request USERVARS that become part of the particle struct.
+    (For the time being only in the form of basic C types like double, int etc. and corresponding
+    arrays / pointers.) This will mean that e.g. the optimisations in Single_crystal and PowderN
+    in SPLIT scenarios can be introduced also in GPU settings.
+    The first component to make use of this mechanism is
+    Res_monitor.comp as used in Test_TasReso.instr.
+    <li>The (r-)interoff-lib.c family of codes have received multiple updates, thanks to McStas users
+    Kyle Grammer (ORNL) and Gaetano Mangiapia (HZH):
+    <ul>
+      <li>The intersection routines now work correctly with gravity
+      <li>The r-interoff-lib (and the related Guide_anyshape_r component) now support specifying
+      a "full" reflectivity curve pr. OFF face, columns of m, alpha and W values should be
+      added in this order to the OFF face.
+    </ul>
+    <li>A flaw was spotted in our NeXus implementation in the case of event lists: A small chunk-size
+   of (1,6) was used, leading to slow I/O and lots of
+    size-overhead. Thanks to Simon Heybrock (ESS) for spotting this!
+    <li>A correction to ref-lib.c was recieved from Gaetano Mangiapia (HZH), allowing closer
+    correspondance between simulated and measured mirror-reflectivities.
+  </ul>
+</ul>
+
+<p><b>Platforms:</b><br>
+We still support 64bit Windows 10/11 on Intel, all recent 64bit macOS
+including 11.x - 13.x Monterey on both Intel and Apple Silicon/M1
+processors. Debian/Ubuntu-based distros on Intel and Arm, our
+RPM-based distro is Fedora on Intel. (Official support for CentOS has
+been dropped, but you should be able to "roll your own" from the src packages.)
+
+<p>Our Docker and binder containers will be updated within the
+following weeks.
+
+<p>We hope you will enjoy these new releases!!!
+<hr>
 <h2>November 1st, 2022: macOS 13 Ventura issues</h2>
 <p>Dear all,
 <p>If you upgrade to macOS 13 Ventura (intel/x86_64), your already installed Python
