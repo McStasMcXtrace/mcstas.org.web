@@ -140,7 +140,7 @@ href="https://github.com/McStasMcXtrace/McCode/issues?q=is%3Aissue+is%3Aclosed+l
 </ul>
   <li><b>Core and libs:</b>
   <ul>
-    <li><b>3.2 only:</b>Previously, any component present in a McStas instrument would trigger the transformation of
+    <li><b>3.2 only:</b> Previously, any component present in a McStas instrument would trigger the transformation of
     every neutron to its local coordinate system, even in the case of an Arm() (empty TRACE) without
     an EXTEND block. We now instead detect components with an empty TRACE that have no EXTEND block
     and are able to completely skip these in the calculation. This results in a speedup in case of
@@ -153,7 +153,7 @@ href="https://github.com/McStasMcXtrace/McCode/issues?q=is%3Aissue+is%3Aclosed+l
     The synax is SHELL "command-to-execute" and it should be placed directly after a DEPENDENCY line
     within an instrument or component. We expect that applications and examples will come in the
     next couple of releases.
-    <li><b>3.2 only:</b>Components may from McStas 3.2 request USERVARS that become part of the particle struct.
+    <li><b>3.2 only:</b> Components may from McStas 3.2 request USERVARS that become part of the particle struct.
     (For the time being only in the form of basic C types like double, int etc. and corresponding
     arrays / pointers.) This will mean that e.g. the optimisations in Single_crystal and PowderN
     in SPLIT scenarios can be introduced also in GPU settings.
