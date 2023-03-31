@@ -137,12 +137,21 @@ A number of issues from 3.2 were addressed, see the relevant GitHub issues for d
     <li>A new syntax called <code>SEARCH</code> has been added to the grammar, allowing users to run append a directory
     to the mcstas search path when looking for components. The syntax may be given in the
     instrument- or component-header directly after a <code>SHELL</code> token and before the <code>DEPENDENCY</code>, <code>DECLARE</code>
-    tokens. <code>SEARCH</code> comes in two variants:
+    tokens, available in two variants:
     <ul>
       <li><code>SEARCH "/the/path/to/add/" </code>
       <li><code>SEARCH SHELL "the_executable --and --some --options"
       </code>
     </ul>
+    But you may also the same two SEARCH forms in connection with a component instance in TRACE, e.g.:
+<code>
+       TRACE
+       ...
+       SEARCH SHELL "readout-config --show compdir"
+       COMPONENT readout = Readout(ring="RING", fen="FEN", tube="TUBE", a="left", b="right", ...)
+       AT (0, 0, 0) ABSOLUTE
+       ...
+</code>
     <li>Thanks to Gregory S. Tucker (ESS) for contributing this
     grammar enhancement!
   </ul>
