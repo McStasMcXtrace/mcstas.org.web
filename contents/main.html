@@ -143,15 +143,13 @@ A number of issues from 3.2 were addressed, see the relevant GitHub issues for d
       <li><code>SEARCH SHELL "the_executable --and --some --options"
       </code>
     </ul>
-    But you may also the same two SEARCH forms in connection with a component instance in TRACE, e.g.:
-<code>
-       TRACE
-       ...
-       SEARCH SHELL "readout-config --show compdir"
-       COMPONENT readout = Readout(ring="RING", fen="FEN", tube="TUBE", a="left", b="right", ...)
-       AT (0, 0, 0) ABSOLUTE
-       ...
-</code>
+    But you may also the same two SEARCH forms in connection with a component instance in <code>TRACE</code>, e.g.:<br>
+    <code>TRACE</code></br>
+    <code>...</code></br>
+    <code>SEARCH SHELL "readout-config --show compdir"</code></br>
+    <code>COMPONENT readout = Readout(ring="RING", fen="FEN", tube="TUBE", a="left", b="right", ...)</code></br>
+    <code>AT (0, 0, 0) ABSOLUTE</code></br>
+    <code>...</code></br>
     <li>Thanks to Gregory S. Tucker (ESS) for contributing this
     grammar enhancement!
   </ul>
