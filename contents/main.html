@@ -31,6 +31,111 @@ Recent news
 <strong><font color="green">Migrating from McStas 2.x to 3.x? - <a href="https://github.com/McStasMcXtrace/McCode/wiki">Use the wiki-based guides<a></font></strong>
 </center>
 <hr>
+<h2>September 19th, 2023: McStas 3.4 released</h2>
+<p>Dear all, 
+The new McStas release v. 3.4 "next-generation" is built and ready for download!
+
+<p>McStas 3.4 is the fifth official release in the 3.x series, with a modernised code-generator and support for GPU acceleration on NVIDIA cards.
+
+<p>3.4 is a 'major' update with notable changes, e.g. tighter
+integration/interoperability with <a href="https://mads-bertelsen.github.io">McStasScript</a>, 
+new grammar and further CMake-standardisation which will eventually
+bring McStas to the conda-forge ecosystem. (And todaay, almost all
+dependencies for McStas are brought by mamba/conda on macOS and Windows.)
+
+<p>Another notable change is that MCPL and NCrystal are now
+distributed in stand-alone .deb / .rpm packages that are
+McStas-release-independent, for convenience still available through the
+packages.mccode.org repository. Please install using e.g.
+<br><code>apt install mcpl ncrystal</code><br>
+<br>(The MCPL and NCrystal codes have been submitted to the
+Debian ecosystem by Synchrotron SOLEIL / Emmanuel Farhi / Roland Mas
+and should make it to the next Debian Stable, the same procedure is
+also under way for McStas.)
+
+<p><strong>Thanks:</strong>
+<br>Thanks to all members of the joint McStas-McXtrace team and input from our users via emails and GitHub issues alike!
+
+<p>Download and installation instructions are available via our <a href="https://github.com/McStasMcXtrace/McCode/tree/master/INSTALL-McStas">GitHub INSTALL-doc pages</a>.
+
+<p>Selected highlights from the releass are listed below. The full
+list changes is also available at <a
+href="https://mcstas.org/CHANGES_McStas">https://mcstas.org/CHANGES_McStas<a>.
+
+<ul>
+  <li>Fixes of issues from last 3.x release:
+  <ul>
+    <li>A number of issues from 3.3 were addressed, see the <a
+  href="https://github.com/McStasMcXtrace/McCode/issues?q=is%3Aissue+is%3Aclosed+label%3Amcstas-3.3">relevant
+    GitHub issues for details</a>
+  </ul>
+  <li>Installation:
+  <ul>
+    <li>As usual, our install docs are available on the <a href="https://github.com/McStasMcXtrace/McCode/tree/master/INSTALL-McStas">McCode GitHub pages</a>
+    <li>The meta-packages for Debian/Ubuntu and RedHat/Centos/Fedora are named e.g.
+    mcstas-suite-python-ng for 'next generation' for coexistance with the 2.x
+    series packages. <br><strong>(!!! Please note that there will be no future
+    2.x releases !!!)</strong>
+  </ul>
+  <li> Tools:
+  <ul>
+    <li>We are no longer supporting / distributing the Perl-based tool set as all functionality
+    has finally been ported to the Python tool set (which has been default since v. 2.4)
+    <li>mcrun now supports an set of "optimisation" switches to allow evaluating an instrument as
+   "object function". Thanks to Emmanuel Farhi for working on
+    this. Please use <br><code>mcrun --help</code><br> in your McStas terminal to learn
+    about details of switches and parameters or see the <a href="https://mcstas.org/CHANGES_McStas">the changelog<a>
+    for a full description.
+    <li>McStas now ships with a "python-aware" code generator for
+    generating "McStasScript" code, example:
+    <br><code>mcstas-pygen Instrument.instr</code> generates the .py
+    script <code>Instrument_generated.py</code><br>
+    Using 'jupytext' this file may easily be converted to a notebook:
+    <br><code>jupytext --to ipynb Instrument_generated.py</code>
+    generates notebook file <code>Instrument_generated.ipynb</code><br>
+    See <a href="https://github.com/PaNOSC-ViNYL/McStasScript">https://github.com/PaNOSC-ViNYL/McStasScript</a>
+    and <a href="https://mads-bertelsen.github.io">https://mads-bertelsen.github.io</a> for more information on McStasScript.
+    <li>McStasScript is included with McStas 3.4 on macOS and Windows and readily configured for use with
+    McStas 3.4 and its embedded Python version. For sake of user convenience, Jupyterlab is also included
+    on these platforms, use 'jupyter lab' from within the McStas 'environment' to work with a McStasScript
+    notebook.
+  </ul>
+  <li> Components and Instruments:
+  <ul>
+    <li>In relation to the HighNESS project, the Wolter-optic components Conics_* have been given an
+    overhaul by Mads Bertelsen. New related instrument WOFSANS is included with McStas 3.4.
+    <li>Thanks to the work of Jos&eacute; Robledo (FZJ), we now have a better interface to the Small-Angle Scattering
+    models from SASview, aka. SASmodels. Due to the big number of included models that each correspond
+    to a McStas component (94 in total!), these are now found in the "sasmodels" folder of your McStas
+    installation. Two example instruments are also included: Test_SasView_bcc_paracrystal_aniso.instr and
+    Test_SasView_guinier.instr.
+    <li>The strain-scanning instrument ILL_SALSA.instr was contributed by Daniel Lomholt Christensen,
+    Uni Copenhagen and ILL.
+  </ul>
+  <li>Core simulation framework / code-generator:
+  <ul>
+    <li>As mentioned above, mcstas-pygen can generate a McStasScript
+    notebook from you existing .instr file.
+    <li>New "unit" grammar for defining physcical units for instrument parameters from Greg Taylor
+    (ESS), example: <br><code>DEFINE INSTRUMENT template(lambda / "Aa" =
+    2.36)</code><br> see <a href="https://mcstas.org/CHANGES_McStas">the changelog<a>
+    for full description.
+    <li>New <code>METADATA</code> grammar from Greg Taylor (ESS), can
+    be used to attach verbatim code/information to one or more
+    component instances. See <a href="https://mcstas.org/CHANGES_McStas">the changelog<a>
+    for full description.
+  </ul>
+  <li><strong>START your migration to 3.x:</strong>
+  <ul>
+    <li>Following the release of 3.4, we will no longer systematically be releasing updates to the
+    2.x series.
+    <li>The Wiki has a dedicated section on McStas 2.x -> McStas 3.x
+    conversion. Please use it!
+    <li>If you are in trouble converting your instrument, please write us a GitHub issue or an email to mcstas-users@mcstas.org
+  </ul>
+</ul>
+We hope you will enjoy this new release!!!
+<hr>
 <h2>March 31st, 2023: McStas 3.3 released</h2>
 <p>Dear all, 
 The new McStas release v. 3.3 "next-generation" is built and ready for download!
