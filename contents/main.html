@@ -36,7 +36,13 @@ Recent news
 <p>A minor hickup was found with our Debian/Fedora metapackages that
   both had a dependence on <code>mcstas-mcpl-3.4</code> which is a
   non-existent package.
-<p>Newly built, corrected meta-packages have been uploaded as replacement.
+<p>Newly built, corrected meta-packages have been uploaded as
+  replacement, so please re-attempt installation if you experienced
+  issues earlier.
+ <p>Also, please be aware that <code>mcpl</code> and <code>NCrystal</code> now come
+ in separate, non-McStas related packages - and are not included in
+   the "metapackage" on Fedora. To install them, simply execute<br>
+   <code>sudo dnf install mcpl ncrystal</code>
 <hr>
 <h2>September 19th, 2023: McStas 3.4 released</h2>
 <p>Dear all, 
