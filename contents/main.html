@@ -31,6 +31,57 @@ Recent news
 <strong><font color="green">Migrating from McStas 2.x to 3.x? - <a href="https://github.com/McStasMcXtrace/McCode/wiki">Use the wiki-based guides<a></font></strong>
 </center>
 <hr>
+<h2>November 1st, 2023: Hints to install McStasScript with McStas 3.4 on Linux</h2>
+<p>Dear all,
+<p>As you may have noticed, the McStas installers for Windows and
+macOS now come with McStasScript embedded.
+<p>To achieve the same functionality on Linux (e.g. Debian/Ubunutu),
+you should perform these few steps
+<ul>
+  <li><code>pip install jupyterlab ipympl mcstasscript nodejs jupytext</code><br>(Please note any information on the location of your pip installation)
+  <li>Find the file <code>configuration.yaml</code> within your pip installation, e.g.:<br><code>.local/lib/python3.10/site-packages/mcstasscript/configuration.yaml</code>
+  <li>Edit that file to achieve the content<br>
+  <pre>
+other:
+  characters_per_line: 85
+paths:
+  mcrun_path: /usr/bin
+  mcstas_path: /usr/share/mcstas/3.4
+  </pre>
+</ul>
+<p>Once these steps are performed you should be able to perform tasks like
+<ul>
+  <li>Use <code>mcstas-pygen</code> to generate a McStasScript <code>.py</code> version
+  of an existing instrument:
+  <pre>
+~> mcstas-pygen BNL_H8.instr 
+Warning: 'V_sample' is an obsolete component (not maintained).
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WARNING: Your instrument file uses an input-parameter named !!!
+!!!         "lambda" - which is a reserved word in Python       !!!
+!!! As a workaround the variable has been named "Lambda" in     !!!
+!!! the output python script.                                   !!!
+!!! PLEASE consider renaming lambda->Lambda in the .instr file  !!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+CFLAGS=
+  </pre>
+  <li>Use <code>jupytext</code> to convert from <code>.py</code> to <code>.ipynb</code> format:
+  <pre>
+~> jupytext --to ipynb BNL_H8_generated.py
+[jupytext] Reading BNL_H8_generated.py in format py
+[jupytext] Writing BNL_H8_generated.ipynb
+  </pre>
+  <li>Run <code>jupyter lab BNL_H8_generated.ipynb</code> to interact
+  with your converted instrument in Jypyter Lab.
+  <li>This should start a jupyter server and bring up a browser:<br>
+  <a href="/pics/Jupyter1.png"><img src="/pics/Jupyter1.png" width=512></a>
+  <li>Executing the cells should give you access to a rendering of the
+  instrument and some output simulation data:<br>
+  <a href="/pics/Jupyter2.png"><img src="/pics/Jupyter2.png"
+  width=512></a><br>
+  <a href="/pics/Jupyter3.png"><img src="/pics/Jupyter3.png" width=512></a>
+</ul>
+<hr>
 <h2>September 23rd, 2023: McStas 3.4 Docker and Binder available</h2>
 <p>Dear all,
 <p>A Ubuntu 22.04 + McStas-3.4 + McStasScript image is now uploaded to
