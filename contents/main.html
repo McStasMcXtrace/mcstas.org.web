@@ -31,6 +31,64 @@ Recent news
 <strong><font color="green">Migrating from McStas 2.x to 3.x? - <a href="https://github.com/McStasMcXtrace/McCode/wiki">Use the wiki-based guides<a></font></strong>
 </center>
 <hr>
+<h2>September 16th, 2024: McStas and McXtrace 3.5.1 release!</h2>
+<p>Dear all,
+<p>It is finally time for a set of new McStas and McXtrace releases:  v3.5.1!
+
+
+<p><strong>Thanks:</strong>
+<ul>
+  <li>Thanks to all members of the joint McStas-McXtrace team and input from our
+   users via emails and GitHub issues alike! Further a special thanks to
+   Theodor Peter Guttesen (former DTU diploma student) who has helped modernise
+   our 3D visualisation!
+</ul>
+
+<p>Most important changes going forward:
+<ul>
+<li>From release 3.5.1 McStas and McXtrace are released simultaneously and with
+   the same versioning (meaning that McXtrace takes a jump from 3.2 up to 3.5)
+<li>With release 3.5.1 we are officially dropping support for the "legacy"
+   McStas 2.7.2 release and the "legacy" McXtrace 1.7.1 release.
+<li>To minimize work required for platform support and builds, we are now focusing
+  on fewer platforms:
+  <ul>
+    <li>Debian packages at packages.mccode.org are provided for x86_64 and arm64 Linux
+     (Thanks to the work of Emmanuel Farhi and his team at SOLEIL, official Debian
+     packages are already available in Debian Testing and Unstable 
+     (see https://tracker.debian.org/pkg/mccode) and should become
+     widely available with next Debian Stable, after which we might drop our "own
+     channel").
+   <li>conda-forge is to become our distribution channel for "everything else", meaning
+    that:
+    <ol>
+      <li>Our macOS "bundles" are effectively now self-extracting conda-installers and
+        REQUIRE an active internet connection during installation
+      <li>From a later release in the 3.5 series the same will be the
+      case for Windows
+    </ol>
+    <li>We are dropping builds for ALL rpm-oriented platforms. Please
+    use conda-forge instead.
+  </ul>
+<li>We want to release more "early and often" going forward, see the linked CHANGES
+   documents under conda-forge.
+</ul>
+
+<p>Both codes have received a number of bug fixes, new models and features - and to
+mention everything here would quickly become too long. But those interested in the
+details are recommended to read the respective CHANGELOGs for the two codes:
+
+<ul>
+  <li><a href="https://github.com/McStasMcXtrace/McCode/blob/main/CHANGES_McStas">CHANGES_McStas</a>
+  <li><a href="https://github.com/McStasMcXtrace/McCode/blob/main/CHANGES_McXtrace">CHANGES_McXtrace</a>
+</ul>
+
+<p>
+
+<p>All the best from the joint
+<p>McStas-McXtrace team
+
+<hr>
 <h2>May 16th, 2024: (experimental) previews of the forthcoming 3.5-release</h2>
 <p>Dear all,
 <p>If you want a sneak preview at the forthcoming 3.5-release, we recommend you
