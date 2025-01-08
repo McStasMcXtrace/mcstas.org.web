@@ -1,0 +1,178 @@
+<h2>December 16th, 2024: Update release 3.5.16 available</h2>
+<p>Dear all,
+<p>The Debian-oriented package issues have been fixed and a few other updates have
+been included in McStas and McXtrace 3.5.16 which is now out:
+<p>For a list of changes, please consult <a
+href="https://github.com/McStasMcXtrace/McCode/releases/tag/v3.5.16">the
+GitHub release page</a>.
+
+<p>At this point, the packages are available
+<ul>
+  <li>On conda-forge for all platforms 
+  <li>As Windows-installers
+  <li>As macOS self-injecting apps
+  <li>On Debian Linux (3.5.16 has been uploaded to the
+  packages.mccode.org repo).
+  <br>One important detail must be noted wrt. co-installed McStas and
+  McXtrace 3.5.16 on Debian:
+  <ul>
+    <li>If you install both of mcstas and mcxtrace on the same
+    Debian/Ubuntu system, you will get a collision for the file
+    <code>/usr/bin/cif2hkl</code>
+    <li>As a workaround you may allow joint installation via overriding <code>cif2hkl</code>:
+    <li><code>sudo apt-get -f install  -o Dpkg::Options::="--force-overwrite"</code>
+  </ul>
+</ul>
+
+<p>Seasons greetings and a happy new year to you all
+
+<p>Best<br>
+Peter Willendrup
+<hr>
+<h2>November 22nd, 2024: Update release 3.5.12 available</h2>
+<p>Dear all,
+<p>I thought it was time for an update-release, so McStas and McXtrace 3.5.12 is now out.
+<p>For a list of changes, please consult <a
+href="https://github.com/McStasMcXtrace/McCode/releases/tag/v3.5.12">the
+GitHub release page</a>.
+
+<p>At this point, the packages are available
+<ul>
+  <li>On conda-forge for all platforms 
+  <li>As Windows-installers
+  <li>As macOS self-injecting apps
+  <li>On Debian Linux x86_64 with the below caveats:
+  <li><strong>Important:</strong> McStas 3.5.12 is currently <strong>NOT</strong> uploaded to the packages.mccode.org repo
+  <ul>
+    <li>You will have to manually uninstall an existing 3.5.1 installation before installing
+    <li>You will have to download and install the packages manually
+    from <a href="https://downloads.mcstas.org/mcstas-3.5.12/Linux/debian/">https://downloads.mcstas.org/mcstas-3.5.12/Linux/debian</a>
+  </ul>
+</ul>
+
+<p>We hope to follow up with updated packages on the Debian repo during December.
+
+<p>Best<br>
+Peter Willendrup
+
+<hr>
+<h2>September 17th, 2024: Try the new version in a binder - no
+installation required</h2>
+Here you may access a web-desktop with McStas and McXtrace:
+<ul>
+  <li><a href="https://mybinder.org/v2/gh/McStasMcXtrace/jupyter-remote-desktop-proxy/HEAD?urlpath=desktop">Click here for a Desktop <img src="https://mybinder.org/badge_logo.svg"></a>
+  <li><a href="https://mybinder.org/v2/gh/McStasMcXtrace/jupyter-remote-desktop-proxy/HEAD?urlpath=lab">Click here for a Jupyter <img src="https://mybinder.org/badge_logo.svg"></a>
+</ul>
+Start <pre>mcgui</pre> from a terminal and try everything out:
+<p><a _target=blank href="/pics/binder-screenshot-mcstas.png"><img width="640" src="/pics/binder-screenshot-mcstas.png"></a>
+<p>Note that the session is <strong>not persistent</strong>, so using this for actual work is a bad idea. :-)
+<p>Instead you may also use the corresponding Docker container, can be run with<br>
+<pre>podman run -p 8888:8888 -p 5173:5173 docker.io/mccode/mcstas-mcxtrace</pre>
+<hr>
+<h2>September 16th, 2024: McStas and McXtrace 3.5.1 release!</h2>
+<p>Dear all,
+<p>It is finally time for a set of new McStas and McXtrace releases:  v3.5.1!
+
+
+<p><strong>Thanks:</strong>
+<ul>
+  <li>Thanks to all members of the joint McStas-McXtrace team and input from our
+   users via emails and GitHub issues alike! Further a special thanks to
+   Theodor Peter Guttesen (former DTU diploma student) who has helped modernise
+   our 3D visualisation!
+</ul>
+
+<p>Most important changes going forward:
+<ul>
+<li>From release 3.5.1 McStas and McXtrace are released simultaneously and with
+   the same versioning (meaning that McXtrace takes a jump from 3.2 up to 3.5)
+<li>With release 3.5.1 we are officially dropping support for the "legacy"
+   McStas 2.7.2 release and the "legacy" McXtrace 1.7.1 release.
+<li>To minimize work required for platform support and builds, we are now focusing
+  on fewer platforms:
+  <ul>
+    <li>Debian packages at packages.mccode.org are provided for x86_64 and arm64 Linux
+     (Thanks to the work of Emmanuel Farhi and his team at SOLEIL, official Debian
+     packages are already available in Debian Testing and Unstable 
+     (see https://tracker.debian.org/pkg/mccode) and should become
+     widely available with next Debian Stable, after which we might drop our "own
+     channel").
+   <li>conda-forge is to become our distribution channel for "everything else", meaning
+    that:
+    <ol>
+      <li>Our macOS "bundles" are effectively now self-extracting conda-installers and
+        REQUIRE an active internet connection during installation
+      <li>From a later release in the 3.5 series the same will be the
+      case for Windows
+    </ol>
+    <li>We are dropping builds for ALL rpm-oriented platforms. Please
+    use conda-forge instead.
+  </ul>
+<li>We want to release more "early and often" going forward, see the linked CHANGES
+   documents under conda-forge.
+</ul>
+
+<p>Both codes have received a number of bug fixes, new models and features - and to
+mention everything here would quickly become too long. But those interested in the
+details are recommended to read the respective CHANGELOGs for the two codes:
+
+<ul>
+  <li><a href="https://github.com/McStasMcXtrace/McCode/blob/main/CHANGES_McStas">CHANGES_McStas</a>
+  <li><a href="https://github.com/McStasMcXtrace/McCode/blob/main/CHANGES_McXtrace">CHANGES_McXtrace</a>
+</ul>
+
+<p>One little P.s:<br>
+The transition to the new releases require a little extra, unexpected work on the 
+websites - so please expect a little website-documentation inconsistency for the next 
+week or two.
+
+<p>All the best from the joint
+<p>McStas-McXtrace team
+
+<hr>
+<h2>May 16th, 2024: (experimental) previews of the forthcoming 3.5-release</h2>
+<p>Dear all,
+<p>If you want a sneak preview at the forthcoming 3.5-release, we recommend you
+to try either
+<ul>
+  <li>Our <a href="https://github.com/conda-forge/mcstas-suite-feedstock/">conda-forge packages</a>
+  <br>(NB: The Windows version of the package does <strong>not</strong> include MCPL and NCrystal yet)
+  <li>A new set of <a href="https://tmp.mcstas.org/macOS-conda-apps/">conda-based macOS app bundles</a>
+  <br>(Based on conda-forge and should auto-download the newest conda-package plus dependencies)
+  <li>Corresponding Debian packages, Windows/MinGW package and macOS/Intel package are built on a nightly basis via GitHub action "mcstas-autobuild" see e.g. <a href="https://github.com/McStasMcXtrace/McCode/actions/runs/9113127761">this latest one</a>  <br>(The packages are available in the "artifacts", download may require being logged in on GitHub. Somewhat confusingly, the Windows build is enclosed in the "ubuntu" artifact.)
+</ul>
+<p>Among the hightlights are:
+<ol>
+  <li>New default-<code>CFLAGS</code>
+    <br>(Gives improved simulation performance of ~ 30-40% when using <code>gcc</code> and/or <code>clang</code> on Unix platforms at the cost of 5-10% longer compile time. -
+    <br>Thanks to Thomas Kittelmann for help debugging a slowdown found when using the built-in compilers on conda :-) )
+  <li>Tighter integration with <a href="https://github.com/PaNOSC-ViNYL/McStasScript">McStasScript</a>
+  <br>(<code>mcstas-pygen</code>-driven button in <code>mcgui</code> directly spawns JupyterLab with a generated notebook)
+  <li><a href="https://github.com/PaNOSC-ViNYL/McStasScript">McStasScript</a> is automatically included and configured on mac and Windows builds
+  <li>We have started organising the <a href="https://github.com/McStasMcXtrace/McCode/tree/main/mcstas-comps/examples">instrument-<code>examples</code></a> in a folder-structure,
+    allowing to distribute "more than just the instrument-file" as an example.
+  <br>(Case-specific datafiles or geometry-files, c-code snippets, python scripts or McStasScript notebooks welcome - we still want new <code>comps</code> to arrive in <code>contrib</code>)
+  <li>New <code>GISANS_sample.comp</code> contribution from Henrich Frielinghaus, allows to simulate selected samples for Grazing Incidence SANS.
+  <li>New <code>File.comp</code> contribution from Greg Tucker, allows to use <code>metadata</code> blocks to store input-files for components
+  <br>(e.g. for a small OFF file or other datafile - then visible alongside <code>instr</code> in your editor.)
+  <li>... and we are working on freshening up certain aspects of the 3D-visualisation... ;-) <br>(New visualisation is not yet included in the above-mentioned packages...)
+</ol>
+<p><strong>Do you have new component- or instrument-developments you would like included in next release?</strong><br>- Then <strong>NOW</strong> is a good time to send them. :-) We prefer of you open a <a href="https://github.com/McStasMcXtrace/McCode/pulls">PR on GitHub</a> but of course email-based contributions are also welcome. :-)
+<p>Finally, if you know anyone running <a href="https://www.mcxtrace.org">McXtrace</a> most
+of the above should also work for them. And going forward, releases of
+McStas and McXtrace should come in pairs with the same versioning.
+<hr>
+<p><b>Previous news items: </b><a href="/news/2023.html">2023</a>, </b><a href="/news/2022.html">2022</a>, <a href="/news/2021.html">2021</a>,<a href="/news/2020.html">2020</a>,<a href="/news/2019.html">2019</a>, <a href="/news/2018.html">2018</a>, <a
+href="/news/2017.html">2017</a>, <a href="/news/2016.html">2016</a>,
+<a href="/news/2015.html">2015</a>, <a
+href="/news/2014.html">2014</a>, <a href="/news/2013.html">2013</a>,
+<a href="/news/2012.html">2012</a>, <a
+href="/news/2011.html">2011</a>, </b><a
+href="/news/2010.html">2010</a>, <a href="/news/2009.html">2009</a>,
+<a href="/news/2008.html">2008</a>, <a
+href="/news/2007.html">2007</a>, <a href="/news/2006.html">2006</a>,
+<a href="/news/2005.html">2005</a>, <a
+href="/news/2004.html">2004</a>, <a href="/news/2003.html">2003</a>, <a href="/news/2002.html">2002</a>, <a href="/news/2001.html">2001</a>, <a href="/news/2000.html">2000</a>, <a href="/news/1999.html">1999</a>,
+<a href="/news/1998.html">1998</a>.
+
+</p></body></html>
