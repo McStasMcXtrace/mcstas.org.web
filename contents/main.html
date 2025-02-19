@@ -31,9 +31,114 @@ Recent news
 <strong><font color="green">Migrating from McStas 2.x to 3.x? - <a href="https://github.com/McStasMcXtrace/McCode/wiki">Use the wiki-based guides<a></font></strong>
 </center>
 <hr>
-<h2>January 8th, 2025: Monte Carlo Sattelite to ICNS2025</h2>
+<h2>February 19th, 2025: McStas and McXtrace 3.5.24 released</h2>
 <p>Dear all,
-<p>The <a href="https://icns2025.org">ICNS2025 conference</a> is
+<br>McStas and McXtrace release 3.5.24 is now available: 
+<h2 id="what-s-changed">What&#39;s Changed</h2>
+<h3 id="important-note">Important note</h3>
+<ul>
+<li>McStas and McXtrace will soon change organisation-name on GitHub - from McStasMcXtrace -&gt; mccode-dev</li>
+</ul>
+<h3 id="user-interfaces-and-tools">User interfaces and tools</h3>
+<ul>
+<li>[Feature] <code>mcgui/mxgui</code> Let configuration dialogue spawn your <code>EDITOR</code> to edit your local <code>mccode_config.json</code> 
+by @willend in <a href="https://github.com/McStasMcXtrace/McCode/pull/1838">https://github.com/McStasMcXtrace/McCode/pull/1838</a> (available also by <code>--edit-user-config</code> from <code>mcrun/mxrun</code>)</li>
+<li>[Feature] <code>mcrun/mxrun</code>: New switch --cogen to allow on-demand switch to non-standard code generator. 
+See also interoperability with <code>mccode-antlr</code> below 
+by @willend in <a href="https://github.com/McStasMcXtrace/McCode/pull/1851">https://github.com/McStasMcXtrace/McCode/pull/1851</a></li>
+<li>[Feature] <code>mcrun/mxrun</code> Solution for picking up code generator from PATH if not found where expected 
+by @willend in <a href="https://github.com/McStasMcXtrace/McCode/pull/1840">https://github.com/McStasMcXtrace/McCode/pull/1840</a></li>
+<li>[Feature] pygen minor revision: Build importable make() function and call from generic notebook 
+by @willend in <a href="https://github.com/McStasMcXtrace/McCode/pull/1827">https://github.com/McStasMcXtrace/McCode/pull/1827</a></li>
+<li>[Fix] Support Scintilla editor on Debian with Qt6 
+by @willend in <a href="https://github.com/McStasMcXtrace/McCode/pull/1813">https://github.com/McStasMcXtrace/McCode/pull/1813</a></li>
+<li>[Fix] Drop hard-coded check for PyQt5 
+by @willend in <a href="https://github.com/McStasMcXtrace/McCode/pull/1814">https://github.com/McStasMcXtrace/McCode/pull/1814</a></li>
+<li>[Fix] No more hidden Perl dependencies! (perl -&gt; python 1-liner readlinkf()) 
+by @willend in <a href="https://github.com/McStasMcXtrace/McCode/pull/1824">https://github.com/McStasMcXtrace/McCode/pull/1824</a></li>
+<li>[Fix] too-restrictive <code>mcdisplay/mxdisplay</code> instrument line parsing 
+by @g5t in <a href="https://github.com/McStasMcXtrace/McCode/pull/1834">https://github.com/McStasMcXtrace/McCode/pull/1834</a></li>
+<li>[Fix] Patches for <code>mcdisplay/mxdisplay</code> in Windows 
+from @LelandWH <a href="https://github.com/McStasMcXtrace/McCode/issues/1853">https://github.com/McStasMcXtrace/McCode/issues/1853</a></li>
+</ul>
+<h3 id="components-and-instruments">Components and instruments</h3>
+<ul>
+<li>[Fix] McStas <code>Vertical_bender</code>: Add max iteration criterion for while loop (default 1000). 
+by @willend in <a href="https://github.com/McStasMcXtrace/McCode/pull/1815">https://github.com/McStasMcXtrace/McCode/pull/1815</a></li>
+<li>[Fix] McStas <code>NCrystal_sample</code>: Remove possible out-of-bounds memory access 
+by @g5t in <a href="https://github.com/McStasMcXtrace/McCode/pull/1821">https://github.com/McStasMcXtrace/McCode/pull/1821</a></li>
+<li>[Fix] McStas <code>Elliptic_guide_gravity</code> and <code>Pol_mirror</code>: Minor comp revisions, suppresses compilation warnings from clang 
+by @willend in <a href="https://github.com/McStasMcXtrace/McCode/pull/1826">https://github.com/McStasMcXtrace/McCode/pull/1826</a></li>
+<li>[Fix] McStas <code>SNS_ARCS.instr</code> edits 
+by @willend in <a href="https://github.com/McStasMcXtrace/McCode/pull/1838">https://github.com/McStasMcXtrace/McCode/pull/1838</a></li>
+<li>[Fix] McStas <code>ISIS_IMAT.instr</code> DEPENDENCY &quot; @NEXUSFLAGS@ &quot; added 
+by @willend in <a href="https://github.com/McStasMcXtrace/McCode/pull/1839">https://github.com/McStasMcXtrace/McCode/pull/1839</a></li>
+<li>[Fix] McStas <code>Union_master</code> Adjustment of default parameter 
+by @willend in <a href="https://github.com/McStasMcXtrace/McCode/pull/1840">https://github.com/McStasMcXtrace/McCode/pull/1840</a></li>
+<li>[Fix] McStas <code>Union</code>-related fixes and imports from DMSC school 
+by @willend in <a href="https://github.com/McStasMcXtrace/McCode/pull/1841">https://github.com/McStasMcXtrace/McCode/pull/1841</a></li>
+<li>[Fix] McStas <code>Elliptical_guide_gravity</code> did not work in GROUPS as it always SCATTERS 
+by @mads-bertelsen in <a href="https://github.com/McStasMcXtrace/McCode/pull/1843">https://github.com/McStasMcXtrace/McCode/pull/1843</a></li>
+<li>[Fix] <code>Monitor_nD</code> on GPU: Adjustments for coherence between CPU and GPU particle lists 
+by @willend in <a href="https://github.com/McStasMcXtrace/McCode/pull/1816">https://github.com/McStasMcXtrace/McCode/pull/1816</a></li>
+</ul>
+<h3 id="core-simulation-toolkit">Core simulation toolkit</h3>
+<ul>
+<li>[Feature] NeXus: sort comp instances by index and include comp parameter information 
+by @willend in <a href="https://github.com/McStasMcXtrace/McCode/pull/1828">https://github.com/McStasMcXtrace/McCode/pull/1828</a></li>
+<li>[Fix] Increased stability in  NeXus x wide MPI 
+by @willend in <a href="https://github.com/McStasMcXtrace/McCode/pull/1811">https://github.com/McStasMcXtrace/McCode/pull/1811</a></li>
+<li>[Fix] Portability, Windows + <code>cl.exe</code>: Remove variable length array allocations for issue #1817 
+by @g5t in <a href="https://github.com/McStasMcXtrace/McCode/pull/1819">https://github.com/McStasMcXtrace/McCode/pull/1819</a> and
+<a href="https://github.com/McStasMcXtrace/McCode/issues/1818">https://github.com/McStasMcXtrace/McCode/issues/1818</a> by @willend in <a href="https://github.com/McStasMcXtrace/McCode/pull/1822">https://github.com/McStasMcXtrace/McCode/pull/1822</a></li>
+</ul>
+<h3 id="interfaces-and-interoperability-with-other-codes">Interfaces and interoperability with other codes</h3>
+<h4 id="-ncrystal-https-github-com-mctools-ncrystal-wiki-"><a href="https://github.com/mctools/ncrystal/wiki">NCrystal</a></h4>
+<ul>
+<li>Thanks to @tkittel for ping-pong on this :)</li>
+<li>[Feature] McStas 3.5.24 and later now depends on NCrystal 4.0.0 and later. NCrystal is now available also on Windows! 
+by @willend in <a href="https://github.com/McStasMcXtrace/McCode/pull/1848">https://github.com/McStasMcXtrace/McCode/pull/1848</a> and  <a href="https://github.com/McStasMcXtrace/McCode/pull/1855">https://github.com/McStasMcXtrace/McCode/pull/1855</a></li>
+</ul>
+<h4 id="-mccode-antlr-https-github-com-mcstasmcxtrace-mccode-antlr-"><a href="https://github.com/McStasMcXtrace/mccode-antlr"><code>mccode-antlr</code></a></h4>
+<ul>
+<li>Thanks to @g5t for ping-pong on this :)</li>
+<li>[Feature] <code>mccode-antlr</code> is an alternative code-generator for McStas and McXtrace - a new development by @g5t and based on <code>ANTLR</code> instead of <code>lex/yacc</code>. The new tool is mainly written in python and thus has a lower barrier for changes in language syntax and code generation. The tool implementations <code>mcstas-antlr</code> and <code>mcxtrace-antlr</code> are thus a candidate implementations to potentially replace the classic <code>mcstas</code> and <code>mcxtrace</code> code generators in the future. Current status is that<ul>
+<li>McStas: <code>mcstas-antlr</code> is fully feature complete wrt. <code>mcstas</code> for CPU simulations and close to complete for GPU simulations</li>
+<li>McXtrace: Not all instruments will compile using <code>mcxtrace-antlr</code> but basic functionality is in place</li>
+<li>To try: <ol>
+<li>Install <code>mccode-antlr</code> from <code>conda-forge</code> or via <code>pip</code></li>
+<li>Adapt your configuration to use e.g. <code>mcstas-antlr</code> by <ul>
+<li>Setting the new <code>--cogen=mcstas-antlr</code> option in <code>mcrun</code></li>
+<li>Enable or edit the <code>MCCOGEN</code> field of <code>mccode_config.json</code> using the new <code>Save/Edit configuration</code> in <code>mcgui</code></li>
+<li>(The antlr tools default to download comps etc. to an internal cache: Add e.g. <code>-I${MCSTAS}</code> to prefer ingredients fromyour local library)</li>
+</ul>
+</li>
+<li>Use the <code>mcrun-antlr/mxrun-antlr</code> tools provided directly by <code>mccode-antlr</code></li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="platform-support">Platform support</h3>
+<ul>
+<li>Debian/Ubuntu<ul>
+<li>[Fix] Make hidden numpy dependency explicit also on Debian by @willend in <a href="https://github.com/McStasMcXtrace/McCode/pull/1825">https://github.com/McStasMcXtrace/McCode/pull/1825</a></li>
+<li>[Fix] McXtrace meta-pkgs for Debian add libgsl-dev as dependency by @farhi in <a href="https://github.com/McStasMcXtrace/McCode/pull/185">https://github.com/McStasMcXtrace/McCode/pull/185</a></li>
+</ul>
+</li>
+<li>Windows<ul>
+<li>[Feature] NCrystal is now available with McStas on Windows</li>
+<li>[Info] Windows via cross-compiled <code>.exe</code>installer from <code>mccode.org</code>: 
+Please place the MCPL-related <code>.bat</code> files from the <code>extras</code> folder in e.g. <code>c:\mcstas-3.5.24\bin</code> to enable MCPL
+(May require giving your user &#39;full access&#39; permissions to the bin folder)</li>
+<li>[Info] Windows via conda-forge: MCPL is not yet available but expected during the spring</li>
+</ul>
+</li>
+</ul>
+<p><strong>Full Changelog</strong>: <a href="https://github.com/McStasMcXtrace/McCode/compare/v3.5.16...v3.5.24">https://github.com/McStasMcXtrace/McCode/compare/v3.5.16...v3.5.24</a></p>
+<hr>
+<h2>January 8th, 2025: Monte Carlo Sattelite to ICNS2025</h2>
+<p>Dear all,<p>The <a href="https://icns2025.org">ICNS2025 conference</a> is
 taking place in Copenhagen and Lund this summer, and the abstract
 submission is closing <b>January 15th - in one week</b>.
 <p><center><a href="https://icns2025.org"><img
