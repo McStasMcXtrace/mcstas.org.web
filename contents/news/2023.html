@@ -8,11 +8,11 @@ should come shortly.
 functionality-wise like McStas 3.4 but with minor improvements. For
 next official McStas release everything should match between our
 classical binary-distributed platforms and conda-forge.
-<p>Should you experience problems, please write up a <a href="https://github.com/McStasMcXtrace/McCode/issues">GitHub Issue</a>.
+<p>Should you experience problems, please write up a <a href="https://github.com/mccode-dev/McCode/issues">GitHub Issue</a>.
 <p>In preparation for forthcoming McStas 3.5 we are very much open to contributions: 
 <br>Hence, if you have nice new component developments or new instrument
 files to contribute, please fork the our repo and open a
-<a href="https://github.com/McStasMcXtrace/McCode/pulls">pull request</a> adding the files!
+<a href="https://github.com/mccode-dev/McCode/pulls">pull request</a> adding the files!
 <hr>
 <h2>November 16th, 2023: The McStas project marks 25 year anniversary</h2>
 <p>The 25th-anniversary celebration of the McStas collaboration took place on the afternoon of November 16th, co-hosted by ESS DMSC and DTU Physics.
@@ -126,7 +126,7 @@ execute a command along the lines of:
 <p><code>podman run -p 8888:8888 docker.io/mccode/mcstas-3.4</code>
 <p>+ follow instructions from podman/Docker
 <p>You may also run the same container via binder, please connect via
-this icon: <a href="https://mybinder.org/v2/gh/McStasMcXtrace/mcstas-binder/master?urlpath=desktop"><img
+this icon: <a href="https://mybinder.org/v2/gh/mccode-dev/mcstas-binder/master?urlpath=desktop"><img
 src="https://mybinder.org/badge_logo.svg" alt="Binder logo"></a>
 <p>To start McStas, please issue the command <code>mcgui</code> from a terminal.
 <hr>
@@ -170,7 +170,7 @@ also under way for McStas.)
 <p><strong>Thanks:</strong>
 <br>Thanks to all members of the joint McStas-McXtrace team and input from our users via emails and GitHub issues alike!
 
-<p>Download and installation instructions are available via our <a href="https://github.com/McStasMcXtrace/McCode/tree/master/INSTALL-McStas">GitHub INSTALL-doc pages</a>.
+<p>Download and installation instructions are available via our <a href="https://github.com/mccode-dev/McCode/tree/master/INSTALL-McStas">GitHub INSTALL-doc pages</a>.
 
 <p>Selected highlights from the releass are listed below. The full
 list changes is also available at <a
@@ -180,12 +180,12 @@ href="https://mcstas.org/CHANGES_McStas">https://mcstas.org/CHANGES_McStas<a>.
   <li>Fixes of issues from last 3.x release:
   <ul>
     <li>A number of issues from 3.3 were addressed, see the <a
-  href="https://github.com/McStasMcXtrace/McCode/issues?q=is%3Aissue+is%3Aclosed+label%3Amcstas-3.3">relevant
+  href="https://github.com/mccode-dev/McCode/issues?q=is%3Aissue+is%3Aclosed+label%3Amcstas-3.3">relevant
     GitHub issues for details</a>
   </ul>
   <li>Installation:
   <ul>
-    <li>As usual, our install docs are available on the <a href="https://github.com/McStasMcXtrace/McCode/tree/master/INSTALL-McStas">McCode GitHub pages</a>
+    <li>As usual, our install docs are available on the <a href="https://github.com/mccode-dev/McCode/tree/master/INSTALL-McStas">McCode GitHub pages</a>
     <li>The meta-packages for Debian/Ubuntu and RedHat/Centos/Fedora are named e.g.
     mcstas-suite-python-ng for 'next generation' for coexistance with the 2.x
     series packages. <br><strong>(!!! Please note that there will be no future
@@ -263,27 +263,27 @@ support for NeXus on all platforms and new <code>SEARCH</code> grammar warrant t
 <p><strong>Thanks:</strong>
 <br>Thanks to all members of the joint McStas-McXtrace team and input from our users via emails and GitHub issues alike!
 
-<p>Download and installation instructions are available via our <a href="https://github.com/McStasMcXtrace/McCode/tree/master/INSTALL-McStas">GitHub INSTALL-doc pages</a>.
+<p>Download and installation instructions are available via our <a href="https://github.com/mccode-dev/McCode/tree/master/INSTALL-McStas">GitHub INSTALL-doc pages</a>.
 
 <p>Selected highlights from the releass are listed below. The full
 list changes is also available at <a href="https://mcstas.org/CHANGES_McStas">https://mcstas.org/CHANGES_McStas<a>.
 
 <p><b>If you didn't start already, please start your migration to 3.x:</b>
 <ul>
-  <li>The Wiki has a dedicated section on <a href="https://github.com/McStasMcXtrace/McCode/wiki#migrating-from-mcstas-2x-to-3x-and-mcxtrace-1x-to-3x">McStas 2.x -> McStas 3.x conversion</a> that includes:
+  <li>The Wiki has a dedicated section on <a href="https://github.com/mccode-dev/McCode/wiki#migrating-from-mcstas-2x-to-3x-and-mcxtrace-1x-to-3x">McStas 2.x -> McStas 3.x conversion</a> that includes:
   <ul>
-    <li><a href="https://github.com/McStasMcXtrace/McCode/wiki/Overview-of-differences-in-%22classic-McStas-McXtrace%22-and-the-3.x-versions">An overview of differences</a>
-    <li><a href="https://github.com/McStasMcXtrace/McCode/wiki/McStas-McXtrace-3-and-GPU-terminology-%28table%29">A nomenclature list containing short descriptions of new concepts and important keywords in McStas 3.x</a> and OpenACC / CUDA code in general.
-    <li><a href="https://github.com/McStasMcXtrace/McCode/wiki/Overview-of-differences-in-%22classic-McStas-McXtrace%22-and-the-3.x-versions">A document outlining the most importand differences between 2.x and 3.x.</a>
-    <li><a href="https://github.com/McStasMcXtrace/McCode/wiki/HOWTO%3A-Modifying-a-McStas-2-instrument-for-use-under-McStas-3">A guide for 2.x -> 3.x instrument conversion.</a>
-    <li><a href="https://github.com/McStasMcXtrace/McCode/wiki/HOWTO%3A-Modifying-a-McStas-2-component-for-use-under-McStas-3">A guide for 2.x -> 3.x component conversion.</a>
+    <li><a href="https://github.com/mccode-dev/McCode/wiki/Overview-of-differences-in-%22classic-McStas-McXtrace%22-and-the-3.x-versions">An overview of differences</a>
+    <li><a href="https://github.com/mccode-dev/McCode/wiki/McStas-McXtrace-3-and-GPU-terminology-%28table%29">A nomenclature list containing short descriptions of new concepts and important keywords in McStas 3.x</a> and OpenACC / CUDA code in general.
+    <li><a href="https://github.com/mccode-dev/McCode/wiki/Overview-of-differences-in-%22classic-McStas-McXtrace%22-and-the-3.x-versions">A document outlining the most importand differences between 2.x and 3.x.</a>
+    <li><a href="https://github.com/mccode-dev/McCode/wiki/HOWTO%3A-Modifying-a-McStas-2-instrument-for-use-under-McStas-3">A guide for 2.x -> 3.x instrument conversion.</a>
+    <li><a href="https://github.com/mccode-dev/McCode/wiki/HOWTO%3A-Modifying-a-McStas-2-component-for-use-under-McStas-3">A guide for 2.x -> 3.x component conversion.</a>
   </ul>
 </ul>  
  - If you are still in trouble, please write us a GitHub issue or an email to <a href="mailto:mcstas-users@mcstas.org">mcstas-users@mcstas.org</a>
 
 <p><b>Fixes of issues from last 3.x release:</b><br>
 A number of issues from 3.2 were addressed, see the relevant GitHub issues for details:<br>
-<a href="https://github.com/McStasMcXtrace/McCode/issues?q=is%3Aissue+is%3Aclosed+label%3Amcstas-3.2">3.2 issue list</a><br>
+<a href="https://github.com/mccode-dev/McCode/issues?q=is%3Aissue+is%3Aclosed+label%3Amcstas-3.2">3.2 issue list</a><br>
 
 <p><strong>Release highlights</strong><br>
 <ul>
@@ -312,7 +312,7 @@ A number of issues from 3.2 were addressed, see the relevant GitHub issues for d
     <li>The new input flag <code>--IDF</code> will run an IDF generator (i.e. mcdisplay-mantid) prior to performing
     a NeXus-based simulation, i.e. for "one-click" support of output in Mantid-compatible NeXus
     format with an embedded IDF. Please consult the naming-conventions for <code>sourceMantid</code>, <code>sampleMantid</code>
-    and <code>nD_Mantid_xx</code> found in <a href="https://github.com/McStasMcXtrace/McCode/wiki/McStas-and-Mantid#mcstas-mantid-workflow">https://github.com/McStasMcXtrace/McCode/wiki/McStas-and-Mantid#mcstas-mantid-workflow</a>
+    and <code>nD_Mantid_xx</code> found in <a href="https://github.com/mccode-dev/McCode/wiki/McStas-and-Mantid#mcstas-mantid-workflow">https://github.com/mccode-dev/McCode/wiki/McStas-and-Mantid#mcstas-mantid-workflow</a>
     to succesfully generate your IDF. Please also inspire from the example instruments in the <code>Mantid</code>
     category, see <code>mcgui -> File -> New from template -> Mantid</code> .
     <li><code>mcrun</code> now forwards the <code>-I</code> input to the code-generator, which allows you to add a chosen folder

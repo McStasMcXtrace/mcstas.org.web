@@ -3,7 +3,7 @@
 <p>The Debian-oriented package issues have been fixed and a few other updates have
 been included in McStas and McXtrace 3.5.16 which is now out:
 <p>For a list of changes, please consult <a
-href="https://github.com/McStasMcXtrace/McCode/releases/tag/v3.5.16">the
+href="https://github.com/mccode-dev/McCode/releases/tag/v3.5.16">the
 GitHub release page</a>.
 
 <p>At this point, the packages are available
@@ -33,7 +33,7 @@ Peter Willendrup
 <p>Dear all,
 <p>I thought it was time for an update-release, so McStas and McXtrace 3.5.12 is now out.
 <p>For a list of changes, please consult <a
-href="https://github.com/McStasMcXtrace/McCode/releases/tag/v3.5.12">the
+href="https://github.com/mccode-dev/McCode/releases/tag/v3.5.12">the
 GitHub release page</a>.
 
 <p>At this point, the packages are available
@@ -60,8 +60,8 @@ Peter Willendrup
 installation required</h2>
 Here you may access a web-desktop with McStas and McXtrace:
 <ul>
-  <li><a href="https://mybinder.org/v2/gh/McStasMcXtrace/jupyter-remote-desktop-proxy/HEAD?urlpath=desktop">Click here for a Desktop <img src="https://mybinder.org/badge_logo.svg"></a>
-  <li><a href="https://mybinder.org/v2/gh/McStasMcXtrace/jupyter-remote-desktop-proxy/HEAD?urlpath=lab">Click here for a Jupyter <img src="https://mybinder.org/badge_logo.svg"></a>
+  <li><a href="https://mybinder.org/v2/gh/mccode-dev/jupyter-remote-desktop-proxy/HEAD?urlpath=desktop">Click here for a Desktop <img src="https://mybinder.org/badge_logo.svg"></a>
+  <li><a href="https://mybinder.org/v2/gh/mccode-dev/jupyter-remote-desktop-proxy/HEAD?urlpath=lab">Click here for a Jupyter <img src="https://mybinder.org/badge_logo.svg"></a>
 </ul>
 Start <pre>mcgui</pre> from a terminal and try everything out:
 <p><a _target=blank href="/pics/binder-screenshot-mcstas.png"><img width="640" src="/pics/binder-screenshot-mcstas.png"></a>
@@ -117,8 +117,8 @@ mention everything here would quickly become too long. But those interested in t
 details are recommended to read the respective CHANGELOGs for the two codes:
 
 <ul>
-  <li><a href="https://github.com/McStasMcXtrace/McCode/blob/main/CHANGES_McStas">CHANGES_McStas</a>
-  <li><a href="https://github.com/McStasMcXtrace/McCode/blob/main/CHANGES_McXtrace">CHANGES_McXtrace</a>
+  <li><a href="https://github.com/mccode-dev/McCode/blob/main/CHANGES_McStas">CHANGES_McStas</a>
+  <li><a href="https://github.com/mccode-dev/McCode/blob/main/CHANGES_McXtrace">CHANGES_McXtrace</a>
 </ul>
 
 <p>One little P.s:<br>
@@ -139,7 +139,7 @@ to try either
   <br>(NB: The Windows version of the package does <strong>not</strong> include MCPL and NCrystal yet)
   <li>A new set of <a href="https://tmp.mcstas.org/macOS-conda-apps/">conda-based macOS app bundles</a>
   <br>(Based on conda-forge and should auto-download the newest conda-package plus dependencies)
-  <li>Corresponding Debian packages, Windows/MinGW package and macOS/Intel package are built on a nightly basis via GitHub action "mcstas-autobuild" see e.g. <a href="https://github.com/McStasMcXtrace/McCode/actions/runs/9113127761">this latest one</a>  <br>(The packages are available in the "artifacts", download may require being logged in on GitHub. Somewhat confusingly, the Windows build is enclosed in the "ubuntu" artifact.)
+  <li>Corresponding Debian packages, Windows/MinGW package and macOS/Intel package are built on a nightly basis via GitHub action "mcstas-autobuild" see e.g. <a href="https://github.com/mccode-dev/McCode/actions/runs/9113127761">this latest one</a>  <br>(The packages are available in the "artifacts", download may require being logged in on GitHub. Somewhat confusingly, the Windows build is enclosed in the "ubuntu" artifact.)
 </ul>
 <p>Among the hightlights are:
 <ol>
@@ -149,7 +149,7 @@ to try either
   <li>Tighter integration with <a href="https://github.com/PaNOSC-ViNYL/McStasScript">McStasScript</a>
   <br>(<code>mcstas-pygen</code>-driven button in <code>mcgui</code> directly spawns JupyterLab with a generated notebook)
   <li><a href="https://github.com/PaNOSC-ViNYL/McStasScript">McStasScript</a> is automatically included and configured on mac and Windows builds
-  <li>We have started organising the <a href="https://github.com/McStasMcXtrace/McCode/tree/main/mcstas-comps/examples">instrument-<code>examples</code></a> in a folder-structure,
+  <li>We have started organising the <a href="https://github.com/mccode-dev/McCode/tree/main/mcstas-comps/examples">instrument-<code>examples</code></a> in a folder-structure,
     allowing to distribute "more than just the instrument-file" as an example.
   <br>(Case-specific datafiles or geometry-files, c-code snippets, python scripts or McStasScript notebooks welcome - we still want new <code>comps</code> to arrive in <code>contrib</code>)
   <li>New <code>GISANS_sample.comp</code> contribution from Henrich Frielinghaus, allows to simulate selected samples for Grazing Incidence SANS.
@@ -157,7 +157,7 @@ to try either
   <br>(e.g. for a small OFF file or other datafile - then visible alongside <code>instr</code> in your editor.)
   <li>... and we are working on freshening up certain aspects of the 3D-visualisation... ;-) <br>(New visualisation is not yet included in the above-mentioned packages...)
 </ol>
-<p><strong>Do you have new component- or instrument-developments you would like included in next release?</strong><br>- Then <strong>NOW</strong> is a good time to send them. :-) We prefer of you open a <a href="https://github.com/McStasMcXtrace/McCode/pulls">PR on GitHub</a> but of course email-based contributions are also welcome. :-)
+<p><strong>Do you have new component- or instrument-developments you would like included in next release?</strong><br>- Then <strong>NOW</strong> is a good time to send them. :-) We prefer of you open a <a href="https://github.com/mccode-dev/McCode/pulls">PR on GitHub</a> but of course email-based contributions are also welcome. :-)
 <p>Finally, if you know anyone running <a href="https://www.mcxtrace.org">McXtrace</a> most
 of the above should also work for them. And going forward, releases of
 McStas and McXtrace should come in pairs with the same versioning.

@@ -8,7 +8,7 @@ McStas 2.7.2, it actually contained a set of 3.x binaries and tools.
 <br><a href="https://download.mcstas.org/current-classic/macOS/arm64/">A fresh build of 2.7.2 for arm64 macOS</a> was immediately uploaded.
 
 <p><b>For Ubuntu users where your browser can not access the documentation:</b>
-<br>Please consult <a href="https://github.com/McStasMcXtrace/McCode/issues/1378">https://github.com/McStasMcXtrace/McCode/issues/1378</a> for a solution
+<br>Please consult <a href="https://github.com/mccode-dev/McCode/issues/1378">https://github.com/mccode-dev/McCode/issues/1378</a> for a solution
 
 <p><b>For those of you on CentOS (v8)</b>:
 <br>We have decided to released a last set of packages:
@@ -25,7 +25,7 @@ A new <b>PAIR</b> of releases of McStas:
 </ul>
 are both built and ready for download!
 
-<p>Download and installation instructions are available via our <a href="https://github.com/McStasMcXtrace/McCode/tree/master/INSTALL-McStas">GitHub INSTALL-doc pages</a>.
+<p>Download and installation instructions are available via our <a href="https://github.com/mccode-dev/McCode/tree/master/INSTALL-McStas">GitHub INSTALL-doc pages</a>.
 
 <p>Selected highlights from the releases are listed below. The full list
 of changes for both releases is also available at <a href="https://mcstas.org/CHANGES_McStas">https://mcstas.org/CHANGES_McStas<a>.
@@ -33,13 +33,13 @@ of changes for both releases is also available at <a href="https://mcstas.org/CH
 <p><b>Please start your migration to 3.x:</b>
 <ul>
   <li>McStas 2.7.2 is a "last update" to the 2.x series, sharing a subset of tool features with McStas 3.2.
-  <li>The Wiki has a dedicated section on <a href="https://github.com/McStasMcXtrace/McCode/wiki#migrating-from-mcstas-2x-to-3x-and-mcxtrace-1x-to-3x">McStas 2.x -> McStas 3.x conversion</a> that includes:
+  <li>The Wiki has a dedicated section on <a href="https://github.com/mccode-dev/McCode/wiki#migrating-from-mcstas-2x-to-3x-and-mcxtrace-1x-to-3x">McStas 2.x -> McStas 3.x conversion</a> that includes:
   <ul>
-    <li><a href="https://github.com/McStasMcXtrace/McCode/wiki/Overview-of-differences-in-%22classic-McStas-McXtrace%22-and-the-3.x-versions">An overview of differences</a>
-    <li><a href="https://github.com/McStasMcXtrace/McCode/wiki/McStas-McXtrace-3-and-GPU-terminology-%28table%29">A nomenclature list containing short descriptions of new concepts and important keywords in McStas 3.x</a> and OpenACC / CUDA code in general.
-    <li><a href="https://github.com/McStasMcXtrace/McCode/wiki/Overview-of-differences-in-%22classic-McStas-McXtrace%22-and-the-3.x-versions">A document outlining the most importand differences between 2.x and 3.x.</a>
-    <li><a href="https://github.com/McStasMcXtrace/McCode/wiki/HOWTO%3A-Modifying-a-McStas-2-instrument-for-use-under-McStas-3">A guide for 2.x -> 3.x instrument conversion.</a>
-    <li><a href="https://github.com/McStasMcXtrace/McCode/wiki/HOWTO%3A-Modifying-a-McStas-2-component-for-use-under-McStas-3">A guide for 2.x -> 3.x component conversion.</a>
+    <li><a href="https://github.com/mccode-dev/McCode/wiki/Overview-of-differences-in-%22classic-McStas-McXtrace%22-and-the-3.x-versions">An overview of differences</a>
+    <li><a href="https://github.com/mccode-dev/McCode/wiki/McStas-McXtrace-3-and-GPU-terminology-%28table%29">A nomenclature list containing short descriptions of new concepts and important keywords in McStas 3.x</a> and OpenACC / CUDA code in general.
+    <li><a href="https://github.com/mccode-dev/McCode/wiki/Overview-of-differences-in-%22classic-McStas-McXtrace%22-and-the-3.x-versions">A document outlining the most importand differences between 2.x and 3.x.</a>
+    <li><a href="https://github.com/mccode-dev/McCode/wiki/HOWTO%3A-Modifying-a-McStas-2-instrument-for-use-under-McStas-3">A guide for 2.x -> 3.x instrument conversion.</a>
+    <li><a href="https://github.com/mccode-dev/McCode/wiki/HOWTO%3A-Modifying-a-McStas-2-component-for-use-under-McStas-3">A guide for 2.x -> 3.x component conversion.</a>
   </ul>
 </ul>  
  - If you are still in trouble, please write us a GitHub issue or an email to <a href="mailto:mcstas-users@mcstas.org">mcstas-users@mcstas.org</a>
@@ -47,10 +47,10 @@ of changes for both releases is also available at <a href="https://mcstas.org/CH
 <p><b>Fixes of issues from last releases:</b><br>
 A good number of issues from the earlier 2.7.1 and 3.1 releases were addressed, see the relevant GitHub issues for details:<br>
 <a
-href="https://github.com/McStasMcXtrace/McCode/issues?q=is%3Aissue+is%3Aclosed+label%3Amcstas-2.7.1">Full
+href="https://github.com/mccode-dev/McCode/issues?q=is%3Aissue+is%3Aclosed+label%3Amcstas-2.7.1">Full
 2.7.1 issue list</a><br>
 <a
-href="https://github.com/McStasMcXtrace/McCode/issues?q=is%3Aissue+is%3Aclosed+label%3Amcstas-3.1">Full
+href="https://github.com/mccode-dev/McCode/issues?q=is%3Aissue+is%3Aclosed+label%3Amcstas-3.1">Full
 3.1 issue list</a><br>
 
 <p><b>Release highligts</b><br>
@@ -216,7 +216,7 @@ TypeError: scale(self): too many arguments'
 </pre>
 To fix this issue, please replace your
 <ul>
-  <li>$MCSTAS/tools/Python/mcplot/pyqtgraph/plotfuncs.py with <a href="https://raw.githubusercontent.com/McStasMcXtrace/McCode/54c348b02fb20c6182866edd8ecd10096f7c25db/tools/Python/mcplot/pyqtgraph/plotfuncs.py">this new version</a>
+  <li>$MCSTAS/tools/Python/mcplot/pyqtgraph/plotfuncs.py with <a href="https://raw.githubusercontent.com/mccode-dev/McCode/54c348b02fb20c6182866edd8ecd10096f7c25db/tools/Python/mcplot/pyqtgraph/plotfuncs.py">this new version</a>
 </ul>
 <p>New releases 2.7.2 and 3.2 are in preparation and should be
 released during November or December.
@@ -226,16 +226,16 @@ released during November or December.
 <p>We have recently become aware of a couple of issues that arise with all current releases of McStas (2.7.1 / 3.1)
 <p>On system with the newest Python versions (3.10 and beyond) you may experience that 
 <ul>
-  <li> mcgui fails on execution, see <a href="https://github.com/McStasMcXtrace/McCode/issues/1270">https://github.com/McStasMcXtrace/McCode/issues/1270</a> for details
-  <li> mcplot fails on execution, see <a href="https://github.com/McStasMcXtrace/McCode/issues/1281">https://github.com/McStasMcXtrace/McCode/issues/1281</a> for details
+  <li> mcgui fails on execution, see <a href="https://github.com/mccode-dev/McCode/issues/1270">https://github.com/mccode-dev/McCode/issues/1270</a> for details
+  <li> mcplot fails on execution, see <a href="https://github.com/mccode-dev/McCode/issues/1281">https://github.com/mccode-dev/McCode/issues/1281</a> for details
 </ul>
 <p>In case you experience these problems you may replace the following files within your installation folder:
 <ul>
   <li>$MCSTAS/tools/Python/mcgui/viewclasses.py - please replace by <a
-  href="https://raw.githubusercontent.com/McStasMcXtrace/McCode/d30a2567dd77d0e1880c2020cc17ef6c5cdf3078/tools/Python/mcgui/viewclasses.py">this new version</a>
+  href="https://raw.githubusercontent.com/mccode-dev/McCode/d30a2567dd77d0e1880c2020cc17ef6c5cdf3078/tools/Python/mcgui/viewclasses.py">this new version</a>
   <li>$MCSTAS/tools/Python/mccodelib/pqtgfrontend.py - please replace
   by <a
-  href="https://raw.githubusercontent.com/McStasMcXtrace/McCode/54c348b02fb20c6182866edd8ecd10096f7c25db/tools/Python/mccodelib/pqtgfrontend.py">this
+  href="https://raw.githubusercontent.com/mccode-dev/McCode/54c348b02fb20c6182866edd8ecd10096f7c25db/tools/Python/mccodelib/pqtgfrontend.py">this
   new version</a>
 </ul>
 <p>New stable releases of McStas should be released during November/December this year.
@@ -293,11 +293,11 @@ Dr. Christine Klauser <a href="mailto:christine.klauser@psi.ch">&lt;christine.kl
 Peter Willendrup
 <hr>
 <h2>February 18th, 2022: New ready-to-run McStas box in a browser</h2>
-<p>We are happy to provide a <a href="https://github.com/McStasMcXtrace/mcstas-binder">ready-to-run system with McStas pre-installed</a>. 
+<p>We are happy to provide a <a href="https://github.com/mccode-dev/mcstas-binder">ready-to-run system with McStas pre-installed</a>. 
 It typically pulls-out an 8-cores computer running at Binder, for free, with both McStas 2.x and 3.x (with MPI multi-core support but no GPU).
 Perfect for running McStas from anywhere, for training/schools/workshops.
 <p>
-Start it in a single click here: <a href="https://mybinder.org/v2/gh/McStasMcXtrace/mcstas-binder/master?urlpath=desktop"><img src="https://mybinder.org/badge_logo.svg"></a>
+Start it in a single click here: <a href="https://mybinder.org/v2/gh/mccode-dev/mcstas-binder/master?urlpath=desktop"><img src="https://mybinder.org/badge_logo.svg"></a>
 <p>(Please note that load-time can be a couple of minutes.)
 <p><a target=_blank href="/pics/mcstas-binder.png"><img width=350 alt="screenshot" src="/pics/mcstas-binder.png"></a>
 <p><h3>Update:</h3>

@@ -13,7 +13,7 @@ release, even though the "Check-PL-dependencies" script will report
 
 <p>If you need to install our Perl-based tool chain on 10.13, the
 easiest way is to download an updated version of the above script, get
-it <a href="https://github.com/McStasMcXtrace/McCode/blob/master/support/MacOSX/Check-dependencies/Check-PL-dependencies.command">from our GitHub</a>
+it <a href="https://github.com/mccode-dev/McCode/blob/master/support/MacOSX/Check-dependencies/Check-PL-dependencies.command">from our GitHub</a>
 
 <hr>
 <h3>
@@ -46,7 +46,7 @@ changes is also available at <a href="http://mcstas.org/CHANGES_McStas">http://m
 
 <p>Fixes of issues from last release:
 <ul>
-  <li>A number of issues from 2.4 were corrected, <a href="https://github.com/McStasMcXtrace/McCode/issues?&q=is%3Aissue%20is%3Aclosed%20label%3A%22McStas%202.4%22%20 ">see the relevant GitHub issues for details</a>
+  <li>A number of issues from 2.4 were corrected, <a href="https://github.com/mccode-dev/McCode/issues?&q=is%3Aissue%20is%3Aclosed%20label%3A%22McStas%202.4%22%20 ">see the relevant GitHub issues for details</a>
 </ul>
     
 
@@ -56,7 +56,7 @@ changes is also available at <a href="http://mcstas.org/CHANGES_McStas">http://m
   developed by Jakob Garde, DTU. The perl ones will stay around as a
   backup solution
   <ul>
-    <li>See the GitHub <a href="https://github.com/McStasMcXtrace/McCode/wiki/User-documentation-for-the-2017--Python-tool-set">Wiki
+    <li>See the GitHub <a href="https://github.com/mccode-dev/McCode/wiki/User-documentation-for-the-2017--Python-tool-set">Wiki
     doc page</a> for usage
     <li>On Unix platforms, the perl tools are accessible by adding .pl to the wanted tool (mcgui.pl etc.)
     <li>On Windows, the perl tools are accessible by adding -pl to the wanted tool (mcgui-pl etc.)
@@ -98,7 +98,7 @@ Three minor bugs/annoyances with 2.4 have been found, and now have fixes / worka
 <ol>
   <li>If you experience that your Python mcgui File->Preferences
   dialogue crashes (<a
-  href="https://github.com/McStasMcXtrace/McCode/issues/470">Issue 470</a>), please:
+  href="https://github.com/mccode-dev/McCode/issues/470">Issue 470</a>), please:
   <ul>
     <li>Linux deb: <b>sudo apt-get install --reinstall mcstas-tools-python-mccodelib-2.4</b>
     <li>Linux rpm: <b>sudo yum reinstall mcstas-tools-python-mccodelib-2.4</b>
@@ -106,21 +106,21 @@ Three minor bugs/annoyances with 2.4 have been found, and now have fixes / worka
   </ul>
   <li>The MCPL_output component was shipped with a silly off-by-one
   error that may prevent you from merging the output. (<a
-  href="https://github.com/McStasMcXtrace/McCode/issues/475">Issue 475</a>)
+  href="https://github.com/mccode-dev/McCode/issues/475">Issue 475</a>)
   <ul>
-    <li>Solution: <a target=_blank href="https://raw.githubusercontent.com/McStasMcXtrace/McCode/master/mcstas-comps/misc/MCPL_output.comp">Cherry-pick MCPL_output.comp via the GitHub repo</a>
+    <li>Solution: <a target=_blank href="https://raw.githubusercontent.com/mccode-dev/McCode/master/mcstas-comps/misc/MCPL_output.comp">Cherry-pick MCPL_output.comp via the GitHub repo</a>
   </ul>
   <li>On older Ubuntu's (14.04 tested), the dependency
   python3-pyqtgraph is not available (<a
-  href="https://github.com/McStasMcXtrace/McCode/issues/471">Issue 471</a>)
+  href="https://github.com/mccode-dev/McCode/issues/471">Issue 471</a>)
   <ul>
-    <li>Solution: <a href="https://github.com/McStasMcXtrace/McCode/issues/471">Install a newer version from the 16.04 repos as described in the issue link</a>
+    <li>Solution: <a href="https://github.com/mccode-dev/McCode/issues/471">Install a newer version from the 16.04 repos as described in the issue link</a>
   </ul>
 </ol>
 
 <p>We envisage that new issues can occur over the next weeks, and aim to fix these by a minor update release.
 
-<p><a href="https://github.com/McStasMcXtrace/McCode/issues?q=is%3Aissue%20label%3A%22McStas%202.4%22%20">Please report any bug found to our GitHub issue system</a>
+<p><a href="https://github.com/mccode-dev/McCode/issues?q=is%3Aissue%20label%3A%22McStas%202.4%22%20">Please report any bug found to our GitHub issue system</a>
 
 
 <p>Best and happy simulating! :-)
@@ -216,7 +216,7 @@ of Debian systems and the Windows platform! (32bit packages for a given platform
     <li>From 2.4 we will default to use our new set of Python tools, developed by Jakob Garde, DTU.
     <ul>
       <li>See the <a
-  href="https://github.com/McStasMcXtrace/McCode/wiki/User-documentation-for-the-2017--Python-tool-set">Wiki
+  href="https://github.com/mccode-dev/McCode/wiki/User-documentation-for-the-2017--Python-tool-set">Wiki
   doc page</a> for usage
     </ul>    
     <li>A mcgui editor with rich syntax highlighting
